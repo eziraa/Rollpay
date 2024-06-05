@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import logo from "../../../assets/logo.jpg";
-import { ThemeProps } from "../../../typo/theme/theme";
-export const LogoContainer = styled.div<ThemeProps>`
+export const LogoContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
