@@ -21,7 +21,7 @@ export const lightTheme: Theme = {
   },
   backgrounds: {
     primary: "#fff",
-    secondary: "#dcd6d6",
+    secondary: "#f1efef",
   },
   fontSizes: {
     small: "1rem",
