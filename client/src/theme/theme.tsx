@@ -16,12 +16,12 @@ export type Theme = {
 
 export const lightTheme: Theme = {
   colors: {
-    primary: "#000",
+    primary: "#1b1a1a",
     secondary: "#fff",
   },
   backgrounds: {
     primary: "#fff",
-    secondary: "#000",
+    secondary: "#dcd6d6",
   },
   fontSizes: {
     small: "1rem",
@@ -33,11 +33,11 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   colors: {
     primary: "#fff",
-    secondary: "#000",
+    secondary: "#a9a7a7",
   },
   backgrounds: {
-    primary: "#000",
-    secondary: "#fff",
+    primary: "#3c3b3b",
+    secondary: "#a3a1a1",
   },
   fontSizes: {
     small: "1rem",
