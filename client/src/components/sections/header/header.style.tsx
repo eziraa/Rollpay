@@ -3,12 +3,12 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import profile from "../../../assets/profile.png";
 export const HeaderContainer = styled.div<ThemeProps>`
   width: 100vw;
-  height: 20%;
+  height: 15%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.backgrounds.primary};
-  padding: 1rem 2rem;
+  padding: 0 2rem;
 `;
 
 export const HeaderTitle = styled.h1<ThemeProps>`
@@ -25,9 +25,10 @@ export const ProfileContainer = styled.div<ThemeProps>`
   justify-content: end;
   align-items: center;
   background-color: ${({ theme }) => theme.backgrounds.primary};
+  gap: 1rem;
 `;
 
-export const ProfileImage = styled.img<ThemeProps>`
+export const ProfileImage = styled.img`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
