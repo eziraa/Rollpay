@@ -3,13 +3,13 @@ import { addOpacityToColor } from "../convertor/add_opacity_color";
 
 export const FlasheMessageContainr = styled.div`
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.3, theme.colors.primary)};
+    addOpacityToColor(0.6, theme.colors.primary)};
   width: 30rem;
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.backgrounds.primary};
   position: absolute;
   top: 2rem;
   left: 50%;
@@ -38,7 +38,7 @@ export const FlashMessageContent = styled.div`
 `;
 
 export const FlashMessageText = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   text-align: left;
   padding: 0.5rem;
   margin: 0.5rem;
