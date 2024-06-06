@@ -1,10 +1,18 @@
-import { HeaderContainer, HeaderTitle } from "./header.style";
+import Logo from "../../utils/logo/logo";
+import {
+  HeaderContainer,
+  ProfileContainer,
+  ProfileImage,
+} from "./header.style";
 
 export const Header = () => {
   return (
     <>
       <HeaderContainer>
-        <HeaderTitle>String</HeaderTitle>
+        <Logo />
+        <ProfileContainer>
+          <ProfileImage />
+        </ProfileContainer>
       </HeaderContainer>
     </>
   );
