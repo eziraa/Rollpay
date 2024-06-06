@@ -17,7 +17,7 @@ export const FlashMessage = () => {
   return (
     <FlasheMessageContainr>
       <FlashMessageHeader>
-        <FlashMessageTitle>Usee sign up</FlashMessageTitle>
+        <FlashMessageTitle>User Log in </FlashMessageTitle>
         <FlashMessageClose
           onClick={() => {
             setOpenFlashMessage(false);

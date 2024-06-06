@@ -4,7 +4,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -39,7 +39,7 @@ export const Button = styled.button`
   outline: none;
   font-size: ${({ theme }) => theme.fontSizes.medium};
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border: 1px solid ${({ theme }) => theme.colors.secondary};
   }
   cursor: pointer;
   transition: all 0.3s ease-in-out;
