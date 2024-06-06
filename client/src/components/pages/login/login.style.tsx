@@ -5,7 +5,7 @@ import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
 export const LoginContainer = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
-  width: 30%;
+  width: 25%;
   height: 60%;
   box-shadow: 0px 0px 1rem
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
