@@ -21,9 +21,9 @@ export const LogoImage = styled.div`
   background-position: center;
 `;
 
-export const LogoText = styled.h1`
+export const LogoText = styled.h1<ThemeProps>`
   font-size: 2rem;
   font-weight: bold;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
