@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Header } from "../../sections/header/header";
 import { FlashMessage } from "../../utils/flash_message/flash_message";
 import {
@@ -7,11 +8,18 @@ import {
   Label,
   Button,
   Title,
+  PasswordContainer,
 } from "../../utils/form_elements/form.style";
+import { PasswordVisible } from "../../utils/password_visiblity/password.style";
 import { HomeContainer } from "../home/homepage.style";
 import { LoginContainer } from "./login.style";
+import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 
 export const LoginPage = () => {
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const togglePasswordVisiblity = () => {
+    setPasswordVisible(!passwordVisible);
+  };
   return (
     <HomeContainer>
       <Header />
@@ -24,7 +32,12 @@ export const LoginPage = () => {
           </InputContainer>
           <InputContainer>
             <Label>Password</Label>
-            <Input />
+            <PasswordContainer>
+              <input type={passwordVisible ? "text" : "password"} />
+              <PasswordVisible onClick={togglePasswordVisiblity}>
+                {passwordVisible ? <RiEyeFill /> : <RiEyeOffFill />}
+              </PasswordVisible>
+            </PasswordContainer>
           </InputContainer>
           <Button type="submit" onClick={(e) => e.stopPropagation()}>
             Login
