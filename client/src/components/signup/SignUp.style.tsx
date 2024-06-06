@@ -2,14 +2,13 @@ import { css } from "styled-components";
 import styled from "styled-components";
 import { ThemeProps } from "../../typo/theme/theme";
 
-
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 15px;
 `;
 export const SignUpContainer = styled.div<ThemeProps>`
-  height: fit-content;
+  height: auto;
   width: 25vw;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 20px;
@@ -21,9 +20,8 @@ export const SignUpContainer = styled.div<ThemeProps>`
   align-items: center;
 `;
 export const Form = styled.form<ThemeProps>`
-    background-color: ${({ theme }) => theme.backgrounds.primary};
-
-`
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+`;
 export const Title = styled.h1`
   ${Text}
   font-size: 30px;
@@ -36,8 +34,33 @@ export const Input = styled.input`
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 10px;
   padding: 10px;
-  margin: 0px 10px;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
+`;
+export const ToggleIcon = styled.div`
+  display: inline-block;
+  right:-1rem;
+  top: 55%;
+  transform: translateY(-50%);
+  position: absolute;
+
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+export const PasswordContainer = styled.div`
+  position: relative;
+
+  width: 90%;
+  input {
+    ${Text}
+    height: 20px;
+    width: 100%;
+    border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
+    border-radius: 10px;
+    padding: 10px ;
+    /* margin: 0px 10px; */
+    border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
+  }
 `;
 export const InputName = styled.label`
   ${Text}
@@ -46,8 +69,9 @@ export const InputName = styled.label`
   font-weight: 500;
 `;
 export const InputBox = styled.div`
-  margin: 10px 10px 0px 0px;
+  margin: 10px;
   width: 90%;
+  height: auto;
   display: flex;
   flex-direction: column;
 `;
