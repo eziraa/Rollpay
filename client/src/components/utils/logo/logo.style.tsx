@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import logo from "../../../assets/logo.jpg";
-export const LogoContainer = styled.div`
+import { ThemeProps } from "../../../typo/theme/theme";
+export const LogoContainer = styled.div<ThemeProps>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -25,3 +26,4 @@ export const LogoText = styled.h1`
   font-weight: bold;
   color: #000000;
 `;
+

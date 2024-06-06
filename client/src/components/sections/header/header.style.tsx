@@ -1,5 +1,6 @@
 import styled from "styled-components";
-export const HeaderContainer = styled.div`
+import { ThemeProps } from "../../../typo/theme/theme";
+export const HeaderContainer = styled.div<ThemeProps>`
   width: 100%;
   height: 20%;
   display: flex;
@@ -9,7 +10,7 @@ export const HeaderContainer = styled.div`
   top: 0;
 `;
 
-export const HeaderTitle = styled.h1`
+export const HeaderTitle = styled.h1<ThemeProps>`
   font-size: ${({ theme }) => theme.fontSizes.large};
   color: ${({ theme }) => theme.colors.primary};
   text-align: center;
