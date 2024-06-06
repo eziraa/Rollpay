@@ -1,44 +1,86 @@
+import { Button } from "../../utils/buttons/submit.style";
 import {
   SignUpContainer,
   Title,
-  Button,
   Input,
   InputName,
   InputBox,
   ErrorMessage,
+  Form,
 } from "./SignUp.style";
+import { useFormik } from "formik";
+import { SignUpValidation } from "../../validations/signUpValidation";
 const SignUp = () => {
+  const initialValues = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
+    initialValues,
+    validationSchema: SignUpValidation,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
-    <SignUpContainer>
+    <SignUpContainer className="container">
       <Title>Create Account</Title>
-      <Input>
-        <InputName>Username: </InputName>
-        <InputBox />
-      </Input>
-      <ErrorMessage>Error Message </ErrorMessage>
+      <Form onSubmit={handleSubmit}>
+        <InputBox>
+          <InputName htmlFor="username">Username: </InputName>
+          <Input
+            type="text"
+            name="username"
+            value={values.username}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
+        </InputBox>
 
-      <Input>
-        <InputName>Email: </InputName>
-        <InputBox />
-      </Input>
+        <InputBox>
+          <InputName htmlFor="email">Email: </InputName>
+          <Input
+            type="text"
+            name="email"
+            value={values.email}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          {errors.email && <ErrorMessage>{errors.email} </ErrorMessage>}
+        </InputBox>
 
-      <ErrorMessage>Error Message </ErrorMessage>
-      <Input>
-        <InputName>Password: </InputName>
-        <InputBox />
-      </Input>
+        <InputBox>
+          <InputName htmlFor="password">Password: </InputName>
+          <Input
+            type="password"
+            name="password"
+            value={values.password}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+        </InputBox>
 
-      <ErrorMessage>Error Message </ErrorMessage>
-      <Input>
-        <InputName>Confirm Password: </InputName>
-        <InputBox />
-      </Input>
+        <InputBox>
+          <InputName htmlFor="confirmPassword">Confirm Password: </InputName>
+          <Input
+            type="password"
+            name="confirmPassword"
+            value={values.confirmPassword}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          {errors.confirmPassword && (
+            <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
+          )}
+        </InputBox>
 
-      <ErrorMessage>Error Message </ErrorMessage>
-
-      <br />
-
-      <Button> Create </Button>
+        <Button type="submit"> Create </Button>
+      </Form>
     </SignUpContainer>
   );
 };
