@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "license":"MIT",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -19,7 +19,9 @@
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.2.1",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@types/node": "^20.13.0",
