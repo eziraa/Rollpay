@@ -1,3 +1,4 @@
+import { Toggle } from "../../utils/buttons/toggle";
 import Logo from "../../utils/logo/logo";
 import {
   HeaderContainer,
@@ -11,6 +12,7 @@ export const Header = () => {
       <HeaderContainer>
         <Logo />
         <ProfileContainer>
+          <Toggle />
           <ProfileImage />
         </ProfileContainer>
       </HeaderContainer>
