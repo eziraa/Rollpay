@@ -7,9 +7,15 @@ import {
   InputBox,
   ErrorMessage,
   Form,
+  ToggleIcon,
+  PasswordContainer,
 } from "./SignUp.style";
 import { useFormik } from "formik";
 import { SignUpValidation } from "../../validations/signUpValidation";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { useState } from "react";
+import { IoEyeOutline } from "react-icons/io5";
+
 const SignUp = () => {
   const initialValues = {
     username: "",
@@ -24,6 +30,11 @@ const SignUp = () => {
       console.log(values);
     },
   });
+  const [visible, setVisible] = useState(false);
+
+  const toggleVisiblity = () => {
+    setVisible(!visible);
+  };
 
   return (
     <SignUpContainer className="container">
@@ -55,25 +66,39 @@ const SignUp = () => {
 
         <InputBox>
           <InputName htmlFor="password">Password: </InputName>
-          <Input
-            type="password"
-            name="password"
-            value={values.password}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
+          <PasswordContainer>
+            <ToggleIcon onClick={toggleVisiblity}>
+              {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
+            </ToggleIcon>
+
+            <input
+              type={visible ? "text" : "password"}
+              name="password"
+              value={values.password}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+          </PasswordContainer>
+
           {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
         </InputBox>
 
         <InputBox>
           <InputName htmlFor="confirmPassword">Confirm Password: </InputName>
-          <Input
-            type="password"
-            name="confirmPassword"
-            value={values.confirmPassword}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
+          <PasswordContainer>
+            <ToggleIcon onClick={toggleVisiblity}>
+              {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
+            </ToggleIcon>
+
+            <input
+              type="password"
+              name="confirmPassword"
+              value={values.confirmPassword}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+          </PasswordContainer>
+
           {errors.confirmPassword && (
             <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
           )}
