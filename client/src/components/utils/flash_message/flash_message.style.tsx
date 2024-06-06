@@ -43,7 +43,7 @@ export const FlashMessageText = styled.p`
   padding: 0.5rem;
   margin: 0.5rem;
   border-radius: 0.5rem;
-  color: #00ff00;
+  color: rgb(0, 255, 34);
 `;
 
 export const FlashMessageClose = styled.div`
