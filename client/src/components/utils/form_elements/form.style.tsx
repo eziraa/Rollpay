@@ -46,7 +46,7 @@ export const Button = styled.button`
   &:hover {
     /* transform: scale(1.1); */
   }
-  &:disabled {
+  input:disabled {
     background-color: ${({ theme }) => theme.backgrounds.disabled};
     cursor: not-allowed;
   }
@@ -66,10 +66,30 @@ export const Label = styled.label<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-
 export const Title = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.large};
   color: ${({ theme }) => theme.colors.primary};
   text-align: center;
 `;
 
+export const PasswordContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.secondary};
+  outline: none;
+  position: relative;
+  input {
+    outline: 1px solid transparent;
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    &:focus {
+      border: 1px solid ${({ theme }) => theme.colors.primary};
+    }
+  }
+`;
