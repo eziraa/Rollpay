@@ -1,63 +1,61 @@
 import { css } from "styled-components";
 import styled from "styled-components";
+import { ThemeProps } from "../../typo/theme/theme";
+
 
 const Text = css`
-  color: rgb(2, 255, 192);
+  color: ${({ theme }) => theme.colors.primary};
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 15px;
 `;
-export const SignUpContainer = styled.form`
-  height: 70vh;
+export const SignUpContainer = styled.div<ThemeProps>`
+  height: fit-content;
   width: 25vw;
-  border: 0.5rem solid rgba(82, 255, 212, 0.847);
+  border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 20px;
-  margin: 20px 450px;
+  margin: 20px auto;
   padding: 10px;
+  box-shadow: 0px 0px 1rem black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
+export const Form = styled.form<ThemeProps>`
+    background-color: ${({ theme }) => theme.backgrounds.primary};
+
+`
 export const Title = styled.h1`
   ${Text}
   font-size: 30px;
   margin: 20px 80px;
 `;
-export const InputBox = styled.input`
+export const Input = styled.input`
   ${Text}
   height: 20px;
-  width: 350px;
-  border: 1px solid rgba(82, 255, 212, 0.847);
+  width: 90%;
+  border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 10px;
   padding: 10px;
   margin: 0px 10px;
-  outline: 1px solid rgba(82, 255, 212, 0.847);
+  border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
 `;
-export const InputName = styled.p`
+export const InputName = styled.label`
   ${Text}
   margin: 0px 10px;
   font-size: 15px;
   font-weight: 500;
 `;
-export const Input = styled.div`
+export const InputBox = styled.div`
   margin: 10px 10px 0px 0px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
 `;
 export const ErrorMessage = styled.p`
   ${Text}
   margin: 0px 10px;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   padding-left: 10px;
-  color: #f47a7a;
-`;
-export const Button = styled.button`
-  width: 100px;
-  height: 35px;
-  margin: 10px 140px;
-  color: #fff;
-  font-size: 15px;
-  border-radius: 5px;
-  background-color: #198754;
-  border-color: #198754;
-  :hover {
-    color: #fff;
-    background-color: #157347;
-    border-color: #146c43;
-  }
+  color: #ef3131;
 `;
