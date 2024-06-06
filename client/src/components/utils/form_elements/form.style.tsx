@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ThemeProps } from "../../../typo/theme/theme";
 
 export const Form = styled.form`
   display: flex;
@@ -7,18 +8,15 @@ export const Form = styled.form`
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* border: 1px solid ${({ theme }) => theme.colors.secondary}; */
 `;
 
 export const Input = styled.input`
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   outline: none;
   &:focus {
     border: 1px solid ${({ theme }) => theme.colors.primary};
@@ -33,19 +31,20 @@ export const InputContainer = styled.div`
 
 export const Button = styled.button`
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.backgrounds.secondary};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   outline: none;
+  font-size: ${({ theme }) => theme.fontSizes.medium};
   &:focus {
     border: 1px solid ${({ theme }) => theme.colors.primary};
   }
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   &:hover {
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
   }
   &:disabled {
     background-color: ${({ theme }) => theme.backgrounds.disabled};
@@ -62,7 +61,15 @@ export const Button = styled.button`
   }
 `;
 
-export const Label = styled.label`
-  font-size: ${({ theme }) => theme.fontSizes.small};
-  color: ${({ theme }) => theme.colors.secondary};
+export const Label = styled.label<ThemeProps>`
+  font-size: ${({ theme }) => theme.fontSizes.medium};
+  color: ${({ theme }) => theme.colors.primary};
 `;
+
+
+export const Title = styled.h2`
+  font-size: ${({ theme }) => theme.fontSizes.large};
+  color: ${({ theme }) => theme.colors.primary};
+  text-align: center;
+`;
+
