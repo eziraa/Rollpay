@@ -7,41 +7,49 @@ const Text = css`
   font-size: 15px;
 `;
 export const SignUpContainer = styled.form`
-  height: 600px;
-  width: 500px;
-  border: 5px solid rgba(82, 255, 212, 0.847);
-  border-radius: 30px;
-  /* background-color: aliceblue; */
-  margin: 50px 450px;
-  padding: 20px;
+  height: 70vh;
+  width: 25vw;
+  border: 0.5rem solid rgba(82, 255, 212, 0.847);
+  border-radius: 20px;
+  margin: 20px 450px;
+  padding: 10px;
 `;
 export const Title = styled.h1`
   ${Text}
-  font-size: 40px;
-  margin: 40px 100px;
+  font-size: 30px;
+  margin: 20px 80px;
 `;
 export const InputBox = styled.input`
   ${Text}
-  height: 30px;
+  height: 20px;
   width: 350px;
-  border: 2px solid rgba(82, 255, 212, 0.847);
+  border: 1px solid rgba(82, 255, 212, 0.847);
   border-radius: 10px;
   padding: 10px;
-  margin: 0px 20px;
-  :focus {
-    border: 2px solid rgba(82, 255, 212, 0.847);
-  }
+  margin: 0px 10px;
+  outline: 1px solid rgba(82, 255, 212, 0.847);
 `;
 export const InputName = styled.p`
   ${Text}
-  margin: 10px 20px;
-  font-size: 20px;
+  margin: 0px 10px;
+  font-size: 15px;
+  font-weight: 500;
 `;
-
+export const Input = styled.div`
+  margin: 10px 10px 0px 0px;
+`;
+export const ErrorMessage = styled.p`
+  ${Text}
+  margin: 0px 10px;
+  font-size: 15px;
+  font-weight: 500;
+  padding-left: 10px;
+  color: #f47a7a;
+`;
 export const Button = styled.button`
   width: 100px;
   height: 35px;
-  margin: 20px 140px;
+  margin: 10px 140px;
   color: #fff;
   font-size: 15px;
   border-radius: 5px;
