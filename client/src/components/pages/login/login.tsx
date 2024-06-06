@@ -1,4 +1,5 @@
 import { Header } from "../../sections/header/header";
+import { FlashMessage } from "../../utils/flash_message/flash_message";
 import {
   Form,
   Input,
@@ -30,6 +31,7 @@ export const LoginPage = () => {
           </Button>
         </Form>
       </LoginContainer>
+      <FlashMessage />
     </HomeContainer>
   );
 };
