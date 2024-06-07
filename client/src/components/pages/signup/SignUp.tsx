@@ -1,4 +1,4 @@
-import { Button } from "../../../utils/buttons/submit.style";
+import { Button } from "../../utils/buttons/submit.style";
 import {
   SignUpContainer,
   Title,
@@ -40,79 +40,78 @@ const SignUp = () => {
 
   return (
     <HomeContainer>
-    <Header />
-    <SignUpContainer className="container">
-      <Title>Create Account</Title>
-      <Form onSubmit={handleSubmit}>
-        <InputBox>
-          <InputName htmlFor="username">Username: </InputName>
-          <Input
-            type="text"
-            name="username"
-            value={values.username}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
-          {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
-        </InputBox>
-
-        <InputBox>
-          <InputName htmlFor="email">Email: </InputName>
-          <Input
-            type="text"
-            name="email"
-            value={values.email}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
-          {errors.email && <ErrorMessage>{errors.email} </ErrorMessage>}
-        </InputBox>
-
-        <InputBox>
-          <InputName htmlFor="password">Password: </InputName>
-          <PasswordContainer>
-            <ToggleIcon onClick={toggleVisiblity}>
-              {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
-            </ToggleIcon>
-
-            <input
-              type={visible ? "text" : "password"}
-              name="password"
-              value={values.password}
+      <Header />
+      <SignUpContainer className="container">
+        <Title>Create Account</Title>
+        <Form onSubmit={handleSubmit}>
+          <InputBox>
+            <InputName htmlFor="username">Username: </InputName>
+            <Input
+              type="text"
+              name="username"
+              value={values.username}
               onBlur={handleBlur}
               onChange={handleChange}
             />
-          </PasswordContainer>
+            {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
+          </InputBox>
 
-          {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
-        </InputBox>
-
-        <InputBox>
-          <InputName htmlFor="confirmPassword">Confirm Password: </InputName>
-          <PasswordContainer>
-            <ToggleIcon onClick={toggleVisiblity}>
-              {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
-            </ToggleIcon>
-
-            <input
-              type="password"
-              name="confirmPassword"
-              value={values.confirmPassword}
+          <InputBox>
+            <InputName htmlFor="email">Email: </InputName>
+            <Input
+              type="text"
+              name="email"
+              value={values.email}
               onBlur={handleBlur}
               onChange={handleChange}
             />
-          </PasswordContainer>
+            {errors.email && <ErrorMessage>{errors.email} </ErrorMessage>}
+          </InputBox>
 
-          {errors.confirmPassword && (
-            <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
-          )}
-        </InputBox>
+          <InputBox>
+            <InputName htmlFor="password">Password: </InputName>
+            <PasswordContainer>
+              <ToggleIcon onClick={toggleVisiblity}>
+                {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
+              </ToggleIcon>
 
-        <Button type="submit"> Create </Button>
-      </Form>
-    </SignUpContainer>
+              <input
+                type={visible ? "text" : "password"}
+                name="password"
+                value={values.password}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+            </PasswordContainer>
+
+            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+          </InputBox>
+
+          <InputBox>
+            <InputName htmlFor="confirmPassword">Confirm Password: </InputName>
+            <PasswordContainer>
+              <ToggleIcon onClick={toggleVisiblity}>
+                {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
+              </ToggleIcon>
+
+              <input
+                type="password"
+                name="confirmPassword"
+                value={values.confirmPassword}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+            </PasswordContainer>
+
+            {errors.confirmPassword && (
+              <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
+            )}
+          </InputBox>
+
+          <Button type="submit"> Create </Button>
+        </Form>
+      </SignUpContainer>
     </HomeContainer>
-
   );
 };
 
