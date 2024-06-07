@@ -6,7 +6,7 @@ const pattern = RegExp(
 export const SignUpValidation = Yup.object({
   username: Yup.string()
     .min(3, "Username should be at least 3 characters")
-    .required("Please Enter name"),
+    .required("Please Enter username"),
   email: Yup.string()
     .email("Please enter valid email")
     .required("Please Enter email"),
