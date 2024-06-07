@@ -20,7 +20,7 @@ export const LoginContainer = styled.div<ThemeProps>`
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)}; */
 `;
 
-export const Link = styled.a`
+export const CustomLink = styled.a`
   color: ${({ theme }) => theme.colors.link};
   text-decoration: none;
   font-size: 1.6rem;
