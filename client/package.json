@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,11 +11,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@mantine/core": "^7.10.1",
+    "@reduxjs/toolkit": "^2.2.5",
+    "axios": "^1.7.2",
+    "axois": "^0.0.1-security",
+    "dotenv": "^16.4.5",
+    "formik": "^2.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-phone-input-2": "^2.15.1"
+    "react-icons": "^5.2.1",
+    "react-phone-input-2": "^2.15.1",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
+    "@types/node": "^20.13.0",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
