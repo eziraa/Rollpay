@@ -38,9 +38,6 @@ export const Title = styled.h1`
   margin-bottom: 1rem;
 `;
 
-
-
-
 export const ErrorMessage = styled.p`
   ${Text}
   margin: 0px 10px;
