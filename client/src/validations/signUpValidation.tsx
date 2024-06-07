@@ -7,10 +7,9 @@ export const SignUpValidation = Yup.object({
   username: Yup.string()
     .min(3, "Username should be at least 3 characters")
     .required("Please Enter username"),
-  email: Yup.string()
-    .email("Please enter valid email")
-    .required("Please Enter email"),
-  phone_number: Yup.string().required("Please Enter email"),
+  empID: Yup.string()
+    .required("Please Enter Emplyee ID")
+    .min(9, "Empluyee ID should be at least 9 characters"),
   password: Yup.string()
     .min(8, "Password should be atleast 8 characters")
     .matches(
