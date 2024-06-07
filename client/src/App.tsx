@@ -1,7 +1,8 @@
 import { useState } from "react";
-import SignUp from "./components/signup/SignUp";
+// import SignUp from "./components/pages/signup/SignUp";
 import { darkTheme, lightTheme, Theme } from "./theme/theme";
 import { ThemeContext, ThemeProvider } from "styled-components";
+import SignUp from "./components/pages/signup/SignUp";
 const App = () => {
   const [theme, setTheme] = useState<Theme>(lightTheme);
   const tggleTheme = () => {
