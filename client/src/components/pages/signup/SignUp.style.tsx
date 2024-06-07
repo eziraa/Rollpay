@@ -1,6 +1,6 @@
 import { css } from "styled-components";
 import styled from "styled-components";
-import { ThemeProps } from "../../typo/theme/theme";
+import { ThemeProps } from "../../../typo/theme/theme";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 // import "react-phone-input-2/lib/hig.css";
