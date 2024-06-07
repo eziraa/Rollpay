@@ -12,7 +12,13 @@ import {
 } from "../../utils/form_elements/form.style";
 import { PasswordVisible } from "../../utils/password_visiblity/password.style";
 import { HomeContainer } from "../home/homepage.style";
-import { Link, LoginContainer } from "./login.style";
+import {
+  Text,
+  CheckboxContainer,
+  Link,
+  LoginContainer,
+  LinkContainer,
+} from "./login.style";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 
 export const LoginPage = () => {
@@ -39,11 +45,19 @@ export const LoginPage = () => {
               </PasswordVisible>
             </PasswordContainer>
           </InputContainer>
+          <CheckboxContainer>
+            <Link href="#"> Frogot Password? </Link>
+          </CheckboxContainer>
+
           <Button type="submit" onClick={(e) => e.stopPropagation()}>
             Login
           </Button>
         </Form>
-        <Link href="#"> Frogot Password? </Link>
+        <LinkContainer>
+          <Text>
+            Don't have an account? <Link href="#"> Create new Account </Link>
+          </Text>
+        </LinkContainer>
       </LoginContainer>
       <FlashMessage />
     </HomeContainer>
