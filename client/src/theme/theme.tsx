@@ -36,9 +36,9 @@ export const lightTheme: Theme = {
   },
   buttonColor: {
     primary: "#ebedec",
-    secondary: "#198754",
-    primaryHover:"#ebedec",
-    secondaryHover:"#219a62"
+    secondary: "#0ab5a7",
+    primaryHover: "#ebedec",
+    secondaryHover: "#09cbbb",
   },
 };
 
@@ -58,8 +58,8 @@ export const darkTheme: Theme = {
   },
   buttonColor: {
     primary: "#ebedec",
-    secondary: "#198754",
-    primaryHover:"#ebedec",
-    secondaryHover:"#0f5c38"
+    secondary: "#0ab5a7",
+    primaryHover: "#ebedec",
+    secondaryHover: "#09cbbb",
   },
 };
