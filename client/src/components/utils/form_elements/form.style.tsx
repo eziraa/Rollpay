@@ -17,7 +17,6 @@ export const Input = styled.input`
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   outline: none;
   &:focus {
     border: 1px solid ${({ theme }) => theme.colors.primary};
@@ -91,7 +90,6 @@ export const PasswordContainer = styled.div`
     padding: 1rem;
     border: none;
     border-radius: 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     &:focus {
       border: 1px solid ${({ theme }) => theme.colors.primary};
     }
