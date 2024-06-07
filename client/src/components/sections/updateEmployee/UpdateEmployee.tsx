@@ -1,4 +1,4 @@
-import { Button } from "../../../utils/buttons/submit.style";
+import { Button } from "../../utils/buttons/submit.style";
 import {
   UpdateContainer,
   Title,
@@ -54,7 +54,7 @@ const UpdateEmployee = () => {
           <FileInput
             type="file"
             name="profilePicture"
-            value = {values.profilePicture}
+            value={values.profilePicture}
             accept="image/png,image/jpeg,image/webp"
             onBlur={handleBlur}
             onChange={handleChange}
