@@ -3,7 +3,7 @@ import "./App.css";
 import { ThemeContext } from "./contexts/themeContext";
 import { ThemeProvider } from "styled-components";
 import { Theme, darkTheme, lightTheme } from "./theme/theme";
-import { LoginPage } from "./components/pages/login/login";
+import { ForgotPassword } from "./components/pages/forgot_password/forgot_password";
 
 function App() {
   const [theme, setTheme] = useState<Theme>(lightTheme);
@@ -13,7 +13,7 @@ function App() {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <ThemeProvider theme={theme}>
-        <LoginPage />
+        <ForgotPassword />
       </ThemeProvider>
     </ThemeContext.Provider>
   );
