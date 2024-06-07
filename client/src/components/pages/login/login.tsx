@@ -12,8 +12,9 @@ import {
 } from "../../utils/form_elements/form.style";
 import { PasswordVisible } from "../../utils/password_visiblity/password.style";
 import { HomeContainer } from "../home/homepage.style";
-import { Link, LoginContainer } from "./login.style";
+import { CustomLink, LoginContainer } from "./login.style";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 export const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -43,7 +44,9 @@ export const LoginPage = () => {
             Login
           </Button>
         </Form>
-        <Link href="#"> Frogot Password? </Link>
+        <CustomLink>
+          <Link to="/forgot_password"> Frogot Password? </Link>
+        </CustomLink>
       </LoginContainer>
       <FlashMessage />
     </HomeContainer>
