@@ -14,13 +14,16 @@ export const SignUpContainer = styled.div<ThemeProps>`
   height: auto;
   width: 25vw;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
-  border-radius: 20px;
+  border-radius: 1rem;
   margin: 20px auto;
   padding: 10px;
-  box-shadow: 0px 0px 1rem black;
+  box-shadow: 0px 0px 1rem ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 export const Form = styled.form<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -28,7 +31,7 @@ export const Form = styled.form<ThemeProps>`
 export const Title = styled.h1`
   ${Text}
   font-size: 30px;
-  margin: 20px 80px;
+  margin: 2rem 0;
 `;
 export const Input = styled.input`
   ${Text}
