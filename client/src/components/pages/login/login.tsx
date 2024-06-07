@@ -48,7 +48,7 @@ export const LoginPage = () => {
           </InputContainer>
           <CheckboxContainer>
             <CustomLink>
-              <Link to="/forgot-password"> Frogot Password? </Link>
+              <Link to="/forgot_password"> Frogot Password? </Link>
             </CustomLink>
           </CheckboxContainer>
 

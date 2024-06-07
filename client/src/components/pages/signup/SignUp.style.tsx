@@ -15,12 +15,15 @@ export const SignUpContainer = styled.div<ThemeProps>`
   width: 25vw;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 20px;
-  margin: 0px auto;
+  
   padding: 10px;
-  box-shadow: 0px 0px 1rem black;
+  box-shadow: 0px 0px 1rem ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 export const Form = styled.form<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -32,12 +35,13 @@ export const Title = styled.h1`
 `;
 export const Input = styled.input`
   ${Text}
-  height: 20px;
+  height: 3rem;
   width: 90%;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 10px;
-  padding: 1.5rem;
-  border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+
+  padding: 1rem;
 `;
 export const ToggleIcon = styled.div`
   display: inline-block;
@@ -45,31 +49,31 @@ export const ToggleIcon = styled.div`
   top: 55%;
   transform: translateY(-50%);
   position: absolute;
-
   background-color: transparent;
   cursor: pointer;
 `;
 
 export const PasswordContainer = styled.div`
   position: relative;
-
   width: 90%;
   input {
     ${Text}
-    height: 20px;
+    height: 3rem;
     width: 100%;
     border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
     border-radius: 10px;
-    padding: 10px;  padding: 1.5rem;
+    padding: 10px;
+    background-color: ${({ theme }) => theme.backgrounds.primary};
     /* margin: 0px 10px; */
     border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   }
 `;
 export const InputName = styled.label`
   ${Text}
-  margin: 10px 10px;
+  margin: 0px 10px;
   font-size: 15px;
   font-weight: 500;
+  padding-bottom: 1rem;
 `;
 export const InputBox = styled.div`
   margin: 10px;
