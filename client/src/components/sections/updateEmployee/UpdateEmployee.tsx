@@ -48,7 +48,7 @@ const UpdateEmployee = () => {
       <Title>Update Personal Information</Title>
 
       <Form onSubmit={handleSubmit}>
-        <ProfileImageContainer>
+        {/* <ProfileImageContainer>
           <ProfileImage />
 
           <FileInput
@@ -59,7 +59,7 @@ const UpdateEmployee = () => {
             onBlur={handleBlur}
             onChange={handleChange}
           />
-        </ProfileImageContainer>
+        </ProfileImageContainer> */}
         <InputBox>
           <InputName htmlFor="username">Username: </InputName>
           <Input
