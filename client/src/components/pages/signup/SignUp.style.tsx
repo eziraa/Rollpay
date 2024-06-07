@@ -1,6 +1,6 @@
 import { css } from "styled-components";
 import styled from "styled-components";
-import { ThemeProps } from "../../typo/theme/theme";
+import { ThemeProps } from "../../../typo/theme/theme";
 
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
@@ -38,7 +38,7 @@ export const Input = styled.input`
 `;
 export const ToggleIcon = styled.div`
   display: inline-block;
-  right:-1rem;
+  right: -1rem;
   top: 55%;
   transform: translateY(-50%);
   position: absolute;
@@ -57,7 +57,7 @@ export const PasswordContainer = styled.div`
     width: 100%;
     border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
     border-radius: 10px;
-    padding: 10px ;
+    padding: 10px;
     /* margin: 0px 10px; */
     border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   }

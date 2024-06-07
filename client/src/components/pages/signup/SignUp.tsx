@@ -1,4 +1,4 @@
-import { Button } from "../../utils/buttons/submit.style";
+import { Button } from "../../../utils/buttons/submit.style";
 import {
   SignUpContainer,
   Title,
@@ -11,10 +11,12 @@ import {
   PasswordContainer,
 } from "./SignUp.style";
 import { useFormik } from "formik";
-import { SignUpValidation } from "../../validations/signUpValidation";
+import { SignUpValidation } from "../../../validations/signUpValidation";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
+import { HomeContainer } from "../home/homepage.style";
+import { Header } from "../../sections/header/header";
 
 const SignUp = () => {
   const initialValues = {
@@ -37,6 +39,8 @@ const SignUp = () => {
   };
 
   return (
+    <HomeContainer>
+    <Header />
     <SignUpContainer className="container">
       <Title>Create Account</Title>
       <Form onSubmit={handleSubmit}>
@@ -107,6 +111,8 @@ const SignUp = () => {
         <Button type="submit"> Create </Button>
       </Form>
     </SignUpContainer>
+    </HomeContainer>
+
   );
 };
 
