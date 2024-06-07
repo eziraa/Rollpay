@@ -15,11 +15,12 @@ import { HomeContainer } from "../home/homepage.style";
 import {
   Text,
   CheckboxContainer,
-  Link,
+  CustomLink,
   LoginContainer,
   LinkContainer,
 } from "./login.style";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 export const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -46,7 +47,9 @@ export const LoginPage = () => {
             </PasswordContainer>
           </InputContainer>
           <CheckboxContainer>
-            <Link href="#"> Frogot Password? </Link>
+            <CustomLink>
+              <Link to="/forgot-password"> Frogot Password? </Link>
+            </CustomLink>
           </CheckboxContainer>
 
           <Button type="submit" onClick={(e) => e.stopPropagation()}>
@@ -55,7 +58,10 @@ export const LoginPage = () => {
         </Form>
         <LinkContainer>
           <Text>
-            Don't have an account? <Link href="#"> Create new Account </Link>
+            Don't have an account?{" "}
+            <CustomLink>
+              <Link to="/singup"> Sign up </Link>
+            </CustomLink>
           </Text>
         </LinkContainer>
       </LoginContainer>

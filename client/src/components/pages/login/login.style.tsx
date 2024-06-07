@@ -5,7 +5,7 @@ import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
 export const LoginContainer = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.colors.secondary};
   color: ${({ theme }) => theme.backgrounds.primary};
-  width: 25%;
+  width: 23%;
   height: 60%;
   box-shadow: 0px 0px 1rem
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
@@ -16,7 +16,7 @@ export const LoginContainer = styled.div<ThemeProps>`
   gap: 1rem;
   position: relative;
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   /* border: 1px solid
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)}; */
 `;
@@ -35,7 +35,7 @@ export const CheckboxContainer = styled.div`
   position: relative;
 `;
 
-export const Link = styled.a`
+export const CustomLink = styled.a`
   color: ${({ theme }) => theme.colors.link};
   text-decoration: none;
   font-size: 1.2rem;

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Button,
   Form,
@@ -7,7 +8,7 @@ import {
   Title,
 } from "../../utils/form_elements/form.style";
 import { HomeContainer } from "../home/homepage.style";
-import { Link } from "../login/login.style";
+import { CustomLink } from "../login/login.style";
 import { ForgotPasswordContainer } from "./forgot_password.style";
 
 export const ForgotPassword = () => {
@@ -28,7 +29,9 @@ export const ForgotPassword = () => {
             Get OTP
           </Button>
         </Form>
-        <Link>Log in</Link>
+        <CustomLink>
+          <Link to="/">Log in</Link>
+        </CustomLink>
       </ForgotPasswordContainer>
     </HomeContainer>
   );
