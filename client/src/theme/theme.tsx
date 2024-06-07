@@ -14,9 +14,9 @@ export type Theme = {
   };
   buttonColor: {
     primary: string;
-    primaryHover:string;
+    primaryHover: string;
     secondary: string;
-    secondaryHover:string;
+    secondaryHover: string;
   };
 };
 
@@ -27,7 +27,7 @@ export const lightTheme: Theme = {
   },
   backgrounds: {
     primary: "#fff",
-    secondary: "#03030311",
+    secondary: "#03030330",
   },
   fontSizes: {
     small: "1rem",
@@ -37,8 +37,8 @@ export const lightTheme: Theme = {
   buttonColor: {
     primary: "#ebedec",
     secondary: "#198754",
-    primaryHover:"#ebedec",
-    secondaryHover:"#219a62"
+    primaryHover: "#ebedec",
+    secondaryHover: "#219a62",
   },
 };
 
@@ -49,7 +49,7 @@ export const darkTheme: Theme = {
   },
   backgrounds: {
     primary: "#3c3b3b",
-    secondary: "#363535",
+    secondary: "#0303039e",
   },
   fontSizes: {
     small: "1rem",
@@ -59,7 +59,7 @@ export const darkTheme: Theme = {
   buttonColor: {
     primary: "#ebedec",
     secondary: "#198754",
-    primaryHover:"#ebedec",
-    secondaryHover:"#0f5c38"
+    primaryHover: "#ebedec",
+    secondaryHover: "#0f5c38",
   },
 };
