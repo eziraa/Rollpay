@@ -15,7 +15,6 @@ import {
   PasswordContainer,
 } from "../../utils/form_elements/form.style";
 import { PasswordVisible } from "../../utils/password_visiblity/password.style";
-import "./signup.css";
 
 const SignUp = () => {
   const initialValues = {

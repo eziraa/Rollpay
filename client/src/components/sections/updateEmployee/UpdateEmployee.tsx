@@ -1,25 +1,18 @@
 import { Button } from "../../utils/buttons/submit.style";
-import {
-  UpdateContainer,
-  Title,
-  ProfileImage,
-  ProfileImageContainer,
-  FileInput,
-  Close,
-} from "./UpdateEmployee.style";
-import {
-  Input,
-  InputName,
-  InputBox,
-  ErrorMessage,
-  Form,
-} from "../../pages/signup/SignUp.style";
+import { UpdateContainer, Title, Close } from "./UpdateEmployee.style";
+import { ErrorMessage } from "../../pages/signup/SignUp.style";
 import { useFormik } from "formik";
 import { EmpPersonalInfo } from "../../../validations/empPersonalInfo";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import {
+  Form,
+  Input,
+  InputContainer,
+  Label,
+} from "../../utils/form_elements/form.style";
 
 const UpdateEmployee = () => {
-  const [employeeData, setEmployeeData] = useState({
+  const [employeeData] = useState({
     profilePicture: "",
     username: "",
     firstName: "",
@@ -60,8 +53,8 @@ const UpdateEmployee = () => {
             onChange={handleChange}
           />
         </ProfileImageContainer> */}
-        <InputBox>
-          <InputName htmlFor="username">Username: </InputName>
+        <InputContainer>
+          <Label htmlFor="username">Username: </Label>
           <Input
             type="text"
             name="username"
@@ -70,9 +63,9 @@ const UpdateEmployee = () => {
             onChange={handleChange}
           />
           {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
-        </InputBox>
-        <InputBox>
-          <InputName htmlFor="firstName">First Name: </InputName>
+        </InputContainer>
+        <InputContainer>
+          <Label htmlFor="firstName">First Name: </Label>
           <Input
             type="text"
             name="firstName"
@@ -81,9 +74,9 @@ const UpdateEmployee = () => {
             onChange={handleChange}
           />
           {errors.firstName && <ErrorMessage>{errors.firstName} </ErrorMessage>}
-        </InputBox>
-        <InputBox>
-          <InputName htmlFor="lastName">Last Name: </InputName>
+        </InputContainer>
+        <InputContainer>
+          <Label htmlFor="lastName">Last Name: </Label>
           <Input
             type="text"
             name="lastName"
@@ -92,10 +85,10 @@ const UpdateEmployee = () => {
             onChange={handleChange}
           />
           {errors.lastName && <ErrorMessage>{errors.lastName} </ErrorMessage>}
-        </InputBox>
+        </InputContainer>
 
-        <InputBox>
-          <InputName htmlFor="email">Email: </InputName>
+        <InputContainer>
+          <Label htmlFor="email">Email: </Label>
           <Input
             type="text"
             name="email"
@@ -104,9 +97,9 @@ const UpdateEmployee = () => {
             onChange={handleChange}
           />
           {errors.email && <ErrorMessage>{errors.email} </ErrorMessage>}
-        </InputBox>
-        <InputBox>
-          <InputName htmlFor="phoneNumber">Phone Number: </InputName>
+        </InputContainer>
+        <InputContainer>
+          <Label htmlFor="phoneNumber">Phone Number: </Label>
           <Input
             type="text"
             name="phoneNumber"
@@ -117,7 +110,7 @@ const UpdateEmployee = () => {
           {errors.phoneNumber && (
             <ErrorMessage>{errors.phoneNumber} </ErrorMessage>
           )}
-        </InputBox>
+        </InputContainer>
 
         <Button type="submit"> Update </Button>
       </Form>
