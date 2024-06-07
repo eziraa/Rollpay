@@ -60,7 +60,7 @@ export const LoginPage = () => {
           <Text>
             Don't have an account?{" "}
             <CustomLink>
-              <Link to="/signup"> Sign up </Link>
+              <Link to="/sign-up"> Sign up </Link>
             </CustomLink>
           </Text>
         </LinkContainer>
