@@ -12,7 +12,7 @@ import {
 } from "../../utils/form_elements/form.style";
 import { PasswordVisible } from "../../utils/password_visiblity/password.style";
 import { HomeContainer } from "../home/homepage.style";
-import { LoginContainer } from "./login.style";
+import { Link, LoginContainer } from "./login.style";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 
 export const LoginPage = () => {
@@ -43,6 +43,7 @@ export const LoginPage = () => {
             Login
           </Button>
         </Form>
+        <Link href="#"> Frogot Password? </Link>
       </LoginContainer>
       <FlashMessage />
     </HomeContainer>

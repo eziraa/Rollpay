@@ -2,6 +2,7 @@ export type Theme = {
   colors: {
     primary: string;
     secondary: string;
+    link: string;
   };
   backgrounds: {
     primary: string;
@@ -23,11 +24,12 @@ export type Theme = {
 export const lightTheme: Theme = {
   colors: {
     primary: "#1b1a1a",
-    secondary: "#0a0a0a26",
+    secondary: "#fff",
+    link: "#00f",
   },
   backgrounds: {
     primary: "#fff",
-    secondary: "#03030311",
+    secondary: "#F1EFEFA4",
   },
   fontSizes: {
     small: "1rem",
@@ -45,11 +47,12 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   colors: {
     primary: "#fff",
-    secondary: "#a9a7a7",
+    secondary: "#A9A7A7DD",
+    link: "#00f",
   },
   backgrounds: {
     primary: "#3c3b3b",
-    secondary: "#363535",
+    secondary: "#A3A1A1D8",
   },
   fontSizes: {
     small: "1rem",

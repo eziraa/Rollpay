@@ -45,6 +45,7 @@ export const Button = styled.button`
   transition: all 0.3s ease-in-out;
   &:hover {
     /* transform: scale(1.1); */
+    color: ${({ theme }) => theme.colors.primary};
   }
   input:disabled {
     background-color: ${({ theme }) => theme.backgrounds.disabled};
