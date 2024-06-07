@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { addOpacityToColor } from "../convertor/add_opacity_color";
 
 export const Form = styled.form`
   display: flex;
@@ -29,12 +30,13 @@ export const InputContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<ThemeProps>`
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
+  background-color: ${({ theme }) => theme.buttonColor.secondary};
+  color: ${({ theme }) => theme.buttonColor.primary};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   outline: none;
   font-size: ${({ theme }) => theme.fontSizes.medium};
@@ -45,10 +47,11 @@ export const Button = styled.button`
   transition: all 0.3s ease-in-out;
   &:hover {
     /* transform: scale(1.1); */
-    color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.buttonColor.secondaryHover};
   }
   input:disabled {
-    background-color: ${({ theme }) => theme.backgrounds.disabled};
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.5, theme.colors.secondary)};
     cursor: not-allowed;
   }
   &:active {

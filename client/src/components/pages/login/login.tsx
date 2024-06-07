@@ -48,7 +48,7 @@ export const LoginPage = () => {
           </InputContainer>
           <CheckboxContainer>
             <CustomLink>
-              <Link to="/forgot-password"> Frogot Password? </Link>
+              <Link to="/forgot_password"> Frogot Password? </Link>
             </CustomLink>
           </CheckboxContainer>
 
@@ -60,7 +60,7 @@ export const LoginPage = () => {
           <Text>
             Don't have an account?{" "}
             <CustomLink>
-              <Link to="/singup"> Sign up </Link>
+              <Link to="/signup"> Sign up </Link>
             </CustomLink>
           </Text>
         </LinkContainer>

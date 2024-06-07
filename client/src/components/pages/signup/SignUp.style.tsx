@@ -17,10 +17,13 @@ export const SignUpContainer = styled.div<ThemeProps>`
   border-radius: 20px;
   
   padding: 10px;
-  box-shadow: 0px 0px 1rem black;
+  box-shadow: 0px 0px 1rem ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 export const Form = styled.form<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};

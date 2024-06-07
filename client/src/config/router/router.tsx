@@ -7,7 +7,7 @@ export const RouterConfig = () => (
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/forgot_password" element={<ForgotPassword />} />
-      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/signup" element={<SignUp />} />
     </Routes>
   </Router>
 );

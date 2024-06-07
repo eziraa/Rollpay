@@ -39,8 +39,6 @@ export const CustomLink = styled.a`
   color: ${({ theme }) => theme.colors.link};
   text-decoration: none;
   font-size: 1.2rem;
-  position: absolute;
-  padding-left: 0.5rem;
   /* right: 1rem; */
   /* font-weight: 500; */
 
