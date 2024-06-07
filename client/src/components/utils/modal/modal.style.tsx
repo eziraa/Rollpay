@@ -19,4 +19,5 @@ export const ModalContent = styled.div`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   display: flex;
   border-radius: 1rem;
+  position: relative;
 `;
