@@ -14,8 +14,8 @@ export const SignUpContainer = styled.div<ThemeProps>`
   height: auto;
   width: 25vw;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
-  border-radius: 20px;
-  margin: 0px auto;
+  border-radius: 1rem;
+
   padding: 10px;
   box-shadow: 0px 0px 1rem black;
   display: flex;

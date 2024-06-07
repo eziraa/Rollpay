@@ -3,7 +3,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
 
 export const LoginContainer = styled.div<ThemeProps>`
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
   width: 23%;
   height: 60%;
@@ -29,6 +29,14 @@ export const Text = styled.p`
   font-size: 1.2rem;
   padding: 0rem 1rem;
 `;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 100%;
+  justify-content: space-between;
+`;
 export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
@@ -41,12 +49,24 @@ export const CustomLink = styled.a`
   font-size: 1.2rem;
   /* right: 1rem; */
   /* font-weight: 500; */
+  /* Unvisited link */
+  a:link {
+    color: blue;
+  }
 
-  &:hover {
-    color: ${({ theme }) => addOpacityToColor(0.5, theme.colors.link)};
-    cursor: pointer;
-    text-decoration: underline blue;
-    transition: all 0.3s;
+  /* Visited link */
+  a:visited {
+    color: #0543fd;
+  }
+
+  /* Mouse over link */
+  a:hover {
+    color: rgb(13, 0, 255);
+  }
+
+  /* Selected link */
+  a:active {
+    color: #0808f8;
   }
 `;
 export const LinkContainer = styled.div`
