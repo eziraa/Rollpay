@@ -11,13 +11,15 @@ export const ModalContainer = styled.div`
   align-items: center;
   z-index: 100;
   top: 0;
+  padding: 0;
 `;
 
 export const ModalContent = styled.div`
-  width: 50%;
+  width: fit-content;
   height: fit-content;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   display: flex;
   border-radius: 1rem;
   position: relative;
+  padding: 0;
 `;
