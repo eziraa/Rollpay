@@ -15,7 +15,7 @@ export const SignUpContainer = styled.div<ThemeProps>`
   width: 25vw;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 20px;
-  margin: 20px auto;
+  margin: 0px auto;
   padding: 10px;
   box-shadow: 0px 0px 1rem black;
   display: flex;
@@ -28,7 +28,7 @@ export const Form = styled.form<ThemeProps>`
 export const Title = styled.h1`
   ${Text}
   font-size: 30px;
-  margin: 20px 80px;
+  margin-bottom: 1rem;
 `;
 export const Input = styled.input`
   ${Text}
@@ -36,12 +36,12 @@ export const Input = styled.input`
   width: 90%;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   border-radius: 10px;
-  padding: 10px;
+  padding: 1.5rem;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
 `;
 export const ToggleIcon = styled.div`
   display: inline-block;
-  right: -1rem;
+  right: 1rem;
   top: 55%;
   transform: translateY(-50%);
   position: absolute;
@@ -60,14 +60,14 @@ export const PasswordContainer = styled.div`
     width: 100%;
     border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
     border-radius: 10px;
-    padding: 10px;
+    padding: 10px;  padding: 1.5rem;
     /* margin: 0px 10px; */
     border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
   }
 `;
 export const InputName = styled.label`
   ${Text}
-  margin: 0px 10px;
+  margin: 10px 10px;
   font-size: 15px;
   font-weight: 500;
 `;
