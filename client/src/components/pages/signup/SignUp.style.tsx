@@ -1,9 +1,8 @@
 import { css } from "styled-components";
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-// import "react-phone-input-2/lib/hig.css";
+import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
 
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
@@ -11,77 +10,37 @@ const Text = css`
   font-size: 15px;
 `;
 export const SignUpContainer = styled.div<ThemeProps>`
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
+  width: 23%;
   height: auto;
-  width: 25vw;
-  border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
-  border-radius: 1rem;
-
-  padding: 10px;
-  box-shadow: 0px 0px 1rem ${({ theme }) => theme.colors.primary};
+  box-shadow: 0px 0px 1rem
+    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  padding: 1rem;
+  border-radius: 1rem;
+  /* border: 1px solid
+    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)}; */
+
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 `;
-export const Form = styled.form<ThemeProps>`
-  background-color: ${({ theme }) => theme.backgrounds.primary};
-`;
+
 export const Title = styled.h1`
   ${Text}
   font-size: 30px;
   margin-bottom: 1rem;
 `;
-export const Input = styled.input`
-  ${Text}
-  height: 3rem;
-  width: 90%;
-  border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.backgrounds.primary};
 
-  padding: 1rem;
-`;
-export const ToggleIcon = styled.div`
-  display: inline-block;
-  right: 1rem;
-  top: 55%;
-  transform: translateY(-50%);
-  position: absolute;
-  background-color: transparent;
-  cursor: pointer;
-`;
 
-export const PasswordContainer = styled.div`
-  position: relative;
-  width: 90%;
-  input {
-    ${Text}
-    height: 3rem;
-    width: 100%;
-    border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
-    border-radius: 10px;
-    padding: 10px;
-    background-color: ${({ theme }) => theme.backgrounds.primary};
-    /* margin: 0px 10px; */
-    border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
-  }
-`;
-export const InputName = styled.label`
-  ${Text}
-  margin: 0px 10px;
-  font-size: 15px;
-  font-weight: 500;
-  padding-bottom: 1rem;
-`;
-export const InputBox = styled.div`
-  margin: 10px;
-  width: 90%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-`;
+
+
 export const ErrorMessage = styled.p`
   ${Text}
   margin: 0px 10px;
@@ -89,24 +48,4 @@ export const ErrorMessage = styled.p`
   font-weight: 400;
   padding-left: 10px;
   color: #ef3131;
-`;
-
-export const PhoneNumberInput = styled(PhoneInput)`
-  .react-tel-input {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    border: 2px solid #435656;
-  }
-
-  .react-tel-input {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    border: 2px solid #435656;
-  }
-
-  .react-tel-input .country-list .country {
-    width: 150%;
-  }
 `;
