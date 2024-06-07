@@ -7,7 +7,7 @@ import { RouterConfig } from "./config/router/router";
 
 function App() {
   const [theme, setTheme] = useState<Theme>(lightTheme);
-  const tggleTheme = () => {
+  const toggleTheme = () => {
     setTheme(theme === lightTheme ? darkTheme : lightTheme);
   };
   return (
@@ -17,6 +17,6 @@ function App() {
       </ThemeProvider>
     </ThemeContext.Provider>
   );
-};
+}
 
 export default App;
