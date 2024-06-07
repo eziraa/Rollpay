@@ -14,10 +14,19 @@ export const AddEmployeeContainer = styled.div`
 export const AddEmployeeForm = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  column-gap: 2rem;
 `;
 
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 `;
+
+export const GenderContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  row-gap: 1rem;
+`;
+
