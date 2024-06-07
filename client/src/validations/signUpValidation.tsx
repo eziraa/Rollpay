@@ -10,6 +10,7 @@ export const SignUpValidation = Yup.object({
   email: Yup.string()
     .email("Please enter valid email")
     .required("Please Enter email"),
+  phone_number: Yup.string().required("Please Enter email"),
   password: Yup.string()
     .min(8, "Password should be atleast 8 characters")
     .matches(

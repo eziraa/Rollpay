@@ -1,6 +1,9 @@
 import { css } from "styled-components";
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+// import "react-phone-input-2/lib/hig.css";
 
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
@@ -82,4 +85,24 @@ export const ErrorMessage = styled.p`
   font-weight: 400;
   padding-left: 10px;
   color: #ef3131;
+`;
+
+export const PhoneNumberInput = styled(PhoneInput)`
+  .react-tel-input {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 2px solid #435656;
+  }
+
+  .react-tel-input {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 2px solid #435656;
+  }
+
+  .react-tel-input .country-list .country {
+    width: 150%;
+  }
 `;
