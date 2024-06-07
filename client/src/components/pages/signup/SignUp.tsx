@@ -1,15 +1,5 @@
 import { Button } from "../../utils/buttons/submit.style";
-import {
-  SignUpContainer,
-  Title,
-  Input,
-  InputName,
-  InputBox,
-  ErrorMessage,
-  Form,
-  ToggleIcon,
-  PasswordContainer,
-} from "./SignUp.style";
+import { SignUpContainer, ErrorMessage, Title } from "./SignUp.style";
 import { useFormik } from "formik";
 import { SignUpValidation } from "../../../validations/signUpValidation";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -17,6 +7,15 @@ import { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { HomeContainer } from "../home/homepage.style";
 import { Header } from "../../sections/header/header";
+import {
+  Form,
+  Input,
+  InputContainer,
+  Label,
+  PasswordContainer,
+} from "../../utils/form_elements/form.style";
+import { PasswordVisible } from "../../utils/password_visiblity/password.style";
+import "./signup.css";
 
 const SignUp = () => {
   const initialValues = {
@@ -44,8 +43,8 @@ const SignUp = () => {
       <SignUpContainer className="container">
         <Title>Create Account</Title>
         <Form onSubmit={handleSubmit}>
-          <InputBox>
-            <InputName htmlFor="username">Username: </InputName>
+          <InputContainer>
+            <Label htmlFor="username">Username: </Label>
             <Input
               type="text"
               name="username"
@@ -54,10 +53,10 @@ const SignUp = () => {
               onChange={handleChange}
             />
             {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
-          </InputBox>
+          </InputContainer>
 
-          <InputBox>
-            <InputName htmlFor="email">Email: </InputName>
+          <InputContainer>
+            <Label htmlFor="email">Email: </Label>
             <Input
               type="text"
               name="email"
@@ -66,14 +65,13 @@ const SignUp = () => {
               onChange={handleChange}
             />
             {errors.email && <ErrorMessage>{errors.email} </ErrorMessage>}
-          </InputBox>
-
-          <InputBox>
-            <InputName htmlFor="password">Password: </InputName>
+          </InputContainer>
+          <InputContainer>
+            <Label htmlFor="password">Password: </Label>
             <PasswordContainer>
-              <ToggleIcon onClick={toggleVisiblity}>
+              <PasswordVisible onClick={toggleVisiblity}>
                 {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
-              </ToggleIcon>
+              </PasswordVisible>
 
               <input
                 type={visible ? "text" : "password"}
@@ -85,14 +83,14 @@ const SignUp = () => {
             </PasswordContainer>
 
             {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
-          </InputBox>
+          </InputContainer>
 
-          <InputBox>
-            <InputName htmlFor="confirmPassword">Confirm Password: </InputName>
+          <InputContainer>
+            <Label htmlFor="confirmPassword">Confirm Password: </Label>
             <PasswordContainer>
-              <ToggleIcon onClick={toggleVisiblity}>
+              <PasswordVisible onClick={toggleVisiblity}>
                 {visible ? <IoEyeOutline /> : <FaRegEyeSlash />}
-              </ToggleIcon>
+              </PasswordVisible>
 
               <input
                 type="password"
@@ -106,7 +104,7 @@ const SignUp = () => {
             {errors.confirmPassword && (
               <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
             )}
-          </InputBox>
+          </InputContainer>
 
           <Button type="submit"> Create </Button>
         </Form>
