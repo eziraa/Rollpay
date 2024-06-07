@@ -1,4 +1,3 @@
-import { Button } from "../../utils/buttons/submit.style";
 import { UpdateContainer, Title, Close } from "./UpdateEmployee.style";
 import { ErrorMessage } from "../../pages/signup/SignUp.style";
 import { useFormik } from "formik";
@@ -9,7 +8,9 @@ import {
   Input,
   InputContainer,
   Label,
+  Button,
 } from "../../utils/form_elements/form.style";
+import { FlashMessageClose } from "../../utils/flash_message/flash_message.style";
 
 const UpdateEmployee = () => {
   const [employeeData] = useState({
@@ -37,7 +38,9 @@ const UpdateEmployee = () => {
 
   return (
     <UpdateContainer className="container">
-      <Close />
+      <FlashMessageClose>
+        <Close />{" "}
+      </FlashMessageClose>
       <Title>Update Personal Information</Title>
 
       <Form onSubmit={handleSubmit}>
