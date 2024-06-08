@@ -3,12 +3,13 @@ import styled from "styled-components";
 export const AddEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 4rem;
   box-shadow: 0 0 3rem ${({ theme }) => theme.colors.primary};
   border-radius: 1rem;
   height: auto;
   width: 100%;
   margin: 0;
+  gap: 3rem;
 `;
 
 export const AddEmployeeForm = styled.form`
@@ -21,6 +22,8 @@ export const Column = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: relative;
+  width: 15vw;
 `;
 
 export const GenderContainer = styled.div`
@@ -30,3 +33,11 @@ export const GenderContainer = styled.div`
   row-gap: 1rem;
 `;
 
+export const Title = styled.h1`
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+`;
