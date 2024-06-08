@@ -35,6 +35,7 @@ export const AddEmployee = () => {
               <Label htmlFor="phone_number">Phone Number</Label>
               <StyledPhoneInput
                 placeholder="Enter phone number"
+                country="et"
                 value={phoneNumber}
                 onChange={() => setPhoneNumber}
               />
