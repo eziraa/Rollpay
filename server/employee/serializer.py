@@ -6,5 +6,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = Employee
         fields = "__all__"
 
+class ProfilePicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = "profile_picture"
+
 
 
