@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
+import { AddEmpParams } from "../../typo/employee/params";
+import { EmployeeResponse } from "../../typo/employee/response";
 
 const InitialEmpState: EmployeeState = {
   adding: false,
@@ -11,7 +14,17 @@ const InitialEmpState: EmployeeState = {
 const EmployeeSlice = createSlice({
   name: "employee",
   initialState: InitialEmpState,
-  reducers: {},
+  reducers: {
+    addEmpRequested: (state, _: PayloadAction<AddEmpParams>) => {
+      state.adding = true;
+    },
+    addEmpDone: (state, payload: PayloadAction<EmployeeResponse>) => {
+      state.employees.push(payload.payload);
+      state.adding = false;
+      state.task = undefined;
+    },
+  },
 });
+export const { addEmpRequested, addEmpDone } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
