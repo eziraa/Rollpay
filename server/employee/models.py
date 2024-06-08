@@ -2,7 +2,7 @@
 from django.db import models
 
 
-class Employee():
+class Employee(models.Model):
     Male = 'M'
     Female = 'F'
     GENDER_CHOICES = (
