@@ -1,6 +1,4 @@
-import { useState } from "react";
 import {
-  Button,
   FormError,
   Input,
   InputContainer,
@@ -21,7 +19,6 @@ import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
 import { useAppDispatch } from "../../../utils/customHook";
 import { addEmpRequested } from "../../../store/employee/employeeSlice";
 export const AddEmployee = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
   const dispatcher = useAppDispatch();
   const formHandler = useFormik({
     initialValues: {
@@ -53,28 +50,70 @@ export const AddEmployee = () => {
           <Column>
             <InputContainer>
               <Label htmlFor="first_name">First Name</Label>
-              <Input type="text" name="first_name" />
-              <FormError></FormError>{" "}
+              <Input
+                placeholder=""
+                type="text"
+                id="first_name"
+                name="first_name"
+                value={formHandler.values.first_name}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.first_name &&
+                formHandler.errors.first_name ? (
+                  <div>{formHandler.errors.first_name}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="last_name">Last Name</Label>
-              <Input type="text" name="last_name" />
-              <FormError></FormError>{" "}
+              <Input
+                placeholder=""
+                type="text"
+                id="last_name"
+                name="last_name"
+                value={formHandler.values.last_name}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.last_name &&
+                formHandler.errors.last_name ? (
+                  <div>{formHandler.errors.last_name}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="phone_number">Phone Number</Label>
               <StyledPhoneInput
                 placeholder="Enter phone number"
                 country="et"
-                value={phoneNumber}
-                onChange={() => setPhoneNumber}
+                value={formHandler.values.phone_number}
+                onChange={(value) => {
+                  formHandler.setFieldValue("phone_number", value);
+                }}
               />
-              <FormError></FormError>{" "}
+              <FormError>
+                {formHandler.touched.phone_number &&
+                formHandler.errors.phone_number ? (
+                  <div>{formHandler.errors.phone_number}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="email">Email</Label>
-              <Input type="text" name="email" />
-              <FormError></FormError>{" "}
+              <Input
+                placeholder=""
+                type="text"
+                id="email"
+                name="email"
+                value={formHandler.values.email}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.email && formHandler.errors.email ? (
+                  <div>{formHandler.errors.email}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
             <GenderContainer>
               <Label htmlFor="gender">Male</Label>
@@ -82,7 +121,11 @@ export const AddEmployee = () => {
               <Label htmlFor="gender">Female</Label>
               <input type="radio" name="gender" id="" value="female" />
             </GenderContainer>
-            <FormError></FormError>{" "}
+            <FormError>
+              {formHandler.touched.gender && formHandler.errors.gender ? (
+                <div>{formHandler.errors.gender}</div>
+              ) : null}
+            </FormError>{" "}
           </Column>
           <Column>
             <InputContainer>
