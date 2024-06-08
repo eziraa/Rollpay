@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ThemeProps } from "../../typo/theme/theme";
+import { ThemeProps } from "../../../typo/theme/theme";
 
 export const Button = styled.button<ThemeProps>`
   width: 30%;
