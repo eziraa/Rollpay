@@ -41,3 +41,14 @@ def upload_profile_pic(request, id):
     else:
         return Response({"message": "Could not upload profile picture"}, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['GET'])
+def get_profile_pic(request, id):
+    try:
+        employe = Employee.objects.get(pk=id)
+    except Employee.DoesNotExist:
+        return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ProfilePicSerializer(employe)
+
+    return Response(serializer.data)
+    
