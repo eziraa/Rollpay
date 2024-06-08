@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Input,
@@ -10,10 +11,12 @@ import {
   AddEmployeeForm,
   Column,
   GenderContainer,
+  StyledPhoneInput,
   Title,
 } from "./add-employee.style";
-
 export const AddEmployee = () => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   return (
     <Modal>
       <AddEmployeeContainer>
@@ -30,7 +33,11 @@ export const AddEmployee = () => {
             </InputContainer>
             <InputContainer>
               <Label htmlFor="phone_number">Phone Number</Label>
-              <Input type="text" name="phone_number" />
+              <StyledPhoneInput
+                placeholder="Enter phone number"
+                value={phoneNumber}
+                onChange={() => setPhoneNumber}
+              />
             </InputContainer>
             <InputContainer>
               <Label htmlFor="email">Email</Label>
