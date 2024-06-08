@@ -14,9 +14,23 @@ import {
   StyledPhoneInput,
   Title,
 } from "./add-employee.style";
+import { useFormik } from "formik";
+import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
 export const AddEmployee = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const formHandler = useFormik({
+    initialValues: {
+      first_name: "",
+      last_name: "",
+      phone_number: "",
+      email: "",
+      gender: "",
+    },
+    validationSchema: AddEmployeeSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
   return (
     <Modal>
       <AddEmployeeContainer>
