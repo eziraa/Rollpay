@@ -8,6 +8,7 @@ import {
 } from "../../utils/form_elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import {
+  AddButton,
   AddEmployeeContainer,
   AddEmployeeForm,
   Column,
@@ -15,14 +16,40 @@ import {
   StyledPhoneInput,
   Title,
 } from "./add-employee.style";
+import { useFormik } from "formik";
+import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
+import { useAppDispatch } from "../../../utils/customHook";
+import { addEmpRequested } from "../../../store/employee/employeeSlice";
 export const AddEmployee = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const dispatcher = useAppDispatch();
+  const formHandler = useFormik({
+    initialValues: {
+      first_name: "",
+      last_name: "",
+      phone_number: "",
+      email: "",
+      gender: "",
+      date_of_birth: "",
+      date_of_hire: "",
+      role: "",
+    },
+    validationSchema: AddEmployeeSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      dispatcher(addEmpRequested(values));
+    },
+  });
   return (
     <Modal>
       <AddEmployeeContainer>
         <Title>Add Employee</Title>
-        <AddEmployeeForm>
+        <AddEmployeeForm
+          onSubmit={(e) => {
+            e.preventDefault();
+            formHandler.handleSubmit(e);
+          }}
+        >
           <Column>
             <InputContainer>
               <Label htmlFor="first_name">First Name</Label>
@@ -70,18 +97,7 @@ export const AddEmployee = () => {
               <Label htmlFor="date_of_hire">Date of Hire</Label>
               <Input type="date" name="date_of_hire" />
             </InputContainer>
-            <Button
-              style={{
-                position: "absolute",
-                bottom: "10px",
-                right: "10px",
-                width: "100px",
-                height: "40px",
-                backgroundColor: "#242222",
-              }}
-            >
-              Add
-            </Button>
+            <AddButton>Add</AddButton>
           </Column>
         </AddEmployeeForm>
       </AddEmployeeContainer>

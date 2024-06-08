@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { CloseIcon } from "../buttons/close";
 import { ModalContainer, ModalContent } from "./modal.style";
 

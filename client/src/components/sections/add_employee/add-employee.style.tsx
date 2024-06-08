@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { ThemeProps } from "../../../typo/theme/theme";
+import { Button } from "../../utils/form_elements/form.style";
+import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
 export const AddEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,12 +38,12 @@ export const GenderContainer = styled.div`
 `;
 
 export const Title = styled.h1`
-  color: black;
   font-size: 20px;
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1.5px;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 export const StyledPhoneInput = styled(PhoneInput)`
@@ -49,5 +52,21 @@ export const StyledPhoneInput = styled(PhoneInput)`
     padding: 10px;
     border: 1px solid #e22323;
     border-radius: 4px;
+  }
+`;
+
+export const AddButton = styled(Button)<ThemeProps>`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 100px;
+  height: 40px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.75, theme.colors.primary)};
+    color: ${({ theme }) => theme.backgrounds.primary};
+    cursor: pointer;
   }
 `;
