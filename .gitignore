@@ -5,4 +5,4 @@ server/employee/migrations/0*.py
 server/.env
 server/employee/__pycache__/
 server/payroll/__pycache__/
-*.pyc
+*.env
