@@ -1,4 +1,5 @@
 import {
+  Button,
   Input,
   InputContainer,
   Label,
@@ -9,12 +10,14 @@ import {
   AddEmployeeForm,
   Column,
   GenderContainer,
+  Title,
 } from "./add-employee.style";
 
 export const AddEmployee = () => {
   return (
     <Modal>
       <AddEmployeeContainer>
+        <Title>Add Employee</Title>
         <AddEmployeeForm>
           <Column>
             <InputContainer>
@@ -53,6 +56,18 @@ export const AddEmployee = () => {
               <Label htmlFor="date_of_hire">Date of Hire</Label>
               <Input type="date" name="date_of_hire" />
             </InputContainer>
+            <Button
+              style={{
+                position: "absolute",
+                bottom: "10px",
+                right: "10px",
+                width: "100px",
+                height: "40px",
+                backgroundColor: "#242222",
+              }}
+            >
+              Add
+            </Button>
           </Column>
         </AddEmployeeForm>
       </AddEmployeeContainer>
