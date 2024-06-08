@@ -2,3 +2,5 @@ client/node_modules/
 client/yarn.lock
 server/.env
 server/employee/migrations/
+server/employee/__pycache__/
+server/payroll/__pycache__/
