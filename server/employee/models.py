@@ -17,4 +17,3 @@ class Employee():
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_hire = models.DateField(auto_now=True,null=False)
     position = models.CharField(max_length=100,null=False)
-    profile_picture = models.CharField(max_length=255, null=False, blank=True)
