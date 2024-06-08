@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Button,
+  FormError,
   Input,
   InputContainer,
   Label,
@@ -26,10 +27,12 @@ export const AddEmployee = () => {
             <InputContainer>
               <Label htmlFor="first_name">First Name</Label>
               <Input type="text" name="first_name" />
+              <FormError></FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="last_name">Last Name</Label>
               <Input type="text" name="last_name" />
+              <FormError></FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="phone_number">Phone Number</Label>
@@ -39,10 +42,12 @@ export const AddEmployee = () => {
                 value={phoneNumber}
                 onChange={() => setPhoneNumber}
               />
+              <FormError></FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="email">Email</Label>
               <Input type="text" name="email" />
+              <FormError></FormError>{" "}
             </InputContainer>
             <GenderContainer>
               <Label htmlFor="gender">Male</Label>
@@ -50,6 +55,7 @@ export const AddEmployee = () => {
               <Label htmlFor="gender">Female</Label>
               <input type="radio" name="gender" id="" value="female" />
             </GenderContainer>
+            <FormError></FormError>{" "}
           </Column>
           <Column>
             <InputContainer>
