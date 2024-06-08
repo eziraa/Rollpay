@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
 
 const InitialEmpState: EmployeeState = {
