@@ -1,7 +1,7 @@
 import { UpdateContainer, Title } from "./UpdateEmployee.style";
 import { ErrorMessage } from "../../pages/signup/SignUp.style";
 import { useFormik } from "formik";
-import { EmpPersonalInfo } from "../../../validations/empPersonalInfo";
+import { EmpPersonalInfo } from "../../../schema/empPersonalInfo";
 import { useState } from "react";
 import {
   Form,
