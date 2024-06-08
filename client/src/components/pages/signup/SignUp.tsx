@@ -1,13 +1,13 @@
-import { Button } from "../../utils/buttons/submit.style";
 import { SignUpContainer, ErrorMessage, Title } from "./SignUp.style";
 import { useFormik } from "formik";
-import { SignUpValidation } from "../../../validations/signUpValidation";
+import { SignUpValidation } from "../../../schema/SignUpSchema";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { HomeContainer } from "../home/homepage.style";
 import { Header } from "../../sections/header/header";
 import {
+  Button,
   Form,
   Input,
   InputContainer,
@@ -15,12 +15,11 @@ import {
   PasswordContainer,
 } from "../../utils/form_elements/form.style";
 import { PasswordVisible } from "../../utils/password_visiblity/password.style";
-import "./signup.css";
 
 const SignUp = () => {
   const initialValues = {
     username: "",
-    email: "",
+    empID: "",
     password: "",
     confirmPassword: "",
   };
@@ -56,15 +55,15 @@ const SignUp = () => {
           </InputContainer>
 
           <InputContainer>
-            <Label htmlFor="email">Email: </Label>
+            <Label htmlFor="empID">Employee ID: </Label>
             <Input
               type="text"
-              name="email"
-              value={values.email}
+              name="empID"
+              value={values.empID}
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {errors.email && <ErrorMessage>{errors.email} </ErrorMessage>}
+            {errors.empID && <ErrorMessage>{errors.empID} </ErrorMessage>}
           </InputContainer>
           <InputContainer>
             <Label htmlFor="password">Password: </Label>
