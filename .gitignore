@@ -3,3 +3,4 @@ client/yarn.lock
 server/.env
 server/employee/migrations/
 *.pyc
+server/payroll/__pycache__/settings.cpython-311.pyc
