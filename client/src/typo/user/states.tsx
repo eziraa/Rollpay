@@ -1,6 +1,6 @@
 import { UserResponse } from "./response";
 
-export type User = {
+export type UserState = {
   adding: boolean;
   loading: boolean;
   user: UserResponse;
