@@ -16,8 +16,11 @@ import {
 } from "./add-employee.style";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
+import { useAppDispatch } from "../../../utils/customHook";
+import { addEmpRequested } from "../../../store/employee/employeeSlice";
 export const AddEmployee = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const dispatcher = useAppDispatch();
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -25,17 +28,26 @@ export const AddEmployee = () => {
       phone_number: "",
       email: "",
       gender: "",
+      date_of_birth: "",
+      date_of_hire: "",
+      role: "",
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values) => {
       console.log(values);
+      dispatcher(addEmpRequested(values));
     },
   });
   return (
     <Modal>
       <AddEmployeeContainer>
         <Title>Add Employee</Title>
-        <AddEmployeeForm>
+        <AddEmployeeForm
+          onSubmit={(e) => {
+            e.preventDefault();
+            formHandler.handleSubmit(e);
+          }}
+        >
           <Column>
             <InputContainer>
               <Label htmlFor="first_name">First Name</Label>
