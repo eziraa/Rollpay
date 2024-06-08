@@ -1,38 +1,32 @@
 import { css } from "styled-components";
 import styled from "styled-components";
-import { ThemeProps } from "../../../typo/theme/theme";
 import profile from "../../../assets/profile.png";
 import { CgClose } from "react-icons/cg";
-
+import { LoginContainer } from "../../pages/login/login.style";
 
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 15px;
 `;
-export const UpdateContainer = styled.div<ThemeProps>`
+export const UpdateContainer = styled(LoginContainer)`
   height: auto;
   position: relative;
   width: 25vw;
   border: 0.1rem solid ${({ theme }) => theme.backgrounds.secondary};
-  margin: 20px auto;
-  padding: 10px;
+  margin: 2rem auto;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 export const Close = styled(CgClose)`
-  width: 1.5rem;
-  height: 1.5rem;
-  margin: 0rem;
-  position: absolute;
-  right: 0.5rem;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 2rem;
   cursor: pointer;
-  color: black;
-  &:hover {
-    color: #ef3131;
-  }
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
 `;
 
 export const ProfileImage = styled.img`

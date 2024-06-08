@@ -46,21 +46,6 @@ export const FlashMessageText = styled.p`
   color: rgb(0, 255, 34);
 `;
 
-export const FlashMessageClose = styled.div`
-  color: ${({ theme }) => theme.backgrounds.secondary};
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  font-size: 2.4rem;
-  cursor: pointer;
-  &:hover {
-    color: ${({ theme }) => theme.backgrounds.primary};
-  }
-  position: absolute;
-  right: 0.4rem;
-  top: 0.4rem;
-`;
-
 export const FlashMessageIcon = styled.div`
   border-radius: 50%;
   display: flex;
