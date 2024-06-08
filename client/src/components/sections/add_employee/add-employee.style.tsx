@@ -1,5 +1,6 @@
 import styled from "styled-components";
-
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 export const AddEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -40,4 +41,13 @@ export const Title = styled.h1`
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1.5px;
+`;
+
+export const StyledPhoneInput = styled(PhoneInput)`
+  & input {
+    width: 100% !important;
+    padding: 10px;
+    border: 1px solid #e22323;
+    border-radius: 4px;
+  }
 `;
