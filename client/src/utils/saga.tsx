@@ -1,6 +1,7 @@
 import { all } from "redux-saga/effects";
 import { watchSetFlashMessage } from "../store/notification/flashmessageSaga";
-import { watchAddEmployee } from "../store/employee/employeesaga";
+import { watchUserLogin, watchUserSignUp } from "../store/user/userSaga";
 export function* rootSaga() {
-  yield all([watchSetFlashMessage(),watchAddEmployee()]);
+  yield all([watchSetFlashMessage(), watchUserSignUp(), watchUserLogin()]);
+
 }

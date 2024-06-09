@@ -5,4 +5,5 @@ export type UserState = {
   loading: boolean;
   user: UserResponse | undefined;
   task: string | undefined;
+  is_login: boolean;
 };

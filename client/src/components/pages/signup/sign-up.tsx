@@ -1,6 +1,6 @@
 import { SignUpContainer, ErrorMessage, Title } from "./SignUp.style";
 import { useFormik } from "formik";
-import { SignUpValidation } from "../../../schema/SignUpSchema";
+import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
@@ -15,8 +15,12 @@ import {
   PasswordContainer,
 } from "../../utils/form_elements/form.style";
 import { PasswordVisible } from "../../utils/password_visiblity/password.style";
+import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
+import { signUpRequested } from "../../../store/user/userSLice";
 
 const SignUp = () => {
+  const dispatcher = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
   const initialValues = {
     username: "",
     empID: "",
@@ -25,9 +29,9 @@ const SignUp = () => {
   };
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues,
-    validationSchema: SignUpValidation,
+    validationSchema: SignUpSchema,
     onSubmit: (values) => {
-      console.log(values);
+      dispatcher(signUpRequested(values));
     },
   });
   const [visible, setVisible] = useState(false);
@@ -105,7 +109,16 @@ const SignUp = () => {
             )}
           </InputContainer>
 
-          <Button type="submit"> Create </Button>
+          <Button
+            type="submit"
+            disabled={user.adding}
+            style={{
+              cursor: user.adding ? "not-allowed" : "pointer",
+            }}
+          >
+            {" "}
+            Create{" "}
+          </Button>
         </Form>
       </SignUpContainer>
     </HomeContainer>
