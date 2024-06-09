@@ -1,7 +1,7 @@
 import { UpdateContainer, Title } from "./UpdateEmployee.style";
 import { ErrorMessage } from "../../pages/signup/SignUp.style";
 import { useFormik } from "formik";
-import { EmpPersonalInfo } from "../../../schema/AddEmpSchema";
+// import { EmpPersonalInfo } from "../../../schema/AddEmpSchema";
 import { useState } from "react";
 import {
   Form,
@@ -12,6 +12,7 @@ import {
 } from "../../utils/form_elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import { CloseIcon } from "../../utils/buttons/close";
+import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
 
 const UpdateEmployee = () => {
   const [employeeData] = useState({
@@ -30,7 +31,7 @@ const UpdateEmployee = () => {
   // })
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: employeeData,
-    validationSchema: EmpPersonalInfo,
+    validationSchema: AddEmployeeSchema,
     onSubmit: (values) => {
       // update employee data
       console.log(values);
