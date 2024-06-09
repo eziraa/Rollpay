@@ -6,3 +6,4 @@ server/.env
 server/employee/__pycache__/
 server/payroll/__pycache__/
 *.env
+*.pyc
