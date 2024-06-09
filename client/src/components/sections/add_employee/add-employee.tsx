@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Button,
   FormError,
   Input,
   InputContainer,
@@ -82,7 +81,7 @@ export const AddEmployee = () => {
               <Label htmlFor="gender">Female</Label>
               <input type="radio" name="gender" id="" value="female" />
             </GenderContainer>
-            <FormError></FormError>{" "}
+            <FormError></FormError>
           </Column>
           <Column>
             <InputContainer>
