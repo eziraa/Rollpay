@@ -6,6 +6,7 @@ import { Theme, darkTheme, lightTheme } from "./theme/theme";
 import { Provider } from "react-redux";
 import { store } from "./utils";
 import { RouterConfig } from "./config/router/router";
+import { FlashMessage } from "./components/utils/flash_message/flash_message";
 
 function App() {
   const [theme, setTheme] = useState<Theme>(lightTheme);
@@ -16,6 +17,7 @@ function App() {
     <Provider store={store}>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
         <ThemeProvider theme={theme}>
+          <FlashMessage />
           <RouterConfig />
         </ThemeProvider>
       </ThemeContext.Provider>
