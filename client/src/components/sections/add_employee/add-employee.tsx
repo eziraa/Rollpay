@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   FormError,
   Input,
@@ -32,7 +33,7 @@ export const AddEmployee = () => {
       role: "",
     },
     validationSchema: AddEmployeeSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, _) => {
       console.log(values);
       dispatcher(addEmpRequested(values));
     },
@@ -44,6 +45,7 @@ export const AddEmployee = () => {
         <AddEmployeeForm
           onSubmit={(e) => {
             e.preventDefault();
+            console.log(formHandler.values);
             formHandler.handleSubmit(e);
           }}
         >
@@ -117,15 +119,31 @@ export const AddEmployee = () => {
             </InputContainer>
             <GenderContainer>
               <Label htmlFor="gender">Male</Label>
-              <input type="radio" name="gender" id="" value="male" />
+              <input
+                type="radio"
+                name="gender"
+                id=""
+                value="M"
+                onChange={formHandler.handleChange}
+                onBlur={formHandler.handleBlur}
+                checked={formHandler.values.gender === "M"}
+              />
               <Label htmlFor="gender">Female</Label>
-              <input type="radio" name="gender" id="" value="female" />
+              <input
+                type="radio"
+                name="gender"
+                id=""
+                value="F"
+                onChange={formHandler.handleChange}
+                onBlur={formHandler.handleBlur}
+                checked={formHandler.values.gender === "F"}
+              />
+              <FormError>
+                {formHandler.touched.gender && formHandler.errors.gender ? (
+                  <div>{formHandler.errors.gender}</div>
+                ) : null}
+              </FormError>{" "}
             </GenderContainer>
-            <FormError>
-              {formHandler.touched.gender && formHandler.errors.gender ? (
-                <div>{formHandler.errors.gender}</div>
-              ) : null}
-            </FormError>{" "}
           </Column>
           <Column>
             <InputContainer>
@@ -140,8 +158,8 @@ export const AddEmployee = () => {
               <Label htmlFor="date_of_hire">Date of Hire</Label>
               <Input type="date" name="date_of_hire" />
             </InputContainer>
-            <AddButton>Add</AddButton>
           </Column>
+          <AddButton type="submit">Add</AddButton>
         </AddEmployeeForm>
       </AddEmployeeContainer>
     </Modal>
