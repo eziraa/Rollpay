@@ -11,9 +11,10 @@ export const FlasheMessageContainr = styled.div`
   justify-content: start;
   color: ${({ theme }) => theme.backgrounds.primary};
   position: absolute;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 5rem;
+  right: 10rem;
+  /* left: 50%;
+  transform: translateX(-50%); */
   padding: 1rem;
 `;
 
