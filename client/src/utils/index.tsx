@@ -4,6 +4,7 @@ import { RouterConfig } from "../config/router/router";
 import flashMessageSlice from "../store/notification/flashMesssageSlice";
 import { rootSaga } from "./saga";
 import employeeSlice from "../store/employee/employeeSlice";
+import userSLice from "../store/user/userSLice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,6 +15,7 @@ const store = configureStore({
   reducer: {
     employee: employeeSlice,
     flashMessage: flashMessageSlice,
+    user: userSLice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
