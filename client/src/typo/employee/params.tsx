@@ -4,7 +4,7 @@ export interface AddEmpParams {
   gender: string;
   email: string;
   phone_number: string;
-  role: string;
+  position: string;
   date_of_birth: string;
   date_of_hire: string;
 }

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Toggle } from "../../utils/buttons/toggle";
 import Logo from "../../utils/logo/logo";
 import {
@@ -14,9 +13,9 @@ export const Header = () => {
         <Logo />
         <ProfileContainer>
           <Toggle />
-          <Link to="/edit-profile">
+          {/* <Link to="/edit-profile"> */}
             <ProfileImage />
-          </Link>
+          {/* </Link> */}
         </ProfileContainer>
       </HeaderContainer>
     </>
