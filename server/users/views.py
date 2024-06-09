@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -29,3 +29,9 @@ def login_user(request):
         return JsonResponse({'message': 'Login successful'}, status=200)
     else:
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
+
+
+@require_http_methods(["GET"])
+def logout_user(request):
+    logout(request)
+    return JsonResponse({'message': 'Logged out successfully'}, status=200)
