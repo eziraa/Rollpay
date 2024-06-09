@@ -27,28 +27,29 @@ import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../signup/SignUp.style";
-import { useAppDispatch } from "../../../utils/customHook";
+import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
 import { loginRequested } from "../../../store/user/userSLice";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-
+  const user = useAppSelector((state) => state.user);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
-  const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
-    useFormik({
-      initialValues: {
-        username: "",
-        password: "",
-        confirm_password: "",
-      },
-      validationSchema: LogInSchema,
-      onSubmit: (values, _) => {
-        dispatcher(loginRequested(values));
-      },
-    });
+  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      confirm_password: "",
+    },
+    validationSchema: LogInSchema,
+    onSubmit: (values, _) => {
+      dispatcher(loginRequested(values));
+    },
+  });
+
+  if (user.is_login) return;
   return (
     <HomeContainer>
       <Header />
