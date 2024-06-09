@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { UserState } from "../../typo/user/states";
+import { SignUpParams } from "../../typo/user/params";
+import { UserResponse } from "../../typo/user/response";
 
 const InitialEmpState: UserState = {
   adding: false,
@@ -9,9 +12,18 @@ const InitialEmpState: UserState = {
   loading: false,
 };
 const UserSlice = createSlice({
-  name: "employee",
+  name: "user",
   initialState: InitialEmpState,
-  reducers: {},
+  reducers: {
+    signUpRequested: (state, _: PayloadAction<SignUpParams>) => {
+      state.adding = true;
+    },
+    signUpFinished: (state, payload: PayloadAction<UserResponse>) => {
+      state.user = payload.payload;
+      state.adding = false;
+      state.task = undefined;
+    },
+  },
 });
 
 export default UserSlice.reducer;
