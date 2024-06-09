@@ -1,6 +1,8 @@
 client/node_modules/
 client/yarn.lock
-server/.env
-server/employee/migrations/
 *.pyc
-server/payroll/__pycache__/settings.cpython-311.pyc
+server/employee/migrations/0*.py
+server/.env
+server/employee/__pycache__/
+server/payroll/__pycache__/
+*.env
