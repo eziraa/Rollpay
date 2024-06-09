@@ -1,3 +1,4 @@
-const api = process.env.REACT_APP_API_URL; // Outputs: https://yourapi.com
+import API from "./_api";
 
+const api = API;
 export default api;
