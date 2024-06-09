@@ -18,8 +18,7 @@ const UserSlice = createSlice({
     signUpRequested: (state, _: PayloadAction<SignUpParams>) => {
       state.adding = true;
     },
-    signUpFinished: (state, payload: PayloadAction<UserResponse>) => {
-      state.user = payload.payload;
+    signUpFinished: (state) => {
       state.adding = false;
       state.task = undefined;
     },
