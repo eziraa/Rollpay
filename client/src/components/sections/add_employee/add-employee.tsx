@@ -30,11 +30,11 @@ export const AddEmployee = () => {
       gender: "",
       date_of_birth: "",
       date_of_hire: "",
-      role: "",
+      position: "",
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
-      console.log(values);
+      console.log(values)
       dispatcher(addEmpRequested(values));
     },
   });
@@ -148,15 +148,51 @@ export const AddEmployee = () => {
           <Column>
             <InputContainer>
               <Label htmlFor="role">Role(Position)</Label>
-              <Input type="text" name="role" />
+              <Input
+                placeholder=""
+                type="text"
+                id="position"
+                name="position"
+                value={formHandler.values.position}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.position && formHandler.errors.position ? (
+                  <div>{formHandler.errors.position}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_birth">Birth Date</Label>
-              <Input type="date" name="date_of_birth" />
+              <Input
+                type="date"
+                id="date_of_birth"
+                name="date_of_birth"
+                value={formHandler.values.date_of_birth}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.date_of_birth &&
+                formHandler.errors.date_of_birth ? (
+                  <div>{formHandler.errors.date_of_birth}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_hire">Date of Hire</Label>
-              <Input type="date" name="date_of_hire" />
+              <Input
+                type="date"
+                id="date_of_hire"
+                name="date_of_hire"
+                value={formHandler.values.date_of_hire}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.date_of_hire &&
+                formHandler.errors.date_of_hire ? (
+                  <div>{formHandler.errors.date_of_hire}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
           </Column>
           <AddButton type="submit">Add</AddButton>
