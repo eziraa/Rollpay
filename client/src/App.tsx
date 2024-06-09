@@ -3,6 +3,8 @@ import "./App.css";
 import { ThemeContext } from "./contexts/themeContext";
 import { ThemeProvider } from "styled-components";
 import { Theme, darkTheme, lightTheme } from "./theme/theme";
+import { Provider } from "react-redux";
+import { store } from "./utils";
 import { RouterConfig } from "./config/router/router";
 
 function App() {
@@ -11,11 +13,13 @@ function App() {
     setTheme(theme === lightTheme ? darkTheme : lightTheme);
   };
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <ThemeProvider theme={theme}>
-        <RouterConfig />
-      </ThemeProvider>
-    </ThemeContext.Provider>
+    <Provider store={store}>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeProvider theme={theme}>
+          <RouterConfig />
+        </ThemeProvider>
+      </ThemeContext.Provider>
+    </Provider>
   );
 }
 
