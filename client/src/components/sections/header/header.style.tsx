@@ -3,12 +3,14 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import profile from "../../../assets/profile.png";
 export const HeaderContainer = styled.div<ThemeProps>`
   width: 100vw;
-  height: 15%;
+  height: 8%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 0 2rem;
+  margin: 0;
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.primary};
 `;
 
 export const HeaderTitle = styled.h1<ThemeProps>`
@@ -29,10 +31,10 @@ export const ProfileContainer = styled.div<ThemeProps>`
 `;
 
 export const ProfileImage = styled.img`
-  width: 5rem;
-  height: 5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
-  padding: 0.5rem;
+  padding: 0rem;
   background: url(${profile}), linear-gradient(90deg, #60565596, #6866619d);
   background-blend-mode: multiply;
   background-size: cover;
