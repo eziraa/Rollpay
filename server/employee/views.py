@@ -1,12 +1,13 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.request import HttpRequest
 from rest_framework import status
 from .serializer import EmployeeSerializer, ProfilePicSerializer
 from .models import Employee
 # Create your views here.
 
 @api_view(['POST'])
-def add_employee(request):
+def add_employee(request: HttpRequest):
     serializer = EmployeeSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save()

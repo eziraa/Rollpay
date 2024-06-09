@@ -1,4 +1,4 @@
-export type AddEmpParams = {
+export interface AddEmpParams {
   first_name: string;
   last_name: string;
   gender: string;
@@ -7,4 +7,4 @@ export type AddEmpParams = {
   role: string;
   date_of_birth: string;
   date_of_hire: string;
-};
+}
