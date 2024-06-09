@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { MdCheckBox } from "react-icons/md";
-import { RiCloseFill } from "react-icons/ri";
 import {
-  FlashMessageClose,
   FlashMessageContent,
   FlashMessageHeader,
   FlashMessageIcon,
@@ -10,6 +8,7 @@ import {
   FlashMessageTitle,
   FlasheMessageContainr,
 } from "./flash_message.style";
+import { CloseIcon } from "../buttons/close";
 
 export const FlashMessage = () => {
   const [openFlashMessage, setOpenFlashMessage] = useState<boolean>(true);
@@ -18,13 +17,11 @@ export const FlashMessage = () => {
     <FlasheMessageContainr>
       <FlashMessageHeader>
         <FlashMessageTitle>User Log in </FlashMessageTitle>
-        <FlashMessageClose
+        <CloseIcon
           onClick={() => {
             setOpenFlashMessage(false);
           }}
-        >
-          <RiCloseFill />
-        </FlashMessageClose>
+        />
       </FlashMessageHeader>
       <FlashMessageContent>
         <FlashMessageIcon>
