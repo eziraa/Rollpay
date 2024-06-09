@@ -3,6 +3,5 @@ client/yarn.lock
 *.pyc
 server/employee/migrations/0*.py
 *.env
-*.pyc
-server/users/migrations/0*.py
 client/src/config/router/_api.tsx
+
