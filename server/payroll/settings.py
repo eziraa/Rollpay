@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'employee',
     'users',
-    'rest_framework'
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -53,9 +54,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
+
 ]
 
+APPEND_SLASH = False
 ROOT_URLCONF = 'payroll.urls'
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    # other origins...
+]
 
 TEMPLATES = [
     {
@@ -82,10 +91,10 @@ WSGI_APPLICATION = 'payroll.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DATABASE_NAME', 'default_db_name'),
-        'USER': os.getenv('DATABASE_USER', 'default_user'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'default_password'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'NAME': os.getenv('DATABASE_NAME', 'DATABASE_NAME'),
+        'HOST': os.getenv('DATABASE_HOST', 'DATABASE_HOST'),
+        'USER': os.getenv('DATABASE_USER', 'DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'DATABASE_PASSWORD'),
     }
 }
 

@@ -10,10 +10,11 @@ const ToggleContainer = styled.div<ThemeProps>`
   position: relative;
   width: 3rem;
   height: 3rem;
+  padding-top: 0.5rem;
   background-color: transparent;
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
-  font-size: 3rem;
+  font-size: 2rem;
 `;
 
 export const Toggle = () => {
