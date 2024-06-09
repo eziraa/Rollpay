@@ -11,12 +11,18 @@ import json
 def register_user(request):
     try:
         data = json.loads(request.body)
+        if User.objects.filter(username=data['username']).exists():
+            return JsonResponse({'error': 'Username already exists'}, status=400)
+        if User.objects.filter(employeeId=data['employeeId']).exists():
+            return JsonResponse({'error': 'Employee ID already exists'}, status=400)
         user = User.objects.create_user(
-            username=data['username'], password=data['password'])
+            username=data['username'], password=data['password'],
+            employeeId=data.get('employeeId')
+        )
         user.save()
         return JsonResponse({'message': 'User registered successfully'}, status=201)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
+    except KeyError as e:
+        return JsonResponse({'error': f'Missing field: {str(e)}'}, status=400)
 
 
 @csrf_exempt
