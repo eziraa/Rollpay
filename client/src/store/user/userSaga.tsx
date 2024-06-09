@@ -6,7 +6,7 @@ import { SignUpParams } from "../../typo/user/params";
 import UserAPI from "../../services/user-api";
 import { signUpFinished } from "./userSLice";
 
-function* AddEmployee(action: PayloadAction<SignUpParams>) {
+function* userSignUp(action: PayloadAction<SignUpParams>) {
   try {
     const user: SagaReturnType<typeof UserAPI.signUp> = yield call(
       UserAPI.signUp,
@@ -35,6 +35,6 @@ function* AddEmployee(action: PayloadAction<SignUpParams>) {
   }
 }
 
-export function* watchAddEmployee() {
-  yield takeEvery("user/signUpRequested", AddEmployee);
+export function* watchUserSignUp() {
+  yield takeEvery("user/signUpRequested", userSignUp);
 }
