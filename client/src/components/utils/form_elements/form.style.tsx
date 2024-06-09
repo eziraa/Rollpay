@@ -95,3 +95,8 @@ export const PasswordContainer = styled.div`
     }
   }
 `;
+export const FormError = styled.span({
+  display: "block",
+  color: "red",
+  fontSize: "1rem",
+});

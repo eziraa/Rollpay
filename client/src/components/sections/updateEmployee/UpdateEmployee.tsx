@@ -1,7 +1,7 @@
 import { UpdateContainer, Title } from "./UpdateEmployee.style";
 import { ErrorMessage } from "../../pages/signup/SignUp.style";
 import { useFormik } from "formik";
-import { EmpPersonalInfo } from "../../../schema/AddEmpSchema";
+import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
 import { useState } from "react";
 import {
   Form,
@@ -24,13 +24,9 @@ const UpdateEmployee = () => {
     gender: "",
   });
 
-  // fetch employee data
-  // useEffect(()=>{
-  //   setEmployeeData("")
-  // })
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: employeeData,
-    validationSchema: EmpPersonalInfo,
+    validationSchema: AddEmployeeSchema,
     onSubmit: (values) => {
       // update employee data
       console.log(values);
