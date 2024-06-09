@@ -1,6 +1,6 @@
 import { SignUpContainer, ErrorMessage, Title } from "./SignUp.style";
 import { useFormik } from "formik";
-import { SignUpSchema } from "../../../schema/SignUpSchema";
+import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
