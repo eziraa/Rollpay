@@ -19,6 +19,7 @@ export const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.backgrounds.primary};
   outline: none;
+  color: ${({ theme }) => theme.colors.primary};
   &:focus {
     border: 1px solid ${({ theme }) => theme.colors.primary};
   }
@@ -78,6 +79,7 @@ export const PasswordContainer = styled.div`
     &:focus {
       border: 1px solid ${({ theme }) => theme.colors.primary};
     }
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 export const FormError = styled.span({
