@@ -10,6 +10,6 @@ export const HomeContainer = styled.div<ThemeProps>`
   align-items: center;
   justify-content: start;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0rem;
   border-radius: 0.5rem;
 `;
