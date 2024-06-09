@@ -1,6 +1,6 @@
 client/node_modules/
 client/yarn.lock
 client/yarn.lock
-*.env
 *.pyc
 server/employee/migrations/0*.py
+*.env
