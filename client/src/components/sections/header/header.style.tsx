@@ -41,8 +41,8 @@ export const ProfileImage = styled.img`
   background-position: center;
   border: 2px solid ${({ theme }) => theme.colors.primary};
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  &:hover {
+  /* transition: all 0.3s ease-in-out; */
+  /* &:hover {
     transform: scale(1.1);
-  }
+  } */
 `;
