@@ -3,3 +3,8 @@ export type SignUpParams = {
   empID: string;
   password: string;
 };
+
+export type LoginParams = {
+  username: string;
+  password: string;
+};
