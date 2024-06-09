@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { Header } from "../../sections/header/header";
 import { FlashMessage } from "../../utils/flash_message/flash_message";
@@ -23,12 +24,27 @@ import {
 } from "./login.style";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import { SignUpSchema } from "../../../schema/SignUpSchema";
 
 export const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+  const formHandler = useFormik({
+    initialValues: {
+      empID: "",
+      username: "",
+      password: "",
+      confirm_password: "",
+    },
+    validationSchema: SignUpSchema,
+    onSubmit: (values, _) => {
+      console.log(values);
+    },
+  });
   return (
     <HomeContainer>
       <Header />
