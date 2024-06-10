@@ -1,13 +1,25 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { AddEmpParams } from "../typo/employee/params";
 import api from "../config/api";
-import { EmployeeResponse } from "../typo/employee/response";
+import { AddEmpResponse } from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
-  const employee = await axios
-    .post<EmployeeResponse>(api + "/employee/add", values)
-    .then((res) => res.data);
-  return employee;
+  const response = await axios
+    .post<AddEmpResponse>(api + "/employee/add", values)
+    .then((res) => {
+      return {
+        success: "Employee added successfully",
+        code: res.status,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
 };
 
 const EmployeeAPI = {

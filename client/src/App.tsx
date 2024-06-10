@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { store } from "./utils";
 import { RouterConfig } from "./config/router/router";
 import { FlashMessage } from "./components/utils/flash_message/flash_message";
-import { AuthProvider } from "./contexts/authContext";
 
 function App() {
   const [theme, setTheme] = useState<Theme>(lightTheme);
@@ -17,12 +16,10 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <AuthProvider>
-          <ThemeProvider theme={theme}>
-            <FlashMessage />
-            <RouterConfig />
-          </ThemeProvider>
-        </AuthProvider>
+        <ThemeProvider theme={theme}>
+          <RouterConfig />
+          <FlashMessage/>
+        </ThemeProvider>
       </ThemeContext.Provider>
     </Provider>
   );
