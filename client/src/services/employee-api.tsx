@@ -1,12 +1,12 @@
 import axios, { AxiosError } from "axios";
 import { AddEmpParams } from "../typo/employee/params";
-import api from "../config/api";
+import {API} from "../config/api";
 import { AddEmpResponse } from "../typo/employee/response";
 const accessToken = localStorage.getItem("accessToken");
 
 const addEmp = async (values: AddEmpParams) => {
   const response = await axios
-    .post<AddEmpResponse>(api + "/employee/add", values, {
+    .post<AddEmpResponse>(API + "/employee/add", values, {
       headers: {
         Authorization: `Bearer ${accessToken}`, // Include the authorization header
       },
