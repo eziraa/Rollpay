@@ -45,7 +45,8 @@ def login_user(request):
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
 
 
-@require_http_methods(["GET"])
+@csrf_exempt
+@require_http_methods(["POST"])
 def logout_user(request):
     logout(request)
     return JsonResponse({'message': 'Logged out successfully'}, status=200)
