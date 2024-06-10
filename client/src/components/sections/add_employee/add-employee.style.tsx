@@ -8,7 +8,7 @@ export const AddEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 4rem;
-  box-shadow: 0 0 3rem ${({ theme }) => theme.colors.primary};
+  box-shadow: 0 0 1.5rem ${({ theme }) => theme.colors.primary};
   border-radius: 1rem;
   height: auto;
   width: 100%;
