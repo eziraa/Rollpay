@@ -1,7 +1,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import axios, { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
-import api from "../config/router/api";
+import api from "../config/api";
 import { SignUpResponse } from "../typo/user/response";
 const signUp = async (values: SignUpParams) => {
   const response = await axios
