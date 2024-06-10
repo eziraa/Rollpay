@@ -3,6 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework_simplejwt.tokens import RefreshToken
 import json
 
 
@@ -29,7 +30,17 @@ def login_user(request):
     user = authenticate(username=data['username'], password=data['password'])
     if user is not None:
         login(request, user)
-        return JsonResponse({'message': 'Login successful'}, status=200)
+        refresh = RefreshToken.for_user(user)
+        user_data = {
+            'username': user.username,
+            'email': user.email,
+        }
+        return JsonResponse({
+            'message': 'Login successful',
+            'user': user_data,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=200)
     else:
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
 
