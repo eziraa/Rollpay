@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { AddEmpParams } from "../typo/employee/params";
-import api from "../config/api";
+import { API as api } from "../config/api";
 import { AddEmpResponse } from "../typo/employee/response";
 const accessToken = localStorage.getItem("accessToken");
 
