@@ -2,8 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add_opacity_color";
 
 export const FlasheMessageContainr = styled.div`
-  background-color: ${({ theme }) =>
-    addOpacityToColor(0.6, theme.backgrounds.secondary)};
+  background-color: ${() => addOpacityToColor(0.7, "#300D59")};
   width: 30rem;
   display: flex;
   flex-direction: column;
@@ -13,9 +12,8 @@ export const FlasheMessageContainr = styled.div`
   position: absolute;
   bottom: 5rem;
   right: 10rem;
-  /* left: 50%;
-  transform: translateX(-50%); */
   padding: 1rem;
+  z-index: 10000;
 `;
 
 export const FlashMessageHeader = styled.div`
