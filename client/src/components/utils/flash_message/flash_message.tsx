@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { MdCheckBox } from "react-icons/md";
 import {
   FlashMessageContent,
@@ -9,24 +8,35 @@ import {
   FlasheMessageContainr,
 } from "./flash_message.style";
 import { CloseIcon } from "../buttons/close";
+import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
+import { hideFlashMessage } from "../../../store/notification/flashMesssageSlice";
 
 export const FlashMessage = () => {
-  const [openFlashMessage, setOpenFlashMessage] = useState<boolean>(true);
-  if (!openFlashMessage) return;
+  const dispatcher = useAppDispatch();
+  const flashMessage = useAppSelector((state) => state.flashMessage);
+  if (!flashMessage.status) return;
   return (
-    <FlasheMessageContainr>
+    <FlasheMessageContainr
+      style={{
+        color:  "#0f0f0f" ,
+      }}
+    >
       <FlashMessageHeader>
-        <FlashMessageTitle>User Log in </FlashMessageTitle>
+        <FlashMessageTitle> {flashMessage.title} </FlashMessageTitle>
         <CloseIcon
           onClick={() => {
-            setOpenFlashMessage(false);
+            dispatcher(hideFlashMessage());
           }}
         />
       </FlashMessageHeader>
-      <FlashMessageContent>
+      <FlashMessageContent
+        style={{
+          color: flashMessage.color === "green" ? "rgb(0, 120, 16)" : "#ff0000",
+        }}
+      >
         <FlashMessageIcon>
           <MdCheckBox />
-          <FlashMessageText>You are signed in succefully</FlashMessageText>
+          <FlashMessageText> {flashMessage.desc} </FlashMessageText>
         </FlashMessageIcon>
       </FlashMessageContent>
     </FlasheMessageContainr>
