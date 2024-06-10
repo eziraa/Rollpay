@@ -1,21 +1,21 @@
-import { useState } from "react";
 import { CloseIcon } from "../buttons/close";
 import { ModalContainer, ModalContent } from "./modal.style";
+import { useAppDispatch } from "../../../utils/customHook";
+import { setTask } from "../../../store/employee/employeeSlice";
 
 export const Modal = ({ children }: { children: React.ReactNode }) => {
-  const [openModal, closeModal] = useState(true);
-  if (!openModal) return;
+  const dispatcher = useAppDispatch();
   return (
     <ModalContainer
       onClick={(e) => {
         e.stopPropagation();
-        closeModal(false);
+        dispatcher(setTask(undefined));
       }}
     >
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <CloseIcon
           onClick={() => {
-            closeModal(false);
+            dispatcher(setTask(undefined));
           }}
         />
         {children}
