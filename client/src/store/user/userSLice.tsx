@@ -10,6 +10,8 @@ const InitialEmpState: UserState = {
   task: undefined,
   loading: false,
   is_login: false,
+  logining: false,
+  logouting: false,
 };
 const UserSlice = createSlice({
   name: "user",
@@ -22,13 +24,32 @@ const UserSlice = createSlice({
       state.adding = false;
       state.task = undefined;
     },
+    wrongSignUp: (state) => {
+      state.adding = false;
+      state.is_login = false;
+    },
     loginRequested: (state, _: PayloadAction<LoginParams>) => {
-      state.adding = true;
+      state.logining = true;
     },
     loginFinished: (state) => {
-      state.adding = false;
+      state.logining = false;
       state.task = undefined;
       state.is_login = true;
+    },
+    wrongLogin: (state) => {
+      state.logining = false;
+      state.is_login = false;
+    },
+    logoutRequested: (state) => {
+      state.logouting = true;
+      state.is_login = true;
+    },
+    logout: (state) => {
+      state.is_login = false;
+      state.adding = false;
+      state.user = undefined;
+      state.task = undefined;
+      state.logining = false;
     },
   },
 });
@@ -38,5 +59,9 @@ export const {
   signUpFinished,
   loginRequested,
   loginFinished,
+  wrongSignUp,
+  wrongLogin,
+  logoutRequested,
+  logout,
 } = UserSlice.actions;
 export default UserSlice.reducer;
