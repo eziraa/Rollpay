@@ -22,7 +22,7 @@ export const SignUpContainer = styled.div<ThemeProps>`
   justify-content: center;
   gap: 1rem;
   position: relative;
-  padding: 1rem;
+  padding: 6rem 1rem;
   border-radius: 1rem;
   /* border: 1px solid
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)}; */
