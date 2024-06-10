@@ -21,8 +21,11 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.task = undefined;
     },
+    setTask: (state, task: PayloadAction<string | undefined>) => {
+      state.task = task.payload;
+    },
   },
 });
-export const { addEmpRequested, addEmpDone } = EmployeeSlice.actions;
+export const { addEmpRequested, addEmpDone, setTask } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
