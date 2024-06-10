@@ -1,12 +1,16 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.request import HttpRequest
+from django.views.decorators.http import require_http_methods
+
+from django.views.decorators.csrf import csrf_exempt
+
 from rest_framework import status
 from .serializer import EmployeeSerializer, ProfilePicSerializer
 from .models import Employee
 
 # Create your views here.
-@api_view(['POST'])
+@csrf_exempt
+@require_http_methods(["POST"])
 def add_employee(request):
     try:
         if Employee.objects.filter(email=request.data['email']).exists():
@@ -23,6 +27,12 @@ def add_employee(request):
     except KeyError:
         return Response({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
     
+
+
+
+
+
+
 @api_view(['PATCH'])
 def update_employee(request, id):
     try:
