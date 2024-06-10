@@ -2,7 +2,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import axios, { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
-import api from "../config/api";
+import { API } from "../config/api";
 import { SignUpResponse } from "../typo/user/response";
 axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
   "accessToken"
@@ -16,7 +16,7 @@ axios.interceptors.response.use(
       const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
         try {
-          const response = await axios.post(api + "/refresh-token", {
+          const response = await axios.post(API + "/refresh-token", {
             refreshToken,
           });
           const { accessToken } = response.data;
@@ -33,7 +33,7 @@ axios.interceptors.response.use(
 );
 const signUp = async (values: SignUpParams) => {
   const response = await axios
-    .post<SignUpResponse>(api + "/user/register", values)
+    .post<SignUpResponse>(API + "/user/register", values)
     .then((res) => {
       return {
         success: "User sign up successfully",
@@ -52,7 +52,7 @@ const signUp = async (values: SignUpParams) => {
 
 const login = async (values: LoginParams) => {
   const response = await axios
-    .post(api + "/user/login", values)
+    .post(API + "/user/login", values)
     .then((res) => {
       const { accessToken, refreshToken } = res.data;
       localStorage.setItem("accessToken", accessToken);
@@ -74,7 +74,7 @@ const login = async (values: LoginParams) => {
 
 const logout = async () => {
   const response = await axios
-    .post(api + "/user/logout") // Added an empty body `{}` and `{ withCredentials: true }`
+    .post(API + "/user/logout") // Added an empty body `{}` and `{ withCredentials: true }`
     .then((res) => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
