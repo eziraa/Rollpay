@@ -10,49 +10,27 @@ import {
   InputContainer,
   Label,
 } from "../../utils/form_elements/form.style";
-import { useAppDispatch } from "../../../utils/customHook";
-import { setFlashMessage } from "../../../store/notification/flashMesssageSlice";
-function generateOTP() {
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  return otp.toString();
-}
+
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const dispatcher = useAppDispatch();
+
   const sendEmail = (e: any) => {
     e.preventDefault();
     emailjs
       .send(
         "service_tfrx1er",
         "template_3ol2yro",
-        {
-          to_email: email,
-          otp: generateOTP(),
-        },
+        { email },
         "k3GlkvUNSNjbu-6bp"
       )
       .then(
-        () => {
-          dispatcher(
-            setFlashMessage({
-              color: "green",
-              status: true,
-              title: "Send OTP",
-              desc: "OTP sent successfully",
-              duration: 3,
-            })
-          );
+        (result) => {
+          console.log(result.text);
+          alert("Email sent successfully");
         },
-        () => {
-          dispatcher(
-            setFlashMessage({
-              color: "red",
-              status: true,
-              title: "Send OTP",
-              desc: "Failed to send OTP",
-              duration: 3,
-            })
-          );
+        (error) => {
+          console.log(error.text);
+          alert("Failed to send email. Please try again.");
         }
       );
   };

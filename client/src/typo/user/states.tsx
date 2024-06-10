@@ -6,4 +6,6 @@ export type UserState = {
   user: UserResponse | undefined;
   task: string | undefined;
   is_login: boolean;
+  logining: boolean;
+  logouting: boolean;
 };
