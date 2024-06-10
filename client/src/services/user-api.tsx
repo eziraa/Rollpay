@@ -3,7 +3,6 @@ import axios, { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
 import api from "../config/router/api";
 import { SignUpResponse } from "../typo/user/response";
-
 const signUp = async (values: SignUpParams) => {
   const response = await axios
     .post<SignUpResponse>(api + "/user/register", values)
@@ -25,8 +24,12 @@ const signUp = async (values: SignUpParams) => {
 
 const login = async (values: LoginParams) => {
   const response = await axios
-    .post<SignUpResponse>(api + "/user/login", values)
+    .post(api + "/user/login", values)
     .then((res) => {
+      const { accessToken, refreshToken } = res.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      console.log(res.data);
       return {
         success: "User Logged in successfully",
         code: res.status,
@@ -41,6 +44,8 @@ const login = async (values: LoginParams) => {
     });
   return response;
 };
+
+
 
 const UserAPI = {
   signUp,

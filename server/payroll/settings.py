@@ -43,8 +43,14 @@ INSTALLED_APPS = [
     'employee',
     'users',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 CORS_ALLOW_ALL_ORIGINS = True
 

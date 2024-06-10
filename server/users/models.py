@@ -5,8 +5,9 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class User(UserBase):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    object_id = models.PositiveIntegerField(blank=True, null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
     profile_picture = models.FileField(
         upload_to='profile_pictures', null=True, blank=True)
