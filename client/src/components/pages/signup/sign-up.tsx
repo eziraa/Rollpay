@@ -1,4 +1,4 @@
-import { SignUpContainer, ErrorMessage, Title } from "./SignUp.style";
+import { SignUpContainer, ErrorMessage} from "./SignUp.style";
 import { useFormik } from "formik";
 import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -12,6 +12,7 @@ import {
   Input,
   InputContainer,
   Label,
+  Title,
   PasswordContainer,
 } from "../../utils/form_elements/form.style";
 import { PasswordVisible } from "../../utils/password_visiblity/password.style";
