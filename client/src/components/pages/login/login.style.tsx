@@ -14,7 +14,11 @@ export const LoginContainer = styled.div<ThemeProps>`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  position: relative;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 1rem;
   border-radius: 1rem;
   /* border: 1px solid

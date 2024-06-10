@@ -12,12 +12,7 @@ export type Theme = {
     medium: "1.6rem";
     large: "2.2rem";
   };
-  buttonColor: {
-    primary: string;
-    primaryHover: string;
-    secondary: string;
-    secondaryHover: string;
-  };
+
 };
 
 export const lightTheme: Theme = {
@@ -34,12 +29,7 @@ export const lightTheme: Theme = {
     medium: "1.6rem",
     large: "2.2rem",
   },
-  buttonColor: {
-    primary: "#ebedec",
-    secondary: "#0ab5a7",
-    primaryHover: "#ebedec",
-    secondaryHover: "#09cbbb",
-  },
+
 };
 
 export const darkTheme: Theme = {
@@ -48,7 +38,7 @@ export const darkTheme: Theme = {
     secondary: "#a9a7a7",
   },
   backgrounds: {
-    primary: "#3c3b3b",
+    primary: "#000000",
     secondary: "#0303039e",
   },
   fontSizes: {
@@ -56,10 +46,5 @@ export const darkTheme: Theme = {
     medium: "1.6rem",
     large: "2.2rem",
   },
-  buttonColor: {
-    primary: "#ebedec",
-    secondary: "#0ab5a7",
-    primaryHover: "#ebedec",
-    secondaryHover: "#09cbbb",
-  },
+
 };

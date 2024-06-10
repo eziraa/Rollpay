@@ -1,4 +1,4 @@
-export type EmployeeResponse = {
+export interface EmployeeResponse {
   id: string;
   first_name: string;
   last_name: string;
@@ -8,4 +8,10 @@ export type EmployeeResponse = {
   phone_number: string;
   date_of_birth: string;
   date_of_hire: string;
-};
+}
+
+export interface AddEmpResponse {
+  success: string;
+  error: string;
+  code: number;
+}

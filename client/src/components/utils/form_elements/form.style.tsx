@@ -17,7 +17,9 @@ export const Input = styled.input`
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
   outline: none;
+  color: ${({ theme }) => theme.colors.primary};
   &:focus {
     border: 1px solid ${({ theme }) => theme.colors.primary};
   }
@@ -33,34 +35,17 @@ export const Button = styled.button<ThemeProps>`
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.buttonColor.secondary};
-  color: ${({ theme }) => theme.buttonColor.primary};
+  /* border: 1px solid ${({ theme }) => theme.colors.secondary};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  outline: none;
+  outline: none; */
   font-size: ${({ theme }) => theme.fontSizes.medium};
-  &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.secondary};
-  }
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
   &:hover {
-    /* transform: scale(1.1); */
-    background-color: ${({ theme }) => theme.buttonColor.secondaryHover};
-  }
-  input:disabled {
     background-color: ${({ theme }) =>
-      addOpacityToColor(0.5, theme.colors.secondary)};
-    cursor: not-allowed;
-  }
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-  &:focus-visible {
-    outline: none;
+      addOpacityToColor(0.75, theme.colors.primary)};
+    color: ${({ theme }) => theme.backgrounds.primary};
+    cursor: pointer;
   }
 `;
 
@@ -90,8 +75,15 @@ export const PasswordContainer = styled.div`
     padding: 1rem;
     border: none;
     border-radius: 0.5rem;
+    background-color: ${({ theme }) => theme.backgrounds.primary};
     &:focus {
       border: 1px solid ${({ theme }) => theme.colors.primary};
     }
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
+export const FormError = styled.span({
+  display: "block",
+  color: "red",
+  fontSize: "1rem",
+});

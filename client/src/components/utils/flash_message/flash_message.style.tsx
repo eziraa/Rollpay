@@ -3,7 +3,7 @@ import { addOpacityToColor } from "../convertor/add_opacity_color";
 
 export const FlasheMessageContainr = styled.div`
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.6, theme.colors.primary)};
+    addOpacityToColor(0.6, theme.backgrounds.secondary)};
   width: 30rem;
   display: flex;
   flex-direction: column;
@@ -11,9 +11,10 @@ export const FlasheMessageContainr = styled.div`
   justify-content: start;
   color: ${({ theme }) => theme.backgrounds.primary};
   position: absolute;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 5rem;
+  right: 10rem;
+  /* left: 50%;
+  transform: translateX(-50%); */
   padding: 1rem;
 `;
 
@@ -43,7 +44,7 @@ export const FlashMessageText = styled.p`
   padding: 0.5rem;
   margin: 0.5rem;
   border-radius: 0.5rem;
-  color: rgb(0, 255, 34);
+  color: "#ff0000";
 `;
 
 export const FlashMessageIcon = styled.div`
@@ -51,7 +52,7 @@ export const FlashMessageIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #00ff00;
+  color: "#ff0000";
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;

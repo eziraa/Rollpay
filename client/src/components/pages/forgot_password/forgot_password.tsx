@@ -1,38 +1,56 @@
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
+import emailjs from "emailjs-com";
+import { ForgotPasswordContainer } from "./forgot_password.style";
+import { Title } from "../signup/SignUp.style";
 import {
   Button,
   Form,
   Input,
   InputContainer,
   Label,
-  Title,
 } from "../../utils/form_elements/form.style";
-import { HomeContainer } from "../home/homepage.style";
-import { CustomLink } from "../login/login.style";
-import { ForgotPasswordContainer } from "./forgot_password.style";
 
 export const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+
+  const sendEmail = (e: any) => {
+    e.preventDefault();
+    emailjs
+      .send(
+        "service_tfrx1er",
+        "template_3ol2yro",
+        { email },
+        "k3GlkvUNSNjbu-6bp"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          alert("Email sent successfully");
+        },
+        (error) => {
+          console.log(error.text);
+          alert("Failed to send email. Please try again.");
+        }
+      );
+  };
+
   return (
-    <HomeContainer
-      style={{
-        justifyContent: "center",
-      }}
-    >
-      <ForgotPasswordContainer>
-        <Title>Reset Your Password</Title>
-        <Form>
-          <InputContainer>
-            <Label>Enter your email</Label>
-            <Input />
-          </InputContainer>
-          <Button type="submit" onClick={(e) => e.stopPropagation()}>
-            Get OTP
-          </Button>
-        </Form>
-        <CustomLink>
-          <Link to="/">Log in</Link>
-        </CustomLink>
-      </ForgotPasswordContainer>
-    </HomeContainer>
+    <ForgotPasswordContainer>
+      <Title>Reset Your Password</Title>
+      <Form onSubmit={sendEmail}>
+        <InputContainer>
+          <Label>Enter your email</Label>
+          <Input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </InputContainer>
+        <Button type="submit">Send OTP</Button>
+      </Form>
+    </ForgotPasswordContainer>
   );
 };

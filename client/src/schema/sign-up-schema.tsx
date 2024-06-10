@@ -3,7 +3,7 @@ const pattern = RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*{~?\\]])(?!.*[<>])[A-Za-z\\d!@#$%^&*{~?\\]]+$"
 );
 
-export const SignUpValidation = Yup.object({
+export const SignUpSchema = Yup.object({
   username: Yup.string()
     .required("Please Enter username")
     .min(3, "Username should be at least 3 characters"),
