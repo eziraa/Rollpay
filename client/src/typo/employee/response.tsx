@@ -9,3 +9,9 @@ export interface EmployeeResponse {
   date_of_birth: string;
   date_of_hire: string;
 }
+
+export interface AddEmpResponse {
+  success: string;
+  error: string;
+  code: number;
+}

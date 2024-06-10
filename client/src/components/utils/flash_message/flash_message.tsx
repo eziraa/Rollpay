@@ -18,7 +18,7 @@ export const FlashMessage = () => {
   return (
     <FlasheMessageContainr
       style={{
-        color: flashMessage.color === "green" ? "#02FFC0" : "#FF361B",
+        color: "#0f0f0f",
       }}
     >
       <FlashMessageHeader>
@@ -31,7 +31,7 @@ export const FlashMessage = () => {
       </FlashMessageHeader>
       <FlashMessageContent
         style={{
-          color: flashMessage.color === "green" ? "#02FFC0" : "#FF361B",
+          color: flashMessage.color === "green" ? "rgb(0, 120, 16)" : "#ff0000",
         }}
       >
         <FlashMessageIcon>

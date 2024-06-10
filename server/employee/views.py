@@ -4,16 +4,25 @@ from rest_framework.request import HttpRequest
 from rest_framework import status
 from .serializer import EmployeeSerializer, ProfilePicSerializer
 from .models import Employee
-# Create your views here.
 
+# Create your views here.
 @api_view(['POST'])
-def add_employee(request: HttpRequest):
-    serializer = EmployeeSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response({"message": "Could not create employee"}, status=status.HTTP_400_BAD_REQUEST)
+def add_employee(request):
+    try:
+        if Employee.objects.filter(email=request.data['email']).exists():
+            return Response({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = EmployeeSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Employee registered successfully'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    except KeyError:
+        return Response({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['PATCH'])
 def update_employee(request, id):
     try:

@@ -1,27 +1,41 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
-import { SagaReturnType, call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flashMesssageSlice";
 import { addEmpDone } from "./employeeSlice";
 import EmployeeAPI from "../../services/employee-api";
 import { AddEmpParams } from "../../typo/employee/params";
+import { AddEmpResponse } from "../../typo/employee/response";
 
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
-    const employees: SagaReturnType<typeof EmployeeAPI.addEmp> = yield call(
+    const response: AddEmpResponse = yield call(
       EmployeeAPI.addEmp,
       action.payload
     );
-    yield put(addEmpDone(employees));
-    yield put(
-      setFlashMessage({
-        color: "green",
-        status: true,
-        title: "Add Employee",
-        desc: "Employee added successfully",
-        duration: 3,
-      })
-    );
+    if (response.code === 201) {
+      yield put(addEmpDone());
+      yield put(
+        setFlashMessage({
+          color: "green",
+          status: true,
+          title: "Add Employee",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(addEmpDone());
+      yield put(
+        setFlashMessage({
+          color: "green",
+          status: true,
+          title: "Add Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
   } catch (e) {
     yield put(
       setFlashMessage({
