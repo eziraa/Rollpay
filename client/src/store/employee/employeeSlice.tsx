@@ -3,7 +3,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
 import { AddEmpParams } from "../../typo/employee/params";
-import { EmployeeResponse } from "../../typo/employee/response";
 
 const InitialEmpState: EmployeeState = {
   adding: false,
@@ -18,8 +17,7 @@ const EmployeeSlice = createSlice({
     addEmpRequested: (state, _: PayloadAction<AddEmpParams>) => {
       state.adding = true;
     },
-    addEmpDone: (state, payload: PayloadAction<EmployeeResponse>) => {
-      state.employees.push(payload.payload);
+    addEmpDone: (state) => {
       state.adding = false;
       state.task = undefined;
     },
