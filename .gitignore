@@ -7,3 +7,4 @@ client/src/config/router/_api.tsx
 server/users/migrations/0*.py
 client/package-lock.json
 client/src/components/pages/forgot_password/send-otp.tsx
+client/src/components/pages/forgot_password/send_otp.tsx
