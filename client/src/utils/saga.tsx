@@ -12,6 +12,6 @@ export function* rootSaga() {
     watchUserSignUp(),
     watchUserLogin(),
     watchUserLogOut(),
-    watchAddEmployee()
+    watchAddEmployee(),
   ]);
 }

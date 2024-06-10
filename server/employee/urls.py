@@ -7,5 +7,7 @@ urlpatterns = [
     path('add', views.add_employee),
     path('update/<id>/', views.update_employee),
     path('upload-profile-picture/<id>/', views.upload_profile_pic),
-    path('get-profile-picture/<id>/', views.get_profile_pic)
+    path('get-profile-picture/<id>/', views.get_profile_pic),
+    path('refresh-token', views.refresh_token, name='refresh_token'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
