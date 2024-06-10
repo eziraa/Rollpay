@@ -1,8 +1,36 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unsafe-optional-chaining */
 import axios, { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
 import api from "../config/router/api";
 import { SignUpResponse } from "../typo/user/response";
+axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
+  "accessToken"
+)}`;
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        try {
+          const response = await axios.post(api + "/refresh-token", {
+            refreshToken,
+          });
+          const { accessToken } = response.data;
+          localStorage.setItem("accessToken", accessToken);
+          originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+          return axios(originalRequest);
+        } catch (error) {
+          console.error("Token refresh failed", error);
+        }
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 const signUp = async (values: SignUpParams) => {
   const response = await axios
     .post<SignUpResponse>(api + "/user/register", values)
@@ -29,7 +57,6 @@ const login = async (values: LoginParams) => {
       const { accessToken, refreshToken } = res.data;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      console.log(res.data);
       return {
         success: "User Logged in successfully",
         code: res.status,
@@ -45,11 +72,32 @@ const login = async (values: LoginParams) => {
   return response;
 };
 
-
+const logout = async () => {
+  const response = await axios
+    .post(api + "/user/logout") // Added an empty body `{}` and `{ withCredentials: true }`
+    .then((res) => {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      return {
+        success: "User logged out successfully",
+        code: res.status,
+      };
+    })
+    .catch((err) => {
+      console.log(err);
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
 
 const UserAPI = {
   signUp,
   login,
+  logout,
 };
 
 export default UserAPI;
