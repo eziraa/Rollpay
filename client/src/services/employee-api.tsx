@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AddEmpParams } from "../typo/employee/params";
-import api from "../config/router/api";
+import api from "../config/api";
 import { EmployeeResponse } from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
