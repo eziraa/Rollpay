@@ -19,18 +19,19 @@ import {
   Checkbox,
   ActionsContainer,
 } from "./login.style";
-import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../signup/SignUp.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
+import { useAppDispatch } from "../../../utils/customHook";
 import { loginRequested } from "../../../store/user/userSLice";
 import { useAuth } from "../../../contexts/authContext";
+import { IoEyeOutline } from "react-icons/io5";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
+  // const user = useAppSelector((state) => state.user);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
   const togglePasswordVisiblity = () => {
@@ -79,7 +80,7 @@ export const LoginPage = () => {
                 onChange={handleChange}
               />
               <PasswordVisible onClick={togglePasswordVisiblity}>
-                {passwordVisible ? <RiEyeFill /> : <RiEyeOffFill />}
+              {passwordVisible ? <IoEyeOutline /> : <FaRegEyeSlash />}
               </PasswordVisible>
             </PasswordContainer>
             {errors.password && <ErrorMessage>{errors.password} </ErrorMessage>}
