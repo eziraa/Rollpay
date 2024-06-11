@@ -21,9 +21,6 @@ def refresh_token(request):
         return Response({"token": new_token})
     else:
         return Response({"error": "Invalid token"}, status=400)
-# Create your views here.
-# @api_view(['POST'])
-
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -44,7 +41,15 @@ def add_employee(request):
     
     except KeyError:
         return JsonResponse({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
+@csrf_exempt
+@require_http_methods(["GET"])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def get_employees(request):
+    serializer = EmployeeSerializer(Employee.objects.all(), many=True)
+    return Response(serializer.data)
+     
 
 
 
