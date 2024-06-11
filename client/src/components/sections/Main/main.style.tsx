@@ -7,7 +7,7 @@ export const MainContainer = styled.div<ThemeProps>`
   flex-direction: column;
   align-items: start;
   justify-content: flex-st;
-  width: 85%;
+  width: 100%;
   background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
@@ -24,15 +24,15 @@ export const MainHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
 `;
 
 export const ListBody = styled.div<ThemeProps>`
-  margin: 2rem;
-  padding: 1rem 2rem;
-  background-color: ${({ theme }) => theme.backgrounds.primary};
+  margin: 1rem;
+  padding: 0rem;
+  background-color: ${({ theme }) => theme.backgrounds.secondary};
 `;
 
 export const AddButton = styled(Button)`
   width: 5rem;
-`
+`;
