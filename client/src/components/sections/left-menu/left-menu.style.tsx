@@ -8,7 +8,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 export const LeftMenuContainer = styled.div<ThemeProps>`
   width: 20rem;
   height: 92vh;
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   padding-top: 2vh;
   z-index: 100;
   color: ${({ theme }) => theme.colors.secondary};
