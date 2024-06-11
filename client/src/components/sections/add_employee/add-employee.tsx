@@ -5,7 +5,7 @@ import {
   InputContainer,
   Label,
 } from "../../utils/form_elements/form.style";
-import { Modal } from "../../utils/modal/modal";
+import {Modal}  from "../../utils/modal/modal";
 import {
   AddButton,
   AddEmployeeContainer,
