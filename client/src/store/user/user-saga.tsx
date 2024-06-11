@@ -9,7 +9,6 @@ import {
   logout,
   signUpFinished,
   wrongLogin,
-  wrongSignUp,
 } from "./user-slice";
 import { SignUpResponse } from "../../typo/user/response";
 
@@ -19,17 +18,7 @@ function* userSignUp(action: PayloadAction<SignUpParams>) {
 
     if (response.code === 201) {
       yield put(signUpFinished());
-      yield put(
-        setFlashMessage({
-          color: "green",
-          status: true,
-          title: "User sign up",
-          desc: response.success,
-          duration: 3,
-        })
-      );
     } else {
-      yield put(wrongSignUp());
       yield put(
         setFlashMessage({
           color: "red",
@@ -41,7 +30,6 @@ function* userSignUp(action: PayloadAction<SignUpParams>) {
       );
     }
   } catch (e) {
-    yield put(wrongSignUp());
     yield put(
       setFlashMessage({
         color: "red",
@@ -60,39 +48,11 @@ function* userLogin(action: PayloadAction<LoginParams>) {
 
     if (response.code === 200) {
       yield put(loginFinished());
-      yield put(
-        setFlashMessage({
-          color: "green",
-          status: true,
-          title: "User log in",
-          desc: response.success,
-          duration: 3,
-        })
-      );
     } else {
-      yield put(wrongLogin());
-      yield put(
-        setFlashMessage({
-          color: "red",
-          status: true,
-          title: "User log in",
-          desc: response.error,
-          duration: 3,
-        })
-      );
+      yield put(wrongLogin(response.error));
     }
   } catch (e) {
-    console.log(e);
-    yield put(wrongLogin());
-    yield put(
-      setFlashMessage({
-        color: "red",
-        status: true,
-        title: "User log in",
-        desc: "User log in failed try again!!",
-        duration: 3,
-      })
-    );
+    yield put(wrongLogin("User log in failed try again!!"));
   }
 }
 
