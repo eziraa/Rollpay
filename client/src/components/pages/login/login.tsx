@@ -26,7 +26,6 @@ import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { loginRequested } from "../../../store/user/user-slice";
-import { useAuth } from "../../../contexts/auth-context";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
 
@@ -34,30 +33,31 @@ export const LoginPage = () => {
   const dispatcher = useAppDispatch();
   const user = useAppSelector((state) => state.user);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-  const { isAuthenticated } = useAuth();
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
-  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-      confirm_password: "",
-    },
-    validationSchema: LogInSchema,
-    onSubmit: async (values, _) => {
-      await dispatcher(loginRequested(values));
-    },
-  });
+
+  useEffect(() => {
+    if (user.is_login) window.location.href = "/home-page";
+  }, [user]);
+  const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
+    useFormik({
+      initialValues: {
+        username: "",
+        password: "",
+      },
+      validationSchema: LogInSchema,
+      onSubmit: async (values, _) => {
+        await dispatcher(loginRequested(values));
+      },
+    });
 
   return (
     <LoginContainer>
       <Title>Log In</Title>
       <Form
         onSubmit={(e) => {
-          e.preventDefault();
           handleSubmit(e);
-          window.location.href = isAuthenticated ? "/home-page" : "";
         }}
       >
         <InputContainer>
@@ -68,7 +68,9 @@ export const LoginPage = () => {
             onBlur={handleBlur}
             onChange={handleChange}
           />
-          {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
+          {touched.username && errors.username && (
+            <ErrorMessage>{errors.username} </ErrorMessage>
+          )}
         </InputContainer>
         <InputContainer>
           <Label>Password</Label>
@@ -84,7 +86,9 @@ export const LoginPage = () => {
               {passwordVisible ? <IoEyeOutline /> : <FaRegEyeSlash />}
             </PasswordVisible>
           </PasswordContainer>
-          {errors.password && <ErrorMessage>{errors.password} </ErrorMessage>}
+          {touched.password && errors.password && (
+            <ErrorMessage>{errors.password} </ErrorMessage>
+          )}
           {user.login_error && <ErrorMessage>{user.login_error} </ErrorMessage>}
         </InputContainer>
         <ActionsContainer>
@@ -95,9 +99,7 @@ export const LoginPage = () => {
             <Link to="/forgot_password">Frogot Password?</Link>
           </CustomLink>
         </ActionsContainer>
-        <Button type="submit" onClick={(e) => e.stopPropagation()}>
-          Login
-        </Button>
+        <Button type="submit">Login</Button>
       </Form>
       <LinkContainer>
         <Text>Don't have an account? </Text>
