@@ -50,8 +50,6 @@ export const LoginPage = () => {
     },
   });
 
-
-
   return (
     <LoginContainer>
       <Title>Log In</Title>
