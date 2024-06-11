@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import emailjs from "emailjs-com";
-import { ForgotPasswordContainer } from "./forgot_password.style";
-import { Title } from "../signup/SignUp.style";
+import { ForgotPasswordContainer } from "./forgot-password.style";
+import { Title } from "../sign-up/sign-up.style";
 import {
   Button,
   Form,
   Input,
   InputContainer,
   Label,
-} from "../../utils/form_elements/form.style";
+} from "../../utils/form-elements/form.style";
 
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");

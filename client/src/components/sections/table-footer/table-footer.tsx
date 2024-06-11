@@ -9,10 +9,10 @@ import {
   Text,
   TextContainer,
   NavButton
-} from "./table_footer.style";
+} from "./table-footer.style";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import DropDown from "../../utils/dropdown/drop_down";
+import DropDown from "../../utils/drop-down/drop-down";
 function TableFooter() {
   return (
     <TableFooterContainer>

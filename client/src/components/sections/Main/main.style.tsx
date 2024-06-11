@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { Button } from "../../utils/form_elements/form.style";
+import { Button } from "../../utils/form-elements/form.style";
 
 export const MainContainer = styled.div<ThemeProps>`
   display: flex;

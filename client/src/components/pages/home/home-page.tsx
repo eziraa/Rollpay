@@ -1,14 +1,14 @@
 // import { AddEmployee } from "../../sections/add_employee/add-employee";
 import { Header } from "../../sections/header/header";
 // import { Button } from "../../utils/form_elements/form.style";
-import { HomeBody, HomeContainer } from "./homepage.style";
+import { HomeBody, HomeContainer } from "./home-page.style";
 // import { LoginPage } from "../login/login";
 // import { useAuth } from "../../../contexts/authContext";
-import { useAppSelector } from "../../../utils/customHook";
+import { useAppSelector } from "../../../utils/custom-hook";
 // import { setTask } from "../../../store/employee/employeeSlice";
 import { ADD_EMP } from "../../../utils/constants/tasks";
 import LeftMenu from "../../sections/left-menu/left-menu";
-import Main from "../../sections/Main/main";
+import Main from "../../sections/main/main";
 import { AddEmployee } from "../../sections/add_employee/add-employee";
 
 // import { useAuth } from "../../../contexts/authContext";

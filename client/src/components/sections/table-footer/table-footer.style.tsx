@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { Button } from "../../utils/form_elements/form.style";
+import { Button } from "../../utils/form-elements/form.style";
 
 export const TableFooterContainer = styled.div`
   width: 85%;

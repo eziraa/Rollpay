@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { addOpacityToColor } from "../convertor/add_opacity_color";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const FlasheMessageContainr = styled.div`
   background-color: ${({ theme }) =>

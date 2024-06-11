@@ -1,8 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery } from "redux-saga/effects";
-import { setFlashMessage } from "../notification/flashMesssageSlice";
-import { addEmpDone, listEmpDone } from "./employeeSlice";
+import { setFlashMessage } from "../notification/flash-messsage-slice";
+import { addEmpDone, listEmpDone } from "./employee-slice";
 import EmployeeAPI from "../../services/employee-api";
 import { AddEmpParams } from "../../typo/employee/params";
 import { AddEmpResponse, EmployeeResponse } from "../../typo/employee/response";
