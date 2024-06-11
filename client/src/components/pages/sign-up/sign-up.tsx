@@ -18,6 +18,8 @@ import {
 import { PasswordVisible } from "../../utils/password-visiblity/password.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { signUpRequested } from "../../../store/user/user-slice";
+import { CustomLink, LinkContainer, Text } from "../login/login.style";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const dispatcher = useAppDispatch();
@@ -125,6 +127,12 @@ const SignUp = () => {
             Create{" "}
           </Button>
         </Form>
+        <LinkContainer>
+          <Text>Have an account? </Text>
+          <CustomLink>
+            <Link to="/"> Log in </Link>
+          </CustomLink>
+        </LinkContainer>
       </SignUpContainer>
     </HomeContainer>
   );
