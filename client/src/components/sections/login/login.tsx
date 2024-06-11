@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -23,7 +24,7 @@ import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
-import { useAppDispatch } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { loginRequested } from "../../../store/user/user-slice";
 import { useAuth } from "../../../contexts/auth-context";
 import { IoEyeOutline } from "react-icons/io5";
@@ -31,7 +32,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-  // const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
   const togglePasswordVisiblity = () => {
@@ -49,61 +50,63 @@ export const LoginPage = () => {
     },
   });
 
+
+
   return (
-    !isAuthenticated && (
-      <LoginContainer>
-        <Title>Log In</Title>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit(e);
-          }}
-        >
-          <InputContainer>
-            <Label>User name</Label>
-            <Input
-              name="username"
-              value={values.username}
+    <LoginContainer>
+      <Title>Log In</Title>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(e);
+          window.location.href = isAuthenticated ? "/home-page" : "";
+        }}
+      >
+        <InputContainer>
+          <Label>User name</Label>
+          <Input
+            name="username"
+            value={values.username}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
+        </InputContainer>
+        <InputContainer>
+          <Label>Password</Label>
+          <PasswordContainer>
+            <input
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              value={values.password}
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
-          </InputContainer>
-          <InputContainer>
-            <Label>Password</Label>
-            <PasswordContainer>
-              <input
-                type={passwordVisible ? "text" : "password"}
-                name="password"
-                value={values.password}
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
-              <PasswordVisible onClick={togglePasswordVisiblity}>
-                {passwordVisible ? <IoEyeOutline /> : <FaRegEyeSlash />}
-              </PasswordVisible>
-            </PasswordContainer>
-            {errors.password && <ErrorMessage>{errors.password} </ErrorMessage>}
-          </InputContainer>
-          <ActionsContainer>
-            <CheckboxContainer>
-              <Checkbox type="checkbox" /> <Text> Remember me</Text>
-            </CheckboxContainer>
-            <CustomLink>
-              <Link to="/forgot_password">Frogot Password?</Link>
-            </CustomLink>
-          </ActionsContainer>
-          <Button type="submit" onClick={(e) => e.stopPropagation()}>
-            Login
-          </Button>
-        </Form>
-        <LinkContainer>
-          <Text>Don't have an account? </Text>
+            <PasswordVisible onClick={togglePasswordVisiblity}>
+              {passwordVisible ? <IoEyeOutline /> : <FaRegEyeSlash />}
+            </PasswordVisible>
+          </PasswordContainer>
+          {errors.password && <ErrorMessage>{errors.password} </ErrorMessage>}
+          {user.login_error && <ErrorMessage>{user.login_error} </ErrorMessage>}
+        </InputContainer>
+        <ActionsContainer>
+          <CheckboxContainer>
+            <Checkbox type="checkbox" /> <Text> Remember me</Text>
+          </CheckboxContainer>
           <CustomLink>
-            <Link to="/signup"> Sign up </Link>
+            <Link to="/forgot_password">Frogot Password?</Link>
           </CustomLink>
-        </LinkContainer>
-      </LoginContainer>
-    )
+        </ActionsContainer>
+        <Button type="submit" onClick={(e) => e.stopPropagation()}>
+          Login
+        </Button>
+      </Form>
+      <LinkContainer>
+        <Text>Don't have an account? </Text>
+        <CustomLink>
+          <Link to="/signup"> Sign up </Link>
+        </CustomLink>
+      </LinkContainer>
+    </LoginContainer>
   );
 };

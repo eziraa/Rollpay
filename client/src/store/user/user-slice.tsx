@@ -5,51 +5,60 @@ import { UserState } from "../../typo/user/states";
 import { LoginParams, SignUpParams } from "../../typo/user/params";
 
 const InitialEmpState: UserState = {
-  adding: false,
+  creating: false,
   user: undefined,
-  task: undefined,
+  long_task: undefined,
+  short_task: undefined,
   loading: false,
   is_login: false,
-  logining: false,
-  logouting: false,
+  logging_in: false,
+  logging_out: false,
+  login_error: undefined,
+  signup_error: undefined
 };
 const UserSlice = createSlice({
   name: "user",
   initialState: InitialEmpState,
   reducers: {
     signUpRequested: (state, _: PayloadAction<SignUpParams>) => {
-      state.adding = true;
+      state.creating = true;
+      state.signup_error = undefined;
     },
+
     signUpFinished: (state) => {
-      state.adding = false;
-      state.task = undefined;
+      state.creating = false;
+      state.short_task = undefined;
+      state.signup_error = undefined;
     },
-    wrongSignUp: (state) => {
-      state.adding = false;
-      state.is_login = false;
+    wrongSignup: (state, action: PayloadAction<string>)=>{
+      state.signup_error = action.payload;
+
+    },
+    wrongLogin: (state, action: PayloadAction<string>)=>{
+      state.login_error = action.payload;
+
     },
     loginRequested: (state, _: PayloadAction<LoginParams>) => {
-      state.logining = true;
+      state.logging_in = true;
+      state.login_error = undefined;
     },
     loginFinished: (state) => {
-      state.logining = false;
-      state.task = undefined;
+      state.logging_in = false;
+      state.short_task = undefined;
       state.is_login = true;
-    },
-    wrongLogin: (state) => {
-      state.logining = false;
-      state.is_login = false;
+      state.login_error = undefined;
     },
     logoutRequested: (state) => {
-      state.logouting = true;
+      state.logging_out = true;
       state.is_login = true;
     },
     logout: (state) => {
       state.is_login = false;
-      state.adding = false;
+      state.creating = false;
       state.user = undefined;
-      state.task = undefined;
-      state.logining = false;
+      state.short_task = undefined;
+      state.long_task = undefined;
+      state.logging_in = false;
     },
   },
 });
@@ -59,9 +68,9 @@ export const {
   signUpFinished,
   loginRequested,
   loginFinished,
-  wrongSignUp,
-  wrongLogin,
   logoutRequested,
   logout,
+  wrongLogin,
+  wrongSignup
 } = UserSlice.actions;
 export default UserSlice.reducer;

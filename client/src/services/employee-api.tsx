@@ -29,7 +29,11 @@ const addEmp = async (values: AddEmpParams) => {
 
 const listEmployee = async () => {
   const employees = await axios
-    .get<EmployeeResponse[]>(API + "/employee/list")
+    .get<EmployeeResponse[]>(API + "/employee/list", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // Include the authorization header
+      },
+    })
     .then((res) => res.data);
   return employees;
 };
