@@ -11,4 +11,5 @@ export type UserState = {
   long_task: string | undefined;
   login_error: string | undefined;
   signup_error: string | undefined;
+  acc_created: boolean;
 };

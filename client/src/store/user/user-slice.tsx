@@ -14,7 +14,8 @@ const InitialEmpState: UserState = {
   logging_in: false,
   logging_out: false,
   login_error: undefined,
-  signup_error: undefined
+  signup_error: undefined,
+  acc_created: false,
 };
 const UserSlice = createSlice({
   name: "user",
@@ -23,20 +24,22 @@ const UserSlice = createSlice({
     signUpRequested: (state, _: PayloadAction<SignUpParams>) => {
       state.creating = true;
       state.signup_error = undefined;
+      state.acc_created = false;
     },
 
     signUpFinished: (state) => {
       state.creating = false;
       state.short_task = undefined;
       state.signup_error = undefined;
+      state.acc_created = true;
     },
-    wrongSignup: (state, action: PayloadAction<string>)=>{
+    wrongSignup: (state, action: PayloadAction<string>) => {
       state.signup_error = action.payload;
-
+      state.acc_created = false;
+      state.creating = false;
     },
-    wrongLogin: (state, action: PayloadAction<string>)=>{
+    wrongLogin: (state, action: PayloadAction<string>) => {
       state.login_error = action.payload;
-
     },
     loginRequested: (state, _: PayloadAction<LoginParams>) => {
       state.logging_in = true;

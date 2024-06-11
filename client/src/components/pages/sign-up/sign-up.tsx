@@ -2,7 +2,7 @@ import { SignUpContainer, ErrorMessage } from "./sign-up.style";
 import { useFormik } from "formik";
 import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { HomeContainer } from "../home/home-page.style";
 import {
@@ -37,6 +37,9 @@ const SignUp = () => {
         dispatcher(signUpRequested(values));
       },
     });
+  useEffect(() => {
+    if (user.acc_created) window.location.href = "/";
+  });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password_C_Visible, setPassword_C_Visible] = useState<boolean>(false);
 
@@ -120,6 +123,9 @@ const SignUp = () => {
               <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
             )}
           </InputContainer>
+          {user.signup_error && (
+            <ErrorMessage>{user.signup_error}</ErrorMessage>
+          )}
 
           <Button
             type="submit"
