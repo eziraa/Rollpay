@@ -8,8 +8,8 @@ import {
   Button,
   Title,
   PasswordContainer,
-} from "../../utils/form_elements/form.style";
-import { PasswordVisible } from "../../utils/password_visiblity/password.style";
+} from "../../utils/form-elements/form.style";
+import { PasswordVisible } from "../../utils/password-visiblity/password.style";
 import {
   Text,
   CheckboxContainer,
@@ -19,17 +19,19 @@ import {
   Checkbox,
   ActionsContainer,
 } from "./login.style";
-import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
-import { ErrorMessage } from "../signup/SignUp.style";
-import { useAppDispatch } from "../../../utils/customHook";
-import { loginRequested } from "../../../store/user/userSLice";
-import { useAuth } from "../../../contexts/authContext";
+import { ErrorMessage } from "../sign-up/sign-up.style";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { loginRequested } from "../../../store/user/user-slice";
+import { useAuth } from "../../../contexts/auth-context";
+import { IoEyeOutline } from "react-icons/io5";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
+  // const user = useAppSelector((state) => state.user);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
   const togglePasswordVisiblity = () => {
@@ -78,7 +80,7 @@ export const LoginPage = () => {
                 onChange={handleChange}
               />
               <PasswordVisible onClick={togglePasswordVisiblity}>
-                {passwordVisible ? <RiEyeFill /> : <RiEyeOffFill />}
+                {passwordVisible ? <IoEyeOutline /> : <FaRegEyeSlash />}
               </PasswordVisible>
             </PasswordContainer>
             {errors.password && <ErrorMessage>{errors.password} </ErrorMessage>}
@@ -105,4 +107,3 @@ export const LoginPage = () => {
     )
   );
 };
-

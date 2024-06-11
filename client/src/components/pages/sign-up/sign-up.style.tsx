@@ -2,7 +2,7 @@ import { css } from "styled-components";
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 import "react-phone-input-2/lib/style.css";
-import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
@@ -22,7 +22,7 @@ export const SignUpContainer = styled.div<ThemeProps>`
   justify-content: center;
   gap: 1rem;
   position: relative;
-  padding: 1rem;
+  padding: 6rem 1rem;
   border-radius: 1rem;
   /* border: 1px solid
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)}; */

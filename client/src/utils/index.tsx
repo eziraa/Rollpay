@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { RouterConfig } from "../config/router/router";
-import flashMessageSlice from "../store/notification/flashMesssageSlice";
+import flashMessageSlice from "../store/notification/flash-messsage-slice";
 import { rootSaga } from "./saga";
-import employeeSlice from "../store/employee/employeeSlice";
-import userSLice from "../store/user/userSLice";
+import employeeSlice from "../store/employee/employee-slice";
+import userSLice from "../store/user/user-slice";
 
 const sagaMiddleware = createSagaMiddleware();
 

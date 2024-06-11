@@ -1,10 +1,10 @@
-import { SignUpContainer, ErrorMessage, Title } from "./SignUp.style";
+import { SignUpContainer, ErrorMessage } from "./sign-up.style";
 import { useFormik } from "formik";
 import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
-import { HomeContainer } from "../home/homepage.style";
+import { HomeContainer } from "../home/home-page.style";
 import { Header } from "../../sections/header/header";
 import {
   Button,
@@ -12,11 +12,14 @@ import {
   Input,
   InputContainer,
   Label,
+  Title,
   PasswordContainer,
-} from "../../utils/form_elements/form.style";
-import { PasswordVisible } from "../../utils/password_visiblity/password.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
-import { signUpRequested } from "../../../store/user/userSLice";
+} from "../../utils/form-elements/form.style";
+import { PasswordVisible } from "../../utils/password-visiblity/password.style";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { signUpRequested } from "../../../store/user/user-slice";
+import { CustomLink, LinkContainer, Text } from "../login/login.style";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const dispatcher = useAppDispatch();
@@ -124,6 +127,12 @@ const SignUp = () => {
             Create{" "}
           </Button>
         </Form>
+        <LinkContainer>
+          <Text>Have an account? </Text>
+          <CustomLink>
+            <Link to="/"> Log in </Link>
+          </CustomLink>
+        </LinkContainer>
       </SignUpContainer>
     </HomeContainer>
   );

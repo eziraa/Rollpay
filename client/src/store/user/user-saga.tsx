@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery } from "redux-saga/effects";
-import { setFlashMessage } from "../notification/flashMesssageSlice";
+import { setFlashMessage } from "../notification/flash-messsage-slice";
 import { LoginParams, SignUpParams } from "../../typo/user/params";
 import UserAPI from "../../services/user-api";
 import {
@@ -10,7 +10,7 @@ import {
   signUpFinished,
   wrongLogin,
   wrongSignUp,
-} from "./userSLice";
+} from "./user-slice";
 import { SignUpResponse } from "../../typo/user/response";
 
 function* userSignUp(action: PayloadAction<SignUpParams>) {

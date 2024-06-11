@@ -36,7 +36,7 @@ const signUp = async (values: SignUpParams) => {
     .post<SignUpResponse>(API + "/user/register", values)
     .then((res) => {
       return {
-        success: "User sign up successfully",
+        success: "Account created successfully",
         code: res.status,
       };
     })

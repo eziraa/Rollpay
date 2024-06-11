@@ -1,11 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery } from "redux-saga/effects";
-import { setFlashMessage } from "../notification/flashMesssageSlice";
-import { addEmpDone } from "./employeeSlice";
+import { setFlashMessage } from "../notification/flash-messsage-slice";
+import { addEmpDone, listEmpDone } from "./employee-slice";
 import EmployeeAPI from "../../services/employee-api";
 import { AddEmpParams } from "../../typo/employee/params";
-import { AddEmpResponse } from "../../typo/employee/response";
+import { AddEmpResponse, EmployeeResponse } from "../../typo/employee/response";
 
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
@@ -48,6 +48,16 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   }
 }
 
+function* GetEmployee() {
+  try {
+    const employees: EmployeeResponse[] = yield call(EmployeeAPI.listEmployee);
+    yield put(listEmpDone(employees));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchAddEmployee() {
   yield takeEvery("employee/addEmpRequested", AddEmployee);
+  yield takeEvery("employee/listEmpRequested", GetEmployee);
 }

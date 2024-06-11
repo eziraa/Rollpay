@@ -2,13 +2,13 @@ import styled from "styled-components";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { Button } from "../../utils/form_elements/form.style";
-import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
+import { Button } from "../../utils/form-elements/form.style";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 export const AddEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 4rem;
-  box-shadow: 0 0 3rem ${({ theme }) => theme.colors.primary};
+  box-shadow: 0 0 1.5rem ${({ theme }) => theme.colors.primary};
   border-radius: 1rem;
   height: auto;
   width: 100%;

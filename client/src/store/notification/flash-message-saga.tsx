@@ -4,7 +4,7 @@ import {
   FlashMessageState,
   hideFlashMessage,
   setFlashMessage,
-} from "./flashMesssageSlice";
+} from "./flash-messsage-slice";
 
 function* handleFlashMessage(action: PayloadAction<FlashMessageState>) {
   yield delay(action.payload.duration * 1000);
