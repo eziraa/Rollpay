@@ -29,13 +29,14 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   };
-  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
-    initialValues,
-    validationSchema: SignUpSchema,
-    onSubmit: (values) => {
-      dispatcher(signUpRequested(values));
-    },
-  });
+  const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
+    useFormik({
+      initialValues,
+      validationSchema: SignUpSchema,
+      onSubmit: (values) => {
+        dispatcher(signUpRequested(values));
+      },
+    });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password_C_Visible, setPassword_C_Visible] = useState<boolean>(false);
 
@@ -50,11 +51,7 @@ const SignUp = () => {
     <HomeContainer>
       <SignUpContainer className="container">
         <Title>Sign up</Title>
-        <Form
-          onSubmit={() => {
-            handleSubmit;
-          }}
-        >
+        <Form onSubmit={handleSubmit}>
           <InputContainer>
             <Label htmlFor="username">Username: </Label>
             <Input
@@ -64,7 +61,9 @@ const SignUp = () => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
+            {touched.username && errors.username && (
+              <ErrorMessage>{errors.username} </ErrorMessage>
+            )}
           </InputContainer>
 
           <InputContainer>
@@ -76,7 +75,9 @@ const SignUp = () => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {errors.empID && <ErrorMessage>{errors.empID} </ErrorMessage>}
+            {touched.empID && errors.empID && (
+              <ErrorMessage>{errors.empID} </ErrorMessage>
+            )}
           </InputContainer>
           <InputContainer>
             <Label htmlFor="password">Password: </Label>
@@ -94,7 +95,9 @@ const SignUp = () => {
               />
             </PasswordContainer>
 
-            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+            {touched.password && errors.password && (
+              <ErrorMessage>{errors.password}</ErrorMessage>
+            )}
           </InputContainer>
 
           <InputContainer>
@@ -113,7 +116,7 @@ const SignUp = () => {
               />
             </PasswordContainer>
 
-            {errors.confirmPassword && (
+            {touched.confirmPassword && errors.confirmPassword && (
               <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
             )}
           </InputContainer>
