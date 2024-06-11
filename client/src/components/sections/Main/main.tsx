@@ -7,8 +7,8 @@ import {
 } from "./main.style";
 import { Search } from "../../utils/search/search";
 // import Table from "../table/table";
-import { useAppDispatch } from "../../../utils/customHook";
-import { setTask } from "../../../store/employee/employeeSlice";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { setTask } from "../../../store/employee/employee-slice";
 import { ADD_EMP } from "../../../utils/constants/tasks";
 import Table from "../table/table";
 

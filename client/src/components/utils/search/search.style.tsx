@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { GoSearch } from "react-icons/go";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { Input } from "../form_elements/form.style";
+import { Input } from "../form-elements/form.style";
 export const SearchContainer = styled.div<ThemeProps>`
   display: flex;
   align-items: center;
@@ -37,8 +37,6 @@ export const SearchInput = styled(Input)`
 //     border: 1px solid ${({ theme }) => theme.colors.primary};
 //   }
 // `;
-
-
 
 export const SearchIcon = styled(GoSearch)`
   margin-left: 1rem;

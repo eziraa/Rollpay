@@ -6,10 +6,10 @@ import {
   FlashMessageText,
   FlashMessageTitle,
   FlasheMessageContainr,
-} from "./flash_message.style";
+} from "./flash-message.style";
 import { CloseIcon } from "../buttons/close";
-import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
-import { hideFlashMessage } from "../../../store/notification/flashMesssageSlice";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { hideFlashMessage } from "../../../store/notification/flash-messsage-slice";
 
 export const FlashMessage = () => {
   const dispatcher = useAppDispatch();
@@ -18,7 +18,7 @@ export const FlashMessage = () => {
   return (
     <FlasheMessageContainr
       style={{
-        color:  "#0f0f0f" ,
+        color: "#0f0f0f",
       }}
     >
       <FlashMessageHeader>

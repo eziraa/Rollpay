@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { addOpacityToColor } from "../convertor/add_opacity_color";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const Form = styled.form`
   display: flex;

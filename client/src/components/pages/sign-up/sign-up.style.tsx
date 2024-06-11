@@ -2,7 +2,7 @@ import { css } from "styled-components";
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 import "react-phone-input-2/lib/style.css";
-import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};

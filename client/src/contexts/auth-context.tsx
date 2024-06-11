@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Auth } from "../typo/auth/auth";
-import { useAppSelector } from "../utils/customHook";
+import { useAppSelector } from "../utils/custom-hook";
 
 const AuthContext = createContext<Auth>({
   isAuthenticated: false,

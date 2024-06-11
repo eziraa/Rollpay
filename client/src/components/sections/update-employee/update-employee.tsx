@@ -1,7 +1,7 @@
-import { UpdateContainer, Title } from "./UpdateEmployee.style";
-import { ErrorMessage } from "../../pages/signup/SignUp.style";
+import { UpdateContainer, Title } from "./update-employee.style";
+import { ErrorMessage } from "../../pages/sign-up/sign-up.style";
 import { useFormik } from "formik";
-import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
+import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { useState } from "react";
 import {
   Form,
@@ -9,7 +9,7 @@ import {
   InputContainer,
   Label,
   Button,
-} from "../../utils/form_elements/form.style";
+} from "../../utils/form-elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import { CloseIcon } from "../../utils/buttons/close";
 

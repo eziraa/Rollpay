@@ -1,7 +1,7 @@
 import { CloseIcon } from "../buttons/close";
 import { ModalContainer, ModalContent } from "./modal.style";
-import { useAppDispatch } from "../../../utils/customHook";
-import { setTask } from "../../../store/employee/employeeSlice";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { setTask } from "../../../store/employee/employee-slice";
 
 export const Modal = ({ children }: { children: React.ReactNode }) => {
   const dispatcher = useAppDispatch();

@@ -7,10 +7,10 @@ import {
   TableBodyRow,
   BodyData,
 } from "./table.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect } from "react";
-import { listEmpRequested } from "../../../store/employee/employeeSlice";
-import TableFooter from "../tablefooter/table_footer";
+import { listEmpRequested } from "../../../store/employee/employee-slice";
+import TableFooter from "../table-footer/table-footer";
 
 function Table() {
   const employee = useAppSelector((state) => state.employee);
@@ -57,7 +57,7 @@ function Table() {
           <BodyData> netsialemu1907@gmail.com</BodyData>
           <BodyData> +2519071907</BodyData>
           <BodyData> 2023-02-02 </BodyData>
-          <BodyData> 2023-02-02  </BodyData>
+          <BodyData> 2023-02-02 </BodyData>
           <BodyData>Full stack developer </BodyData>
         </TableBodyRow>
         <TableFooter />

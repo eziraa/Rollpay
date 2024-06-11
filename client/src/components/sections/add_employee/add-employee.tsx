@@ -4,8 +4,8 @@ import {
   Input,
   InputContainer,
   Label,
-} from "../../utils/form_elements/form.style";
-import {Modal}  from "../../utils/modal/modal";
+} from "../../utils/form-elements/form.style";
+import { Modal } from "../../utils/modal/modal";
 import {
   AddButton,
   AddEmployeeContainer,
@@ -16,9 +16,9 @@ import {
   Title,
 } from "./add-employee.style";
 import { useFormik } from "formik";
-import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
-import { useAppDispatch } from "../../../utils/customHook";
-import { addEmpRequested } from "../../../store/employee/employeeSlice";
+import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { addEmpRequested } from "../../../store/employee/employee-slice";
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
   const formHandler = useFormik({
@@ -34,7 +34,7 @@ export const AddEmployee = () => {
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
-      console.log(values)
+      console.log(values);
       dispatcher(addEmpRequested(values));
     },
   });
