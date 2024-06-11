@@ -22,7 +22,7 @@ export const lightTheme: Theme = {
   },
   backgrounds: {
     primary: "#fff",
-    secondary: "#03030330",
+    secondary: "#212121",
   },
   fontSizes: {
     small: "1rem",
@@ -39,7 +39,7 @@ export const darkTheme: Theme = {
   },
   backgrounds: {
     primary: "#000000",
-    secondary: "#0303039e",
+    secondary: "#212121",
   },
   fontSizes: {
     small: "1rem",
