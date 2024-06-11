@@ -3,15 +3,15 @@ import { ThemeProps } from "../../../typo/theme/theme";
 
 export const ModalContainer = styled.div<ThemeProps>`
   position: absolute;
-  width: 86vw;
-  height: 83vh;
-  background-color: ${({ theme }) => theme.backgrounds.primary};
+  width: 100vw;
+  height: 100vh;
+  background-color: ${({ theme }) => theme.backgrounds.secondary};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 100;
-  top: 5rem;
+  z-index: 5001;
+  top: -7rem;
   padding: 0;
   margin-top: 7rem;
 `;
