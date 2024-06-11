@@ -4,7 +4,7 @@ import { ThemeContext } from "./contexts/theme-context";
 import { ThemeProvider } from "styled-components";
 import { Theme, darkTheme, lightTheme } from "./theme/theme";
 import { Provider } from "react-redux";
-import { store } from "./utils";
+import { store } from "./utils/store";
 import { RouterConfig } from "./config/router/router";
 import { FlashMessage } from "./components/utils/flash-message/flash-message";
 import { AuthProvider } from "./contexts/auth-context";
