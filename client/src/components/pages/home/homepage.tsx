@@ -8,7 +8,7 @@ import { useAppSelector } from "../../../utils/customHook";
 // import { setTask } from "../../../store/employee/employeeSlice";
 import { ADD_EMP } from "../../../utils/constants/tasks";
 import LeftMenu from "../../sections/left-menu/left-menu";
-import Main from "../../sections/main/main";
+import Main from "../../sections/Main/main";
 import { AddEmployee } from "../../sections/add_employee/add-employee";
 
 // import { useAuth } from "../../../contexts/authContext";
