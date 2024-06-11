@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { AddEmpParams } from "../typo/employee/params";
-import {API} from "../config/api";
+import { API } from "../config/api";
 import { AddEmpResponse, EmployeeResponse } from "../typo/employee/response";
 const accessToken = localStorage.getItem("accessToken");
 
@@ -29,14 +29,18 @@ const addEmp = async (values: AddEmpParams) => {
 
 const listEmployee = async () => {
   const employees = await axios
-    .get<EmployeeResponse[]>(API+ '/employee/list')
+    .get<EmployeeResponse[]>(API + "/employee/list", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // Include the authorization header
+      },
+    })
     .then((res) => res.data);
   return employees;
 };
 
 const EmployeeAPI = {
   addEmp,
-  listEmployee
+  listEmployee,
 };
 
 export default EmployeeAPI;
