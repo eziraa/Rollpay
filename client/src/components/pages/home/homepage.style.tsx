@@ -16,7 +16,7 @@ export const HomeContainer = styled.div<ThemeProps>`
 
 export const HomeBody = styled.div<ThemeProps>`
   width: 100vw;
-  height: 83vh;
+  height: 100vh;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   display: flex;
   flex-direction: row;
