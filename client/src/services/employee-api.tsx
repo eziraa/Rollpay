@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { AddEmpParams } from "../typo/employee/params";
 import {API} from "../config/api";
-import { AddEmpResponse } from "../typo/employee/response";
+import { AddEmpResponse, EmployeeResponse } from "../typo/employee/response";
 const accessToken = localStorage.getItem("accessToken");
 
 const addEmp = async (values: AddEmpParams) => {
@@ -27,8 +27,16 @@ const addEmp = async (values: AddEmpParams) => {
   return response;
 };
 
+const listEmployee = async () => {
+  const employees = await axios
+    .get<EmployeeResponse[]>(API+ '/employee/list')
+    .then((res) => res.data);
+  return employees;
+};
+
 const EmployeeAPI = {
   addEmp,
+  listEmployee
 };
 
 export default EmployeeAPI;
