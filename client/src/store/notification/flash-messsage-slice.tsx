@@ -16,7 +16,7 @@ const initialState: FlashMessageState = {
   duration: 0,
 };
 
-const FlashMessageSlice = createSlice({
+export const FlashMessageSlice = createSlice({
   name: "flashMessage",
   initialState,
   reducers: {

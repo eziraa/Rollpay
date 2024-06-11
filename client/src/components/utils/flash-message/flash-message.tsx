@@ -9,7 +9,7 @@ import {
 } from "./flash-message.style";
 import { CloseIcon } from "../buttons/close";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { hideFlashMessage } from "../../../store/notification/flashMesssageSlice";
+import { hideFlashMessage } from "../../../store/notification/flash-messsage-slice";
 
 export const FlashMessage = () => {
   const dispatcher = useAppDispatch();
