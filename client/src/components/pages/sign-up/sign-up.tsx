@@ -5,7 +5,6 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { HomeContainer } from "../home/home-page.style";
-import { Header } from "../../sections/header/header";
 import {
   Button,
   Form,
@@ -49,10 +48,13 @@ const SignUp = () => {
 
   return (
     <HomeContainer>
-      <Header />
       <SignUpContainer className="container">
-        <Title>Create Account</Title>
-        <Form onSubmit={handleSubmit}>
+        <Title>Sign up</Title>
+        <Form
+          onSubmit={() => {
+            handleSubmit;
+          }}
+        >
           <InputContainer>
             <Label htmlFor="username">Username: </Label>
             <Input
@@ -118,9 +120,9 @@ const SignUp = () => {
 
           <Button
             type="submit"
-            disabled={user.adding}
+            disabled={user.creating}
             style={{
-              cursor: user.adding ? "not-allowed" : "pointer",
+              cursor: user.creating ? "not-allowed" : "pointer",
             }}
           >
             {" "}
