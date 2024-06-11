@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import {
   Form,
   Input,
@@ -45,7 +44,7 @@ export const LoginPage = () => {
       confirm_password: "",
     },
     validationSchema: LogInSchema,
-    onSubmit: async (values, _) => {
+    onSubmit: async (values) => {
       await dispatcher(loginRequested(values));
     },
   });
@@ -95,7 +94,7 @@ export const LoginPage = () => {
             <Link to="/forgot_password">Frogot Password?</Link>
           </CustomLink>
         </ActionsContainer>
-        <Button type="submit" onClick={(e) => e.stopPropagation()}>
+        <Button type="submit" onClick={(e) => e.preventDefault()}>
           Login
         </Button>
       </Form>
