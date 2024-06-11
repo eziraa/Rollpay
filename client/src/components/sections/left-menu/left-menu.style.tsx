@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import { FcHome } from "react-icons/fc";
+import { MdAttachMoney } from "react-icons/md";
+
 import { PiUsersFourThin } from "react-icons/pi";
-import { IoPersonAddOutline } from "react-icons/io5";
 import { ThemeProps } from "../../../typo/theme/theme";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
@@ -51,6 +52,6 @@ export const UsersIcon = styled(PiUsersFourThin)`
   ${Icon}
 `;
 
-export const AddUserIcon = styled(IoPersonAddOutline)`
+export const SalaryIcon = styled(MdAttachMoney)`
   ${Icon}
 `;
