@@ -1,22 +1,32 @@
-import { AddEmployee } from "../../sections/add_employee/add-employee";
+// import { AddEmployee } from "../../sections/add_employee/add-employee";
 import { Header } from "../../sections/header/header";
-import { Button } from "../../utils/form_elements/form.style";
-import { HomeContainer } from "./homepage.style";
-import { LoginPage } from "../login/login";
-import { useAuth } from "../../../contexts/authContext";
-import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
-import { setTask } from "../../../store/employee/employeeSlice";
+// import { Button } from "../../utils/form_elements/form.style";
+import { HomeBody, HomeContainer } from "./homepage.style";
+// import { LoginPage } from "../login/login";
+// import { useAuth } from "../../../contexts/authContext";
+import { useAppSelector } from "../../../utils/customHook";
+// import { setTask } from "../../../store/employee/employeeSlice";
 import { ADD_EMP } from "../../../utils/constants/tasks";
+import LeftMenu from "../../sections/left-menu/left-menu";
+import Main from "../../sections/main/main";
+import { AddEmployee } from "../../sections/add_employee/add-employee";
+
 // import { useAuth } from "../../../contexts/authContext";
 
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
-  const dispatcher = useAppDispatch();
-  const { isAuthenticated } = useAuth();
+  // const dispatcher = useAppDispatch();
+  // const { isAuthenticated } = useAuth();
   return (
-    <HomeContainer>
-      <Header />
-      {isAuthenticated && (
+    <>
+      <HomeContainer>
+        <Header />
+        <HomeBody>
+          <LeftMenu />
+          <Main />
+        </HomeBody>
+
+        {/* {isAuthenticated && (
         <Button
           style={{
             width: "auto",
@@ -32,7 +42,9 @@ export const HomePage = () => {
         </Button>
       )}
       {employee.task === ADD_EMP && <AddEmployee />}
-      <LoginPage />
-    </HomeContainer>
+      <LoginPage /> */}
+      </HomeContainer>
+      {employee.task === ADD_EMP && <AddEmployee />}
+    </>
   );
 };

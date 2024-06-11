@@ -1,28 +1,61 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.request import HttpRequest
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .serializer import EmployeeSerializer, ProfilePicSerializer
 from .models import Employee
+# Assuming you have a utility function to refresh tokens
+from .utils import refresh_jwt_token
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
 
-# Create your views here.
+
 @api_view(['POST'])
+def refresh_token(request):
+    old_token = request.data.get('token')
+    new_token = refresh_jwt_token(old_token)
+    if new_token:
+        return Response({"token": new_token})
+    else:
+        return Response({"error": "Invalid token"}, status=400)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+@permission_classes([IsAuthenticated])
 def add_employee(request):
     try:
-        if Employee.objects.filter(email=request.data['email']).exists():
-            return Response({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        data = json.loads(request.body)
+        if Employee.objects.filter(email=data['email']).exists():
+            return JsonResponse({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
         
-        serializer = EmployeeSerializer(data=request.data)
+        serializer = EmployeeSerializer(data=data)
         
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'Employee registered successfully'}, status=status.HTTP_201_CREATED)
+            return JsonResponse({'message': 'Employee registered successfully'}, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     except KeyError:
-        return Response({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return JsonResponse({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@require_http_methods(["GET"])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def get_employees(request):
+    serializer = EmployeeSerializer(Employee.objects.all(), many=True)
+    return Response(serializer.data)
+     
+
+
+
+
+
+
 @api_view(['PATCH'])
 def update_employee(request, id):
     try:

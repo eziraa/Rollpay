@@ -1,11 +1,12 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
 import json
-
+from employee.models import Employee
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -17,6 +18,12 @@ def register_user(request):
         user = User.objects.create_user(
             username=data['username'], password=data['password'],
         )
+        content_type = ContentType.objects.get_for_model(Employee)
+
+        permissions = Permission.objects.filter(content_type=content_type)
+
+        for permission in permissions:
+            user.user_permissions.add(permission)
         user.save()
         return JsonResponse({'message': 'User registered successfully'}, status=201)
     except KeyError as e:
