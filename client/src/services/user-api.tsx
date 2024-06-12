@@ -5,6 +5,7 @@ import { LoginParams, SignUpParams } from "../typo/user/params";
 import api from "../config/api";
 import { SignUpResponse } from "../typo/user/response";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/token-constants";
+
 const signUp = async (values: SignUpParams) => {
   const response = await api
     .post<SignUpResponse>("/user/register", values)
@@ -31,8 +32,6 @@ const login = async (values: LoginParams) => {
       username,
       password,
     });
-    const token = response.data.token;
-    localStorage.setItem("token", token);
     localStorage.setItem(ACCESS_TOKEN, response.data.access);
     localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
     return {
