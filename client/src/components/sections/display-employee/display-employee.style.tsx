@@ -7,8 +7,8 @@ export const EmployeeDisplayerContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
-
 
 export const Title = styled.h1<ThemeProps>`
   font-size: 2rem;
