@@ -8,7 +8,7 @@ const addEmp = async (values: AddEmpParams) => {
   const response = await axios
     .post<AddEmpResponse>(API + "/employee/add", values, {
       headers: {
-        Authorization: `Bearer ${accessToken}`, // Include the authorization header
+        Authorization: `Bearer ${accessToken}`, 
       },
     })
     .then((res) => {
@@ -31,7 +31,7 @@ const listEmployee = async () => {
   const employees = await axios
     .get<EmployeeResponse[]>(API + "/employee/list", {
       headers: {
-        Authorization: `Bearer ${accessToken}`, // Include the authorization header
+        Authorization: `Bearer ${accessToken}`, 
       },
     })
     .then((res) => res.data);
