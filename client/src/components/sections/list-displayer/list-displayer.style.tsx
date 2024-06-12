@@ -19,6 +19,7 @@ export const ListContainer = styled.table<ThemeProps>`
   }
   tr:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
+    cursor: pointer;
   }
   td {
     padding: 0.4rem 0.5rem;

@@ -1,5 +1,7 @@
 # Create your models here.
 from django.db import models
+from django.contrib.auth.models import User as BaseUser
+
 
 class Employee(models.Model):
     Male = 'M'
@@ -12,26 +14,23 @@ class Employee(models.Model):
                           primary_key=True, unique=True, null=False)
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
-    phone_number = models.CharField(max_length=15,null=False)
+    phone_number = models.CharField(max_length=15, null=False)
     email = models.EmailField(max_length=255, null=False)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=False)
-    email = models.EmailField(max_length=100, unique=True,null=False)
-    phone_number = models.CharField(max_length=15,null=False)
+    email = models.EmailField(max_length=100, unique=True, null=False)
+    phone_number = models.CharField(max_length=15, null=False)
     date_of_birth = models.DateField(null=True, blank=True)
-    date_of_hire = models.DateField(auto_now=True,null=False)
+    date_of_hire = models.DateField(auto_now=True, null=False)
     position = models.CharField(max_length=100, null=False)
-    
+    user = models.OneToOneField(
+        BaseUser, blank=True, null=True, on_delete=models.CASCADE)
+
     def save(self, *args, **kwargs):
-            self.id = self.generate_employee_id()
-            super(Employee, self).save(*args, **kwargs)
+        employee = Employee.objects.last()
+        self.id = Employee.generate_employee_id(employee.id)
+        super(Employee, self).save(*args, **kwargs)
 
     @staticmethod
-    def generate_employee_id():
-        last_employee = Employee.objects.last()
-        if last_employee:
-            last_id = int(last_employee.id[2:])  
-            new_id = last_id + 1
-        else:
-            new_id = 1000  
-        return f'ED{new_id}'
-
+    def generate_employee_id(last_id):
+        employee_id = "ED" + int(last_id[2:])+1
+        return employee_id
