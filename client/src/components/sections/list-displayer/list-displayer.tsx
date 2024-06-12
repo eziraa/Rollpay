@@ -10,7 +10,7 @@ import {
   ListHeader,
   ListRow,
   ListTitle,
-} from "./table.style";
+} from "./list-displayer.style";
 
 function Table() {
   const employee = useAppSelector((state) => state.employee);
