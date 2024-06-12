@@ -4,7 +4,9 @@ import { Button } from "../../utils/form-elements/form.style";
 
 export const PaginationContainer = styled.div`
   width: 85%;
-  align-self: flex-end;
+  position: absolute;
+  bottom: 0rem;
+  right: 3rem;
 `;
 export const BottomContainer = styled.ul`
   display: flex;
