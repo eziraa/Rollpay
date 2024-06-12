@@ -30,7 +30,6 @@ const listEmployee = async () => {
   const employees = await api
     .get<EmployeeResponse[]>("/employee/list")
     .then((res) => {
-      console.log(res.data);
       return res.data;
     });
   return employees;
