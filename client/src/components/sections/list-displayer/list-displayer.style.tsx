@@ -22,20 +22,29 @@ export const ListHeader = styled.div<ThemeProps>`
   font-weight: 600;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  padding: 0.4rem 0.5rem;
+  padding: 2rem 0.5rem;
+  padding-top: 0;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
 export const ListTitle = styled.td<ThemeProps>`
   padding: 1rem 1rem;
+`;
+
+export const HeaderItem = styled.div`
+  padding: 1rem 0;
+  padding-bottom: 2rem;
   width: 15rem;
   &:nth-child(3) {
     width: 5rem;
   }
-
   &:nth-child(4) {
     width: 25rem;
   }
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem;
 `;
 
 export const ListRow = styled.div<ThemeProps>`
@@ -66,4 +75,19 @@ export const Data = styled.div<ThemeProps>`
     width: 25rem;
   }
   /* width: auto; */
+`;
+
+export const SortBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.6rem;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.backgrounds.primary};
+  }
 `;
