@@ -1,13 +1,13 @@
 import axios, { AxiosError } from "axios";
 import { AddEmpParams } from "../typo/employee/params";
-import { API } from "../config/api";
+import api from "../config/api";
 import { AddEmpResponse, EmployeeResponse } from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Token ${token}`; // Set default header
-  const response = await axios
-    .post<AddEmpResponse>(API + "/employee/add", values)
+  const response = await api
+    .post<AddEmpResponse>("/employee/add", values)
     .then((res) => {
       return {
         success: "Employee added successfully",
@@ -27,8 +27,8 @@ const addEmp = async (values: AddEmpParams) => {
 const listEmployee = async () => {
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Token ${token}`; // Set default header
-  const employees = await axios
-    .get<EmployeeResponse[]>(API + "/employee/list")
+  const employees = await api
+    .get<EmployeeResponse[]>("/employee/list")
     .then((res) => {
       console.log(res.data);
       return res.data;
