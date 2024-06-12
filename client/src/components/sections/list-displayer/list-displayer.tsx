@@ -1,14 +1,15 @@
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect } from "react";
 import { listEmpRequested } from "../../../store/employee/employee-slice";
-import Pagination from "../pagination/pagination";
 import {
   Data,
+  ListBody,
   ListContainer,
   ListHeader,
   ListRow,
   ListTitle,
 } from "./list-displayer.style";
+import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 
 function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
@@ -26,7 +27,12 @@ function EmployeeListDisplayer() {
   ];
 
   return (
-    <>
+    <div
+      style={{
+        position: "relative",
+        marginTop: "3rem",
+      }}
+    >
       <ListContainer>
         <ListHeader>
           <ListTitle>Employee</ListTitle>
@@ -38,23 +44,26 @@ function EmployeeListDisplayer() {
           <ListTitle>Date of Birth</ListTitle>
           <ListTitle>Position</ListTitle>
         </ListHeader>
-        {emplist.map((emp) => {
-          return (
-            <ListRow>
-              <Data> {emp.first_name + ' ' + emp.last_name} </Data>
-              <Data> {emp.id} </Data>
-              <Data> {emp.gender} </Data>
-              <Data> {emp.email} </Data>
-              <Data> {emp.phone_number} </Data>
-              <Data> {emp.date_of_hire} </Data>
-              <Data> {emp.date_of_birth} </Data>
-              <Data> {emp.position} </Data>
-            </ListRow>
-          );
-        })}
       </ListContainer>
-      <Pagination />
-    </>
+      <ListBody>
+        <ScrollBar>
+          {emplist.map((emp) => {
+            return (
+              <ListRow>
+                <Data> {emp.first_name + " " + emp.last_name} </Data>
+                <Data> {emp.id} </Data>
+                <Data> {emp.gender} </Data>
+                <Data> {emp.email} </Data>
+                <Data> {emp.phone_number} </Data>
+                <Data> {emp.date_of_hire} </Data>
+                <Data> {emp.date_of_birth} </Data>
+                <Data> {emp.position} </Data>
+              </ListRow>
+            );
+          })}
+        </ScrollBar>
+      </ListBody>
+    </div>
   );
 }
 
