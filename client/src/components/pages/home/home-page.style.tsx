@@ -10,7 +10,6 @@ export const HomeContainer = styled.div<ThemeProps>`
   align-items: center;
   justify-content: start;
   border-radius: 0.5rem;
-  overflow: hidden;
 `;
 
 export const HomeBody = styled.div<ThemeProps>`
