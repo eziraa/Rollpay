@@ -11,7 +11,6 @@ export const HeaderContainer = styled.div<ThemeProps>`
   padding: 0 2rem;
   margin: 0;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.primary};
-  border: 1px solid red;
 `;
 
 export const HeaderTitle = styled.h1<ThemeProps>`
