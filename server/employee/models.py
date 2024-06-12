@@ -1,19 +1,11 @@
 # Create your models here.
 from django.db import models
+from django.contrib.auth.models import User as BaseUser
 
-import random
-import string
 
-def generate_employee_id(first_name, last_name):
-    while True:
-        first_initial = first_name[0].upper()
-        last_initial = last_name[0].upper()
-        random_number = ''.join(random.choices(string.digits, k=5))
-        employee_id = f'E{first_initial}{last_initial}{random_number}'
-        
-        if not Employee.objects.filter(id=employee_id).exists():
-            break
-    
+def generate_employee_id(last_id):
+    employee_id = "ED" + int(last_id[2:])+1
+
     return employee_id
 class Employee(models.Model):
     Male = 'M'
@@ -34,10 +26,11 @@ class Employee(models.Model):
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_hire = models.DateField(auto_now=True,null=False)
     position = models.CharField(max_length=100, null=False)
-    
+    user = models.OneToOneField(
+        BaseUser, blank=True, null=True, on_delete=models.CASCADE)
     def save(self, *args, **kwargs):
-            self.id = generate_employee_id(self.first_name, self.last_name)
-            super(Employee, self).save(*args, **kwargs)
-
+        employee = Employee.objects.last()
+        self.id = generate_employee_id(employee.id)
+        super(Employee, self).save(*args, **kwargs)
 
 
