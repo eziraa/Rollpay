@@ -37,7 +37,7 @@ export const ForgotPassword = () => {
 
   return (
     <ForgotPasswordContainer>
-      <Title>Reset Your Password</Title>
+      <Title>Forgot Your Password</Title>
       <Form onSubmit={sendEmail}>
         <InputContainer>
           <Label>Enter your email</Label>
