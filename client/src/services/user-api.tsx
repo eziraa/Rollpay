@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unsafe-optional-chaining */
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
-import { API } from "../config/api";
+import api from "../config/api";
 import { SignUpResponse } from "../typo/user/response";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/token-constants";
 const signUp = async (values: SignUpParams) => {
-  const response = await axios
-    .post<SignUpResponse>(API + "/user/register", values)
+  const response = await api
+    .post<SignUpResponse>("/user/register", values)
     .then((res) => {
       return {
         success: "Account created successfully",
@@ -26,15 +27,14 @@ const signUp = async (values: SignUpParams) => {
 const login = async (values: LoginParams) => {
   try {
     const { username, password } = values;
-    const response = await axios.post("http://localhost:8000/user/login/", {
+    const response = await api.post("/user/login/", {
       username,
       password,
     });
     const token = response.data.token;
     localStorage.setItem("token", token);
-    console.log(token); // Save the token locally
-    axios.defaults.headers.common["Authorization"] = `Token ${token}`; // Set default header
-    console.log("Login successful");
+    localStorage.setItem(ACCESS_TOKEN, response.data.access);
+    localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
     return {
       success: "User Logged in successfully",
       code: response.status,
@@ -45,11 +45,11 @@ const login = async (values: LoginParams) => {
 };
 
 const logout = async () => {
-  const response = await axios
-    .post(API + "/user/logout") // Added an empty body `{}` and `{ withCredentials: true }`
+  const response = await api
+    .post("/user/logout") // Added an empty body `{}` and `{ withCredentials: true }`
     .then((res) => {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      localStorage.removeItem(ACCESS_TOKEN);
+      localStorage.removeItem(REFRESH_TOKEN);
       return {
         success: "User logged out successfully",
         code: res.status,
