@@ -41,7 +41,7 @@ function EmployeeListDisplayer() {
         {emplist.map((emp) => {
           return (
             <ListRow>
-              <Data> {emp.first_name + emp.last_name} </Data>
+              <Data> {emp.first_name + ' ' + emp.last_name} </Data>
               <Data> {emp.id} </Data>
               <Data> {emp.gender} </Data>
               <Data> {emp.email} </Data>
