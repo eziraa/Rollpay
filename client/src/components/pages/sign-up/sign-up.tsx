@@ -2,10 +2,9 @@ import { SignUpContainer, ErrorMessage } from "./sign-up.style";
 import { useFormik } from "formik";
 import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { HomeContainer } from "../home/home-page.style";
-import { Header } from "../../sections/header/header";
 import {
   Button,
   Form,
@@ -18,6 +17,8 @@ import {
 import { PasswordVisible } from "../../utils/password-visiblity/password.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { signUpRequested } from "../../../store/user/user-slice";
+import { CustomLink, LinkContainer, Text } from "../login/login.style";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const dispatcher = useAppDispatch();
@@ -28,12 +29,16 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   };
-  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
-    initialValues,
-    validationSchema: SignUpSchema,
-    onSubmit: (values) => {
-      dispatcher(signUpRequested(values));
-    },
+  const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
+    useFormik({
+      initialValues,
+      validationSchema: SignUpSchema,
+      onSubmit: (values) => {
+        dispatcher(signUpRequested(values));
+      },
+    });
+  useEffect(() => {
+    if (user.acc_created) window.location.href = "/";
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password_C_Visible, setPassword_C_Visible] = useState<boolean>(false);
@@ -47,9 +52,8 @@ const SignUp = () => {
 
   return (
     <HomeContainer>
-      <Header />
       <SignUpContainer className="container">
-        <Title>Create Account</Title>
+        <Title>Sign up</Title>
         <Form onSubmit={handleSubmit}>
           <InputContainer>
             <Label htmlFor="username">Username: </Label>
@@ -60,7 +64,9 @@ const SignUp = () => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
+            {touched.username && errors.username && (
+              <ErrorMessage>{errors.username} </ErrorMessage>
+            )}
           </InputContainer>
 
           <InputContainer>
@@ -72,7 +78,9 @@ const SignUp = () => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {errors.empID && <ErrorMessage>{errors.empID} </ErrorMessage>}
+            {touched.empID && errors.empID && (
+              <ErrorMessage>{errors.empID} </ErrorMessage>
+            )}
           </InputContainer>
           <InputContainer>
             <Label htmlFor="password">Password: </Label>
@@ -90,7 +98,9 @@ const SignUp = () => {
               />
             </PasswordContainer>
 
-            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+            {touched.password && errors.password && (
+              <ErrorMessage>{errors.password}</ErrorMessage>
+            )}
           </InputContainer>
 
           <InputContainer>
@@ -109,22 +119,31 @@ const SignUp = () => {
               />
             </PasswordContainer>
 
-            {errors.confirmPassword && (
+            {touched.confirmPassword && errors.confirmPassword && (
               <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
             )}
           </InputContainer>
+          {user.signup_error && (
+            <ErrorMessage>{user.signup_error}</ErrorMessage>
+          )}
 
           <Button
             type="submit"
-            disabled={user.adding}
+            disabled={user.creating}
             style={{
-              cursor: user.adding ? "not-allowed" : "pointer",
+              cursor: user.creating ? "not-allowed" : "pointer",
             }}
           >
             {" "}
             Create{" "}
           </Button>
         </Form>
+        <LinkContainer>
+          <Text>Have an account? </Text>
+          <CustomLink>
+            <Link to="/"> Log in </Link>
+          </CustomLink>
+        </LinkContainer>
       </SignUpContainer>
     </HomeContainer>
   );

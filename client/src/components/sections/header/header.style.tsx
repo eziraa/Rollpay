@@ -3,7 +3,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import profile from "../../../assets/profile.png";
 export const HeaderContainer = styled.div<ThemeProps>`
   width: 100vw;
-  height: 8%;
+  height: 10vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

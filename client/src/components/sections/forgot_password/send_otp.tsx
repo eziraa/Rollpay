@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import emailjs from "emailjs-com";
-import { ForgotPasswordContainer } from "./forgot-password.style";
-import { Title } from "../sign-up/sign-up.style";
+import { ForgotPasswordContainer } from "./forgot_password.style";
+import { Title } from "../../pages/sign-up/sign-up.style";
 import {
   Button,
   Form,
@@ -10,27 +10,49 @@ import {
   InputContainer,
   Label,
 } from "../../utils/form-elements/form.style";
-
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
+function generateOTP() {
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  return otp.toString();
+}
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-
+  const dispatcher = useAppDispatch();
   const sendEmail = (e: any) => {
     e.preventDefault();
     emailjs
       .send(
         "service_tfrx1er",
         "template_3ol2yro",
-        { email },
+        {
+          to_email: email,
+          otp: generateOTP(),
+        },
         "k3GlkvUNSNjbu-6bp"
       )
       .then(
-        (result) => {
-          console.log(result.text);
-          alert("Email sent successfully");
+        () => {
+          dispatcher(
+            setFlashMessage({
+              color: "green",
+              status: true,
+              title: "Send OTP",
+              desc: "OTP sent successfully",
+              duration: 3,
+            })
+          );
         },
-        (error) => {
-          console.log(error.text);
-          alert("Failed to send email. Please try again.");
+        () => {
+          dispatcher(
+            setFlashMessage({
+              color: "red",
+              status: true,
+              title: "Send OTP",
+              desc: "Failed to send OTP",
+              duration: 3,
+            })
+          );
         }
       );
   };

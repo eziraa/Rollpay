@@ -6,13 +6,13 @@ export const SearchContainer = styled.div<ThemeProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* gap: 0.4rem; */
   border: 1px solid ${({ theme }) => theme.colors.primary};
   border-radius: 5px;
   width: 50rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 0rem;
   margin: 0rem;
+  margin-left: 4rem;
 `;
 
 export const SearchInput = styled(Input)`

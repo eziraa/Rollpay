@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LoginContainer } from "../login/login.style";
+import { LoginContainer } from "../../pages/login/login.style";
 
 export const ForgotPasswordContainer = styled(LoginContainer)`
   gap: 2rem;

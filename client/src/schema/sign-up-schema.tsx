@@ -9,7 +9,7 @@ export const SignUpSchema = Yup.object({
     .min(3, "Username should be at least 3 characters"),
   empID: Yup.string()
     .required("Please Enter Emplyee ID")
-    .min(9, "Empluyee ID should be at least 9 characters"),
+    .matches(/^ED\d{4}$/, "Employee ID must start with 'ED' followed by a 4-digit number"),
   password: Yup.string()
     .min(8, "Password should be atleast 8 characters")
     .matches(

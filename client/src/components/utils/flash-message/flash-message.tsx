@@ -18,7 +18,7 @@ export const FlashMessage = () => {
   return (
     <FlasheMessageContainr
       style={{
-        color: "#0f0f0f",
+        color: flashMessage.color === "green" ? "rgb(23, 236, 52)" : "#E75454",
       }}
     >
       <FlashMessageHeader>
@@ -27,13 +27,12 @@ export const FlashMessage = () => {
           onClick={() => {
             dispatcher(hideFlashMessage());
           }}
+          style={{
+            color: "white",
+          }}
         />
       </FlashMessageHeader>
-      <FlashMessageContent
-        style={{
-          color: flashMessage.color === "green" ? "rgb(0, 120, 16)" : "#ff0000",
-        }}
-      >
+      <FlashMessageContent>
         <FlashMessageIcon>
           <MdCheckBox />
           <FlashMessageText> {flashMessage.desc} </FlashMessageText>

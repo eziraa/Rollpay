@@ -25,7 +25,6 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     } else {
-      yield put(addEmpDone());
       yield put(
         setFlashMessage({
           color: "green",

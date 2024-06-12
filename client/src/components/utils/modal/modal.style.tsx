@@ -5,7 +5,7 @@ export const ModalContainer = styled.div<ThemeProps>`
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   display: flex;
   flex-direction: column;
   justify-content: center;

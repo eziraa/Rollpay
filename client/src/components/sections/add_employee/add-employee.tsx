@@ -45,7 +45,6 @@ export const AddEmployee = () => {
         <AddEmployeeForm
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(formHandler.values);
             formHandler.handleSubmit(e);
           }}
         >
