@@ -33,7 +33,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=100),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 # Application definition
@@ -47,9 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'employee',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    'rest_framework.authtoken',
 
 ]
 
