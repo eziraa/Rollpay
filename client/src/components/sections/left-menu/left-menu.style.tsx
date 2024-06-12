@@ -6,8 +6,8 @@ import { PiUsersFourThin } from "react-icons/pi";
 import { ThemeProps } from "../../../typo/theme/theme";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
-  width: 20rem;
-  height: 92vh;
+  width: 15vw;
+  height: 100%;
   background-color: ${({ theme }) => theme.backgrounds.secondary};
   padding-top: 2vh;
   z-index: 100;

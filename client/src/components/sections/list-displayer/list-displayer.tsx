@@ -1,5 +1,3 @@
-// import TableFooter from "../tablefooter/table_footer";
-
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect } from "react";
 import { listEmpRequested } from "../../../store/employee/employee-slice";
@@ -12,7 +10,7 @@ import {
   ListTitle,
 } from "./list-displayer.style";
 
-function Table() {
+function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
   console.log();
   const dispatcher = useAppDispatch();
@@ -60,4 +58,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default EmployeeListDisplayer;

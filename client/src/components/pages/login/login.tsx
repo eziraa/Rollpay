@@ -45,7 +45,7 @@ export const LoginPage = () => {
         password: "",
       },
       validationSchema: LogInSchema,
-      onSubmit: async (values, _) => {
+      onSubmit: async (values) => {
         await dispatcher(loginRequested(values));
       },
     });

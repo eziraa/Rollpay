@@ -9,13 +9,6 @@ export const EmployeeDisplayerContainer = styled.div`
   height: 100%;
 `;
 
-export const MainContainer = styled.div<ThemeProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: flex-st;
-  width: 100%;
-`;
 
 export const Title = styled.h1<ThemeProps>`
   font-size: 2rem;
@@ -34,7 +27,6 @@ export const Header = styled.div`
 `;
 
 export const Body = styled.div<ThemeProps>`
-  margin: 1rem;
   padding: 0rem;
 `;
 
