@@ -12,7 +12,10 @@ export type Theme = {
     medium: "1.6rem";
     large: "2.2rem";
   };
-
+  table: {
+    tableRow: string;
+    tableRowHover: string;
+  };
 };
 
 export const lightTheme: Theme = {
@@ -22,14 +25,17 @@ export const lightTheme: Theme = {
   },
   backgrounds: {
     primary: "#fff",
-    secondary: "#212121",
+    secondary: "#cfcfcf",
   },
   fontSizes: {
     small: "1rem",
     medium: "1.6rem",
     large: "2.2rem",
   },
-
+  table: {
+    tableRow: "#fff",
+    tableRowHover: "#929191",
+  },
 };
 
 export const darkTheme: Theme = {
@@ -46,5 +52,8 @@ export const darkTheme: Theme = {
     medium: "1.6rem",
     large: "2.2rem",
   },
-
+  table: {
+    tableRow: "#000000",
+    tableRowHover: "#666464",
+  },
 };
