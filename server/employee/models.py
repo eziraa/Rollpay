@@ -1,20 +1,6 @@
 # Create your models here.
 from django.db import models
 
-import random
-import string
-
-def generate_employee_id(first_name, last_name):
-    while True:
-        first_initial = first_name[0].upper()
-        last_initial = last_name[0].upper()
-        random_number = ''.join(random.choices(string.digits, k=5))
-        employee_id = f'E{first_initial}{last_initial}{random_number}'
-        
-        if not Employee.objects.filter(id=employee_id).exists():
-            break
-    
-    return employee_id
 class Employee(models.Model):
     Male = 'M'
     Female = 'F'
@@ -36,8 +22,16 @@ class Employee(models.Model):
     position = models.CharField(max_length=100, null=False)
     
     def save(self, *args, **kwargs):
-            self.id = generate_employee_id(self.first_name, self.last_name)
+            self.id = self.generate_employee_id()
             super(Employee, self).save(*args, **kwargs)
 
-
+    @staticmethod
+    def generate_employee_id():
+        last_employee = Employee.objects.last()
+        if last_employee:
+            last_id = int(last_employee.id[2:])  
+            new_id = last_id + 1
+        else:
+            new_id = 1000  
+        return f'ED{new_id}'
 
