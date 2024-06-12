@@ -8,9 +8,7 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(
-    undefined
-  );
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     auth().catch(() => setIsAuthorized(false));
@@ -19,7 +17,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     try {
-      const res = await api.post("/token/refresh/", {
+      const res = await api.post("/api/token/refresh/", {
         refresh: refreshToken,
       });
       if (res.status === 200) {
@@ -29,7 +27,6 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
         setIsAuthorized(false);
       }
     } catch (error) {
-      console.log(error);
       setIsAuthorized(false);
     }
   };
@@ -49,16 +46,12 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
       } else {
         setIsAuthorized(true);
       }
-    else {
-      setIsAuthorized(false);
-    }
   };
 
-  if (isAuthorized === null) {
+  if (!isAuthorized) {
     return <div>Loading...</div>;
   }
-
-  return isAuthorized ? children : <Navigate to="/login" />;
+  return isAuthorized ? children : <Navigate to="/" />;
 }
 
 export default ProtectedRoute;
