@@ -15,9 +15,6 @@ from rest_framework import status
 
 
 class UserView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
     def get(self, request, *args, **kwargs):
         logout(request)
         return Response("Logged out", status=status.HTTP_200_OK)
@@ -48,8 +45,7 @@ class UserView(APIView):
 
 
 class AccountView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+
 
     def post(self, request, *args, **kwargs):
         try:
