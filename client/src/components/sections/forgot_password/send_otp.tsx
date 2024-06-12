@@ -2,16 +2,16 @@
 import { useState } from "react";
 import emailjs from "emailjs-com";
 import { ForgotPasswordContainer } from "./forgot_password.style";
-import { Title } from "../signup/SignUp.style";
+import { Title } from "../../pages/sign-up/sign-up.style";
 import {
   Button,
   Form,
   Input,
   InputContainer,
   Label,
-} from "../../utils/form_elements/form.style";
-import { useAppDispatch } from "../../../utils/customHook";
-import { setFlashMessage } from "../../../store/notification/flashMesssageSlice";
+} from "../../utils/form-elements/form.style";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 function generateOTP() {
   const otp = Math.floor(100000 + Math.random() * 900000);
   return otp.toString();

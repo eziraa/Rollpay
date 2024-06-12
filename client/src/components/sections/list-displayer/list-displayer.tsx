@@ -17,6 +17,7 @@ function EmployeeListDisplayer() {
   const dispatcher = useAppDispatch();
   useEffect(() => {
     dispatcher(listEmpRequested());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const emplist = [
