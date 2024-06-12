@@ -45,10 +45,9 @@ def add_employee(request):
 @csrf_exempt
 @require_http_methods(["GET"])
 @permission_classes([IsAuthenticated])
-@api_view(['GET'])
 def get_employees(request):
     serializer = EmployeeSerializer(Employee.objects.all(), many=True)
-    return Response(serializer.data)
+    return JsonResponse(data=serializer.data, safe=False)
      
 
 
