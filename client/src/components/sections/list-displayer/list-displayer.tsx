@@ -107,11 +107,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(0);
               }}
             >
-              {order[0].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[0].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -121,11 +117,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(1);
               }}
             >
-              {order[1].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[1].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -138,11 +130,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(2);
               }}
             >
-              {order[2].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[2].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -152,11 +140,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(3);
               }}
             >
-              {order[3].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[3].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -166,11 +150,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(4);
               }}
             >
-              {order[4].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[4].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -180,11 +160,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(5);
               }}
             >
-              {order[5].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[5].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -194,33 +170,29 @@ function EmployeeListDisplayer() {
                 sortEmployee(6);
               }}
             >
-              {order[6].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[6].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
         </ListHeader>
+        <ListBody>
+          <ScrollBar>
+            {emp_list.map((emp) => {
+              return (
+                <ListRow>
+                  <Data> {emp.first_name + " " + emp.last_name} </Data>
+                  <Data> {emp.id} </Data>
+                  <Data> {emp.gender} </Data>
+                  <Data> {emp.email} </Data>
+                  <Data> {emp.phone_number} </Data>
+                  <Data> {emp.date_of_hire} </Data>
+                  <Data> {emp.date_of_birth} </Data>
+                  <Data> {emp.position} </Data>
+                </ListRow>
+              );
+            })}
+          </ScrollBar>
+        </ListBody>
       </ListContainer>
-      <ListBody>
-        <ScrollBar>
-          {emp_list.map((emp) => {
-            return (
-              <ListRow>
-                <Data> {emp.first_name + " " + emp.last_name} </Data>
-                <Data> {emp.id} </Data>
-                <Data> {emp.gender} </Data>
-                <Data> {emp.email} </Data>
-                <Data> {emp.phone_number} </Data>
-                <Data> {emp.date_of_hire} </Data>
-                <Data> {emp.date_of_birth} </Data>
-                <Data> {emp.position} </Data>
-              </ListRow>
-            );
-          })}
-        </ScrollBar>
-      </ListBody>
     </div>
   );
 }

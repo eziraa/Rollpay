@@ -8,12 +8,15 @@ export const ListContainer = styled.table<ThemeProps>`
   border-bottom: 0.1rem solid black;
   position: relative;
   display: flex;
+  flex-direction: column;
+  gap: 0;
 `;
 export const ListBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  position: relative;
 `;
 export const ListHeader = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.table.header};
@@ -22,8 +25,7 @@ export const ListHeader = styled.div<ThemeProps>`
   font-weight: 600;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  padding: 2rem 0.5rem;
-  padding-top: 0;
+  padding: 0.5rem 0.5rem;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
@@ -32,8 +34,6 @@ export const ListTitle = styled.td<ThemeProps>`
 `;
 
 export const HeaderItem = styled.div`
-  padding: 1rem 0;
-  padding-bottom: 2rem;
   width: 15rem;
   &:nth-child(3) {
     width: 5rem;

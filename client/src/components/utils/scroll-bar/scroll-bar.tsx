@@ -6,7 +6,7 @@ export const ScrollBar = styled.tbody`
   bottom: 0;
   left: 0;
   height: 50vh;
-  top: 4rem;
+  top: 0rem;
   &::-webkit-scrollbar {
     width: 2px;
   }
