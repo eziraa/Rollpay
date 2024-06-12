@@ -15,6 +15,8 @@ import {
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 import { EmployeeResponse } from "../../../typo/employee/response";
+import { MdOutlineEdit } from "react-icons/md";
+import { RiDeleteBin3Line } from "react-icons/ri";
 
 interface EmployeeOrderType {
   name: string;
@@ -154,7 +156,7 @@ function EmployeeListDisplayer() {
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
-            <ListTitle>Date of Birth</ListTitle>
+            <ListTitle>Birth Date</ListTitle>
             <SortBtn
               onClick={() => {
                 sortEmployee(5);
@@ -173,6 +175,9 @@ function EmployeeListDisplayer() {
               {order[6].isAscending ? <FaArrowUp /> : <FaArrowDown />}
             </SortBtn>
           </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Actions</ListTitle>
+          </HeaderItem>
         </ListHeader>
         <ListBody>
           <ScrollBar>
@@ -186,7 +191,26 @@ function EmployeeListDisplayer() {
                   <Data> {emp.phone_number} </Data>
                   <Data> {emp.date_of_hire} </Data>
                   <Data> {emp.date_of_birth} </Data>
+
                   <Data> {emp.position} </Data>
+                  <Data
+                    style={{
+                      fontSize: "1.5rem",
+                    }}
+                  >
+                    <RiDeleteBin3Line
+                      onClick={() => {
+                        setEmpList(emp_list.filter((e) => e.id !== emp.id));
+                      }}
+                    />
+                  </Data>
+                  <Data
+                    style={{
+                      fontSize: "1.5rem",
+                    }}
+                  >
+                    <MdOutlineEdit />
+                  </Data>
                 </ListRow>
               );
             })}
