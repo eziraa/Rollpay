@@ -10,7 +10,6 @@ export const ListContainer = styled.table<ThemeProps>`
   position: relative;
   overflow-y: scroll;
   overflow-x: auto;
-  height: 70vh;
 
   tr:nth-child(even) {
     background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -61,4 +60,3 @@ export const Data = styled.td<ThemeProps>`
   padding: 1rem 2rem;
   /* width: auto; */
 `;
-
