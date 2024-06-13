@@ -2,9 +2,9 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
-import { addEmpDone, listEmpDone } from "./employee-slice";
+import { addEmpDone, addSalaryDone, listEmpDone } from "./employee-slice";
 import EmployeeAPI from "../../services/employee-api";
-import { AddEmpParams } from "../../typo/employee/params";
+import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
 import { AddEmpResponse, EmployeeResponse } from "../../typo/employee/response";
 import { setLongTask } from "../user/user-slice";
 import { LIST_EMP_S } from "../../constants/tasks";
@@ -63,4 +63,20 @@ function* GetEmployee() {
 export function* watchAddEmployee() {
   yield takeEvery("employee/addEmpRequested", AddEmployee);
   yield takeEvery("employee/listEmpRequested", GetEmployee);
+}
+
+function* addSalary(action: PayloadAction<AddSalaryParams>) {
+  try {
+    const employees: EmployeeResponse = yield call(
+      EmployeeAPI.addSalary,
+      action.payload
+    );
+    yield put(addSalaryDone(employees));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export function* watchAddSalary() {
+  yield takeEvery("employee/addSalaryRequested", addSalary);
 }
