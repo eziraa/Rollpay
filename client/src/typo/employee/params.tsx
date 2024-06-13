@@ -8,3 +8,8 @@ export interface AddEmpParams {
   date_of_birth: string;
   date_of_hire: string;
 }
+
+export interface AddSalaryParams {
+  empID: string;
+  salary: string;
+}
