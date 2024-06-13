@@ -56,10 +56,10 @@ class Deduction(models.Model):
 
 class Salary(models.Model):
     basic_salary = models.DecimalField(max_digits=7, decimal_places=2, null=False)
-    employee = models.ManyToManyField(Employee)
-    allowance = models.ManyToManyField(Allowance)
-    overtime = models.ManyToManyField(Overtime)
-    deduction = models.ManyToManyField(Deduction)
+    employee = models.OneToOneField(Employee)
+    allowance = models.ForeignKey(Allowance)
+    overtime = models.ForeignKey(Overtime)
+    deduction = models.ForeignKey(Deduction)
 
 
 
