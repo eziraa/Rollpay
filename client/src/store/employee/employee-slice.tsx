@@ -2,7 +2,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
-import { AddEmpParams } from "../../typo/employee/params";
+import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
 import { EmployeeResponse } from "../../typo/employee/response";
 
 const InitialEmpState: EmployeeState = {
@@ -43,6 +43,13 @@ const EmployeeSlice = createSlice({
     ) => {
       state.curr_emp = payload.payload;
     },
+    addSalaryRequested: (state, _: PayloadAction<AddSalaryParams>) => {
+      state.adding = true;
+    },
+    addSalaryDone: (state, action: PayloadAction<EmployeeResponse>) => {
+      state.adding = false;
+      state.curr_emp = action.payload;
+    },
   },
 });
 export const {
@@ -52,6 +59,8 @@ export const {
   listEmpDone,
   setTask,
   setCurrentEmployee,
+  addSalaryRequested,
+  addSalaryDone,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
