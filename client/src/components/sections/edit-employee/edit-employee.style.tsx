@@ -7,7 +7,8 @@ export const EditEmployeeContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
-  padding: 2rem;
+  padding: 3rem;
+  position: relative;
 `;
 
 export const EditEmployeeContent = styled.div`
@@ -115,4 +116,17 @@ export const SaveButton = styled.button`
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 5px;
+`;
+
+export const CancelButton = styled.button`
+  font-size: 2rem;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+  border-radius: 5px;
+  &:hover {
+    background-color: ${({ theme }) => theme.backgrounds.secondary};
+  }
 `;
