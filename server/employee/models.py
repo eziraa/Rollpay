@@ -1,7 +1,48 @@
-# Create your models here.
 from django.db import models
 from django.contrib.auth.models import User as BaseUser
 
+
+class TaxRules(models.Model):
+    salary_min = models.IntegerField(null=False)
+    salary_max = models.IntegerField(null=False)
+    tax_rate = models.DecimalField(max_digits=6, decimal_places=2, null=False)
+    deduction = models.DecimalField(max_digits=6, decimal_places=2, null=False)
+
+
+class Allowance(models.Model):
+    allowance_type = models.CharField(max_length=255, null=False)
+    allowance_rate = models.DecimalField(
+        max_digits=6, decimal_places=2, null=False)
+
+
+class Overtime(models.Model):
+    overtime_type = models.CharField(max_length=255, null=False)
+    overtime_rate = models.DecimalField(
+        max_digits=6, decimal_places=2, null=False)
+    length = models.IntegerField(null=True)
+
+
+class Deduction(models.Model):
+    deduction_type = models.CharField(max_length=255, null=False)
+    deduction_rate = models.DecimalField(
+        max_digits=7, decimal_places=2, null=False)
+
+
+class Salary(models.Model):
+    basic_salary = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=False)
+    allowances = models.ForeignKey(
+        Allowance, on_delete=models.PROTECT, blank=True, null=False)
+    overtimes = models.ForeignKey(
+        Overtime, on_delete=models.PROTECT, blank=True, null=True)
+    deductions = models.ForeignKey(
+        Deduction, on_delete=models.PROTECT, blank=True, null=False)
+    net_salary = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=False)
+    gross_salary = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=False)
+    total_deduction = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=False)
 
 class Employee(models.Model):
     Male = 'M'
@@ -22,7 +63,8 @@ class Employee(models.Model):
     position = models.CharField(max_length=100, null=False)
     user = models.OneToOneField(
         BaseUser, blank=True, null=True, on_delete=models.CASCADE)
-
+    salary = models.OneToOneField(
+        Salary, blank=True, null=True, on_delete=models.PROTECT)
     def save(self, *args, **kwargs):
         employee = Employee.objects.last()
         if employee:
@@ -36,30 +78,6 @@ class Employee(models.Model):
         employee_id = "ED" + str(int(last_id[2:])+1)
         return employee_id
 
-class TaxRules(models.Model):
-    salary_min = models.IntegerField(null=False)
-    salary_max = models.IntegerField(null=False)
-    tax_rate = models.DecimalField(max_digits=6,decimal_places=2, null=False)
-    deduction = models.DecimalField(max_digits=6,decimal_places=2, null=False)
-
-class Allowance(models.Model):
-    allowance_type = models.CharField(max_length=255,null=False)
-    allowance_rate = models.DecimalField(max_digits=6, decimal_places=2, null=False)
-
-class Overtime(models.Model):
-    overtime_type = models.CharField(max_length=255,null=False)
-    overtime_rate = models.DecimalField(max_digits=6, decimal_places=2, null=False)
-    length = models.IntegerField(null=True)
-
-class Deduction(models.Model):
-    deduction_type = models.CharField(max_length=255,null=False)
-    deduction_rate = models.DecimalField(max_digits=7, decimal_places=2, null=False)
-
-class Salary(models.Model):
-    basic_salary = models.DecimalField(max_digits=7, decimal_places=2, null=False)
-    allowance = models.ForeignKey(Allowance, on_delete=models.PROTECT, null=False)
-    overtime = models.ForeignKey(Overtime, on_delete=models.PROTECT, null=True)
-    deduction = models.ForeignKey(Deduction, on_delete=models.PROTECT, null=False)
 
 
 
