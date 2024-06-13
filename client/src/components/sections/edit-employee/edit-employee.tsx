@@ -28,10 +28,10 @@ import {
   ADD_OVERTIME,
   LIST_EMP_S,
 } from "../../../constants/tasks";
+import { addSalaryRequested } from "../../../store/employee/employee-slice";
 
 interface InputInterface {
   value: string;
-  change: (value: string) => void;
   disabled: boolean;
   ref: MutableRefObject<HTMLInputElement | null>;
 }
@@ -44,13 +44,14 @@ interface EditInput {
   date_of_birth: InputInterface;
   date_of_hire: InputInterface;
   gender: InputInterface;
+  salary: InputInterface;
 }
 
 const getInputInstance = (name: string): InputInterface => {
-  const [value, change] = useState(name);
+  const value = name;
   const disabled = true;
   const ref = useRef<HTMLInputElement | null>(null);
-  return { value, change, disabled, ref };
+  return { value, disabled, ref };
 };
 export const EditEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
@@ -72,6 +73,7 @@ export const EditEmployee = () => {
       current_employee?.date_of_hire || "No Date of Hire"
     ),
     gender: getInputInstance(current_employee?.gender || "No Gender"),
+    salary: getInputInstance("1000"),
   });
   return (
     <EditEmployeeContainer>
@@ -447,7 +449,7 @@ export const EditEmployee = () => {
             <DataLabel>Date of Hire</DataLabel>
             <Input
               type="date"
-              name="date_of_fire"
+              name="salary"
               required
               value={editObject?.date_of_hire.value}
               style={{
@@ -480,6 +482,61 @@ export const EditEmployee = () => {
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
+          </EmployeeData>
+          <EmployeeData
+            style={{
+              gap: "3rem",
+            }}
+          >
+            <DataLabel>Salary</DataLabel>
+            <Input
+              type="text"
+              name="salary"
+              required
+              value={editObject?.salary.value}
+              style={{
+                flex: "1",
+              }}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  salary: {
+                    ...editObject.salary,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.salary.disabled}
+            />
+            <EditButton
+              onClick={(e) => {
+                e.stopPropagation();
+                updateEditObject({
+                  ...editObject,
+                  salary: {
+                    ...editObject.salary,
+                    disabled: !editObject.salary.disabled,
+                  },
+                });
+              }}
+            >
+              {editObject.salary.disabled ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton
+                  onClick={() => {
+                    dispatcher(
+                      addSalaryRequested({
+                        empID: current_employee?.id ?? "",
+                        salary: editObject.salary.value,
+                      })
+                    );
+                  }}
+                >
+                  Save
+                </SaveButton>
               )}
             </EditButton>
           </EmployeeData>
