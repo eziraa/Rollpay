@@ -15,6 +15,7 @@ import {
   Title,
 } from "./edit-employee.style";
 import { MdOutlineEdit } from "react-icons/md";
+import { useAppSelector } from "../../../utils/custom-hook";
 
 interface InputFieldDisability {
   first_name: boolean;
@@ -27,6 +28,9 @@ interface InputFieldDisability {
   gender: boolean;
 }
 export const EditEmployee = () => {
+  const { curr_emp: current_employee } = useAppSelector(
+    (state) => state.employee
+  );
   const [inputFieldDisability, setInputFieldDisability] =
     useState<InputFieldDisability>({
       first_name: true,
@@ -47,31 +51,35 @@ export const EditEmployee = () => {
           <EmployeeInfoContainer>
             <EmployeeData>
               <DataLabel>Full Name</DataLabel>
-              <DataValue>Ezira Tigab</DataValue>
+              <DataValue>
+                {current_employee?.first_name +
+                  " " +
+                  current_employee?.last_name}
+              </DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Gender</DataLabel>
-              <DataValue>M</DataValue>
+              <DataValue>{current_employee?.gender}</DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Email</DataLabel>
-              <DataValue>ezra@gmail.com</DataValue>
+              <DataValue>{current_employee?.email}</DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Phone Number</DataLabel>
-              <DataValue>+25184577258</DataValue>
+              <DataValue>{current_employee?.phone_number}</DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Role</DataLabel>
-              <DataValue>Back End Developer</DataValue>
+              <DataValue>{current_employee?.position}</DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Birth Date</DataLabel>
-              <DataValue>23-23-23</DataValue>
+              <DataValue>{current_employee?.date_of_birth}</DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Date of Hire</DataLabel>
-              <DataValue>09-12-23</DataValue>
+              <DataValue>{current_employee?.date_of_hire}</DataValue>
             </EmployeeData>
           </EmployeeInfoContainer>
         </EmployeeeProfileContainer>
@@ -86,7 +94,7 @@ export const EditEmployee = () => {
               type="text"
               name="first_name"
               required
-              value="Ezira"
+              value={current_employee?.first_name}
               style={{
                 flex: "1",
               }}
@@ -118,7 +126,7 @@ export const EditEmployee = () => {
               type="text"
               name="last_name"
               required
-              value=" Tigab"
+              value={current_employee?.last_name}
               style={{
                 flex: "1",
               }}
@@ -150,7 +158,7 @@ export const EditEmployee = () => {
               type="text"
               name="gender"
               required
-              value=" M"
+              value={current_employee?.gender}
               style={{
                 flex: "1",
               }}
@@ -182,7 +190,7 @@ export const EditEmployee = () => {
               type="text"
               name="email"
               required
-              value=" ezra@gmail.com"
+              value={current_employee?.email}
               style={{
                 flex: "1",
               }}
@@ -214,7 +222,7 @@ export const EditEmployee = () => {
               type="text"
               name="phone_number"
               required
-              value=" +25184577258"
+              value={current_employee?.phone_number}
               style={{
                 flex: "1",
               }}
@@ -246,7 +254,7 @@ export const EditEmployee = () => {
               type="text"
               name="position"
               required
-              value="Back End Developer"
+              value={current_employee?.position}
               style={{
                 flex: "1",
               }}
@@ -278,7 +286,7 @@ export const EditEmployee = () => {
               type="text"
               name="date_of_birth"
               required
-              value="09-02-24"
+              value={current_employee?.date_of_birth}
               style={{
                 flex: "1",
               }}
@@ -310,7 +318,7 @@ export const EditEmployee = () => {
               type="text"
               name="date_of_fire"
               required
-              value="09-23-19"
+              value={current_employee?.date_of_hire}
               style={{
                 flex: "1",
               }}
