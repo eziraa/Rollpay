@@ -1,11 +1,9 @@
-import axios, { AxiosError } from "axios";
-import { AddEmpParams } from "../typo/employee/params";
+import { AxiosError } from "axios";
+import { AddEmpParams, AddSalaryParams } from "../typo/employee/params";
 import api from "../config/api";
 import { AddEmpResponse, EmployeeResponse } from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
-  const token = localStorage.getItem("token");
-  axios.defaults.headers.common["Authorization"] = `Token ${token}`; // Set default header
   const response = await api
     .post<AddEmpResponse>("/employee/add", values)
     .then((res) => {
@@ -25,10 +23,17 @@ const addEmp = async (values: AddEmpParams) => {
 };
 
 const listEmployee = async () => {
-  const token = localStorage.getItem("token");
-  axios.defaults.headers.common["Authorization"] = `Token ${token}`; // Set default header
   const employees = await api
     .get<EmployeeResponse[]>("/employee/list")
+    .then((res) => {
+      return res.data;
+    });
+  return employees;
+};
+
+const addSalary = async (values: AddSalaryParams) => {
+  const employees = await api
+    .post<EmployeeResponse[]>("/employee/salary/add/" + values.empID, values)
     .then((res) => {
       return res.data;
     });
@@ -38,6 +43,7 @@ const listEmployee = async () => {
 const EmployeeAPI = {
   addEmp,
   listEmployee,
+  addSalary,
 };
 
 export default EmployeeAPI;
