@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Profile from "../../../assets/profile.png";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
-import { MdOutlineEdit } from "react-icons/md";
 export const EditEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,8 +97,22 @@ export const DataValue = styled.h5`
   flex: 1;
 `;
 
-export const EditButton = styled(MdOutlineEdit)`
+export const EditButton = styled.div`
   font-size: 2rem;
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const SaveButton = styled.button`
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.backgrounds.primary};
+  cursor: pointer;
+  padding: 1rem 2rem;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.primary};
+  border-radius: 5px;
 `;

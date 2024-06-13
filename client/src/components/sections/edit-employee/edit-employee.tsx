@@ -11,8 +11,10 @@ import {
   EmployeeInfoContainer,
   EmployeeeProfileContainer,
   ProfileImage,
+  SaveButton,
   Title,
 } from "./edit-employee.style";
+import { MdOutlineEdit } from "react-icons/md";
 
 interface InputFieldDisability {
   first_name: boolean;
@@ -91,13 +93,20 @@ export const EditEmployee = () => {
               disabled={inputFieldDisability.first_name}
             />
             <EditButton
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   first_name: !inputFieldDisability.first_name,
                 });
               }}
-            />
+            >
+              {inputFieldDisability.first_name ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
           <EmployeeData
             style={{
@@ -116,13 +125,20 @@ export const EditEmployee = () => {
               disabled={inputFieldDisability.last_name}
             />
             <EditButton
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   last_name: !inputFieldDisability.last_name,
                 });
               }}
-            />
+            >
+              {inputFieldDisability.last_name ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
           <EmployeeData
             style={{
@@ -141,13 +157,20 @@ export const EditEmployee = () => {
               disabled={inputFieldDisability.gender}
             />
             <EditButton
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   gender: !inputFieldDisability.gender,
                 });
               }}
-            />
+            >
+              {inputFieldDisability.gender ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
           <EmployeeData
             style={{
@@ -166,13 +189,20 @@ export const EditEmployee = () => {
               disabled={inputFieldDisability.email}
             />
             <EditButton
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   email: !inputFieldDisability.email,
                 });
               }}
-            />
+            >
+              {inputFieldDisability.email ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
           <EmployeeData
             style={{
@@ -191,13 +221,20 @@ export const EditEmployee = () => {
               disabled={inputFieldDisability.phone_number}
             />
             <EditButton
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   phone_number: !inputFieldDisability.phone_number,
                 });
               }}
-            />
+            >
+              {inputFieldDisability.phone_number ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
           <EmployeeData
             style={{
@@ -214,14 +251,22 @@ export const EditEmployee = () => {
                 flex: "1",
               }}
               disabled={inputFieldDisability.position}
-              onClick={() => {
+            />
+            <EditButton
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   position: !inputFieldDisability.position,
                 });
               }}
-            />
-            <EditButton />
+            >
+              {inputFieldDisability.position ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
           <EmployeeData
             style={{
@@ -238,14 +283,22 @@ export const EditEmployee = () => {
                 flex: "1",
               }}
               disabled={inputFieldDisability.date_of_birth}
-              onClick={() => {
+            />
+            <EditButton
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   date_of_birth: !inputFieldDisability.date_of_birth,
                 });
               }}
-            />
-            <EditButton />
+            >
+              {inputFieldDisability.date_of_birth ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
           <EmployeeData
             style={{
@@ -261,16 +314,23 @@ export const EditEmployee = () => {
               style={{
                 flex: "1",
               }}
-              onClick={() => {
+              disabled={inputFieldDisability.date_of_hire}
+            />
+            <EditButton
+              onClick={(e) => {
+                e.stopPropagation();
                 setInputFieldDisability({
                   ...inputFieldDisability,
                   date_of_hire: !inputFieldDisability.date_of_hire,
                 });
               }}
-              disabled={inputFieldDisability.date_of_hire}
-              // autoFocus={!inputFieldDisability.date_of_hire}
-            />
-            <EditButton />
+            >
+              {inputFieldDisability.date_of_hire ? (
+                <MdOutlineEdit />
+              ) : (
+                <SaveButton>Save</SaveButton>
+              )}
+            </EditButton>
           </EmployeeData>
         </EditEmployeeBody>
       </EditEmployeeContent>
