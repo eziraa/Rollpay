@@ -2,6 +2,8 @@
 import { MutableRefObject, useRef, useState } from "react";
 import { Input } from "../../utils/form-elements/form.style";
 import {
+  ActionBtn,
+  ActionBtnsContainer,
   CancelButton,
   DataLabel,
   DataValue,
@@ -16,7 +18,7 @@ import {
   SaveButton,
   Title,
 } from "./edit-employee.style";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineAdd, MdOutlineEdit } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import { setLongTask } from "../../../store/user/user-slice";
@@ -49,7 +51,7 @@ export const EditEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
-   const dsipatcher = useAppDispatch();
+  const dsipatcher = useAppDispatch();
   const [editObject, updateEditObject] = useState<EditInput>({
     first_name: getInputInstance(current_employee?.first_name || "No Name"),
     last_name: getInputInstance(current_employee?.last_name || "No Name"),
@@ -78,7 +80,7 @@ export const EditEmployee = () => {
       >
         <CancelButton
           onClick={() => {
-            dsipatcher(setLongTask(LIST_EMP_S))
+            dsipatcher(setLongTask(LIST_EMP_S));
           }}
         >
           <IoReturnUpBackSharp />
@@ -476,6 +478,19 @@ export const EditEmployee = () => {
               )}
             </EditButton>
           </EmployeeData>
+          <ActionBtnsContainer>
+            <ActionBtn>
+              <MdOutlineAdd /> Add Allowance
+            </ActionBtn>
+            <ActionBtn>
+              <MdOutlineAdd />
+              Add Deducation
+            </ActionBtn>
+            <ActionBtn>
+              <MdOutlineAdd />
+              Add Overtime
+            </ActionBtn>
+          </ActionBtnsContainer>
         </EditEmployeeBody>
       </EditEmployeeContent>
     </EditEmployeeContainer>
