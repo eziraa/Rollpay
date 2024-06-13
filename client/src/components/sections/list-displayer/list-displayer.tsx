@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect, useState } from "react";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import {
   Data,
   HeaderItem,
@@ -18,6 +17,7 @@ import { RiDeleteBin3Line } from "react-icons/ri";
 import { setLongTask } from "../../../store/user/user-slice";
 import { EDIT_EMP } from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
+import { GoArrowDown, GoArrowUp } from "react-icons/go";
 
 interface EmployeeOrderType {
   name: string;
@@ -106,7 +106,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(0);
               }}
             >
-              {order[0].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -116,7 +116,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(1);
               }}
             >
-              {order[1].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -129,7 +129,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(2);
               }}
             >
-              {order[2].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[2].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -139,7 +139,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(3);
               }}
             >
-              {order[3].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[3].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -149,7 +149,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(4);
               }}
             >
-              {order[4].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[4].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -159,7 +159,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(5);
               }}
             >
-              {order[5].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[5].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -169,7 +169,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(6);
               }}
             >
-              {order[6].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[6].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
