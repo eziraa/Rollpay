@@ -27,10 +27,13 @@ class Employee(models.Model):
 
     def save(self, *args, **kwargs):
         employee = Employee.objects.last()
-        self.id = Employee.generate_employee_id(employee.id)
+        if employee:
+            self.id = Employee.generate_employee_id(employee.id)
+        else:
+            self.id = "ED1000"
         super(Employee, self).save(*args, **kwargs)
 
     @staticmethod
     def generate_employee_id(last_id):
-        employee_id = "ED" + int(last_id[2:])+1
+        employee_id = "ED" + str(int(last_id[2:])+1)
         return employee_id
