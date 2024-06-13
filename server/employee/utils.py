@@ -58,3 +58,6 @@ def income_tax(gross_salary):
     elif gross_salary > 10900:
         return gross_salary * 0.35 - 1500
 
+def allowance(rate, basic_salary):
+    return rate * basic_salary
+
