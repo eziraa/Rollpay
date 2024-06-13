@@ -130,3 +130,30 @@ export const CancelButton = styled.button`
     background-color: ${({ theme }) => theme.backgrounds.secondary};
   }
 `;
+
+export const ActionBtnsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  width: 100%;
+  padding: 2rem 0;
+`;
+
+export const ActionBtn = styled.div`
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.6rem;
+  padding: 1rem 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.75, theme.colors.primary)};
+    color: ${({ theme }) => theme.backgrounds.primary};
+  }
+`;
