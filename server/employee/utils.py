@@ -75,3 +75,6 @@ def overtime_by_time(basic_salary, length):
 
 def total_deduction(*deductions):
     return sum(deductions)
+
+def net_salary(gross_salary, total_deductons):
+    return gross_salary - total_deductons
