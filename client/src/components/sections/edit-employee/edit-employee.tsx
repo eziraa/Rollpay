@@ -21,8 +21,13 @@ import {
 import { MdOutlineAdd, MdOutlineEdit } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { IoReturnUpBackSharp } from "react-icons/io5";
-import { setLongTask } from "../../../store/user/user-slice";
-import { LIST_EMP_S } from "../../../constants/tasks";
+import { setLongTask, setShortTask } from "../../../store/user/user-slice";
+import {
+  ADD_ALLOWANCE,
+  ADD_DEDUCTION,
+  ADD_OVERTIME,
+  LIST_EMP_S,
+} from "../../../constants/tasks";
 
 interface InputInterface {
   value: string;
@@ -51,7 +56,7 @@ export const EditEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
-  const dsipatcher = useAppDispatch();
+  const dispatcher = useAppDispatch();
   const [editObject, updateEditObject] = useState<EditInput>({
     first_name: getInputInstance(current_employee?.first_name || "No Name"),
     last_name: getInputInstance(current_employee?.last_name || "No Name"),
@@ -80,7 +85,7 @@ export const EditEmployee = () => {
       >
         <CancelButton
           onClick={() => {
-            dsipatcher(setLongTask(LIST_EMP_S));
+            dispatcher(setLongTask(LIST_EMP_S));
           }}
         >
           <IoReturnUpBackSharp />
@@ -479,14 +484,26 @@ export const EditEmployee = () => {
             </EditButton>
           </EmployeeData>
           <ActionBtnsContainer>
-            <ActionBtn>
+            <ActionBtn
+              onClick={() => {
+                dispatcher(setShortTask(ADD_ALLOWANCE));
+              }}
+            >
               <MdOutlineAdd /> Add Allowance
             </ActionBtn>
-            <ActionBtn>
+            <ActionBtn
+              onClick={() => {
+                dispatcher(setShortTask(ADD_DEDUCTION));
+              }}
+            >
               <MdOutlineAdd />
               Add Deducation
             </ActionBtn>
-            <ActionBtn>
+            <ActionBtn
+              onClick={() => {
+                dispatcher(setShortTask(ADD_OVERTIME));
+              }}
+            >
               <MdOutlineAdd />
               Add Overtime
             </ActionBtn>
