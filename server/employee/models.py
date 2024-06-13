@@ -54,6 +54,13 @@ class Deduction(models.Model):
     deduction_type = models.CharField(max_length=255,null=False)
     deduction_rate = models.DecimalField(max_digits=7, decimal_places=2, null=False)
 
+class Salary(models.Model):
+    basic_salary = models.DecimalField(max_digits=7, decimal_places=2, null=False)
+    employee = models.ManyToManyField(Employee, on_delete=models.PROTECT)
+    allowance = models.ManyToManyField(Allowance, on_delete=models.PROTECT)
+    overtime = models.ManyToManyField(Overtime, on_delete=models.PROTECT)
+    deduction = models.ManyToManyField(Deduction, on_delete=models.PROTECT)
+
 
 
 
