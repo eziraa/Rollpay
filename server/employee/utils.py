@@ -73,3 +73,5 @@ def overtime_by_rate(basic_salary, length, rate):
 def overtime_by_time(basic_salary, length):
     return basic_salary/30 * length
 
+def total_deduction(*deductions):
+    return sum(deductions)
