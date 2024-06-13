@@ -67,3 +67,6 @@ def total_allowance(*allowance):
 def gross_salary(basic_salary, allowance):
     return sum([basic_salary, allowance])
 
+def overtime_by_rate(basic_salary, length, rate):
+    return  basic_salary * rate * length 
+
