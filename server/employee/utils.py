@@ -61,3 +61,6 @@ def income_tax(gross_salary):
 def allowance(rate, basic_salary):
     return rate * basic_salary
 
+def total_allowance(*allowance):
+    return sum(allowance)
+
