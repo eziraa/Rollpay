@@ -70,3 +70,6 @@ def gross_salary(basic_salary, allowance):
 def overtime_by_rate(basic_salary, length, rate):
     return  basic_salary * rate * length 
 
+def overtime_by_time(basic_salary, length):
+    return basic_salary/30 * length
+
