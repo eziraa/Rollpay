@@ -1,6 +1,8 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { MutableRefObject, useRef, useState } from "react";
 import { Input } from "../../utils/form-elements/form.style";
 import {
+  CancelButton,
   DataLabel,
   DataValue,
   EditButton,
@@ -15,36 +17,74 @@ import {
   Title,
 } from "./edit-employee.style";
 import { MdOutlineEdit } from "react-icons/md";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { IoReturnUpBackSharp } from "react-icons/io5";
+import { setLongTask } from "../../../store/user/user-slice";
+import { LIST_EMP_S } from "../../../constants/tasks";
 
-interface InputFieldDisability {
-  first_name: boolean;
-  last_name: boolean;
-  phone_number: boolean;
-  email: boolean;
-  position: boolean;
-  date_of_birth: boolean;
-  date_of_hire: boolean;
-  gender: boolean;
+interface InputInterface {
+  value: string;
+  change: (value: string) => void;
+  disabled: boolean;
+  ref: MutableRefObject<HTMLInputElement | null>;
 }
+interface EditInput {
+  first_name: InputInterface;
+  last_name: InputInterface;
+  phone_number: InputInterface;
+  email: InputInterface;
+  position: InputInterface;
+  date_of_birth: InputInterface;
+  date_of_hire: InputInterface;
+  gender: InputInterface;
+}
+
+const getInputInstance = (name: string): InputInterface => {
+  const [value, change] = useState(name);
+  const disabled = true;
+  const ref = useRef<HTMLInputElement | null>(null);
+  return { value, change, disabled, ref };
+};
 export const EditEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
-  const [inputFieldDisability, setInputFieldDisability] =
-    useState<InputFieldDisability>({
-      first_name: true,
-      last_name: true,
-      phone_number: true,
-      email: true,
-      position: true,
-      date_of_birth: true,
-      date_of_hire: true,
-      gender: true,
-    });
+   const dsipatcher = useAppDispatch();
+  const [editObject, updateEditObject] = useState<EditInput>({
+    first_name: getInputInstance(current_employee?.first_name || "No Name"),
+    last_name: getInputInstance(current_employee?.last_name || "No Name"),
+    phone_number: getInputInstance(
+      current_employee?.phone_number || "No Phone Number"
+    ),
+    email: getInputInstance(current_employee?.email || "No Email"),
+    position: getInputInstance(current_employee?.position || "No Position"),
+    date_of_birth: getInputInstance(
+      current_employee?.date_of_birth || "No Date of Birth"
+    ),
+    date_of_hire: getInputInstance(
+      current_employee?.date_of_hire || "No Date of Hire"
+    ),
+    gender: getInputInstance(current_employee?.gender || "No Gender"),
+  });
   return (
     <EditEmployeeContainer>
-      <Title>Edit Employee</Title>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          marginBottom: "2rem",
+        }}
+      >
+        <CancelButton
+          onClick={() => {
+            dsipatcher(setLongTask(LIST_EMP_S))
+          }}
+        >
+          <IoReturnUpBackSharp />
+        </CancelButton>
+        <Title>Edit Employee</Title>
+      </div>
       <EditEmployeeContent>
         <EmployeeeProfileContainer>
           <ProfileImage />
@@ -94,22 +134,34 @@ export const EditEmployee = () => {
               type="text"
               name="first_name"
               required
-              value={current_employee?.first_name}
+              value={editObject.first_name.value}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  first_name: {
+                    ...editObject.first_name,
+                    value: e.target.value,
+                  },
+                });
+              }}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.first_name}
+              disabled={editObject.first_name.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  first_name: !inputFieldDisability.first_name,
+                updateEditObject({
+                  ...editObject,
+                  first_name: {
+                    ...editObject.first_name,
+                    disabled: !editObject.first_name.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.first_name ? (
+              {editObject.first_name.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
@@ -126,22 +178,34 @@ export const EditEmployee = () => {
               type="text"
               name="last_name"
               required
-              value={current_employee?.last_name}
+              value={editObject.last_name.value}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.last_name}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  last_name: {
+                    ...editObject.last_name,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.last_name.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  last_name: !inputFieldDisability.last_name,
+                updateEditObject({
+                  ...editObject,
+                  last_name: {
+                    ...editObject.last_name,
+                    disabled: !editObject.last_name.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.last_name ? (
+              {editObject.last_name.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
@@ -158,22 +222,34 @@ export const EditEmployee = () => {
               type="text"
               name="gender"
               required
-              value={current_employee?.gender}
+              value={editObject.gender.value}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.gender}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  gender: {
+                    ...editObject.gender,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.gender.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  gender: !inputFieldDisability.gender,
+                updateEditObject({
+                  ...editObject,
+                  gender: {
+                    ...editObject.gender,
+                    disabled: !editObject.gender.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.gender ? (
+              {editObject.gender.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
@@ -190,22 +266,34 @@ export const EditEmployee = () => {
               type="text"
               name="email"
               required
-              value={current_employee?.email}
+              value={editObject.email.value}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.email}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  gender: {
+                    ...editObject.gender,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.email.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  email: !inputFieldDisability.email,
+                updateEditObject({
+                  ...editObject,
+                  email: {
+                    ...editObject.email,
+                    disabled: !editObject.email.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.email ? (
+              {editObject.email.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
@@ -222,22 +310,34 @@ export const EditEmployee = () => {
               type="text"
               name="phone_number"
               required
-              value={current_employee?.phone_number}
+              value={editObject?.phone_number.value}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.phone_number}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  phone_number: {
+                    ...editObject.phone_number,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.phone_number.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  phone_number: !inputFieldDisability.phone_number,
+                updateEditObject({
+                  ...editObject,
+                  phone_number: {
+                    ...editObject.phone_number,
+                    disabled: !editObject.phone_number.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.phone_number ? (
+              {editObject.phone_number.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
@@ -254,22 +354,34 @@ export const EditEmployee = () => {
               type="text"
               name="position"
               required
-              value={current_employee?.position}
+              value={editObject.position.value}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.position}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  position: {
+                    ...editObject.position,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.position.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  position: !inputFieldDisability.position,
+                updateEditObject({
+                  ...editObject,
+                  position: {
+                    ...editObject.position,
+                    disabled: !editObject.position.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.position ? (
+              {editObject.position.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
@@ -283,25 +395,37 @@ export const EditEmployee = () => {
           >
             <DataLabel>Birth Date</DataLabel>
             <Input
-              type="text"
+              type="date"
               name="date_of_birth"
               required
-              value={current_employee?.date_of_birth}
+              value={editObject.date_of_birth.value}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.date_of_birth}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  date_of_birth: {
+                    ...editObject.date_of_birth,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.date_of_birth.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  date_of_birth: !inputFieldDisability.date_of_birth,
+                updateEditObject({
+                  ...editObject,
+                  date_of_birth: {
+                    ...editObject.date_of_birth,
+                    disabled: !editObject.date_of_birth.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.date_of_birth ? (
+              {editObject.date_of_birth.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
@@ -315,25 +439,37 @@ export const EditEmployee = () => {
           >
             <DataLabel>Date of Hire</DataLabel>
             <Input
-              type="text"
+              type="date"
               name="date_of_fire"
               required
-              value={current_employee?.date_of_hire}
+              value={editObject?.date_of_hire.value}
               style={{
                 flex: "1",
               }}
-              disabled={inputFieldDisability.date_of_hire}
+              onChange={(e) => {
+                updateEditObject({
+                  ...editObject,
+                  date_of_hire: {
+                    ...editObject.date_of_hire,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              disabled={editObject.date_of_hire.disabled}
             />
             <EditButton
               onClick={(e) => {
                 e.stopPropagation();
-                setInputFieldDisability({
-                  ...inputFieldDisability,
-                  date_of_hire: !inputFieldDisability.date_of_hire,
+                updateEditObject({
+                  ...editObject,
+                  date_of_hire: {
+                    ...editObject.date_of_hire,
+                    disabled: !editObject.date_of_hire.disabled,
+                  },
                 });
               }}
             >
-              {inputFieldDisability.date_of_hire ? (
+              {editObject.date_of_hire.disabled ? (
                 <MdOutlineEdit />
               ) : (
                 <SaveButton>Save</SaveButton>
