@@ -17,6 +17,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { setLongTask } from "../../../store/user/user-slice";
 import { EDIT_EMP } from "../../../constants/tasks";
+import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 
 interface EmployeeOrderType {
   name: string;
@@ -204,9 +205,9 @@ function EmployeeListDisplayer() {
                     style={{
                       fontSize: "1.5rem",
                     }}
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    onClick={() => {
                       dispatcher(setLongTask(EDIT_EMP));
+                      dispatcher(setCurrentEmployee(emp));
                     }}
                   >
                     <MdOutlineEdit />
