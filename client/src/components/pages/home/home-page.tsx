@@ -7,9 +7,16 @@ import { AddEmployee } from "../../sections/add_employee/add-employee";
 import Main from "../../sections/main/main";
 import { useEffect } from "react";
 import { listEmpRequested } from "../../../store/employee/employee-slice";
+import {
+  ADD_ALLOWANCE,
+  ADD_DEDUCTION,
+  ADD_OVERTIME,
+} from "../../../constants/tasks";
+import { AddAllowance } from "../../sections/add-allowance/add-allowance";
 
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
+  const user = useAppSelector((state) => state.user);
   const dispacher = useAppDispatch();
   useEffect(() => {
     dispacher(listEmpRequested());
@@ -22,6 +29,9 @@ export const HomePage = () => {
         <Main />
       </HomeBody>
       {employee.task === ADD_EMP && <AddEmployee />}
+      {[ADD_ALLOWANCE, ADD_DEDUCTION, ADD_OVERTIME].includes(
+        user.short_task ?? ""
+      ) && <AddAllowance />}
     </HomeContainer>
   );
 };
