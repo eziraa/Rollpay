@@ -41,3 +41,7 @@ class TaxRules(models.Model):
     tax_rate = models.DecimalField(max_digits=6,decimal_places=2, null=False)
     deduction = models.DecimalField(max_digits=6,decimal_places=2, null=False)
 
+class Allowance(models.Model):
+    allowance_type = models.CharField(max_length=255,null=False)
+    allowance_rate = models.DecimalField(max_digits=6, decimal_places=2, null=False)
+
