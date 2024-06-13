@@ -64,3 +64,6 @@ def allowance(rate, basic_salary):
 def total_allowance(*allowance):
     return sum(allowance)
 
+def gross_salary(basic_salary, allowance):
+    return sum([basic_salary, allowance])
+
