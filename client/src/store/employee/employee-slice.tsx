@@ -10,6 +10,7 @@ const InitialEmpState: EmployeeState = {
   employees: [],
   task: undefined,
   loading: false,
+  curr_emp: undefined,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -36,6 +37,12 @@ const EmployeeSlice = createSlice({
     setTask: (state, task: PayloadAction<string | undefined>) => {
       state.task = task.payload;
     },
+    setCurrentEmployee: (
+      state,
+      payload: PayloadAction<EmployeeResponse | undefined>
+    ) => {
+      state.curr_emp = payload.payload;
+    },
   },
 });
 export const {
@@ -44,6 +51,7 @@ export const {
   listEmpRequested,
   listEmpDone,
   setTask,
+  setCurrentEmployee,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

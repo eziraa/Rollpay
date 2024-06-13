@@ -6,6 +6,8 @@ import { addEmpDone, listEmpDone } from "./employee-slice";
 import EmployeeAPI from "../../services/employee-api";
 import { AddEmpParams } from "../../typo/employee/params";
 import { AddEmpResponse, EmployeeResponse } from "../../typo/employee/response";
+import { setLongTask } from "../user/user-slice";
+import { LIST_EMP_S } from "../../constants/tasks";
 
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
@@ -52,6 +54,7 @@ function* GetEmployee() {
   try {
     const employees: EmployeeResponse[] = yield call(EmployeeAPI.listEmployee);
     yield put(listEmpDone(employees));
+    yield put(setLongTask(LIST_EMP_S));
   } catch (e) {
     console.log(e);
   }

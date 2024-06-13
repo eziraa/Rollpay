@@ -87,3 +87,26 @@ export const FormError = styled.span({
   color: "red",
   fontSize: "1rem",
 });
+
+
+export const Select = styled.select`
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+  outline: none;
+  color: ${({ theme }) => theme.colors.primary};
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+  }
+  option {
+    color: black;
+    background: white;
+    padding: 0px 2px 1px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    height: 100%;
+    padding: 2rem 2rem;
+  }
+`;

@@ -5,4 +5,5 @@ export interface EmployeeState {
   loading: boolean;
   employees: EmployeeResponse[];
   task: string | undefined;
+  curr_emp: EmployeeResponse | undefined;
 }

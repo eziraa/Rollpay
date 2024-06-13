@@ -64,6 +64,12 @@ const UserSlice = createSlice({
       state.long_task = undefined;
       state.logging_in = false;
     },
+    setShortTask: (state, actions: PayloadAction<string | undefined>) => {
+      state.short_task = actions.payload;
+    },
+    setLongTask: (state, actions: PayloadAction<string | undefined>) => {
+      state.long_task = actions.payload;
+    },
   },
 });
 
@@ -75,6 +81,8 @@ export const {
   logoutRequested,
   logout,
   wrongLogin,
-  wrongSignup
+  wrongSignup,
+  setShortTask,
+  setLongTask,
 } = UserSlice.actions;
 export default UserSlice.reducer;

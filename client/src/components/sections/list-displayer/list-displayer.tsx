@@ -1,8 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect, useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-
-import { listEmpRequested } from "../../../store/employee/employee-slice";
 import {
   Data,
   HeaderItem,
@@ -17,6 +15,9 @@ import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 import { EmployeeResponse } from "../../../typo/employee/response";
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
+import { setLongTask } from "../../../store/user/user-slice";
+import { EDIT_EMP } from "../../../constants/tasks";
+import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 
 interface EmployeeOrderType {
   name: string;
@@ -56,10 +57,6 @@ const initialOrder: EmployeeOrderType[] = [
 function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  useEffect(() => {
-    dispatcher(listEmpRequested());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const [order, setOrder] = useState(initialOrder);
   const emplist = [
@@ -207,6 +204,10 @@ function EmployeeListDisplayer() {
                   <Data
                     style={{
                       fontSize: "1.5rem",
+                    }}
+                    onClick={() => {
+                      dispatcher(setLongTask(EDIT_EMP));
+                      dispatcher(setCurrentEmployee(emp));
                     }}
                   >
                     <MdOutlineEdit />
