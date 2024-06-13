@@ -34,3 +34,10 @@ class Employee(models.Model):
     def generate_employee_id(last_id):
         employee_id = "ED" + int(last_id[2:])+1
         return employee_id
+
+class TaxRules(models.Model):
+    salary_min = models.IntegerField(null=False)
+    salary_max = models.IntegerField(null=False)
+    tax_rate = models.DecimalField(max_digits=6,decimal_places=2, null=False)
+    deduction = models.DecimalField(max_digits=6,decimal_places=2, null=False)
+
