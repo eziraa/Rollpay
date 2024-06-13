@@ -45,3 +45,8 @@ class Allowance(models.Model):
     allowance_type = models.CharField(max_length=255,null=False)
     allowance_rate = models.DecimalField(max_digits=6, decimal_places=2, null=False)
 
+class Overtime(models.Model):
+    overtime_type = models.CharField(max_length=255,null=False)
+    overtime_rate = models.DecimalField(max_digits=6, decimal_places=2, null=False)
+    length = models.IntegerField(null=True)
+
