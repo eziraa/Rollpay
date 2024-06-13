@@ -46,7 +46,6 @@ class UserView(APIView):
 
 class AccountView(APIView):
 
-
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body)
@@ -56,11 +55,6 @@ class AccountView(APIView):
                 username=data['username'], password=data['password'],
             )
             content_type = ContentType.objects.get_for_model(Employee)
-
-            permissions = Permission.objects.filter(content_type=content_type)
-            for permission in user.get_all_permissions():
-                for permission in permissions:
-                    user.user_permissions.remove(permission)
             user.save()
             return JsonResponse({'message': 'User registered successfully'}, status=201)
         except KeyError as e:

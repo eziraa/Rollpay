@@ -40,6 +40,7 @@ const UserSlice = createSlice({
     },
     wrongLogin: (state, action: PayloadAction<string>) => {
       state.login_error = action.payload;
+      state.logging_in = false;
     },
     loginRequested: (state, _: PayloadAction<LoginParams>) => {
       state.logging_in = true;

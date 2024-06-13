@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { loginRequested } from "../../../store/user/user-slice";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
@@ -97,7 +98,9 @@ export const LoginPage = () => {
             <Link to="/forgot_password">Frogot Password?</Link>
           </CustomLink>
         </ActionsContainer>
-        <Button type="submit">Login</Button>
+        <Button type="submit" disabled={user.logging_in}>
+          {user.logging_out ? <SmallSpinner /> : "Login"}
+        </Button>
       </Form>
       <LinkContainer>
         <Text>Don't have an account? </Text>

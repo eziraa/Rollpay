@@ -1,5 +1,5 @@
-import { MainContainer } from "./main.style";
 import { DisplayEmployee } from "../display-employee/display-employee";
+import { MainContainer } from "./main.style";
 
 const Main = () => {
   return (
