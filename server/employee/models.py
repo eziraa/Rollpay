@@ -50,3 +50,14 @@ class Overtime(models.Model):
     overtime_rate = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     length = models.IntegerField(null=True)
 
+class Deduction(models.Model):
+    deduction_type = models.CharField(max_length=255,null=False)
+    deduction_rate = models.DecimalField(max_digits=7, decimal_places=2, null=False)
+
+
+
+
+
+
+
+
