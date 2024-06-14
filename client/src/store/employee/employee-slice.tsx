@@ -59,6 +59,9 @@ const EmployeeSlice = createSlice({
       state.editing = false;
       state.curr_emp = action.payload;
     },
+    unfinishedEdit: (state) => {
+      state.editing = false;
+    },
   },
 });
 export const {
@@ -72,6 +75,7 @@ export const {
   addSalaryDone,
   editEmployeeRequested,
   editEmployeeDone,
+  unfinishedEdit,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
