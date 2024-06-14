@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Employee
+from .models import Employee, Salary
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -24,4 +24,16 @@ class ProfilePicSerializer(serializers.ModelSerializer):
         fields = "profile_picture"
 
 
+class SalarySerializer (serializers.ModelSerializer):
+    gross_salary = serializers.DecimalField(
+        max_digits=7, decimal_places=2, allow_null=True)
+    total_salary = serializers.DecimalField(
+        max_digits=7, decimal_places=2, allow_null=True)
+    net_salary = serializers.DecimalField(
+        max_digits=7, decimal_places=2, allow_null=True)
 
+    class Meta:
+
+        model = Salary
+        fields = ('basic_salary', 'gross_salary',
+                  'total_deduction', "net_salary")
