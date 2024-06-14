@@ -4,6 +4,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
 import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
 import { EmployeeResponse } from "../../typo/employee/response";
+import { EditEmployeeParams } from "../../services/employee-api";
 
 const InitialEmpState: EmployeeState = {
   adding: false,
@@ -11,6 +12,7 @@ const InitialEmpState: EmployeeState = {
   task: undefined,
   loading: false,
   curr_emp: undefined,
+  editing: false,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -50,6 +52,13 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.curr_emp = action.payload;
     },
+    editEmployeeRequested: (state, _: PayloadAction<EditEmployeeParams>) => {
+      state.editing = true;
+    },
+    editEmployeeDone: (state, action: PayloadAction<EmployeeResponse>) => {
+      state.editing = false;
+      state.curr_emp = action.payload;
+    },
   },
 });
 export const {
@@ -61,6 +70,8 @@ export const {
   setCurrentEmployee,
   addSalaryRequested,
   addSalaryDone,
+  editEmployeeRequested,
+  editEmployeeDone,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
