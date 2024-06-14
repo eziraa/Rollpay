@@ -72,8 +72,24 @@ function* addSalary(action: PayloadAction<AddSalaryParams>) {
       action.payload
     );
     yield put(addSalaryDone(employees));
+    yield put(
+      setFlashMessage({
+        color: "green",
+        status: true,
+        title: "Add salary",
+        desc: "Salary added successfully",
+        duration: 3,
+      })
+    );
   } catch (e) {
-    console.log(e);
+    yield put(
+      setFlashMessage({
+        color: "red",
+        status: true,
+        title: "Add salary",
+        desc: "Could not add salary",
+        duration: 3,
+      }))
   }
 }
 
