@@ -7,6 +7,7 @@ import {
   addSalaryDone,
   editEmployeeDone,
   listEmpDone,
+  unfinishedEdit,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
 import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
@@ -121,7 +122,10 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
           duration: 3,
         })
       );
-    } else {
+    } else
+    {
+      console.log(response)
+      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           color: "green",
@@ -132,7 +136,9 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         })
       );
     }
-  } catch (e) {
+  } catch (e)
+  {
+    yield put(unfinishedEdit());
     yield put(
       setFlashMessage({
         color: "red",
