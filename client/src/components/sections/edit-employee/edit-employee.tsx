@@ -123,6 +123,10 @@ export const EditEmployee = () => {
               <DataValue>{current_employee?.position}</DataValue>
             </EmployeeData>
             <EmployeeData>
+              <DataLabel>Salary</DataLabel>
+              <DataValue>{current_employee?.salary}</DataValue>
+            </EmployeeData>
+            <EmployeeData>
               <DataLabel>Birth Date</DataLabel>
               <DataValue>{current_employee?.date_of_birth}</DataValue>
             </EmployeeData>
