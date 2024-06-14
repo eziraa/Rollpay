@@ -6,4 +6,5 @@ export interface EmployeeState {
   employees: EmployeeResponse[];
   task: string | undefined;
   curr_emp: EmployeeResponse | undefined;
+  editing: boolean;
 }
