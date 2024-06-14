@@ -1,576 +1,205 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { MutableRefObject, useRef, useState } from "react";
-import { Input } from "../../utils/form-elements/form.style";
-import {
-  ActionBtn,
-  ActionBtnsContainer,
-  CancelButton,
-  DataLabel,
-  DataValue,
-  EditButton,
-  EditEmployeeBody,
-  EditEmployeeContainer,
-  EditEmployeeContent,
-  EmployeeData,
-  EmployeeInfoContainer,
-  EmployeeeProfileContainer,
-  ProfileImage,
-  SaveButton,
-  Title,
-} from "./edit-employee.style";
-import { MdOutlineAdd, MdOutlineEdit } from "react-icons/md";
+import { Input, Form } from "../../utils/form-elements/form.style";
+import { Label, EditEmployeeBody, Field, SaveBtn } from "./edit-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { IoReturnUpBackSharp } from "react-icons/io5";
-import { setLongTask, setShortTask } from "../../../store/user/user-slice";
-import {
-  ADD_ALLOWANCE,
-  ADD_DEDUCTION,
-  ADD_OVERTIME,
-  LIST_EMP_S,
-} from "../../../constants/tasks";
-import { addSalaryRequested } from "../../../store/employee/employee-slice";
 
-interface InputInterface {
-  value: string;
-  disabled: boolean;
-  ref: MutableRefObject<HTMLInputElement | null>;
-}
-interface EditInput {
-  first_name: InputInterface;
-  last_name: InputInterface;
-  phone_number: InputInterface;
-  email: InputInterface;
-  position: InputInterface;
-  date_of_birth: InputInterface;
-  date_of_hire: InputInterface;
-  gender: InputInterface;
-  salary: InputInterface;
-}
+import { editEmployeeRequested } from "../../../store/employee/employee-slice";
+import { useFormik } from "formik";
+import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
+import { ErrorMessage } from "../../pages/sign-up/sign-up.style";
 
-const getInputInstance = (name: string): InputInterface => {
-  const value = name;
-  const disabled = true;
-  const ref = useRef<HTMLInputElement | null>(null);
-  return { value, disabled, ref };
-};
 export const EditEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
   const dispatcher = useAppDispatch();
-  const [editObject, updateEditObject] = useState<EditInput>({
-    first_name: getInputInstance(current_employee?.first_name || "No Name"),
-    last_name: getInputInstance(current_employee?.last_name || "No Name"),
-    phone_number: getInputInstance(
-      current_employee?.phone_number || "No Phone Number"
-    ),
-    email: getInputInstance(current_employee?.email || "No Email"),
-    position: getInputInstance(current_employee?.position || "No Position"),
-    date_of_birth: getInputInstance(
-      current_employee?.date_of_birth || "No Date of Birth"
-    ),
-    date_of_hire: getInputInstance(
-      current_employee?.date_of_hire || "No Date of Hire"
-    ),
-    gender: getInputInstance(current_employee?.gender || "No Gender"),
-    salary: getInputInstance("1000"),
+
+  const initialValues = {
+    id: current_employee?.id ?? "",
+    first_name: current_employee?.first_name ?? "",
+    last_name: current_employee?.last_name ?? "",
+    gender: current_employee?.gender ?? "",
+    email: current_employee?.email ?? "",
+    position: current_employee?.position ?? "",
+    phone_number: current_employee?.phone_number ?? "",
+    date_of_birth: current_employee?.date_of_birth ?? "",
+    date_of_hire: current_employee?.date_of_hire ?? "",
+    salary: current_employee?.salary ?? "", // Default to 0 if salary is undefined
+  };
+
+  const { values, handleChange, errors, touched, handleSubmit } = useFormik({
+    initialValues: initialValues,
+    validationSchema: AddEmployeeSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      dispatcher(editEmployeeRequested(values));
+    },
   });
   return (
-    <EditEmployeeContainer>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "2rem",
-        }}
-      >
-        <CancelButton
-          onClick={() => {
-            dispatcher(setLongTask(LIST_EMP_S));
+    <Form onSubmit={handleSubmit}>
+      <EditEmployeeBody>
+        <Field
+          style={{
+            gap: "3rem",
           }}
         >
-          <IoReturnUpBackSharp />
-        </CancelButton>
-        <Title>Edit Employee</Title>
-      </div>
-      <EditEmployeeContent>
-        <EmployeeeProfileContainer>
-          <ProfileImage />
-          <EmployeeInfoContainer>
-            <EmployeeData>
-              <DataLabel>Full Name</DataLabel>
-              <DataValue>
-                {current_employee?.first_name +
-                  " " +
-                  current_employee?.last_name}
-              </DataValue>
-            </EmployeeData>
-            <EmployeeData>
-              <DataLabel>Gender</DataLabel>
-              <DataValue>{current_employee?.gender}</DataValue>
-            </EmployeeData>
-            <EmployeeData>
-              <DataLabel>Email</DataLabel>
-              <DataValue>{current_employee?.email}</DataValue>
-            </EmployeeData>
-            <EmployeeData>
-              <DataLabel>Phone Number</DataLabel>
-              <DataValue>{current_employee?.phone_number}</DataValue>
-            </EmployeeData>
-            <EmployeeData>
-              <DataLabel>Role</DataLabel>
-              <DataValue>{current_employee?.position}</DataValue>
-            </EmployeeData>
-            <EmployeeData>
-              <DataLabel>Salary</DataLabel>
-              <DataValue>{current_employee?.salary}</DataValue>
-            </EmployeeData>
-            <EmployeeData>
-              <DataLabel>Birth Date</DataLabel>
-              <DataValue>{current_employee?.date_of_birth}</DataValue>
-            </EmployeeData>
-            <EmployeeData>
-              <DataLabel>Date of Hire</DataLabel>
-              <DataValue>{current_employee?.date_of_hire}</DataValue>
-            </EmployeeData>
-          </EmployeeInfoContainer>
-        </EmployeeeProfileContainer>
-        <EditEmployeeBody>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>First Name</DataLabel>
-            <Input
-              type="text"
-              name="first_name"
-              required
-              value={editObject.first_name.value}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  first_name: {
-                    ...editObject.first_name,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              style={{
-                flex: "1",
-              }}
-              disabled={editObject.first_name.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  first_name: {
-                    ...editObject.first_name,
-                    disabled: !editObject.first_name.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.first_name.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Last Name</DataLabel>
-            <Input
-              type="text"
-              name="last_name"
-              required
-              value={editObject.last_name.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  last_name: {
-                    ...editObject.last_name,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.last_name.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  last_name: {
-                    ...editObject.last_name,
-                    disabled: !editObject.last_name.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.last_name.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Gender</DataLabel>
-            <Input
-              type="text"
-              name="gender"
-              required
-              value={editObject.gender.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  gender: {
-                    ...editObject.gender,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.gender.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  gender: {
-                    ...editObject.gender,
-                    disabled: !editObject.gender.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.gender.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Email</DataLabel>
-            <Input
-              type="text"
-              name="email"
-              required
-              value={editObject.email.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  gender: {
-                    ...editObject.gender,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.email.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  email: {
-                    ...editObject.email,
-                    disabled: !editObject.email.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.email.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Phone Number</DataLabel>
-            <Input
-              type="text"
-              name="phone_number"
-              required
-              value={editObject?.phone_number.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  phone_number: {
-                    ...editObject.phone_number,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.phone_number.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  phone_number: {
-                    ...editObject.phone_number,
-                    disabled: !editObject.phone_number.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.phone_number.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Role</DataLabel>
-            <Input
-              type="text"
-              name="position"
-              required
-              value={editObject.position.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  position: {
-                    ...editObject.position,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.position.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  position: {
-                    ...editObject.position,
-                    disabled: !editObject.position.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.position.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Birth Date</DataLabel>
-            <Input
-              type="date"
-              name="date_of_birth"
-              required
-              value={editObject.date_of_birth.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  date_of_birth: {
-                    ...editObject.date_of_birth,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.date_of_birth.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  date_of_birth: {
-                    ...editObject.date_of_birth,
-                    disabled: !editObject.date_of_birth.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.date_of_birth.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Date of Hire</DataLabel>
-            <Input
-              type="date"
-              name="salary"
-              required
-              value={editObject?.date_of_hire.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  date_of_hire: {
-                    ...editObject.date_of_hire,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.date_of_hire.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  date_of_hire: {
-                    ...editObject.date_of_hire,
-                    disabled: !editObject.date_of_hire.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.date_of_hire.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton>Save</SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <EmployeeData
-            style={{
-              gap: "3rem",
-            }}
-          >
-            <DataLabel>Salary</DataLabel>
-            <Input
-              type="text"
-              name="salary"
-              required
-              value={editObject?.salary.value}
-              style={{
-                flex: "1",
-              }}
-              onChange={(e) => {
-                updateEditObject({
-                  ...editObject,
-                  salary: {
-                    ...editObject.salary,
-                    value: e.target.value,
-                  },
-                });
-              }}
-              disabled={editObject.salary.disabled}
-            />
-            <EditButton
-              onClick={(e) => {
-                e.stopPropagation();
-                updateEditObject({
-                  ...editObject,
-                  salary: {
-                    ...editObject.salary,
-                    disabled: !editObject.salary.disabled,
-                  },
-                });
-              }}
-            >
-              {editObject.salary.disabled ? (
-                <MdOutlineEdit />
-              ) : (
-                <SaveButton
-                  onClick={() => {
-                    dispatcher(
-                      addSalaryRequested({
-                        empID: current_employee?.id ?? "",
-                        salary: editObject.salary.value,
-                      })
-                    );
-                  }}
-                >
-                  Save
-                </SaveButton>
-              )}
-            </EditButton>
-          </EmployeeData>
-          <ActionBtnsContainer>
-            <ActionBtn
-              onClick={() => {
-                dispatcher(setShortTask(ADD_ALLOWANCE));
-              }}
-            >
-              <MdOutlineAdd /> Add Allowance
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => {
-                dispatcher(setShortTask(ADD_DEDUCTION));
-              }}
-            >
-              <MdOutlineAdd />
-              Add Deducation
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => {
-                dispatcher(setShortTask(ADD_OVERTIME));
-              }}
-            >
-              <MdOutlineAdd />
-              Add Overtime
-            </ActionBtn>
-          </ActionBtnsContainer>
-        </EditEmployeeBody>
-      </EditEmployeeContent>
-    </EditEmployeeContainer>
+          <Label>First Name</Label>
+          <Input
+            type="text"
+            name="first_name"
+            required
+            value={values.first_name}
+            onChange={handleChange}
+          />
+          {touched.first_name && errors.first_name && (
+            <ErrorMessage>{errors.first_name}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Last Name</Label>
+          <Input
+            type="text"
+            name="last_name"
+            required
+            value={values.last_name}
+            onChange={handleChange}
+          />
+          {touched.last_name && errors.last_name && (
+            <ErrorMessage>{errors.last_name}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Gender</Label>
+          <Input
+            type="text"
+            name="gender"
+            required
+            value={values.gender}
+            onChange={handleChange}
+          />
+          {touched.gender && errors.gender && (
+            <ErrorMessage>{errors.gender}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Email</Label>
+          <Input
+            type="text"
+            name="email"
+            required
+            value={values.email}
+            onChange={handleChange}
+          />
+          {touched.email && errors.email && (
+            <ErrorMessage>{errors.email}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Phone Number</Label>
+          <Input
+            type="text"
+            name="phone_number"
+            required
+            value={values.phone_number}
+            onChange={handleChange}
+          />
+          {touched.phone_number && errors.phone_number && (
+            <ErrorMessage>{errors.phone_number}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Role</Label>
+          <Input
+            type="text"
+            name="position"
+            required
+            value={values.position}
+            onChange={handleChange}
+          />
+          {touched.position && errors.position && (
+            <ErrorMessage>{errors.position}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Birth Date</Label>
+          <Input
+            type="date"
+            name="date_of_birth"
+            required
+            value={values.date_of_birth}
+            onChange={handleChange}
+          />
+          {touched.date_of_birth && errors.date_of_birth && (
+            <ErrorMessage>{errors.date_of_birth}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Date of Hire</Label>
+          <Input
+            type="date"
+            name="salary"
+            required
+            value={values.date_of_hire}
+            onChange={handleChange}
+          />
+          {touched.date_of_hire && errors.date_of_hire && (
+            <ErrorMessage>{errors.date_of_hire}</ErrorMessage>
+          )}
+        </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Salary</Label>
+          <Input
+            type="text"
+            name="salary"
+            required
+            value={values.salary}
+            onChange={handleChange}
+          />
+          {touched.salary && errors.salary && (
+            <ErrorMessage>{errors.salary}</ErrorMessage>
+          )}
+        </Field>
+        <SaveBtn
+          style={{
+            alignSelf: "center",
+          }}
+          type="submit"
+        >
+          Save
+        </SaveBtn>
+      </EditEmployeeBody>
+    </Form>
   );
 };
