@@ -65,13 +65,6 @@ class Employee(models.Model):
         BaseUser, blank=True, null=True, on_delete=models.CASCADE)
     salary = models.OneToOneField(
         Salary, blank=True, null=True, on_delete=models.PROTECT)
-    def save(self, *args, **kwargs):
-        employee = Employee.objects.last()
-        if employee:
-            self.id = Employee.generate_employee_id(employee.id)
-        else:
-            self.id = "ED1000"
-        super(Employee, self).save(*args, **kwargs)
 
     @staticmethod
     def generate_employee_id(last_id):

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Input, Form } from "../../utils/form-elements/form.style";
 import { Label, EditEmployeeBody, Field, SaveBtn } from "./edit-employee.style";
@@ -7,9 +8,12 @@ import { editEmployeeRequested } from "../../../store/employee/employee-slice";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { ErrorMessage } from "../../pages/sign-up/sign-up.style";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
+import { useEffect } from "react";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 
 export const EditEmployee = () => {
-  const { curr_emp: current_employee } = useAppSelector(
+  const { curr_emp: current_employee, editing } = useAppSelector(
     (state) => state.employee
   );
   const dispatcher = useAppDispatch();
@@ -24,15 +28,37 @@ export const EditEmployee = () => {
     phone_number: current_employee?.phone_number ?? "",
     date_of_birth: current_employee?.date_of_birth ?? "",
     date_of_hire: current_employee?.date_of_hire ?? "",
-    salary: current_employee?.salary ?? "", // Default to 0 if salary is undefined
+    salary: current_employee?.salary ?? 0, // Default to 0 if salary is undefined
   };
 
-  const { values, handleChange, errors, touched, handleSubmit } = useFormik({
+  useEffect(() => {
+    resetForm({ values: current_employee });
+  }, [current_employee]);
+  const {
+    resetForm,
+    dirty,
+    values,
+    handleChange,
+    errors,
+    touched,
+    handleSubmit,
+  } = useFormik({
     initialValues: initialValues,
     validationSchema: AddEmployeeSchema,
     onSubmit: (values) => {
-      console.log(values);
-      dispatcher(editEmployeeRequested(values));
+      if (dirty) {
+        dispatcher(editEmployeeRequested(values));
+      } else {
+        dispatcher(
+          setFlashMessage({
+            desc: "No changes to save",
+            title: "No changes made",
+            status: true,
+            duration: 3,
+            color: "red",
+          })
+        );
+      }
     },
   });
   return (
@@ -197,7 +223,7 @@ export const EditEmployee = () => {
           }}
           type="submit"
         >
-          Save
+          {editing ? <SmallSpinner /> : "Save"}
         </SaveBtn>
       </EditEmployeeBody>
     </Form>

@@ -28,6 +28,7 @@ def refresh_token(request):
 
 class EmployeeView (APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request: Request, format=None):
         try:
             content = {
@@ -45,14 +46,21 @@ class EmployeeView (APIView):
             data = json.loads(request.body)
             if Employee.objects.filter(email=data['email']).exists():
                 return JsonResponse({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
-            data['id'] = "DF0000"
-            serializer = EmployeeSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse({'message': 'Employee registered successfully'}, status=status.HTTP_201_CREATED)
+            employee = Employee.objects.last()
+            if employee:
+                data['id'] = Employee.generate_employee_id(employee.id)
             else:
-                return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+                data['id'] = "ED1000"
+            salary = Salary.objects.create(
+                basic_salary=data['salary'])
+            data['salary'] = salary
+            employee = Employee.objects.create(**data)
+            employee.save()
+            serializer = EmployeeSerializer(employee, data=data)
+            if serializer.is_valid():
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except KeyError:
             return JsonResponse({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -83,10 +91,9 @@ class EmployeeView (APIView):
         data = json.loads(request.body)
         salary = Salary.objects.create(
             basic_salary=data['salary'])
-        data = {key: value for key, value in data.items() if key != 'salary'}
         employee.salary = salary
-        serializer = EmployeeSerializer(employee, data)
+        data.pop('salary', None)  # Use pop to remove 'salary' safely
+        serializer = EmployeeSerializer(employee, data=data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)

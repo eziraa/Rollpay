@@ -25,4 +25,7 @@ export const AddEmployeeSchema = Yup.object({
     .min(10, "Password should be atleast 10 characters")
     .matches(pattern, "Please enter valid phone number")
     .required("Please Enter phone number"),
+  salary: Yup.number()
+    .positive("Salary Should be positive")
+    .required("Please Enter salary"),
 });

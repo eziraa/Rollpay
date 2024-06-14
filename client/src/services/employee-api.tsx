@@ -41,7 +41,6 @@ const addSalary = async (values: AddSalaryParams) => {
 };
 
 export interface EditEmployeeParams extends AddEmpParams {
-  salary: string;
   id: string | undefined;
 }
 
@@ -59,11 +58,13 @@ const editEmployee = async (
       };
     })
     .catch((err: AxiosError) => {
-      const { error } = err.response?.data as { error: string };
-      return {
-        error: error,
-        code: err.response?.status,
-      } as { error: string; code: number };
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
     });
   return response;
 };

@@ -4,3 +4,4 @@ export const LIST_EMP_S = "list_employees";
 export const ADD_ALLOWANCE = "add_allowance";
 export const ADD_DEDUCTION = "add_deduction";
 export const ADD_OVERTIME = "add_overtime";
+export const SEE_EMPLOYEE = "see_employee";
