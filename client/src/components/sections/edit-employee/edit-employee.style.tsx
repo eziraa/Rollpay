@@ -12,13 +12,19 @@ export const EditEmployeeBody = styled.div`
   gap: 1rem;
   position: relative;
 `;
-export const Field = styled.div`
+export const InputField = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   width: 100%;
 `;
 
+export const Field = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+`;
 export const Label = styled.h5`
   font-size: 1.4rem;
   font-weight: 500;
