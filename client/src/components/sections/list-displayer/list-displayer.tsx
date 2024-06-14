@@ -52,6 +52,10 @@ const initialOrder: EmployeeOrderType[] = [
     name: "position",
     isAscending: true,
   },
+  {
+    name: "salary",
+    isAscending: true,
+  },
 ];
 
 function EmployeeListDisplayer() {
@@ -59,12 +63,7 @@ function EmployeeListDisplayer() {
   const dispatcher = useAppDispatch();
 
   const [order, setOrder] = useState(initialOrder);
-  const emplist = [
-    ...employee.employees,
-    ...employee.employees,
-    ...employee.employees,
-    ...employee.employees,
-  ];
+  const emplist = [...employee.employees];
 
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
@@ -173,6 +172,16 @@ function EmployeeListDisplayer() {
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
+            <ListTitle>Salary</ListTitle>
+            <SortBtn
+              onClick={() => {
+                sortEmployee(7);
+              }}
+            >
+              {order[7].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+            </SortBtn>
+          </HeaderItem>
+          <HeaderItem>
             <ListTitle>Actions</ListTitle>
           </HeaderItem>
         </ListHeader>
@@ -190,6 +199,7 @@ function EmployeeListDisplayer() {
                   <Data> {emp.date_of_birth} </Data>
 
                   <Data> {emp.position} </Data>
+                  <Data> {emp.salary} </Data>
                   <Data
                     style={{
                       fontSize: "1.5rem",
