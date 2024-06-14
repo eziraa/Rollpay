@@ -40,10 +40,39 @@ const addSalary = async (values: AddSalaryParams) => {
   return employees;
 };
 
+export interface EditEmployeeParams extends AddEmpParams {
+  salary: string;
+  id: string | undefined;
+}
+
+const editEmployee = async (
+  empployee_id: string,
+  values: EditEmployeeParams
+) => {
+  const response = await api
+    .put<AddEmpResponse[]>("/employee/edit/" + empployee_id, values)
+    .then((res) => {
+      return {
+        success: "Employee updated successfully",
+        code: res.status,
+        employee: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const EmployeeAPI = {
   addEmp,
   listEmployee,
   addSalary,
+  editEmployee,
 };
 
 export default EmployeeAPI;
