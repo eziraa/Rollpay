@@ -28,7 +28,7 @@ export const EditEmployee = () => {
     phone_number: current_employee?.phone_number ?? "",
     date_of_birth: current_employee?.date_of_birth ?? "",
     date_of_hire: current_employee?.date_of_hire ?? "",
-    salary: current_employee?.salary ?? "", // Default to 0 if salary is undefined
+    salary: current_employee?.salary ?? 0, // Default to 0 if salary is undefined
   };
 
   useEffect(() => {
