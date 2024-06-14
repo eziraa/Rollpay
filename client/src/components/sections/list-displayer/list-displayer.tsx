@@ -12,10 +12,9 @@ import {
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 import { EmployeeResponse } from "../../../typo/employee/response";
-import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { setLongTask } from "../../../store/user/user-slice";
-import { EDIT_EMP } from "../../../constants/tasks";
+import { SEE_EMPLOYEE } from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
 
@@ -197,7 +196,6 @@ function EmployeeListDisplayer() {
                   <Data> {emp.phone_number} </Data>
                   <Data> {emp.date_of_hire} </Data>
                   <Data> {emp.date_of_birth} </Data>
-
                   <Data> {emp.position} </Data>
                   <Data> {emp.salary} </Data>
                   <Data
@@ -213,14 +211,17 @@ function EmployeeListDisplayer() {
                   </Data>
                   <Data
                     style={{
-                      fontSize: "1.5rem",
+                      fontSize: "1.2rem",
+                      color: "blue",
+                      textDecoration: "underline",
+                      cursor: "pointer",
                     }}
                     onClick={() => {
-                      dispatcher(setLongTask(EDIT_EMP));
+                      dispatcher(setLongTask(SEE_EMPLOYEE));
                       dispatcher(setCurrentEmployee(emp));
                     }}
                   >
-                    <MdOutlineEdit />
+                    View
                   </Data>
                 </ListRow>
               );
