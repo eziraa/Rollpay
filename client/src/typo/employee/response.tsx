@@ -8,6 +8,7 @@ export interface EmployeeResponse {
   phone_number: string;
   date_of_birth: string;
   date_of_hire: string;
+  salary: string;
 }
 
 export interface AddEmpResponse {
