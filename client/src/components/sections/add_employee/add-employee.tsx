@@ -31,10 +31,10 @@ export const AddEmployee = () => {
       date_of_birth: "",
       date_of_hire: "",
       position: "",
+      salary: 0,
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
-      console.log(values);
       dispatcher(addEmpRequested(values));
     },
   });
@@ -160,6 +160,22 @@ export const AddEmployee = () => {
                   <div>{formHandler.errors.position}</div>
                 ) : null}
               </FormError>{" "}
+            </InputContainer>
+            <InputContainer>
+              <Label htmlFor="role">Basic Salary</Label>
+              <Input
+                placeholder=""
+                type="text"
+                id="salary"
+                name="salary"
+                value={formHandler.values.salary}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.salary && formHandler.errors.salary ? (
+                  <div>{formHandler.errors.salary}</div>
+                ) : null}
+              </FormError>
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_birth">Birth Date</Label>
