@@ -15,4 +15,5 @@ export interface AddEmpResponse {
   success: string;
   error: string;
   code: number;
+  employee: EmployeeResponse;
 }
