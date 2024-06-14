@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unsafe-optional-chaining */
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
 import api from "../config/api";
 import { SignUpResponse } from "../typo/user/response";
@@ -28,13 +28,10 @@ const signUp = async (values: SignUpParams) => {
 const login = async (values: LoginParams) => {
   try {
     const { username, password } = values;
-    const response = await axios.post(
-      import.meta.env.VITE_API_URL + "/user/login/",
-      {
-        username,
-        password,
-      }
-    );
+    const response = await api.post("/user/login/", {
+      username,
+      password,
+    });
     localStorage.setItem(ACCESS_TOKEN, response.data.access);
     localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
     return {
