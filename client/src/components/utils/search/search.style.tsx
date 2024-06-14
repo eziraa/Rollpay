@@ -7,12 +7,13 @@ export const SearchContainer = styled.div<ThemeProps>`
   align-items: center;
   justify-content: flex-start;
   border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 5px;
-  width: 50rem;
+  border-radius: 3rem;
+  width: 40rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 0rem;
   margin: 0rem;
   margin-left: 4rem;
+  padding: 0 1rem;
 `;
 
 export const SearchInput = styled(Input)`

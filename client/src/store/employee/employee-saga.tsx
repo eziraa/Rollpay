@@ -2,9 +2,14 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
-import { addEmpDone, listEmpDone } from "./employee-slice";
-import EmployeeAPI from "../../services/employee-api";
-import { AddEmpParams } from "../../typo/employee/params";
+import {
+  addEmpDone,
+  addSalaryDone,
+  editEmployeeDone,
+  listEmpDone,
+} from "./employee-slice";
+import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
+import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
 import { AddEmpResponse, EmployeeResponse } from "../../typo/employee/response";
 import { setLongTask } from "../user/user-slice";
 import { LIST_EMP_S } from "../../constants/tasks";
@@ -63,4 +68,83 @@ function* GetEmployee() {
 export function* watchAddEmployee() {
   yield takeEvery("employee/addEmpRequested", AddEmployee);
   yield takeEvery("employee/listEmpRequested", GetEmployee);
+}
+
+function* addSalary(action: PayloadAction<AddSalaryParams>) {
+  try {
+    const employees: EmployeeResponse = yield call(
+      EmployeeAPI.addSalary,
+      action.payload
+    );
+    yield put(addSalaryDone(employees));
+    yield put(
+      setFlashMessage({
+        color: "green",
+        status: true,
+        title: "Add salary",
+        desc: "Salary added successfully",
+        duration: 3,
+      })
+    );
+  } catch (e) {
+    yield put(
+      setFlashMessage({
+        color: "red",
+        status: true,
+        title: "Add salary",
+        desc: "Could not add salary",
+        duration: 3,
+      })
+    );
+  }
+}
+
+export function* watchAddSalary() {
+  yield takeEvery("employee/addSalaryRequested", addSalary);
+}
+
+function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
+  try {
+    const response: AddEmpResponse = yield call(
+      EmployeeAPI.editEmployee,
+      action.payload.id || "",
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(editEmployeeDone(response.employee));
+      yield put(
+        setFlashMessage({
+          color: "green",
+          status: true,
+          title: "Edit Employee",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          color: "green",
+          status: true,
+          title: "Edit Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    yield put(
+      setFlashMessage({
+        color: "red",
+        status: true,
+        title: "Edit Employee",
+        desc: "Cannot edit employee please try again",
+        duration: 3,
+      })
+    );
+  }
+}
+
+export function* watchEditEmployee() {
+  yield takeEvery("employee/editEmployeeRequested", editEmployee);
 }

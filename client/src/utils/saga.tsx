@@ -5,7 +5,11 @@ import {
   watchUserLogin,
   watchUserSignUp,
 } from "../store/user/user-saga";
-import { watchAddEmployee } from "../store/employee/employee-saga";
+import {
+  watchAddEmployee,
+  watchAddSalary,
+  watchEditEmployee,
+} from "../store/employee/employee-saga";
 export function* rootSaga() {
   yield all([
     watchSetFlashMessage(),
@@ -13,5 +17,7 @@ export function* rootSaga() {
     watchUserLogin(),
     watchUserLogOut(),
     watchAddEmployee(),
+    watchAddSalary(),
+    watchEditEmployee(),
   ]);
 }

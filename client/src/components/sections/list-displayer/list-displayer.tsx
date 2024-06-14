@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect, useState } from "react";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import {
   Data,
   HeaderItem,
@@ -18,6 +17,7 @@ import { RiDeleteBin3Line } from "react-icons/ri";
 import { setLongTask } from "../../../store/user/user-slice";
 import { EDIT_EMP } from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
+import { GoArrowDown, GoArrowUp } from "react-icons/go";
 
 interface EmployeeOrderType {
   name: string;
@@ -52,6 +52,10 @@ const initialOrder: EmployeeOrderType[] = [
     name: "position",
     isAscending: true,
   },
+  {
+    name: "salary",
+    isAscending: true,
+  },
 ];
 
 function EmployeeListDisplayer() {
@@ -59,12 +63,7 @@ function EmployeeListDisplayer() {
   const dispatcher = useAppDispatch();
 
   const [order, setOrder] = useState(initialOrder);
-  const emplist = [
-    ...employee.employees,
-    ...employee.employees,
-    ...employee.employees,
-    ...employee.employees,
-  ];
+  const emplist = [...employee.employees];
 
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
@@ -106,7 +105,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(0);
               }}
             >
-              {order[0].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -116,7 +115,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(1);
               }}
             >
-              {order[1].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -129,7 +128,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(2);
               }}
             >
-              {order[2].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[2].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -139,7 +138,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(3);
               }}
             >
-              {order[3].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[3].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -149,7 +148,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(4);
               }}
             >
-              {order[4].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[4].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -159,7 +158,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(5);
               }}
             >
-              {order[5].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[5].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -169,7 +168,17 @@ function EmployeeListDisplayer() {
                 sortEmployee(6);
               }}
             >
-              {order[6].isAscending ? <FaArrowUp /> : <FaArrowDown />}
+              {order[6].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+            </SortBtn>
+          </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Salary</ListTitle>
+            <SortBtn
+              onClick={() => {
+                sortEmployee(7);
+              }}
+            >
+              {order[7].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -178,9 +187,9 @@ function EmployeeListDisplayer() {
         </ListHeader>
         <ListBody>
           <ScrollBar>
-            {emp_list.map((emp) => {
+            {emp_list.map((emp, index) => {
               return (
-                <ListRow>
+                <ListRow key={index}>
                   <Data> {emp.first_name + " " + emp.last_name} </Data>
                   <Data> {emp.id} </Data>
                   <Data> {emp.gender} </Data>
@@ -190,6 +199,7 @@ function EmployeeListDisplayer() {
                   <Data> {emp.date_of_birth} </Data>
 
                   <Data> {emp.position} </Data>
+                  <Data> {emp.salary} </Data>
                   <Data
                     style={{
                       fontSize: "1.5rem",

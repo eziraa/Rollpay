@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 
-export const ListContainer = styled.table<ThemeProps>`
+export const ListContainer = styled.div<ThemeProps>`
   width: 100%;
   color: ${({ theme }) => theme.colors.primary};
   letter-spacing: 0.1rem;
@@ -25,7 +25,7 @@ export const ListHeader = styled.div<ThemeProps>`
   font-weight: 600;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 0.5fr;
+  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 1.5fr 0.5fr;
   padding: 0.4rem 0.5rem;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
@@ -50,7 +50,7 @@ export const ListRow = styled.div<ThemeProps>`
   font-size: larger;
   padding: 0.4rem 0.5rem;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 0.2fr 0.2fr;
+  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 1.5fr 0.2fr 0.2fr;
   &:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
     cursor: pointer;

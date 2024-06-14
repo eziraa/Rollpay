@@ -6,7 +6,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import status
 from rest_framework.views import APIView
 from .serializer import EmployeeSerializer, ProfilePicSerializer
-from .models import Employee
+from .models import Employee, Salary
 # Assuming you have a utility function to refresh tokens
 from .utils import refresh_jwt_token
 from django.views.decorators.http import require_http_methods
@@ -75,13 +75,18 @@ class EmployeeView (APIView):
         employe.delete()
         return Response({"message": "Employee deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
-    def put(self, request, id):
+    def put(self, request, employee_id):
         try:
-            employe = Employee.objects.get(pk=id)
+            employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = EmployeeSerializer(employe, data=request.data)
+        data = json.loads(request.body)
+        salary = Salary.objects.create(
+            basic_salary=data['salary'])
+        data = {key: value for key, value in data.items() if key != 'salary'}
+        employee.salary = salary
+        serializer = EmployeeSerializer(employee, data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
