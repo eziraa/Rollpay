@@ -8,6 +8,7 @@ import {
 import {
   watchAddEmployee,
   watchAddSalary,
+  watchEditEmployee,
 } from "../store/employee/employee-saga";
 export function* rootSaga() {
   yield all([
@@ -17,5 +18,6 @@ export function* rootSaga() {
     watchUserLogOut(),
     watchAddEmployee(),
     watchAddSalary(),
+    watchEditEmployee(),
   ]);
 }
