@@ -187,9 +187,9 @@ function EmployeeListDisplayer() {
         </ListHeader>
         <ListBody>
           <ScrollBar>
-            {emp_list.map((emp) => {
+            {emp_list.map((emp, index) => {
               return (
-                <ListRow>
+                <ListRow key={index}>
                   <Data> {emp.first_name + " " + emp.last_name} </Data>
                   <Data> {emp.id} </Data>
                   <Data> {emp.gender} </Data>
