@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 
-export const ListContainer = styled.table<ThemeProps>`
+export const ListContainer = styled.div<ThemeProps>`
   width: 100%;
   color: ${({ theme }) => theme.colors.primary};
   letter-spacing: 0.1rem;
