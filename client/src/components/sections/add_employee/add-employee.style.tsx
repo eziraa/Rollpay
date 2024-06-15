@@ -57,8 +57,8 @@ export const StyledPhoneInput = styled(PhoneInput)`
 
 export const AddButton = styled(Button)<ThemeProps>`
   position: absolute;
-  bottom: 7rem;
-  right: 7rem;
+  bottom: 3rem;
+  right: 4rem;
   width: 100px;
   height: 40px;
   background-color: ${({ theme }) => theme.colors.primary};

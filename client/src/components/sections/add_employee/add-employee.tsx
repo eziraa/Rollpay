@@ -17,10 +17,12 @@ import {
 } from "./add-employee.style";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
-import { useAppDispatch } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addEmpRequested } from "../../../store/employee/employee-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
+  const { adding } = useAppSelector((state) => state.employee);
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -210,7 +212,9 @@ export const AddEmployee = () => {
               </FormError>{" "}
             </InputContainer>
           </Column>
-          <AddButton type="submit">Add</AddButton>
+          <AddButton type="submit">
+            {adding ? <SmallSpinner /> : "Add"}
+          </AddButton>
         </AddEmployeeForm>
       </AddEmployeeContainer>
     </Modal>
