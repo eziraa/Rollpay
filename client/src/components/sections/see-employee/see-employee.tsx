@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import {
+  Button,
   CancelButton,
   DataLabel,
   DataValue,
@@ -15,7 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import { setLongTask } from "../../../store/user/user-slice";
-import { LIST_EMP_S } from "../../../constants/tasks";
+import { EDIT_EMP, LIST_EMP_S } from "../../../constants/tasks";
 import { EditEmployee } from "../edit-employee/edit-employee";
 
 // Now, valuesOnlyObject contains only the values from editObject
@@ -24,6 +25,8 @@ export const SeeEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
+
+  const { long_task } = useAppSelector((state) => state.user);
   const dispatcher = useAppDispatch();
 
   return (
@@ -86,6 +89,7 @@ export const SeeEmployee = () => {
               <DataValue>{current_employee?.date_of_hire}</DataValue>
             </EmployeeData>
           </EmployeeInfoContainer>
+          {long_task !== EDIT_EMP && <Button>Edit</Button>}
         </EmployeeeProfileContainer>
         <EditEmployee />
       </EditEmployeeContent>
