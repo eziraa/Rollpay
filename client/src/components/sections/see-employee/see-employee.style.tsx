@@ -14,7 +14,7 @@ export const EditEmployeeContainer = styled.div`
 export const EditEmployeeContent = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   justify-content: start;
   width: 100%;
   height: 90%;
@@ -33,10 +33,10 @@ export const EmployeeeProfileContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 22%;
+  width: 35%;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   border-radius: 10px;
-  height: 90%;
+  height: 100%;
   padding: 1rem;
   gap: 2rem;
 `;
@@ -62,24 +62,14 @@ export const EmployeeInfoContainer = styled.div`
   width: 100%;
   height: 60%;
   padding: 1rem;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
-export const EditEmployeeBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 60%;
-  height: 100%;
-  padding: 1rem;
-  gap: 1rem;
-`;
 export const EmployeeData = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
 `;
 
@@ -95,7 +85,7 @@ export const DataValue = styled.h5`
   font-size: 1.4rem;
   font-weight: 500;
   color: ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
-  flex: 1;
+  flex: 1.5;
 `;
 
 export const EditButton = styled.div`
@@ -108,7 +98,7 @@ export const EditButton = styled.div`
   align-items: center;
 `;
 
-export const SaveButton = styled.button`
+export const Button = styled.button`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
@@ -116,6 +106,7 @@ export const SaveButton = styled.button`
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 5px;
+  width: 10rem;
 `;
 
 export const CancelButton = styled.button`
