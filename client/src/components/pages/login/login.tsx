@@ -30,15 +30,17 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
+  const { is_login, login_error, logging_in } = useAppSelector(
+    (state) => state.user
+  );
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
 
   useEffect(() => {
-    if (user.is_login) window.location.href = "/home-page";
-  }, [user]);
+    if (is_login) window.location.href = "/home-page";
+  }, [is_login]);
   const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
     useFormik({
       initialValues: {
@@ -88,7 +90,7 @@ export const LoginPage = () => {
           {touched.password && errors.password && (
             <ErrorMessage>{errors.password} </ErrorMessage>
           )}
-          {user.login_error && <ErrorMessage>{user.login_error} </ErrorMessage>}
+          {login_error && <ErrorMessage>{login_error} </ErrorMessage>}
         </InputContainer>
         <ActionsContainer>
           <CheckboxContainer>
@@ -98,14 +100,14 @@ export const LoginPage = () => {
             <Link to="/forgot_password">Frogot Password?</Link>
           </CustomLink>
         </ActionsContainer>
-        <Button type="submit" disabled={user.logging_in}>
-          {user.logging_out ? <SmallSpinner /> : "Login"}
+        <Button type="submit" disabled={logging_in}>
+          {logging_in ? <SmallSpinner /> : "Login"}
         </Button>
       </Form>
       <LinkContainer>
         <Text>Don't have an account? </Text>
         <CustomLink>
-          <Link to="/signup"> Sign up </Link>
+          <Link to="/signup"> Sign up</Link>
         </CustomLink>
       </LinkContainer>
     </LoginContainer>
