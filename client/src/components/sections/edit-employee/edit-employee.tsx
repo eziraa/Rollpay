@@ -42,6 +42,7 @@ export const EditEmployee = () => {
     errors,
     touched,
     handleSubmit,
+    handleBlur,
   } = useFormik({
     initialValues: initialValues,
     validationSchema: AddEmployeeSchema,
@@ -104,13 +105,35 @@ export const EditEmployee = () => {
           }}
         >
           <Label>Gender</Label>
-          <Input
-            type="text"
-            name="gender"
-            required
-            value={values.gender}
-            onChange={handleChange}
-          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "1rem",
+              justifyContent: "start",
+            }}
+          >
+            <Label>Male</Label>
+            <input
+              type="radio"
+              name="gender"
+              id=""
+              value="M"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              checked={values.gender === "M"}
+            />
+            <Label>Female</Label>
+            <input
+              type="radio"
+              name="gender"
+              id=""
+              value="F"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              checked={values.gender === "F"}
+            />
+          </div>
           {touched.gender && errors.gender && (
             <ErrorMessage>{errors.gender}</ErrorMessage>
           )}
