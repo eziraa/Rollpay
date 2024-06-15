@@ -1,11 +1,9 @@
-import axios, { AxiosError } from "axios";
-import { AddEmpParams } from "../typo/employee/params";
+import { AxiosError } from "axios";
+import { AddEmpParams, AddSalaryParams } from "../typo/employee/params";
 import api from "../config/api";
 import { AddEmpResponse, EmployeeResponse } from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
-  const token = localStorage.getItem("token");
-  axios.defaults.headers.common["Authorization"] = `Token ${token}`; // Set default header
   const response = await api
     .post<AddEmpResponse>("/employee/add", values)
     .then((res) => {
@@ -25,8 +23,6 @@ const addEmp = async (values: AddEmpParams) => {
 };
 
 const listEmployee = async () => {
-  const token = localStorage.getItem("token");
-  axios.defaults.headers.common["Authorization"] = `Token ${token}`; // Set default header
   const employees = await api
     .get<EmployeeResponse[]>("/employee/list")
     .then((res) => {
@@ -35,9 +31,49 @@ const listEmployee = async () => {
   return employees;
 };
 
+const addSalary = async (values: AddSalaryParams) => {
+  const employees = await api
+    .post<EmployeeResponse[]>("/employee/salary/add/" + values.empID, values)
+    .then((res) => {
+      return res.data;
+    });
+  return employees;
+};
+
+export interface EditEmployeeParams extends AddEmpParams {
+  id: string | undefined;
+}
+
+const editEmployee = async (
+  empployee_id: string,
+  values: EditEmployeeParams
+) => {
+  const response = await api
+    .put<AddEmpResponse[]>("/employee/edit/" + empployee_id, values)
+    .then((res) => {
+      return {
+        success: "Employee updated successfully",
+        code: res.status,
+        employee: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
+  return response;
+};
+
 const EmployeeAPI = {
   addEmp,
   listEmployee,
+  addSalary,
+  editEmployee,
 };
 
 export default EmployeeAPI;

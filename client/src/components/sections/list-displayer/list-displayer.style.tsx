@@ -1,29 +1,32 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 
-export const ListContainer = styled.table<ThemeProps>`
+export const ListContainer = styled.div<ThemeProps>`
   width: 100%;
   color: ${({ theme }) => theme.colors.primary};
   letter-spacing: 0.1rem;
-  border-bottom: 0.1rem solid black;
   position: relative;
   display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0 2rem;
 `;
 export const ListBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  position: relative;
 `;
 export const ListHeader = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.table.header};
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.3rem;
   font-weight: 600;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  padding: 2rem 0.5rem;
-  padding-top: 0;
+  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 1.5fr 0.5fr;
+  padding: 0.4rem 0.5rem;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
@@ -32,15 +35,7 @@ export const ListTitle = styled.td<ThemeProps>`
 `;
 
 export const HeaderItem = styled.div`
-  padding: 1rem 0;
-  padding-bottom: 2rem;
-  width: 15rem;
-  &:nth-child(3) {
-    width: 5rem;
-  }
-  &:nth-child(4) {
-    width: 25rem;
-  }
+  text-align: left;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -55,7 +50,7 @@ export const ListRow = styled.div<ThemeProps>`
   font-size: larger;
   padding: 0.4rem 0.5rem;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 1.5fr 0.2fr 0.2fr;
   &:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
     cursor: pointer;
@@ -66,26 +61,17 @@ export const Data = styled.div<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
   padding: 1rem 1rem;
   text-align: left;
-  width: 15rem;
-  &:nth-child(3) {
-    width: 5rem;
-  }
-
-  &:nth-child(4) {
-    width: 25rem;
-  }
+  flex: 15rem;
   /* width: auto; */
 `;
 
 export const SortBtn = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
   cursor: pointer;
   font-size: 1.6rem;
+  text-align: center;
   &:hover {
     background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.backgrounds.primary};

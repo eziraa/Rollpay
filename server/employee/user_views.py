@@ -12,9 +12,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 
 class UserView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, *args, **kwargs):
         logout(request)
         return Response("Logged out", status=status.HTTP_200_OK)
@@ -38,13 +40,14 @@ class UserView(APIView):
         else:
             return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, reques, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class AccountView(APIView):
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         try:

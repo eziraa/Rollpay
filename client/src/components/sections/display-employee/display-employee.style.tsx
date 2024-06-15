@@ -14,7 +14,7 @@ export const Title = styled.h1<ThemeProps>`
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 1rem;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 export const Header = styled.div`
@@ -23,7 +23,7 @@ export const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 3rem;
+  padding: 1rem;
 `;
 
 export const Body = styled.div<ThemeProps>`

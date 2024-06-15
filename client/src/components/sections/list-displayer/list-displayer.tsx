@@ -1,8 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect, useState } from "react";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-
-import { listEmpRequested } from "../../../store/employee/employee-slice";
 import {
   Data,
   HeaderItem,
@@ -15,6 +12,11 @@ import {
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 import { EmployeeResponse } from "../../../typo/employee/response";
+import { RiDeleteBin3Line } from "react-icons/ri";
+import { setLongTask } from "../../../store/user/user-slice";
+import { SEE_EMPLOYEE } from "../../../constants/tasks";
+import { setCurrentEmployee } from "../../../store/employee/employee-slice";
+import { GoArrowDown, GoArrowUp } from "react-icons/go";
 
 interface EmployeeOrderType {
   name: string;
@@ -49,23 +51,18 @@ const initialOrder: EmployeeOrderType[] = [
     name: "position",
     isAscending: true,
   },
+  {
+    name: "salary",
+    isAscending: true,
+  },
 ];
 
 function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  useEffect(() => {
-    dispatcher(listEmpRequested());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const [order, setOrder] = useState(initialOrder);
-  const emplist = [
-    ...employee.employees,
-    ...employee.employees,
-    ...employee.employees,
-    ...employee.employees,
-  ];
+  const emplist = [...employee.employees];
 
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
@@ -107,11 +104,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(0);
               }}
             >
-              {order[0].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -121,11 +114,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(1);
               }}
             >
-              {order[1].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -138,11 +127,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(2);
               }}
             >
-              {order[2].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[2].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -152,11 +137,7 @@ function EmployeeListDisplayer() {
                 sortEmployee(3);
               }}
             >
-              {order[3].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[3].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -166,25 +147,17 @@ function EmployeeListDisplayer() {
                 sortEmployee(4);
               }}
             >
-              {order[4].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[4].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
-            <ListTitle>Date of Birth</ListTitle>
+            <ListTitle>Birth Date</ListTitle>
             <SortBtn
               onClick={() => {
                 sortEmployee(5);
               }}
             >
-              {order[5].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[5].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
           <HeaderItem>
@@ -194,33 +167,68 @@ function EmployeeListDisplayer() {
                 sortEmployee(6);
               }}
             >
-              {order[6].isAscending ? (
-                <FaArrowUp />
-              ) : (
-                <FaArrowDown />
-              )}
+              {order[6].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Salary</ListTitle>
+            <SortBtn
+              onClick={() => {
+                sortEmployee(7);
+              }}
+            >
+              {order[7].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+            </SortBtn>
+          </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Actions</ListTitle>
+          </HeaderItem>
         </ListHeader>
+        <ListBody>
+          <ScrollBar>
+            {emp_list.map((emp, index) => {
+              return (
+                <ListRow key={index}>
+                  <Data> {emp.first_name + " " + emp.last_name} </Data>
+                  <Data> {emp.id} </Data>
+                  <Data> {emp.gender} </Data>
+                  <Data> {emp.email} </Data>
+                  <Data> {emp.phone_number} </Data>
+                  <Data> {emp.date_of_hire} </Data>
+                  <Data> {emp.date_of_birth} </Data>
+                  <Data> {emp.position} </Data>
+                  <Data> {emp.salary} </Data>
+                  <Data
+                    style={{
+                      fontSize: "1.5rem",
+                    }}
+                  >
+                    <RiDeleteBin3Line
+                      onClick={() => {
+                        setEmpList(emp_list.filter((e) => e.id !== emp.id));
+                      }}
+                    />
+                  </Data>
+                  <Data
+                    style={{
+                      fontSize: "1.2rem",
+                      color: "blue",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      dispatcher(setLongTask(SEE_EMPLOYEE));
+                      dispatcher(setCurrentEmployee(emp));
+                    }}
+                  >
+                    View
+                  </Data>
+                </ListRow>
+              );
+            })}
+          </ScrollBar>
+        </ListBody>
       </ListContainer>
-      <ListBody>
-        <ScrollBar>
-          {emp_list.map((emp) => {
-            return (
-              <ListRow>
-                <Data> {emp.first_name + " " + emp.last_name} </Data>
-                <Data> {emp.id} </Data>
-                <Data> {emp.gender} </Data>
-                <Data> {emp.email} </Data>
-                <Data> {emp.phone_number} </Data>
-                <Data> {emp.date_of_hire} </Data>
-                <Data> {emp.date_of_birth} </Data>
-                <Data> {emp.position} </Data>
-              </ListRow>
-            );
-          })}
-        </ScrollBar>
-      </ListBody>
     </div>
   );
 }
