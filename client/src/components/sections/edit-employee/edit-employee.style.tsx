@@ -89,7 +89,7 @@ export const ActionBtn = styled.div`
 `;
 
 export const SaveBtn = styled(SaveButton)`
-  width: 10rem;
+  width: 8rem;
   bottom: 1rem;
   position: absolute;
   left: 53.5%;
