@@ -7,6 +7,7 @@ import {
   addSalaryDone,
   editEmployeeDone,
   listEmpDone,
+  unfinishedAdd,
   unfinishedEdit,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
@@ -32,7 +33,9 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
           duration: 3,
         })
       );
-    } else {
+    } else
+    {
+      yield put(unfinishedAdd())
       yield put(
         setFlashMessage({
           color: "green",
@@ -43,7 +46,9 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     }
-  } catch (e) {
+  } catch (e)
+  {
+    yield put(unfinishedAdd());
     yield put(
       setFlashMessage({
         color: "red",

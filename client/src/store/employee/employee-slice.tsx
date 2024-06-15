@@ -25,6 +25,9 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.task = undefined;
     },
+    unfinishedAdd: (state) => {
+      state.adding = false;
+    },
     listEmpRequested: (state) => {
       state.loading = true;
     },
@@ -67,6 +70,7 @@ const EmployeeSlice = createSlice({
 export const {
   addEmpRequested,
   addEmpDone,
+  unfinishedAdd,
   listEmpRequested,
   listEmpDone,
   setTask,

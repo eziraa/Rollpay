@@ -17,6 +17,12 @@ export type Theme = {
     tableRowHover: string;
     header: string;
   };
+  buttons: {
+    primary: string;
+    secondary: string;
+    primaryHover: string;
+    secondaryHover: string;
+  };
 };
 
 export const lightTheme: Theme = {
@@ -38,6 +44,12 @@ export const lightTheme: Theme = {
     tableRowHover: "#929191",
     header: "#a2a2a2",
   },
+  buttons: {
+    primary: "#212121",
+    secondary: "#0a0a0a26",
+    primaryHover: "#1b1a1a",
+    secondaryHover: "#0a0a0a26",
+  },
 };
 
 export const darkTheme: Theme = {
@@ -58,5 +70,11 @@ export const darkTheme: Theme = {
     tableRow: "#000000",
     tableRowHover: "#666464",
     header: "#000000bf",
+  },
+  buttons: {
+    primary: "#fff",
+    secondary: "#a9a7a7",
+    primaryHover: "#EAEAEA",
+    secondaryHover: "#a9a7a7",
   },
 };

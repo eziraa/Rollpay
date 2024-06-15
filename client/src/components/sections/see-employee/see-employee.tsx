@@ -1,22 +1,28 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import {
-  CancelButton,
+  Button,
+  BackButton,
   DataLabel,
   DataValue,
-  EditEmployeeContainer,
+  SeeEmployeeContainer,
   EditEmployeeContent,
   EmployeeData,
   EmployeeInfoContainer,
   EmployeeeProfileContainer,
+  NavBar,
+  NavItem,
   ProfileImage,
   Title,
+  SeeEmployeeHeader,
+  TitleContainer,
 } from "./see-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { IoReturnUpBackSharp } from "react-icons/io5";
+import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { setLongTask } from "../../../store/user/user-slice";
-import { LIST_EMP_S } from "../../../constants/tasks";
+import { EDIT_EMP, LIST_EMP_S } from "../../../constants/tasks";
 import { EditEmployee } from "../edit-employee/edit-employee";
+import { MdModeEditOutline } from "react-icons/md";
 
 // Now, valuesOnlyObject contains only the values from editObject
 
@@ -24,27 +30,29 @@ export const SeeEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
+
+  const { long_task } = useAppSelector((state) => state.user);
   const dispatcher = useAppDispatch();
 
   return (
-    <EditEmployeeContainer>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "2rem",
-        }}
-      >
-        <CancelButton
-          onClick={() => {
-            dispatcher(setLongTask(LIST_EMP_S));
-          }}
-        >
-          <IoReturnUpBackSharp />
-        </CancelButton>
-        <Title>Edit Employee</Title>
-      </div>
+    <SeeEmployeeContainer>
+      <SeeEmployeeHeader>
+        <TitleContainer>
+          <BackButton
+            onClick={() => {
+              dispatcher(setLongTask(LIST_EMP_S));
+            }}
+          >
+            <IoChevronBackCircleOutline />
+          </BackButton>
+          <Title>Edit Employee</Title>
+        </TitleContainer>
+        <NavBar>
+          <NavItem>Allowances</NavItem>
+          <NavItem>overtimes</NavItem>
+          <NavItem>Deducstion</NavItem>
+        </NavBar>
+      </SeeEmployeeHeader>
       <EditEmployeeContent>
         <EmployeeeProfileContainer>
           <ProfileImage />
@@ -86,9 +94,15 @@ export const SeeEmployee = () => {
               <DataValue>{current_employee?.date_of_hire}</DataValue>
             </EmployeeData>
           </EmployeeInfoContainer>
+          {long_task !== EDIT_EMP && (
+            <Button>
+              <MdModeEditOutline /> Edit
+            </Button>
+          )}
         </EmployeeeProfileContainer>
+
         <EditEmployee />
       </EditEmployeeContent>
-    </EditEmployeeContainer>
+    </SeeEmployeeContainer>
   );
 };

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Profile from "../../../assets/profile.png";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
-export const EditEmployeeContainer = styled.div`
+export const SeeEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -9,12 +9,28 @@ export const EditEmployeeContainer = styled.div`
   overflow: hidden;
   padding: 3rem;
   position: relative;
+  gap: 1rem;
 `;
 
+export const SeeEmployeeHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  gap: 1rem;
+`;
+
+export const TitleContainer = styled.div`
+  display: flex;
+  flex: 1.4;
+  align-items: center;
+  gap: 2rem;
+`;
 export const EditEmployeeContent = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   justify-content: start;
   width: 100%;
   height: 90%;
@@ -33,10 +49,10 @@ export const EmployeeeProfileContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 22%;
+  width: 35%;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   border-radius: 10px;
-  height: 90%;
+  height: 100%;
   padding: 1rem;
   gap: 2rem;
 `;
@@ -62,24 +78,14 @@ export const EmployeeInfoContainer = styled.div`
   width: 100%;
   height: 60%;
   padding: 1rem;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
-export const EditEmployeeBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 60%;
-  height: 100%;
-  padding: 1rem;
-  gap: 1rem;
-`;
 export const EmployeeData = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
 `;
 
@@ -95,7 +101,7 @@ export const DataValue = styled.h5`
   font-size: 1.4rem;
   font-weight: 500;
   color: ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
-  flex: 1;
+  flex: 1.5;
 `;
 
 export const EditButton = styled.div`
@@ -108,26 +114,30 @@ export const EditButton = styled.div`
   align-items: center;
 `;
 
-export const SaveButton = styled.button`
+export const Button = styled.button`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 5px;
+  width: 10rem;
+  display: flex;
+  gap: 1rem;
+  font-size: medium;
 `;
 
-export const CancelButton = styled.button`
-  font-size: 2rem;
-  color: ${({ theme }) => theme.colors.primary};
+export const BackButton = styled.div`
+  font-size: 3rem;
+  display: inline-block;
+  color: ${({ theme }) => theme.buttons.primary};
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  background-color: ${({ theme }) => theme.backgrounds.primary};
   border-radius: 5px;
+  padding-bottom: -0.4rem;
+  text-align: center;
   &:hover {
-    background-color: ${({ theme }) => theme.backgrounds.secondary};
+    color: ${({ theme }) => addOpacityToColor(0.4, theme.buttons.primaryHover)};
   }
 `;
 
@@ -155,5 +165,28 @@ export const ActionBtn = styled.div`
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.colors.primary)};
     color: ${({ theme }) => theme.backgrounds.primary};
+  }
+`;
+
+export const NavBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex: 3;
+  justify-content: start;
+`;
+
+export const NavItem = styled.div`
+  padding: 1rem 2rem;
+  display: inline-block;
+  font-size: 1.7rem;
+  cursor: pointer;
+  width: 25%;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.primary};
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.5, theme.backgrounds.secondary)};
   }
 `;
