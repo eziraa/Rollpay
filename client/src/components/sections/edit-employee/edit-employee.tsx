@@ -56,7 +56,7 @@ export const EditEmployee = () => {
             title: "No changes made",
             status: true,
             duration: 3,
-            color: "red",
+            type: "error",
           })
         );
       }
