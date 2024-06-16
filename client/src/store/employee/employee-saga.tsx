@@ -26,19 +26,18 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
       yield put(addEmpDone());
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "success",
           status: true,
           title: "Add Employee",
           desc: response.success,
           duration: 3,
         })
       );
-    } else
-    {
-      yield put(unfinishedAdd())
+    } else {
+      yield put(unfinishedAdd());
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "error",
           status: true,
           title: "Add Employee",
           desc: response.error,
@@ -46,12 +45,11 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     }
-  } catch (e)
-  {
+  } catch (e) {
     yield put(unfinishedAdd());
     yield put(
       setFlashMessage({
-        color: "red",
+        type: "error",
         status: true,
         title: "Add Employee",
         desc: "Cannot add employee",
@@ -85,7 +83,7 @@ function* addSalary(action: PayloadAction<AddSalaryParams>) {
     yield put(addSalaryDone(employees));
     yield put(
       setFlashMessage({
-        color: "green",
+        type: "success",
         status: true,
         title: "Add salary",
         desc: "Salary added successfully",
@@ -95,7 +93,7 @@ function* addSalary(action: PayloadAction<AddSalaryParams>) {
   } catch (e) {
     yield put(
       setFlashMessage({
-        color: "red",
+        type: "error",
         status: true,
         title: "Add salary",
         desc: "Could not add salary",
@@ -120,20 +118,19 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
       yield put(editEmployeeDone(response.employee));
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "success",
           status: true,
           title: "Edit Employee",
           desc: response.success,
           duration: 3,
         })
       );
-    } else
-    {
-      console.log(response)
+    } else {
+      console.log(response);
       yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "success",
           status: true,
           title: "Edit Employee",
           desc: response.error,
@@ -141,12 +138,11 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         })
       );
     }
-  } catch (e)
-  {
+  } catch (e) {
     yield put(unfinishedEdit());
     yield put(
       setFlashMessage({
-        color: "red",
+        type: "error",
         status: true,
         title: "Edit Employee",
         desc: "Cannot edit employee please try again",
