@@ -172,9 +172,11 @@ export const NavBar = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  flex: 3;
-  justify-content: start;
+  justify-content: center;
+  flex: 4;
+  gap: 5rem;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.05, theme.colors.primary)};
 `;
 
 export const NavItem = styled.div`
@@ -182,7 +184,7 @@ export const NavItem = styled.div`
   display: inline-block;
   font-size: 1.7rem;
   cursor: pointer;
-  width: 25%;
+  width: 20%;
   text-align: center;
   color: ${({ theme }) => theme.colors.primary};
   &:hover {
