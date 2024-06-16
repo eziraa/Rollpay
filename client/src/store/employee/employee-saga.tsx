@@ -33,6 +33,17 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
           duration: 3,
         })
       );
+    } else if (response.code === 401) {
+      yield put(unfinishedAdd());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Permition Denied",
+          desc: "You are not authorized to add employee",
+          duration: 3,
+        })
+      );
     } else {
       yield put(unfinishedAdd());
       yield put(
@@ -125,8 +136,18 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
           duration: 3,
         })
       );
+    } else if (response.code === 401) {
+      yield put(unfinishedEdit());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Permition Denied",
+          desc: "You are not authorized to edit employee",
+          duration: 3,
+        })
+      );
     } else {
-      console.log(response);
       yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
