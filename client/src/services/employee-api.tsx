@@ -27,6 +27,10 @@ const listEmployee = async () => {
     .get<EmployeeResponse[]>("/employee/list")
     .then((res) => {
       return res.data;
+    })
+    .catch((err: AxiosError) => {
+      console.log(err)
+      return [];
     });
   return employees;
 };
