@@ -10,7 +10,7 @@ export const HeaderContainer = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 0 2rem;
   margin: 0;
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.primary};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.secondary};
 `;
 
 export const HeaderTitle = styled.h1<ThemeProps>`
