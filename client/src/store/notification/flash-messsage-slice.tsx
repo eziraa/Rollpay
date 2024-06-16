@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface FlashMessageState {
-  color: string;
+  type: string;
   status: boolean;
   title: string;
   desc: string;
@@ -9,7 +9,7 @@ export interface FlashMessageState {
 }
 
 const initialState: FlashMessageState = {
-  color: "",
+  type: "",
   status: false,
   title: "",
   desc: "",
@@ -21,7 +21,7 @@ export const FlashMessageSlice = createSlice({
   initialState,
   reducers: {
     setFlashMessage: (state, action: PayloadAction<FlashMessageState>) => {
-      state.color = action.payload.color;
+      state.type = action.payload.type;
       state.status = action.payload.status;
       state.title = action.payload.title;
       state.desc = action.payload.desc;
@@ -29,7 +29,7 @@ export const FlashMessageSlice = createSlice({
     },
     hideFlashMessage: (state) => {
       state.status = false;
-      state.color = "";
+      state.type = "";
       state.title = "";
       state.desc = "";
       state.duration = 0;
