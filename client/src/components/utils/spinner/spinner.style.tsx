@@ -8,8 +8,8 @@ export const SpinnerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 85vw;
 `;
 interface SpinnerProps {
   length: number | undefined;
