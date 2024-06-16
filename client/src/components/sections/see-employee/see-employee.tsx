@@ -24,6 +24,7 @@ import {
   EDIT_EMP,
   LIST_EMP_S,
   SEE_EMP_ALLOWANCE,
+  SEE_EMP_DEDUCTION,
   SEE_EMP_OVERTIME,
 } from "../../../constants/tasks";
 import { MdModeEditOutline } from "react-icons/md";
@@ -34,6 +35,7 @@ import {
 } from "../../../store/employee/employee-slice";
 import { EditEmployee } from "../edit-employee/edit-employee";
 import { EmployeeOvertime } from "../overtime/overtime";
+import { EmployeeDeduction } from "../deduction/deduction";
 
 export const SeeEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
@@ -74,7 +76,14 @@ export const SeeEmployee = () => {
           >
             Overtimes
           </NavItem>
-          <NavItem>Deductions</NavItem>
+          <NavItem
+            onClick={(e) => {
+              e.preventDefault();
+              dispatcher(setMajorTask(SEE_EMP_DEDUCTION));
+            }}
+          >
+            Deductions
+          </NavItem>
         </NavBar>
       </SeeEmployeeHeader>
       <EditEmployeeContent>
@@ -133,6 +142,7 @@ export const SeeEmployee = () => {
         {major_task == EDIT_EMP && <EditEmployee />}
         {major_task == SEE_EMP_ALLOWANCE && <EmployeeAllowance />}
         {major_task == SEE_EMP_OVERTIME && <EmployeeOvertime />}
+        {major_task == SEE_EMP_DEDUCTION && <EmployeeDeduction />}
       </EditEmployeeContent>
     </SeeEmployeeContainer>
   );
