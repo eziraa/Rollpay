@@ -65,5 +65,5 @@ export const TableData = styled.td`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.primary};
   text-align: left;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
 `;
