@@ -13,6 +13,8 @@ const InitialEmpState: EmployeeState = {
   loading: false,
   curr_emp: undefined,
   editing: false,
+  major_task: undefined,
+  mini_task: undefined,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -42,6 +44,12 @@ const EmployeeSlice = createSlice({
     setTask: (state, task: PayloadAction<string | undefined>) => {
       state.task = task.payload;
     },
+    setMajorTask: (state, task: PayloadAction<string | undefined>) => {
+      state.major_task = task.payload;
+    },
+    setMiniTask: (state, task: PayloadAction<string | undefined>) => {
+      state.mini_task = task.payload;
+    },
     setCurrentEmployee: (
       state,
       payload: PayloadAction<EmployeeResponse | undefined>
@@ -62,6 +70,13 @@ const EmployeeSlice = createSlice({
       state.editing = false;
       state.curr_emp = action.payload;
     },
+    resetCurrEmployee: (state) => {
+      state.curr_emp = undefined;
+      state.editing = false;
+      state.major_task = undefined;
+      state.mini_task = undefined;
+      state.task = undefined;
+    },
     unfinishedEdit: (state) => {
       state.editing = false;
     },
@@ -80,6 +95,9 @@ export const {
   editEmployeeRequested,
   editEmployeeDone,
   unfinishedEdit,
+  setMajorTask,
+  setMiniTask,
+  resetCurrEmployee,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
