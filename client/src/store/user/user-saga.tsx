@@ -58,7 +58,7 @@ function* userLogout() {
       yield put(logout());
       yield put(
         setFlashMessage({
-          color: "green",
+          type:"success",
           status: true,
           title: "User log out",
           desc: response.success,
@@ -68,7 +68,7 @@ function* userLogout() {
     } else {
       yield put(
         setFlashMessage({
-          color: "red",
+          type:"error",
           status: true,
           title: "User log in",
           desc: response.error,
@@ -79,7 +79,7 @@ function* userLogout() {
   } catch (e) {
     yield put(
       setFlashMessage({
-        color: "red",
+        type: "error",
         status: true,
         title: "User log in",
         desc: "User log in failed try again!!",
