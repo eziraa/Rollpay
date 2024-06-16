@@ -1,20 +1,15 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import status
 from rest_framework.views import APIView
-from .serializer import EmployeeSerializer, ProfilePicSerializer
+from .serializer import EmployeeSerializer
 from .models import Employee, Salary
-# Assuming you have a utility function to refresh tokens
 from .utils import refresh_jwt_token
-from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
+from .permissions import IsUserInGroupWithClerk
 from django.http import JsonResponse
-from django.contrib.auth.models import Permission
 import json
-
 
 @api_view(['POST'])
 def refresh_token(request):
@@ -27,8 +22,7 @@ def refresh_token(request):
 
 
 class EmployeeView (APIView):
-    permission_classes = [IsAuthenticated]
-
+    permission_classes = [IsUserInGroupWithClerk]
     def get(self, request: Request, format=None):
         try:
             content = {
