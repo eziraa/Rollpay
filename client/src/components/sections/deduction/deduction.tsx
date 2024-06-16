@@ -1,3 +1,6 @@
+import { ADD_DEDUCTION } from "../../../constants/tasks";
+import { setShortTask } from "../../../store/user/user-slice";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   CustomTable,
   HeaderTitle,
@@ -17,11 +20,20 @@ import {
 } from "./deduction.style";
 
 export const EmployeeDeduction = () => {
+  const dispatcher = useAppDispatch();
   return (
     <DeductionContainer>
       <DeductionHeader>
         <DeductionTitle>Employee Deduction</DeductionTitle>
-        <AddButton>Add</AddButton>
+        <AddButton
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dispatcher(setShortTask(ADD_DEDUCTION));
+          }}
+        >
+          Add
+        </AddButton>
       </DeductionHeader>
       <DeductionBody>
         {monthsDeductions.map((Deduction, index) => {
