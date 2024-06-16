@@ -130,10 +130,13 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
       yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
-          type: "success",
+          type: "error",
           status: true,
           title: "Edit Employee",
-          desc: response.error,
+          desc:
+            response.error.length < 3
+              ? "Cannot edit employee please try again"
+              : response.error,
           duration: 3,
         })
       );
