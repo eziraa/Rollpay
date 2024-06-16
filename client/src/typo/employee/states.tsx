@@ -7,4 +7,6 @@ export interface EmployeeState {
   task: string | undefined;
   curr_emp: EmployeeResponse | undefined;
   editing: boolean;
+  major_task: string | undefined;
+  mini_task: string | undefined;
 }
