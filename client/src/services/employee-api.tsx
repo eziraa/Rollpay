@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { AddEmpParams, AddSalaryParams } from "../typo/employee/params";
 import api from "../config/api";
-import { AddEmpResponse, EmployeeResponse } from "../typo/employee/response";
+import { AddEmpResponse, EmpResponse } from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
   const response = await api
@@ -24,20 +24,27 @@ const addEmp = async (values: AddEmpParams) => {
 
 const listEmployee = async () => {
   const employees = await api
-    .get<EmployeeResponse[]>("/employee/list")
+    .get<EmpResponse>("/employee/list")
     .then((res) => {
-      return res.data;
+      return {
+        employees: res.data,
+        code: res.status,
+        success: "Success returned employees",
+      };
     })
     .catch((err: AxiosError) => {
-      console.log(err)
-      return [];
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
     });
   return employees;
 };
 
 const addSalary = async (values: AddSalaryParams) => {
   const employees = await api
-    .post<EmployeeResponse[]>("/employee/salary/add/" + values.empID, values)
+    .post<EmpResponse>("/employee/salary/add/" + values.empID, values)
     .then((res) => {
       return res.data;
     });

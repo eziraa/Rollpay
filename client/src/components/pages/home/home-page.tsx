@@ -12,7 +12,8 @@ import {
   ADD_DEDUCTION,
   ADD_OVERTIME,
 } from "../../../constants/tasks";
-import { AddAllowance } from "../../sections/add-allowance/add-allowance";
+import { AddSalaryComponent } from "../../sections/salary-components/salary-components";
+import LoadingSpinner from "../../utils/spinner/spinner";
 
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
@@ -26,12 +27,12 @@ export const HomePage = () => {
       <Header />
       <HomeBody>
         <LeftMenu />
-        <Main />
+        {employee.loading ? <LoadingSpinner /> : <Main />}
       </HomeBody>
       {employee.task === ADD_EMP && <AddEmployee />}
       {[ADD_ALLOWANCE, ADD_DEDUCTION, ADD_OVERTIME].includes(
         user.short_task ?? ""
-      ) && <AddAllowance />}
+      ) && <AddSalaryComponent />}
     </HomeContainer>
   );
 };

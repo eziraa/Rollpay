@@ -3,8 +3,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
 import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
-import { EmployeeResponse } from "../../typo/employee/response";
 import { EditEmployeeParams } from "../../services/employee-api";
+import { Employee } from "../../typo/employee/response";
 
 const InitialEmpState: EmployeeState = {
   adding: false,
@@ -35,11 +35,17 @@ const EmployeeSlice = createSlice({
     },
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    listEmpDone: (state, payload: PayloadAction<EmployeeResponse[]>) => {
+    listEmpDone: (state, payload: PayloadAction<Employee[]>) => {
       state.employees = payload.payload;
       state.adding = false;
       state.task = undefined;
       state.loading = false;
+    },
+    unfinishedList: (state) => {
+      state.loading = false;
+      state.task = undefined;
+      state.adding = false;
+      state.employees = [];
     },
     setTask: (state, task: PayloadAction<string | undefined>) => {
       state.task = task.payload;
@@ -52,21 +58,21 @@ const EmployeeSlice = createSlice({
     },
     setCurrentEmployee: (
       state,
-      payload: PayloadAction<EmployeeResponse | undefined>
+      payload: PayloadAction<Employee | undefined>
     ) => {
       state.curr_emp = payload.payload;
     },
     addSalaryRequested: (state, _: PayloadAction<AddSalaryParams>) => {
       state.adding = true;
     },
-    addSalaryDone: (state, action: PayloadAction<EmployeeResponse>) => {
+    addSalaryDone: (state, action: PayloadAction<Employee>) => {
       state.adding = false;
       state.curr_emp = action.payload;
     },
     editEmployeeRequested: (state, _: PayloadAction<EditEmployeeParams>) => {
       state.editing = true;
     },
-    editEmployeeDone: (state, action: PayloadAction<EmployeeResponse>) => {
+    editEmployeeDone: (state, action: PayloadAction<Employee>) => {
       state.editing = false;
       state.curr_emp = action.payload;
     },
@@ -88,6 +94,7 @@ export const {
   unfinishedAdd,
   listEmpRequested,
   listEmpDone,
+  unfinishedList,
   setTask,
   setCurrentEmployee,
   addSalaryRequested,

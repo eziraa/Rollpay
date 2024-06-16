@@ -1,3 +1,6 @@
+import { ADD_OVERTIME } from "../../../constants/tasks";
+import { setShortTask } from "../../../store/user/user-slice";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   CustomTable,
   HeaderTitle,
@@ -18,11 +21,19 @@ import {
 } from "./overtime.style";
 
 export const EmployeeOvertime = () => {
+  const dispatcher = useAppDispatch();
   return (
     <OvertimeContainer>
       <OvertimeHeader>
         <OvertimeTitle>Employee Overtime</OvertimeTitle>
-        <AddButton>Add</AddButton>
+        <AddButton
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatcher(setShortTask(ADD_OVERTIME));
+          }}
+        >
+          Add
+        </AddButton>
       </OvertimeHeader>
       <OvertimeBody>
         {monthsOvertimes.map((Overtime, index) => {

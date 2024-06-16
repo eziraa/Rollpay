@@ -1,4 +1,4 @@
-export interface EmployeeResponse {
+export interface Employee {
   id: string;
   first_name: string;
   last_name: string;
@@ -15,5 +15,12 @@ export interface AddEmpResponse {
   success: string;
   error: string;
   code: number;
-  employee: EmployeeResponse;
+  employee: Employee;
+}
+
+export interface EmpResponse {
+  employees: Employee[];
+  error: string;
+  code: number;
+  success: string;
 }
