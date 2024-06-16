@@ -11,3 +11,4 @@ client/src/components/pages/forgot_password/send_otp.tsx
 *.sh
 server/employee/forms.py
 server/employee/salary.py
+client/src/components/sections/allowance/data.ts
