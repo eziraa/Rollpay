@@ -5,6 +5,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/theme-context";
 import { lightTheme } from "../../../theme/theme";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
 const ToggleContainer = styled.div<ThemeProps>`
   display: inline-block;
   position: relative;
@@ -15,6 +16,9 @@ const ToggleContainer = styled.div<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   font-size: 2rem;
+  &:hover {
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
+  }
 `;
 
 export const Toggle = () => {
