@@ -1,48 +1,44 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
+import { RiCloseFill } from "react-icons/ri";
 
 export const FlasheMessageContainr = styled.div`
-  background-color: ${() => addOpacityToColor(0.7, "#300D59")};
   width: 30rem;
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  flex-direction: row;
+  align-items: center;
   justify-content: start;
-  color: ${({ theme }) => theme.backgrounds.primary};
   position: absolute;
-  bottom: 5rem;
+  top: 1rem;
   right: 10rem;
   padding: 1rem;
   z-index: 10000;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 1rem;
+  gap: 1rem;
 `;
 
-export const FlashMessageHeader = styled.div`
+export const FlashMessageBody = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
+  flex-direction: column;
+  justify-content: center;
   align-items: start;
+  gap: 0;
+  flex: 5;
 `;
 
 export const FlashMessageTitle = styled.h2`
   font-size: 1.5rem;
+  color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};
   font-weight: bold;
   text-align: left;
 `;
-export const FlashMessageContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  width: 100%;
-`;
 
 export const FlashMessageText = styled.p`
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   text-align: left;
-  padding: 0.5rem;
-  margin: 0.5rem;
-  border-radius: 0.5rem;
-  color: "#ff0000";
+  color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
 `;
 
 export const FlashMessageIcon = styled.div`
@@ -50,8 +46,20 @@ export const FlashMessageIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: "#ff0000";
-  font-size: 1.5rem;
+  font-size: 3rem;
   font-weight: bold;
   cursor: pointer;
+  flex: 1;
+`;
+
+export const CloseIcon = styled(RiCloseFill)`
+  color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
+  border: none;
+  font-size: 3.4rem;
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+  justify-self: end;
+  flex: 0.7;
 `;
