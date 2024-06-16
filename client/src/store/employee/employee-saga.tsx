@@ -12,7 +12,7 @@ import {
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
 import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
-import { AddEmpResponse, EmployeeResponse } from "../../typo/employee/response";
+import { AddEmpResponse, EmpResponse } from "../../typo/employee/response";
 import { setLongTask } from "../user/user-slice";
 import { LIST_EMP_S } from "../../constants/tasks";
 
@@ -83,10 +83,44 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
 
 function* GetEmployee() {
   try {
-    const employees: EmployeeResponse[] = yield call(EmployeeAPI.listEmployee);
+    const response: EmpResponse = yield call(EmployeeAPI.listEmployee);
     yield delay(1000);
-    yield put(listEmpDone(employees));
-    yield put(setLongTask(LIST_EMP_S));
+    if (response.code === 200) {
+      yield put(listEmpDone(response.employees));
+      yield put(setLongTask(LIST_EMP_S));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view employees",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
   } catch (e) {
     console.log(e);
   }
@@ -99,11 +133,11 @@ export function* watchAddEmployee() {
 
 function* addSalary(action: PayloadAction<AddSalaryParams>) {
   try {
-    const employees: EmployeeResponse = yield call(
+    const response: EmpResponse = yield call(
       EmployeeAPI.addSalary,
       action.payload
     );
-    yield put(addSalaryDone(employees));
+    yield put(addSalaryDone(response.employees[0]));
     yield put(
       setFlashMessage({
         type: "success",
