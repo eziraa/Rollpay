@@ -34,7 +34,7 @@ export const EditEmployeeContent = styled.div`
   justify-content: start;
   width: 100%;
   height: 90%;
-  gap: 5rem;
+  gap: 4rem;
 `;
 
 export const Title = styled.h1`
@@ -49,7 +49,7 @@ export const EmployeeeProfileContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 35%;
+  min-width: 30rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   border-radius: 10px;
   height: 100%;
@@ -172,9 +172,11 @@ export const NavBar = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  flex: 3;
-  justify-content: start;
+  justify-content: center;
+  flex: 3.8;
+  gap: 5rem;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.05, theme.colors.primary)};
 `;
 
 export const NavItem = styled.div`
@@ -182,7 +184,7 @@ export const NavItem = styled.div`
   display: inline-block;
   font-size: 1.7rem;
   cursor: pointer;
-  width: 25%;
+  width: 20%;
   text-align: center;
   color: ${({ theme }) => theme.colors.primary};
   &:hover {

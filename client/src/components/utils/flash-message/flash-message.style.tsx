@@ -2,17 +2,25 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
 import { RiCloseFill } from "react-icons/ri";
 
-export const FlasheMessageContainr = styled.div`
+export const FlasheMessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 30rem;
+  position: absolute;
+  top: 1rem;
+  right: 10rem;
+  z-index: 10000;
+  gap: 0.5rem;
+`;
+export const FlashMessageItem = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
-  position: absolute;
-  top: 1rem;
-  right: 10rem;
   padding: 1rem;
-  z-index: 10000;
   border-width: 2px;
   border-style: solid;
   border-radius: 1rem;
