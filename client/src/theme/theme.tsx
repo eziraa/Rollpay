@@ -31,7 +31,7 @@ export const lightTheme: Theme = {
     secondary: "#0a0a0a26",
   },
   backgrounds: {
-    primary: "#fff",
+    primary: "#ffffff",
     secondary: "#cfcfcf",
   },
   fontSizes: {
@@ -40,7 +40,7 @@ export const lightTheme: Theme = {
     large: "2.2rem",
   },
   table: {
-    tableRow: "#fff",
+    tableRow: "#ffffff",
     tableRowHover: "#929191",
     header: "#a2a2a2",
   },
@@ -54,7 +54,7 @@ export const lightTheme: Theme = {
 
 export const darkTheme: Theme = {
   colors: {
-    primary: "#fff",
+    primary: "#ffffff",
     secondary: "#a9a7a7",
   },
   backgrounds: {
