@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, delay, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
@@ -44,6 +44,17 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
           duration: 3,
         })
       );
+    } else if (response.code === 403) {
+      yield put(unfinishedAdd());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to add employee",
+          duration: 3,
+        })
+      );
     } else {
       yield put(unfinishedAdd());
       yield put(
@@ -73,6 +84,7 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
 function* GetEmployee() {
   try {
     const employees: EmployeeResponse[] = yield call(EmployeeAPI.listEmployee);
+    yield delay(1000);
     yield put(listEmpDone(employees));
     yield put(setLongTask(LIST_EMP_S));
   } catch (e) {
@@ -144,6 +156,17 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
           status: true,
           title: "Permition Denied",
           desc: "You are not authorized to edit employee",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedAdd());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to edit employee",
           duration: 3,
         })
       );
