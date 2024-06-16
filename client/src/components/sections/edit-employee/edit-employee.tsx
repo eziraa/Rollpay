@@ -76,7 +76,6 @@ export const EditEmployee = () => {
   });
   return (
     <Form
-      onSubmit={handleSubmit}
       style={{
         position: "relative",
       }}
@@ -266,8 +265,45 @@ export const EditEmployee = () => {
           )}
         </Field>
         <ButtonContainer>
-          <CancelBtn>{"Cancel"}</CancelBtn>
-          <SaveBtn type="submit">{editing ? <SmallSpinner /> : "Save"}</SaveBtn>
+          <CancelBtn
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (dirty) {
+                resetForm({ values: current_employee });
+                dispatcher(
+                  setFlashMessage({
+                    desc: "Form reset successfully",
+                    title: "Resetting form",
+                    status: true,
+                    duration: 3,
+                    type: "success",
+                  })
+                );
+              } else
+                dispatcher(
+                  setFlashMessage({
+                    desc: "No changes to reset",
+                    title: "No changes made",
+                    status: true,
+                    duration: 3,
+                    type: "error",
+                  })
+                );
+            }}
+          >
+            {"Reset"}
+          </CancelBtn>
+          <SaveBtn
+            type="submit"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            {editing ? <SmallSpinner /> : "Save"}
+          </SaveBtn>
         </ButtonContainer>
       </EditEmployeeBody>
     </Form>
