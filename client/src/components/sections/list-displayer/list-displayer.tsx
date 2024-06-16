@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect, useState } from "react";
 import {
