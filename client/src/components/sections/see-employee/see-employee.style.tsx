@@ -34,7 +34,7 @@ export const EditEmployeeContent = styled.div`
   justify-content: start;
   width: 100%;
   height: 90%;
-  gap: 10rem;
+  gap: 5rem;
 `;
 
 export const Title = styled.h1`
