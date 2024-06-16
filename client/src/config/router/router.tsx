@@ -5,6 +5,7 @@ import { HomePage } from "../../components/pages/home/home-page";
 import { LoginPage } from "../../components/pages/login/login";
 import ProtectedRoute from "../utils/protected_route";
 import NotFoundPage from "../../components/pages/4_0_4/404";
+import AccessDenied from "../../components/utils/access-denied/access-denied";
 export const RouterConfig = () => (
   <Router>
     <Routes>
@@ -18,6 +19,7 @@ export const RouterConfig = () => (
         }
       />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/access-denied" element={<AccessDenied />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   </Router>
