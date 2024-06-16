@@ -69,10 +69,10 @@ export const darkTheme: Theme = {
   table: {
     tableRow: "#000000",
     tableRowHover: "#666464",
-    header: "#000000bf",
+    header: "#121111ef",
   },
   buttons: {
-    primary: "#fff",
+    primary: "#ffffff",
     secondary: "#a9a7a7",
     primaryHover: "#EAEAEA",
     secondaryHover: "#a9a7a7",
