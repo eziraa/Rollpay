@@ -12,11 +12,11 @@ import {
   SortBtn,
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
-import { EmployeeResponse } from "../../../typo/employee/response";
 import { setLongTask } from "../../../store/user/user-slice";
 import { SEE_EMPLOYEE } from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
+import { Employee } from "../../../typo/employee/response";
 
 interface EmployeeOrderType {
   name: string;
@@ -71,14 +71,14 @@ function EmployeeListDisplayer() {
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
       if (
-        a[order[index].name as keyof EmployeeResponse] <
-        b[order[index].name as keyof EmployeeResponse]
+        a[order[index].name as keyof Employee] <
+        b[order[index].name as keyof Employee]
       ) {
         return order[index].isAscending ? 1 : -1;
       }
       if (
-        a[order[index].name as keyof EmployeeResponse] >
-        b[order[index].name as keyof EmployeeResponse]
+        a[order[index].name as keyof Employee] >
+        b[order[index].name as keyof Employee]
       ) {
         return order[index].isAscending ? -1 : 1;
       }
