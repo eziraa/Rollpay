@@ -80,11 +80,31 @@ const editEmployee = async (
   return response;
 };
 
+const deleteEmployee = async (empployee_id: string) => {
+  const response = await api
+    .delete<EmpResponse>("/employee/delete/" + empployee_id)
+    .then((res) => {
+      return {
+        success: "Employee deleted successfully",
+        code: res.status,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const EmployeeAPI = {
   addEmp,
   listEmployee,
   addSalary,
   editEmployee,
+  deleteEmployee,
 };
 
 export default EmployeeAPI;
