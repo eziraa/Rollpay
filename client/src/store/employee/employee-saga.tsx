@@ -5,9 +5,11 @@ import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
   addSalaryDone,
+  deleteEmpDone,
   editEmployeeDone,
   listEmpDone,
   unfinishedAdd,
+  unfinishedDelete,
   unfinishedEdit,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
@@ -128,12 +130,13 @@ function* GetEmployee() {
 
 function* DeleteEmployee(action: PayloadAction<string>) {
   try {
-    const response: EmpResponse = yield call(
+    const response: AddEmpResponse = yield call(
       EmployeeAPI.deleteEmployee,
       action.payload
     );
-    if (response.code === 200) {
-      yield put(listEmpDone(response.employees));
+    if (response.code === 204) {
+      yield put(deleteEmpDone(response.employee));
+      yield put(setLongTask(LIST_EMP_S));
       yield put(
         setFlashMessage({
           type: "success",
@@ -144,7 +147,8 @@ function* DeleteEmployee(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 401) {
-      window.location.href = "/access-denied";
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
           type: "error",
@@ -155,7 +159,8 @@ function* DeleteEmployee(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 403) {
-      window.location.href = "/access-denied";
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
           type: "error",
