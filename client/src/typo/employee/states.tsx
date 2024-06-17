@@ -10,4 +10,5 @@ export interface EmployeeState {
   major_task: string | undefined;
   mini_task: string | undefined;
   deleting: boolean;
+  query_set: Employee[];
 }
