@@ -31,12 +31,12 @@ class Deduction(models.Model):
 class Salary(models.Model):
     basic_salary = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=False)
-    allowances = models.ForeignKey(
-        Allowance, on_delete=models.PROTECT, blank=True, null=True)
-    overtimes = models.ForeignKey(
-        Overtime, on_delete=models.PROTECT, blank=True, null=True)
-    deductions = models.ForeignKey(
-        Deduction, on_delete=models.PROTECT, blank=True, null=True)
+    allowances = models.ManyToManyField(
+        Allowance, blank=True, null=True)
+    overtimes = models.ManyToManyField(
+        Overtime,  blank=True, null=True)
+    deductions = models.ManyToManyField(
+        Deduction, blank=True, null=True)
     net_salary = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=True)
     gross_salary = models.DecimalField(
