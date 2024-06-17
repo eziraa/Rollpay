@@ -12,3 +12,4 @@ server/employee/forms.py
 server/employee/salary.py
 *.sh
 client/src/components/sections/allowance/data.ts
+server/payroll/__pycache__/
