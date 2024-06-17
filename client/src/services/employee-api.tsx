@@ -87,6 +87,7 @@ const deleteEmployee = async (empployee_id: string) => {
       return {
         success: "Employee deleted successfully",
         code: res.status,
+        data: res.data,
       };
     })
     .catch((err: AxiosError) => {
