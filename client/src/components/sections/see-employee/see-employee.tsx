@@ -32,6 +32,7 @@ import {
 import { MdModeEditOutline } from "react-icons/md";
 import { EmployeeAllowance } from "../allowance/allowance";
 import {
+  deleteEmpRequested,
   resetCurrEmployee,
   setMajorTask,
 } from "../../../store/employee/employee-slice";
@@ -139,7 +140,7 @@ export const SeeEmployee = () => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                // dispatcher(setMajorTask(EDIT_EMP));
+                dispatcher(deleteEmpRequested(current_employee?.id || ""));
               }}
             >
               <RiDeleteBin6Line /> Delete
