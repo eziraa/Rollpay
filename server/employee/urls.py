@@ -10,6 +10,8 @@ urlpatterns = [
     path('add', views.EmployeeView.as_view(), name='__add_emoployee__'),
     path('edit/<employee_id>', views.EmployeeView.as_view(),
          name='__edit_emoployee__'),
+    path('delete/<employee_id>', views.EmployeeView.as_view(),
+         name='__delete_emoployee__'),
     path('salary/add/<employee_id>', salary.AddSalaryToEmployeeAPIView.as_view(),
          name='__add_salary__'),
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
