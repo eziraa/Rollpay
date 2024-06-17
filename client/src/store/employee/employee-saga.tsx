@@ -126,9 +126,65 @@ function* GetEmployee() {
   }
 }
 
+function* DeleteEmployee(action: PayloadAction<string>) {
+  try {
+    const response: EmpResponse = yield call(
+      EmployeeAPI.deleteEmployee,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(listEmpDone(response.employees));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Delete Employee",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to delete employees",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Delete Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchAddEmployee() {
   yield takeEvery("employee/addEmpRequested", AddEmployee);
   yield takeEvery("employee/listEmpRequested", GetEmployee);
+  yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
 }
 
 function* addSalary(action: PayloadAction<AddSalaryParams>) {
