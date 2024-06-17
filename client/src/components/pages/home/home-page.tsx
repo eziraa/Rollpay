@@ -14,19 +14,22 @@ import {
 } from "../../../constants/tasks";
 import { AddSalaryComponent } from "../../sections/salary-components/salary-components";
 import LoadingSpinner from "../../utils/spinner/spinner";
+import { CheckFlashMessage } from "../../sections/confirm-flash-message/confirm-flash-message";
+import { getSalariesRequested } from "../../../store/salary/salary-slice";
 
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
   const user = useAppSelector((state) => state.user);
   const dispacher = useAppDispatch();
   useEffect(() => {
-    dispacher(listEmpRequested());
+    dispacher(getSalariesRequested());
   }, [dispacher]);
   return (
     <HomeContainer>
       <Header />
       <HomeBody>
         <LeftMenu />
+        <CheckFlashMessage />
         {employee.loading ? <LoadingSpinner /> : <Main />}
       </HomeBody>
       {employee.task === ADD_EMP && <AddEmployee />}
