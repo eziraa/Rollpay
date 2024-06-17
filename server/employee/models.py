@@ -32,11 +32,11 @@ class Salary(models.Model):
     basic_salary = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=False)
     allowances = models.ManyToManyField(
-        Allowance, blank=True, null=True)
+        Allowance, blank=True)
     overtimes = models.ManyToManyField(
-        Overtime,  blank=True, null=True)
+        Overtime,  blank=True)
     deductions = models.ManyToManyField(
-        Deduction, blank=True, null=True)
+        Deduction, blank=True)
     net_salary = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=True)
     gross_salary = models.DecimalField(
