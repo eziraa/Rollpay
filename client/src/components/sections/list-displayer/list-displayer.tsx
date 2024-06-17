@@ -92,7 +92,7 @@ function EmployeeListDisplayer() {
     <div
       style={{
         position: "relative",
-        marginTop: "3rem",
+        marginTop: "1rem",
       }}
     >
       <ListContainer>
