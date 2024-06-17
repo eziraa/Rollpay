@@ -5,6 +5,7 @@ import flashMessageSlice from "../store/notification/flash-messsage-slice";
 import { rootSaga } from "./saga";
 import employeeSlice from "../store/employee/employee-slice";
 import userSLice from "../store/user/user-slice";
+import salarySlice from "../store/salary/salary-slice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -16,6 +17,7 @@ const store = configureStore({
     employee: employeeSlice,
     flashMessage: flashMessageSlice,
     user: userSLice,
+    salary: salarySlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
