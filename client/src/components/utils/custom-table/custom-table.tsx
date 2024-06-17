@@ -22,20 +22,21 @@ export const TableCaption = styled.h4`
 
 export const TableHeader = styled.tr<ThemeProps>`
   width: 100%;
+  font-size: 1.4rem;
   background-color: ${({ theme }) => theme.table.header};
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   font-weight: bold;
   text-align: center;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
 export const HeaderTitle = styled.th`
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   font-weight: 500;
   color: ${({ theme }) => theme.colors.primary};
   text-align: left;
-  padding: 1.5rem;
+  padding: 1rem;
 `;
 
 export const TableBody = styled.tbody`
@@ -44,9 +45,9 @@ export const TableBody = styled.tbody`
 
 export const TableRow = styled.tr<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.6rem;
   text-align: left;
   cursor: pointer;
+  font-size: 1.2rem;
   background-color: ${({ theme }) => theme.backgrounds.secondary};
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -61,9 +62,9 @@ export const TableRow = styled.tr<ThemeProps>`
 `;
 
 export const TableData = styled.td`
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   font-weight: 500;
   color: ${({ theme }) => theme.colors.primary};
   text-align: left;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
 `;
