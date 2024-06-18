@@ -20,7 +20,8 @@ export const SearchInput = styled(Input)`
   width: 50rem;
   height: 4rem;
   padding: 0 1rem;
-  border: none;
+  border: 1px solid ${({ theme }) => theme.backgrounds.primary};
+  border-radius: 3rem;
   &:focus {
     border: none;
   }

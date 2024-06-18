@@ -64,6 +64,9 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.employees = [];
     },
+    searching: (state, payload: PayloadAction<Employee[]>) => {
+      state.query_set = payload.payload;
+    },
     setTask: (state, task: PayloadAction<string | undefined>) => {
       state.task = task.payload;
     },
@@ -126,6 +129,7 @@ export const {
   setMajorTask,
   setMiniTask,
   resetCurrEmployee,
+  searching
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

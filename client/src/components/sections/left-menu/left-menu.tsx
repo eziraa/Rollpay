@@ -36,7 +36,7 @@ function LeftMenu() {
         }}
       >
         <SalaryIcon />
-        <MenuItemText>Salary</MenuItemText>
+        <MenuItemText>Employees Payroll</MenuItemText>
       </MenuItem>
     </LeftMenuContainer>
   );

@@ -6,6 +6,8 @@ export const CustomTable = styled.table`
   /* display: flex;
   flex-direction: column;
   align-items: start; */
+  margin-top: 6rem;
+  margin-left: 4rem;
   border-collapse: collapse;
   border: none;
   width: 100%;

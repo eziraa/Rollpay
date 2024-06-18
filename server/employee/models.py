@@ -13,6 +13,8 @@ class Allowance(models.Model):
     allowance_type = models.CharField(max_length=255, null=False)
     allowance_rate = models.DecimalField(
         max_digits=6, decimal_places=2, null=False)
+    def __str__(self):
+        return self.allowance_type
 
 
 class Overtime(models.Model):
@@ -20,12 +22,16 @@ class Overtime(models.Model):
     overtime_rate = models.DecimalField(
         max_digits=6, decimal_places=2, null=False)
     length = models.IntegerField(null=True)
+    def __str__(self):
+        return self.overtime_type    
 
 
 class Deduction(models.Model):
     deduction_type = models.CharField(max_length=255, null=False)
     deduction_rate = models.DecimalField(
         max_digits=7, decimal_places=2, null=False)
+    def __str__(self):
+        return self.deduction_type
 
 
 class Salary(models.Model):
@@ -70,12 +76,6 @@ class Employee(models.Model):
     def generate_employee_id(last_id):
         employee_id = "ED" + str(int(last_id[2:])+1)
         return employee_id
-
-
-
-
-
-
-
-
-
+    
+    def __str__(self):
+        return self.first_name + " " + self.last_name

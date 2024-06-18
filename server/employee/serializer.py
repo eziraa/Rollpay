@@ -46,15 +46,17 @@ class SalarySerializer (serializers.ModelSerializer):
     allowances = serializers.SerializerMethodField(read_only=True)
     deductions = serializers.SerializerMethodField(read_only=True)
     overtimes = serializers.SerializerMethodField(read_only=True)
+
     total_deduction = serializers.DecimalField(
         max_digits=7, decimal_places=2, allow_null=True)
+    income_tax = serializers.SerializerMethodField(read_only = True)
 
     class Meta:
 
         model = Salary
         fields = ('basic_salary', 'gross_salary',
                   "allowances", "deductions", "overtimes", "total_salary",
-                  'total_deduction', "net_salary")
+                  'total_deduction',"income_tax", "net_salary")
 
     def get_allowances(self, obj: Salary):
         return AllowanceSerializer(obj.allowances, many=True).data
@@ -64,9 +66,6 @@ class SalarySerializer (serializers.ModelSerializer):
 
     def get_overtimes(self, obj: Salary):
         return OvertimeSerializer(obj.overtimes, many=True).data
-
-    def get_total_salary(self, obj: Salary):
-        return obj.gross_salary - obj.total_deduction
 
     def get_net_salary(self, obj: Salary):
         return obj.gross_salary - obj.total_deduction
@@ -78,7 +77,13 @@ class SalarySerializer (serializers.ModelSerializer):
         return obj.total_deduction
 
     def get_gross_salary(self, obj: Salary):
-        return obj.basic_salary
+        allowance_sum = obj.basic_salary if obj.basic_salary else 0
+        if obj.allowances:
+            for allowance in list(Salary.objects.get(id=obj.pk).allowances.all()):
+             allowance_sum += Decimal( allowance.allowance_rate) * obj.basic_salary / 100
+        return allowance_sum
+    def get_income_tax(self, obj:Salary):
+        return utils.income_tax(gross_salary= obj.gross_salary)
 
 
 class AllowanceSerializer(serializers.ModelSerializer):
@@ -88,10 +93,10 @@ class AllowanceSerializer(serializers.ModelSerializer):
 
 
 class DeductionSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Deduction
         fields = "__all__"
-
 
 class OvertimeSerializer(serializers.ModelSerializer):
     class Meta:
