@@ -8,6 +8,7 @@ export const SalaryContainer = styled.div`
   align-items: center;
   justify-content: start;
   height: 90vh;
+  width: 100%;
   ${custom_scroll_bar}
 `;
 
