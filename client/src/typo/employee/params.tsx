@@ -7,7 +7,6 @@ export interface AddEmpParams {
   position: string;
   date_of_birth: string;
   date_of_hire: string;
-  salary: number;
 }
 export interface EditEmployeeParams extends AddEmpParams {
   id: string;
