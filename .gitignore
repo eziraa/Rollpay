@@ -6,3 +6,7 @@ server/.env
 server/employee/__pycache__/
 server/payroll/__pycache__/
 *.env
+*.sh
+client/src/components/sections/allowance/data.ts
+server/employee/forms.py
+server/employee/salary.py
