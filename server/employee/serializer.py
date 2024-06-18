@@ -78,8 +78,9 @@ class SalarySerializer (serializers.ModelSerializer):
         return obj.total_deduction
 
     def get_gross_salary(self, obj: Salary):
-        return obj.basic_salary
-
+        allowances_sum = sum(
+            [allowance.allowance_rate for allowance in obj.allowances.all()])
+        return obj.basic_salary + allowances_sum * obj.basic_salary / 100
 
 class AllowanceSerializer(serializers.ModelSerializer):
     class Meta:
