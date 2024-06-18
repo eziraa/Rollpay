@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.views import APIView
 from .serializer import EmployeeSerializer
@@ -95,3 +96,13 @@ class EmployeeView (APIView):
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class SalaryView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        employees = Employee.objects.all()
+        serializer = EmployeeSerializer(employees, many=True)
+        return JsonResponse(data=serializer.data, safe=False)
