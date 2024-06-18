@@ -1,10 +1,12 @@
 client/node_modules/
+
+*.pyc
+server/employee/migrations/
+.env
+
 client/yarn.lock
 *.pyc
 server/employee/migrations/0*.py
-server/.env
-server/employee/__pycache__/
-server/payroll/__pycache__/
 *.env
 *.sh
 client/src/components/sections/allowance/data.ts
