@@ -2,7 +2,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery } from "redux-saga/effects";
-import { setFlashMessage } from "../notification/flash-messsage-slice";
+
 import { LoginParams, SignUpParams } from "../../typo/user/params";
 import UserAPI from "../../services/user-api";
 import {
@@ -24,7 +24,7 @@ function* userSignUp(action: PayloadAction<SignUpParams>) {
       yield put(wrongSignup(response.error));
     }
   } catch (e) {
-         yield put(wrongSignup("User sign up failed try again!!"));
+    yield put(wrongSignup("User sign up failed try again!!"));
   }
 }
 
@@ -52,7 +52,6 @@ export function* watchUserLogin() {
 
 function* userLogout() {
   const response: SignUpResponse = yield call(UserAPI.logout);
-
   if (response.code === 200) {
     yield put(logout());
     yield put(
@@ -65,6 +64,7 @@ function* userLogout() {
       })
     );
   } else {
+
     yield put(
       setFlashMessage({
         type: "error",
