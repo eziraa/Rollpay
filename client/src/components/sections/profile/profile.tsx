@@ -31,10 +31,10 @@ const Profile = ({ show }: Props) => {
       <Modal>
         <Label>Username: {user.user?.username}</Label>
         <Label>Employee ID: {user.user?.employeeId}</Label>
-
         <ResetLink>
           <Link to="/change-password">Change Password</Link>
         </ResetLink>
+        <hr />
         <LogoutButton onClick={handleClick}>Log out</LogoutButton>
       </Modal>
     </ModalContainer>
