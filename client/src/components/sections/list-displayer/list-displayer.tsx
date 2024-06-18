@@ -16,7 +16,6 @@ import { setLongTask } from "../../../store/user/user-slice";
 import { SEE_EMPLOYEE } from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
-import { Employee } from "../../../typo/employee/response";
 
 interface EmployeeOrderType {
   name: string;
@@ -67,18 +66,18 @@ function EmployeeListDisplayer() {
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
     setEmpList(emplist);
-  }, []);
+  }, [dispatcher]);
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
       if (
-        a[order[index].name as keyof Employee] <
-        b[order[index].name as keyof Employee]
+        a[order[index].name as keyof unknown] <
+        b[order[index].name as keyof unknown]
       ) {
         return order[index].isAscending ? 1 : -1;
       }
       if (
-        a[order[index].name as keyof Employee] >
-        b[order[index].name as keyof Employee]
+        a[order[index].name as keyof unknown] >
+        b[order[index].name as keyof unknown]
       ) {
         return order[index].isAscending ? -1 : 1;
       }
@@ -205,8 +204,10 @@ function EmployeeListDisplayer() {
                   <Data> {emp.date_of_hire} </Data>
                   <Data> {emp.date_of_birth} </Data>
                   <Data> {emp.position} </Data>
-                  <Data> {emp.salary} </Data>
-
+                  <Data>
+                    {(emp.salary as { basic_salary: number } | undefined)
+                      ?.basic_salary ?? 0}
+                  </Data>
                   <Data
                     style={{
                       fontSize: "1.2rem",
