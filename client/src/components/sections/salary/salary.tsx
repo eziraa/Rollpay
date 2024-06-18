@@ -33,6 +33,30 @@ export const Salary = () => {
     setAllowanceTypes(Array.from(tempAllowanceTypes));
     setDeductionTypes(Array.from(tempDeductionTypes));
   }, [response]);
+  const getSalary = (salary: number | null) => {
+    if (salary) {
+      return (salary * 1.0).toFixed(2);
+    }
+    return "-";
+  };
+
+  const getRate = (rate: number | undefined) => {
+    if (rate) {
+      return (rate * 1.0).toFixed(2) + "%";
+    }
+    return (
+      <span
+        style={{
+          textAlign: "center",
+          width: "50%",
+          display: "inline-block",
+        }}
+      >
+        -
+      </span>
+    );
+  };
+
   return (
     <SalaryContainer>
       <SalaryTitle>Salary</SalaryTitle>
@@ -83,27 +107,25 @@ export const Salary = () => {
               {allowanceTypes.map((allowanceType) => {
                 return (
                   <TableData>
-                    {
+                    {getRate(
                       employee.salary.allowances.find(
                         (alowance) => alowance.allowance_type === allowanceType
                       )?.allowance_rate
-                    }
+                    )}
                   </TableData>
                 );
               })}
+              <TableData>{getSalary(employee.salary.gross_salary)}</TableData>
               <TableData>{employee.salary.basic_salary * 1.3}</TableData>
-              <TableData>
-                {(employee.salary.basic_salary * 0.1).toFixed(2)}
-              </TableData>
               {deductionTypes.map((deductionType) => {
                 return (
                   <TableData>
-                    {
+                    {getRate(
                       employee.salary.deductions.find(
                         (deduction) =>
                           deduction.deduction_type === deductionType
                       )?.deduction_rate
-                    }
+                    )}
                   </TableData>
                 );
               })}
