@@ -76,9 +76,8 @@ class SalarySerializer (serializers.ModelSerializer):
         for deduction in obj.deductions.all():
            obj.total_deduction += deduction.deduction_rate * obj.basic_salary / 100
         return obj.total_deduction
+
     def get_gross_salary(self, obj: Salary):
-        if obj.allowances:
-            return utils.total_allowance(obj.allowances, obj.basic_salary) + int(obj.basic_salary)
         return obj.basic_salary
 
 
