@@ -2,8 +2,7 @@ import jwt
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from datetime import datetime, timedelta
-
-
+from .models import Allowance
 def refresh_jwt_token(old_token):
     try:
         # Decode the old token
@@ -61,9 +60,10 @@ def income_tax(gross_salary):
 def allowance(rate, basic_salary):
     return rate * basic_salary
 
-def total_allowance(*allowance):
-    return sum(allowance)
 
+def total_allowance(allowances, basic_salary):
+    # print(AllowanceSerializer(data=allowances, many=True).data)
+    return int(basic_salary) * 2 // 100
 def gross_salary(basic_salary, allowance):
     return sum([basic_salary, allowance])
 

@@ -15,6 +15,8 @@ const InitialEmpState: EmployeeState = {
   editing: false,
   major_task: undefined,
   mini_task: undefined,
+  deleting: false,
+  query_set: [],
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -33,8 +35,23 @@ const EmployeeSlice = createSlice({
     listEmpRequested: (state) => {
       state.loading = true;
     },
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    tryingToDelete: (state) => {
+      state.deleting = true;
+    },
+    deleteEmpRequested: (__, _: PayloadAction<string>) => {},
+    searchRequested: (state, action: PayloadAction<string>) => {
+      state.mini_task = action.payload;
+    },
+    addSearched: (state, action: PayloadAction<Employee[]>) => {
+      state.query_set = action.payload;
+    },
+    deleteEmpDone: (state, action: PayloadAction<Employee>) => {
+      state.deleting = false;
+      state.employees.splice(state.employees.indexOf(action.payload), 1);
+    },
+    unfinishedDelete: (state) => {
+      state.deleting = false;
+    },
     listEmpDone: (state, payload: PayloadAction<Employee[]>) => {
       state.employees = payload.payload;
       state.adding = false;
@@ -95,6 +112,10 @@ export const {
   listEmpRequested,
   listEmpDone,
   unfinishedList,
+  tryingToDelete,
+  deleteEmpRequested,
+  deleteEmpDone,
+  unfinishedDelete,
   setTask,
   setCurrentEmployee,
   addSalaryRequested,

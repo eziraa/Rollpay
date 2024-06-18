@@ -126,6 +126,11 @@ export const Button = styled.button`
   display: flex;
   gap: 1rem;
   font-size: medium;
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.75, theme.colors.primary)};
+    color: ${({ theme }) => theme.backgrounds.primary};
+  }
 `;
 
 export const BackButton = styled.div`
@@ -191,4 +196,9 @@ export const NavItem = styled.div`
     background-color: ${({ theme }) =>
       addOpacityToColor(0.5, theme.backgrounds.secondary)};
   }
+`;
+
+export const DeleteButton = styled(Button)`
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.5, theme.colors.primary)};
 `;

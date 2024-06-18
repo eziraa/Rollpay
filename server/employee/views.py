@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.views import APIView
 from .serializer import EmployeeSerializer
@@ -69,13 +70,17 @@ class EmployeeView (APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
+    def delete(self, request, employee_id):
         try:
-            employe = Employee.objects.get(pk=id)
+            employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        employe.delete()
-        return Response({"message": "Employee deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        try:
+            serializer = EmployeeSerializer(employee)
+            employee.delete()
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, employee_id):
         try:
@@ -91,3 +96,13 @@ class EmployeeView (APIView):
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class SalaryView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        employees = Employee.objects.all()
+        serializer = EmployeeSerializer(employees, many=True)
+        return JsonResponse(data=serializer.data, safe=False)
