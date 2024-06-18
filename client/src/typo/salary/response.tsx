@@ -24,6 +24,7 @@ export interface Salary {
   net_salary: number | null;
   total_salary: number | null;
   total_deduction: number | null;
+  income_tax: number | null;
 }
 
 export interface Employee {
