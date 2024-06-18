@@ -8,6 +8,7 @@ export const CustomTable = styled.table`
   align-items: start; */
   border-collapse: collapse;
   border: none;
+  width: 100%;
 `;
 
 export const TableCaption = styled.h4`
@@ -48,6 +49,7 @@ export const TableRow = styled.tr<ThemeProps>`
   text-align: left;
   cursor: pointer;
   font-size: 1.2rem;
+  width: 100%;
   background-color: ${({ theme }) => theme.backgrounds.secondary};
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.backgrounds.primary};
