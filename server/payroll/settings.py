@@ -4,6 +4,8 @@ from datetime import timedelta
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+import dj_database_url
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -110,9 +112,7 @@ DATABASES = {
     }
 }
 
-DATABASES["default"] = dj_database_url.parse(
-    os.getenv("DATABASE_URL"), conn_max_age=600, ssl_require=True)
-
+DATABASES["default"] = dj_database_url.parse(os.getenv('DATABASE_URL'))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
