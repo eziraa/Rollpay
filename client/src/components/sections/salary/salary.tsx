@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "../../utils/custom-table/custom-table";
 import { SalaryContainer, SalaryTitle } from "./salary.style";
-import { Allowance } from "../../../typo/salary/response";
 
 export const Salary = () => {
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
@@ -64,15 +63,9 @@ export const Salary = () => {
           <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
         </TableHeader>
         <TableHeader>
-          {allowanceTypes
-            .sort((a, b) => {
-              if (a < b) return -1;
-              else if (a > b) return 1;
-              else return 0;
-            })
-            .map((allowanceType) => {
-              return <HeaderTitle> {allowanceType} </HeaderTitle>;
-            })}
+          {allowanceTypes.map((allowanceType) => {
+            return <HeaderTitle> {allowanceType} </HeaderTitle>;
+          })}
           <HeaderTitle>Income Tax</HeaderTitle>
           {deductionTypes.map((deductionType) => {
             return <HeaderTitle> {deductionType} </HeaderTitle>;
