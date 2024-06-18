@@ -2,8 +2,8 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+import dj_database_url
 from dotenv import load_dotenv
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -109,6 +109,9 @@ DATABASES = {
         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'DATABASE_PASSWORD'),
     }
 }
+
+DATABASES["default"] = dj_database_url.parse(
+    os.getenv("DATABASE_URL"), conn_max_age=600, ssl_require=True)
 
 
 # Password validation
