@@ -14,6 +14,7 @@ urlpatterns = [
          name='__delete_emoployee__'),
     path('salary/add/<employee_id>', salary.AddSalaryToEmployeeAPIView.as_view(),
          name='__add_salary__'),
+    path("salary/get", views.SalaryView.as_view(), name='__get_salary__'),
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
          name='__update_emoployee__'),
