@@ -4,7 +4,7 @@ import {
   Input,
   InputContainer,
   Label,
-} from "../../utils/form_elements/form.style";
+} from "../../utils/form-elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import {
   AddButton,
@@ -16,11 +16,13 @@ import {
   Title,
 } from "./add-employee.style";
 import { useFormik } from "formik";
-import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
-import { useAppDispatch } from "../../../utils/customHook";
-import { addEmpRequested } from "../../../store/employee/employeeSlice";
+import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { addEmpRequested } from "../../../store/employee/employee-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
+  const { adding } = useAppSelector((state) => state.employee);
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -31,10 +33,10 @@ export const AddEmployee = () => {
       date_of_birth: "",
       date_of_hire: "",
       position: "",
+      salary: 0,
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
-      console.log(values)
       dispatcher(addEmpRequested(values));
     },
   });
@@ -45,7 +47,6 @@ export const AddEmployee = () => {
         <AddEmployeeForm
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(formHandler.values);
             formHandler.handleSubmit(e);
           }}
         >
@@ -163,6 +164,22 @@ export const AddEmployee = () => {
               </FormError>{" "}
             </InputContainer>
             <InputContainer>
+              <Label htmlFor="role">Basic Salary</Label>
+              <Input
+                placeholder=""
+                type="text"
+                id="salary"
+                name="salary"
+                value={formHandler.values.salary}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.salary && formHandler.errors.salary ? (
+                  <div>{formHandler.errors.salary}</div>
+                ) : null}
+              </FormError>
+            </InputContainer>
+            <InputContainer>
               <Label htmlFor="date_of_birth">Birth Date</Label>
               <Input
                 type="date"
@@ -195,7 +212,9 @@ export const AddEmployee = () => {
               </FormError>{" "}
             </InputContainer>
           </Column>
-          <AddButton type="submit">Add</AddButton>
+          <AddButton type="submit">
+            {adding ? <SmallSpinner /> : "Add"}
+          </AddButton>
         </AddEmployeeForm>
       </AddEmployeeContainer>
     </Modal>

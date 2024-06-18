@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -8,8 +7,8 @@ import {
   Button,
   Title,
   PasswordContainer,
-} from "../../utils/form_elements/form.style";
-import { PasswordVisible } from "../../utils/password_visiblity/password.style";
+} from "../../utils/form-elements/form.style";
+import { PasswordVisible } from "../../utils/password-visiblity/password.style";
 import {
   Text,
   CheckboxContainer,
@@ -18,43 +17,49 @@ import {
   LinkContainer,
   Checkbox,
   ActionsContainer,
+  LoginSection,
 } from "./login.style";
-import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
-import { ErrorMessage } from "../signup/SignUp.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/customHook";
-import { loginRequested } from "../../../store/user/userSLice";
-import { useAuth } from "../../../contexts/authContext";
+import { ErrorMessage } from "../sign-up/sign-up.style";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { loginRequested } from "../../../store/user/user-slice";
+import { IoEyeOutline } from "react-icons/io5";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
+  const { is_login, login_error, logging_in } = useAppSelector(
+    (state) => state.user
+  );
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-  const { isAuthenticated } = useAuth();
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
-  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-      confirm_password: "",
-    },
-    validationSchema: LogInSchema,
-    onSubmit: async (values, _) => {
-      await dispatcher(loginRequested(values));
-    },
-  });
+
+  useEffect(() => {
+    if (is_login) window.location.href = "/home-page";
+  }, [is_login]);
+  const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
+    useFormik({
+      initialValues: {
+        username: "",
+        password: "",
+      },
+      validationSchema: LogInSchema,
+      onSubmit: async (values) => {
+        await dispatcher(loginRequested(values));
+      },
+    });
 
   return (
-    !isAuthenticated && (
-      <LoginContainer>
+    <LoginContainer>
+      <LoginSection>
         <Title>Log In</Title>
         <Form
           onSubmit={(e) => {
-            e.preventDefault();
             handleSubmit(e);
           }}
         >
@@ -66,7 +71,9 @@ export const LoginPage = () => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {errors.username && <ErrorMessage>{errors.username} </ErrorMessage>}
+            {touched.username && errors.username && (
+              <ErrorMessage>{errors.username} </ErrorMessage>
+            )}
           </InputContainer>
           <InputContainer>
             <Label>Password</Label>
@@ -79,10 +86,13 @@ export const LoginPage = () => {
                 onChange={handleChange}
               />
               <PasswordVisible onClick={togglePasswordVisiblity}>
-                {passwordVisible ? <RiEyeFill /> : <RiEyeOffFill />}
+                {passwordVisible ? <IoEyeOutline /> : <FaRegEyeSlash />}
               </PasswordVisible>
             </PasswordContainer>
-            {errors.password && <ErrorMessage>{errors.password} </ErrorMessage>}
+            {touched.password && errors.password && (
+              <ErrorMessage>{errors.password} </ErrorMessage>
+            )}
+            {login_error && <ErrorMessage>{login_error} </ErrorMessage>}
           </InputContainer>
           <ActionsContainer>
             <CheckboxContainer>
@@ -92,18 +102,17 @@ export const LoginPage = () => {
               <Link to="/forgot_password">Frogot Password?</Link>
             </CustomLink>
           </ActionsContainer>
-          <Button type="submit" onClick={(e) => e.stopPropagation()}>
-            Login
+          <Button type="submit" disabled={logging_in}>
+            {logging_in ? <SmallSpinner /> : "Login"}
           </Button>
         </Form>
         <LinkContainer>
           <Text>Don't have an account? </Text>
           <CustomLink>
-            <Link to="/signup"> Sign up </Link>
+            <Link to="/signup"> Sign up</Link>
           </CustomLink>
         </LinkContainer>
-      </LoginContainer>
-    )
+      </LoginSection>
+    </LoginContainer>
   );
 };
-

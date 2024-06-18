@@ -1,8 +1,14 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { addOpacityToColor } from "../../utils/convertor/add_opacity_color";
-
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 export const LoginContainer = styled.div<ThemeProps>`
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
+  height: 100vh;
+  width: 100vw;
+`;
+
+export const LoginSection = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
   width: 23%;
@@ -14,15 +20,12 @@ export const LoginContainer = styled.div<ThemeProps>`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 1rem;
   border-radius: 1rem;
-  /* border: 1px solid
-    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)}; */
 `;
 export const Checkbox = styled.input`
   height: 1.5rem;
@@ -80,4 +83,4 @@ export const LinkContainer = styled.div`
   flex-direction: row;
   align-items: center;
   /* justify-items: left; */
-`
+`;
