@@ -44,6 +44,12 @@ class Salary(models.Model):
     total_deduction = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=True)
 
+
+class Position(models.Model):
+    position_type = models.CharField(max_length=255, null=False)
+    basic_salary = models.DecimalField(
+        max_digits=7, decimal_places=2, null=False)
+
 class Employee(models.Model):
     Male = 'M'
     Female = 'F'
