@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
-import { call, delay, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
@@ -86,10 +86,9 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
 function* GetEmployee() {
   try {
     const response: EmpResponse = yield call(EmployeeAPI.listEmployee);
-    yield delay(1000);
     if (response.code === 200) {
-      yield put(listEmpDone(response.employees));
       yield put(setLongTask(LIST_EMP_S));
+      yield put(listEmpDone(response.employees));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
       yield put(
