@@ -1,7 +1,14 @@
 client/node_modules/
+*.pyc
+server/employee/migrations/
+.env
+
 client/yarn.lock
+
 *.pyc
 server/employee/migrations/0*.py
 *.env
-*.pyc
-server/users/migrations/0*.py
+*.sh
+client/src/components/sections/allowance/data.ts
+server/employee/forms.py
+server/employee/salary.py

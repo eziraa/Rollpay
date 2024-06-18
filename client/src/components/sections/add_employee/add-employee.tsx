@@ -4,7 +4,7 @@ import {
   Input,
   InputContainer,
   Label,
-} from "../../utils/form_elements/form.style";
+} from "../../utils/form-elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import {
   AddButton,
@@ -16,11 +16,13 @@ import {
   Title,
 } from "./add-employee.style";
 import { useFormik } from "formik";
-import { AddEmployeeSchema } from "../../../schema/AddEmpSchema";
-import { useAppDispatch } from "../../../utils/customHook";
-import { addEmpRequested } from "../../../store/employee/employeeSlice";
+import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { addEmpRequested } from "../../../store/employee/employee-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
+  const { adding } = useAppSelector((state) => state.employee);
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -30,11 +32,11 @@ export const AddEmployee = () => {
       gender: "",
       date_of_birth: "",
       date_of_hire: "",
-      role: "",
+      position: "",
+      salary: 0,
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
-      console.log(values);
       dispatcher(addEmpRequested(values));
     },
   });
@@ -45,7 +47,6 @@ export const AddEmployee = () => {
         <AddEmployeeForm
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(formHandler.values);
             formHandler.handleSubmit(e);
           }}
         >
@@ -148,18 +149,72 @@ export const AddEmployee = () => {
           <Column>
             <InputContainer>
               <Label htmlFor="role">Role(Position)</Label>
-              <Input type="text" name="role" />
+              <Input
+                placeholder=""
+                type="text"
+                id="position"
+                name="position"
+                value={formHandler.values.position}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.position && formHandler.errors.position ? (
+                  <div>{formHandler.errors.position}</div>
+                ) : null}
+              </FormError>{" "}
+            </InputContainer>
+            <InputContainer>
+              <Label htmlFor="role">Basic Salary</Label>
+              <Input
+                placeholder=""
+                type="text"
+                id="salary"
+                name="salary"
+                value={formHandler.values.salary}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.salary && formHandler.errors.salary ? (
+                  <div>{formHandler.errors.salary}</div>
+                ) : null}
+              </FormError>
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_birth">Birth Date</Label>
-              <Input type="date" name="date_of_birth" />
+              <Input
+                type="date"
+                id="date_of_birth"
+                name="date_of_birth"
+                value={formHandler.values.date_of_birth}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.date_of_birth &&
+                formHandler.errors.date_of_birth ? (
+                  <div>{formHandler.errors.date_of_birth}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_hire">Date of Hire</Label>
-              <Input type="date" name="date_of_hire" />
+              <Input
+                type="date"
+                id="date_of_hire"
+                name="date_of_hire"
+                value={formHandler.values.date_of_hire}
+                onChange={formHandler.handleChange}
+              />
+              <FormError>
+                {formHandler.touched.date_of_hire &&
+                formHandler.errors.date_of_hire ? (
+                  <div>{formHandler.errors.date_of_hire}</div>
+                ) : null}
+              </FormError>{" "}
             </InputContainer>
           </Column>
-          <AddButton type="submit">Add</AddButton>
+          <AddButton type="submit">
+            {adding ? <SmallSpinner /> : "Add"}
+          </AddButton>
         </AddEmployeeForm>
       </AddEmployeeContainer>
     </Modal>
