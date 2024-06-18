@@ -11,8 +11,8 @@ export const LogoContainer = styled.div<ThemeProps>`
 `;
 
 export const LogoImage = styled.div`
-  width: 5rem;
-  height: 5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
   padding: 0.5rem;
   background: url(${logo}), linear-gradient(90deg, #60565596, #6866619d);
