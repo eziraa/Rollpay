@@ -1,4 +1,9 @@
 client/node_modules/
+
+*.pyc
+server/employee/migrations/
+.env
+
 client/yarn.lock
 *.pyc
 server/employee/migrations/0*.py
@@ -12,3 +17,4 @@ client/src/components/pages/forgot_password/send_otp.tsx
 server/employee/forms.py
 server/employee/salary.py
 client/src/components/sections/allowance/data.ts
+
