@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   CustomTable,
   HeaderTitle,
@@ -8,12 +8,28 @@ import {
   TableHeader,
   TableRow,
 } from "../../utils/custom-table/custom-table";
-import { SalaryContainer, SalaryTitle } from "./salary.style";
+import { SalaryContainer, SearchContainer, SearchInput } from "./salary.style";
+import { SearchIcon } from "../../utils/search/search.style";
+import { Header, Title } from "../display-employee/display-employee.style";
+import { searching } from "../../../store/employee/employee-slice";
 
 export const Salary = () => {
+  const dispatch = useAppDispatch();
+  const employee = useAppSelector((state) => state.employee);
+
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { response } = useAppSelector((state) => state.salary);
+
+  const startSearch = (param: string) => {
+    const lookUp = param.toLowerCase();
+
+    const employees =
+      employee!.employees?.filter((employee) =>
+        employee.first_name.toLowerCase().startsWith(lookUp)
+      ) ?? [];
+    dispatch(searching(employees));
+  };
 
   useEffect(() => {
     const tempAllowanceTypes = new Set<string>();
@@ -35,7 +51,18 @@ export const Salary = () => {
   }, [response]);
   return (
     <SalaryContainer>
-      <SalaryTitle>Salary</SalaryTitle>
+      <Header>
+        <Title>Employees Payroll</Title>
+      </Header>
+      <SearchContainer>
+        <SearchIcon />
+        <SearchInput
+          onInput={(e) => {
+            e.preventDefault();
+            startSearch(e.currentTarget.value);
+          }}
+        />
+      </SearchContainer>
       <CustomTable>
         <TableHeader>
           <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
@@ -91,10 +118,8 @@ export const Salary = () => {
                   </TableData>
                 );
               })}
-              <TableData>{employee.salary.basic_salary * 1.3}</TableData>
-              <TableData>
-                {(employee.salary.basic_salary * 0.1).toFixed(2)}
-              </TableData>
+              <TableData>{employee.salary?.gross_salary}</TableData>
+              <TableData>{employee.salary?.income_tax}</TableData>
               {deductionTypes.map((deductionType) => {
                 return (
                   <TableData>
