@@ -25,8 +25,5 @@ export const Spinner = styled.div<SpinnerProps>`
   width: 120px;
   height: 120px;
   animation: ${spin} 1s ease-in-out infinite;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
 `;

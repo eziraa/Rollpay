@@ -1,13 +1,15 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction } from "@reduxjs/toolkit";
-import { call, delay, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
   addSalaryDone,
+  deleteEmpDone,
   editEmployeeDone,
   listEmpDone,
   unfinishedAdd,
+  unfinishedDelete,
   unfinishedEdit,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
@@ -84,10 +86,9 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
 function* GetEmployee() {
   try {
     const response: EmpResponse = yield call(EmployeeAPI.listEmployee);
-    yield delay(1000);
     if (response.code === 200) {
-      yield put(listEmpDone(response.employees));
       yield put(setLongTask(LIST_EMP_S));
+      yield put(listEmpDone(response.employees));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
       yield put(
@@ -126,9 +127,68 @@ function* GetEmployee() {
   }
 }
 
+function* DeleteEmployee(action: PayloadAction<string>) {
+  try {
+    const response: AddEmpResponse = yield call(
+      EmployeeAPI.deleteEmployee,
+      action.payload
+    );
+    if (response.code === 204) {
+      yield put(deleteEmpDone(response.employee));
+      yield put(setLongTask(LIST_EMP_S));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Delete Employee",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to delete employees",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Delete Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchAddEmployee() {
   yield takeEvery("employee/addEmpRequested", AddEmployee);
   yield takeEvery("employee/listEmpRequested", GetEmployee);
+  yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
 }
 
 function* addSalary(action: PayloadAction<AddSalaryParams>) {

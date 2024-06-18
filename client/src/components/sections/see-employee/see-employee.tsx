@@ -16,6 +16,8 @@ import {
   Title,
   SeeEmployeeHeader,
   TitleContainer,
+  ActionBtnsContainer,
+  DeleteButton,
 } from "./see-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
@@ -32,10 +34,12 @@ import { EmployeeAllowance } from "../allowance/allowance";
 import {
   resetCurrEmployee,
   setMajorTask,
+  tryingToDelete,
 } from "../../../store/employee/employee-slice";
 import { EditEmployee } from "../edit-employee/edit-employee";
 import { EmployeeOvertime } from "../overtime/overtime";
 import { EmployeeDeduction } from "../deduction/deduction";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export const SeeEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
@@ -116,7 +120,13 @@ export const SeeEmployee = () => {
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Salary</DataLabel>
-              <DataValue>{current_employee?.salary}</DataValue>
+              <DataValue>
+                {(
+                  current_employee?.salary as
+                    | { basic_salary: number }
+                    | undefined
+                )?.basic_salary ?? 0}
+              </DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Birth Date</DataLabel>
@@ -127,17 +137,34 @@ export const SeeEmployee = () => {
               <DataValue>{current_employee?.date_of_hire}</DataValue>
             </EmployeeData>
           </EmployeeInfoContainer>
-          {major_task !== EDIT_EMP && (
+          <ActionBtnsContainer
+            style={{
+              gap: "2rem",
+            }}
+          >
+            <DeleteButton
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dispatcher(tryingToDelete());
+              }}
+            >
+              <RiDeleteBin6Line /> Delete
+            </DeleteButton>
             <Button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 dispatcher(setMajorTask(EDIT_EMP));
               }}
+              disabled={major_task === EDIT_EMP}
+              style={{
+                cursor: major_task === EDIT_EMP ? "not-allowed" : "pointer",
+              }}
             >
               <MdModeEditOutline /> Edit
             </Button>
-          )}
+          </ActionBtnsContainer>
         </EmployeeeProfileContainer>
         {major_task == EDIT_EMP && <EditEmployee />}
         {major_task == SEE_EMP_ALLOWANCE && <EmployeeAllowance />}

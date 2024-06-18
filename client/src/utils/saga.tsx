@@ -10,6 +10,7 @@ import {
   watchAddSalary,
   watchEditEmployee,
 } from "../store/employee/employee-saga";
+import { watchGetEmployeeSalary } from "../store/salary/salary-saga";
 export function* rootSaga() {
   yield all([
     watchSetFlashMessage(),
@@ -19,5 +20,6 @@ export function* rootSaga() {
     watchAddEmployee(),
     watchAddSalary(),
     watchEditEmployee(),
+    watchGetEmployeeSalary(),
   ]);
 }

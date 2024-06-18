@@ -25,21 +25,22 @@ export const ListHeader = styled.div<ThemeProps>`
   font-weight: 600;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 1.5fr 0.5fr;
+  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr;
   padding: 0.4rem 0.5rem;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
-export const ListTitle = styled.td<ThemeProps>`
+export const ListTitle = styled.h4<ThemeProps>`
   padding: 1rem 1rem;
+  font-size: 1.4rem;
 `;
 
 export const HeaderItem = styled.div`
   text-align: left;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 2rem;
+  justify-content: center;
+  gap: 1rem;
 `;
 
 export const ListRow = styled.div<ThemeProps>`
@@ -50,7 +51,7 @@ export const ListRow = styled.div<ThemeProps>`
   font-size: larger;
   padding: 0.4rem 0.5rem;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr 1.5fr 0.2fr 0.2fr;
+  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr;
   &:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
     cursor: pointer;
