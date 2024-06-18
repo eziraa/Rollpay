@@ -10,11 +10,10 @@ import {
   AllowanceBody,
   AllowanceContainer,
   AllowanceForm,
-} from "./add-allowance.style";
+} from "./style";
 import { ADD_ALLOWANCE, ADD_DEDUCTION } from "../../../constants/tasks";
 import { useAppSelector } from "../../../utils/custom-hook";
-
-export const AddAllowance = () => {
+export const AddSalaryComponent = () => {
   const user = useAppSelector((state) => state.user);
   return (
     <Modal>

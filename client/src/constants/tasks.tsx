@@ -5,3 +5,7 @@ export const ADD_ALLOWANCE = "add_allowance";
 export const ADD_DEDUCTION = "add_deduction";
 export const ADD_OVERTIME = "add_overtime";
 export const SEE_EMPLOYEE = "see_employee";
+export const SEE_EMP_ALLOWANCE = "see_employee_allowance";
+export const SEE_EMP_DEDUCTION = "see_employee_deduction";
+export const SEE_EMP_OVERTIME = "see_employee_overtime";
+export const SEE_EMP_SALARY = "see_employee_salary";

@@ -11,27 +11,35 @@ import {
   ADD_ALLOWANCE,
   ADD_DEDUCTION,
   ADD_OVERTIME,
+  LIST_EMP_S,
+  SEE_EMP_SALARY,
 } from "../../../constants/tasks";
-import { AddAllowance } from "../../sections/add-allowance/add-allowance";
-
+import { AddSalaryComponent } from "../../sections/salary-components/salary-components";
+import LoadingSpinner from "../../utils/spinner/spinner";
+import { CheckFlashMessage } from "../../sections/confirm-flash-message/confirm-flash-message";
+import { getSalariesRequested } from "../../../store/salary/salary-slice";
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
   const user = useAppSelector((state) => state.user);
+  const salary = useAppSelector((state) => state.salary);
   const dispacher = useAppDispatch();
   useEffect(() => {
-    dispacher(listEmpRequested());
-  }, [dispacher]);
+    if (user.long_task === SEE_EMP_SALARY) dispacher(getSalariesRequested());
+    else if (user.long_task === undefined || user.long_task === LIST_EMP_S)
+      dispacher(listEmpRequested());
+  }, [dispacher, user.long_task]);
   return (
     <HomeContainer>
       <Header />
       <HomeBody>
         <LeftMenu />
-        <Main />
+        <CheckFlashMessage />
+        {employee.loading || salary.loading ? <LoadingSpinner /> : <Main />}
       </HomeBody>
       {employee.task === ADD_EMP && <AddEmployee />}
       {[ADD_ALLOWANCE, ADD_DEDUCTION, ADD_OVERTIME].includes(
         user.short_task ?? ""
-      ) && <AddAllowance />}
+      ) && <AddSalaryComponent />}
     </HomeContainer>
   );
 };

@@ -52,9 +52,38 @@ export function* watchUserLogin() {
 
 function* userLogout() {
   const response: SignUpResponse = yield call(UserAPI.logout);
-
-  if (response.code === 200) {
-    yield put(logout());
+    if (response.code === 200) {
+      yield put(logout());
+      yield put(
+        setFlashMessage({
+          type:"success",
+          status: true,
+          title: "User log out",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type:"error",
+          status: true,
+          title: "User log in",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "User log in",
+        desc: "User log in failed try again!!",
+        duration: 3,
+      })
+    );
   }
 }
 

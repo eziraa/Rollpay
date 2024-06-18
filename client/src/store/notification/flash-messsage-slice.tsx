@@ -1,38 +1,35 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react-refresh/only-export-components */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface FlashMessageState {
-  color: string;
+export interface FlashMessageItem {
+  type: string;
   status: boolean;
   title: string;
   desc: string;
   duration: number;
 }
 
+export interface FlashMessageState {
+  flashMessages: FlashMessageItem[];
+}
+
 const initialState: FlashMessageState = {
-  color: "",
-  status: false,
-  title: "",
-  desc: "",
-  duration: 0,
+  flashMessages: [],
 };
 
 export const FlashMessageSlice = createSlice({
   name: "flashMessage",
   initialState,
   reducers: {
-    setFlashMessage: (state, action: PayloadAction<FlashMessageState>) => {
-      state.color = action.payload.color;
-      state.status = action.payload.status;
-      state.title = action.payload.title;
-      state.desc = action.payload.desc;
-      state.duration = action.payload.duration;
+    setFlashMessage: (state, action: PayloadAction<FlashMessageItem>) => {
+      state.flashMessages.unshift(action.payload);
     },
-    hideFlashMessage: (state) => {
-      state.status = false;
-      state.color = "";
-      state.title = "";
-      state.desc = "";
-      state.duration = 0;
+    hideFlashMessage: (state, action: PayloadAction<FlashMessageItem>) => {
+      state.flashMessages.splice(
+        state.flashMessages.indexOf(action.payload),
+        1
+      );
     },
   },
 });

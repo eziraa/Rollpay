@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { useEffect, useState } from "react";
 import {
@@ -11,8 +12,6 @@ import {
   SortBtn,
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
-import { EmployeeResponse } from "../../../typo/employee/response";
-import { RiDeleteBin3Line } from "react-icons/ri";
 import { setLongTask } from "../../../store/user/user-slice";
 import { SEE_EMPLOYEE } from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
@@ -67,18 +66,18 @@ function EmployeeListDisplayer() {
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
     setEmpList(emplist);
-  }, []);
+  }, [dispatcher]);
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
       if (
-        a[order[index].name as keyof EmployeeResponse] <
-        b[order[index].name as keyof EmployeeResponse]
+        a[order[index].name as keyof unknown] <
+        b[order[index].name as keyof unknown]
       ) {
         return order[index].isAscending ? 1 : -1;
       }
       if (
-        a[order[index].name as keyof EmployeeResponse] >
-        b[order[index].name as keyof EmployeeResponse]
+        a[order[index].name as keyof unknown] >
+        b[order[index].name as keyof unknown]
       ) {
         return order[index].isAscending ? -1 : 1;
       }
@@ -92,7 +91,7 @@ function EmployeeListDisplayer() {
     <div
       style={{
         position: "relative",
-        marginTop: "3rem",
+        marginTop: "1rem",
       }}
     >
       <ListContainer>
@@ -100,7 +99,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Employee</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(0);
               }}
             >
@@ -110,7 +110,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>ID</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(1);
               }}
             >
@@ -123,7 +124,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Email</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(2);
               }}
             >
@@ -133,7 +135,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Phone</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(3);
               }}
             >
@@ -143,7 +146,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Hired Date</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(4);
               }}
             >
@@ -153,7 +157,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Birth Date</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(5);
               }}
             >
@@ -163,7 +168,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Position</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(6);
               }}
             >
@@ -173,7 +179,8 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Salary</ListTitle>
             <SortBtn
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sortEmployee(7);
               }}
             >
@@ -197,17 +204,9 @@ function EmployeeListDisplayer() {
                   <Data> {emp.date_of_hire} </Data>
                   <Data> {emp.date_of_birth} </Data>
                   <Data> {emp.position} </Data>
-                  <Data> {emp.salary} </Data>
-                  <Data
-                    style={{
-                      fontSize: "1.5rem",
-                    }}
-                  >
-                    <RiDeleteBin3Line
-                      onClick={() => {
-                        setEmpList(emp_list.filter((e) => e.id !== emp.id));
-                      }}
-                    />
+                  <Data>
+                    {(emp.salary as { basic_salary: number } | undefined)
+                      ?.basic_salary ?? 0}
                   </Data>
                   <Data
                     style={{
@@ -216,7 +215,8 @@ function EmployeeListDisplayer() {
                       textDecoration: "underline",
                       cursor: "pointer",
                     }}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       dispatcher(setLongTask(SEE_EMPLOYEE));
                       dispatcher(setCurrentEmployee(emp));
                     }}

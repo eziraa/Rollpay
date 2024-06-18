@@ -33,12 +33,12 @@ export const Label = styled.h5`
   padding: 1rem 2rem;
 `;
 
-export const SaveButton = styled.button`
+export const Button = styled.button`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
   padding: 1rem 2rem;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border: none;
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 5px;
   &:hover {
@@ -48,50 +48,58 @@ export const SaveButton = styled.button`
   }
 `;
 
-export const CancelButton = styled.button`
-  font-size: 2rem;
-  color: ${({ theme }) => theme.colors.primary};
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  background-color: ${({ theme }) => theme.backgrounds.primary};
-  border-radius: 5px;
-  &:hover {
-    background-color: ${({ theme }) => theme.backgrounds.secondary};
-  }
+export const SaveBtn = styled(Button)`
+  width: 8rem;
+  background-color: ${({ theme }) => theme.colors.primary};
 `;
-
-export const ActionBtnsContainer = styled.div`
+export const CancelBtn = styled(Button)`
+  width: 8rem;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.5, theme.colors.primary)};
+  color: ${({ theme }) => theme.backgrounds.primary};
+`;
+export const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
   gap: 1rem;
-  width: 100%;
-  padding: 2rem 0;
+  width: 66%;
+  padding: 0 0;
+  align-self: self-start;
+  justify-content: flex-end;
+  position: relative;
 `;
 
-export const ActionBtn = styled.div`
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1.6rem;
-  padding: 1rem 2rem;
-  text-align: center;
+export const BackButton = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.backgrounds.primary};
+  padding: 1rem;
+  gap: 0.3rem;
+  cursor: pointer;
+  justify-self: start;
+  font-size: 1.4rem;
+  position: absolute;
+  left: -1rem;
+  font-weight: 900;
+  color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+  top: -2rem;
   &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.colors.primary)};
-    color: ${({ theme }) => theme.backgrounds.primary};
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
-export const SaveBtn = styled(SaveButton)`
-  width: 10rem;
-  bottom: 1rem;
+export const CloseButton = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  gap: 0.5rem;
+  cursor: pointer;
+  justify-self: end;
+  font-size: 1.4rem;
   position: absolute;
-  left: 53.5%;
-  bottom: -4rem;
+  left: 0;
+  top: 0;
+  font-weight: 700;
+  color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
 `;

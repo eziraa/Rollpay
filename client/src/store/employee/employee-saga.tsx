@@ -5,13 +5,16 @@ import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
   addSalaryDone,
+  deleteEmpDone,
   editEmployeeDone,
   listEmpDone,
+  unfinishedAdd,
+  unfinishedDelete,
   unfinishedEdit,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
 import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
-import { AddEmpResponse, EmployeeResponse } from "../../typo/employee/response";
+import { AddEmpResponse, EmpResponse } from "../../typo/employee/response";
 import { setLongTask } from "../user/user-slice";
 import { LIST_EMP_S } from "../../constants/tasks";
 
@@ -25,17 +28,40 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
       yield put(addEmpDone());
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "success",
           status: true,
           title: "Add Employee",
           desc: response.success,
           duration: 3,
         })
       );
-    } else {
+    } else if (response.code === 401) {
+      yield put(unfinishedAdd());
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "error",
+          status: true,
+          title: "Permition Denied",
+          desc: "You are not authorized to add employee",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedAdd());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to add employee",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(unfinishedAdd());
+      yield put(
+        setFlashMessage({
+          type: "error",
           status: true,
           title: "Add Employee",
           desc: response.error,
@@ -44,9 +70,10 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
       );
     }
   } catch (e) {
+    yield put(unfinishedAdd());
     yield put(
       setFlashMessage({
-        color: "red",
+        type: "error",
         status: true,
         title: "Add Employee",
         desc: "Cannot add employee",
@@ -58,9 +85,101 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
 
 function* GetEmployee() {
   try {
-    const employees: EmployeeResponse[] = yield call(EmployeeAPI.listEmployee);
-    yield put(listEmpDone(employees));
-    yield put(setLongTask(LIST_EMP_S));
+    const response: EmpResponse = yield call(EmployeeAPI.listEmployee);
+    if (response.code === 200) {
+      yield put(setLongTask(LIST_EMP_S));
+      yield put(listEmpDone(response.employees));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view employees",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* DeleteEmployee(action: PayloadAction<string>) {
+  try {
+    const response: AddEmpResponse = yield call(
+      EmployeeAPI.deleteEmployee,
+      action.payload
+    );
+    if (response.code === 204) {
+      yield put(deleteEmpDone(response.employee));
+      yield put(setLongTask(LIST_EMP_S));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Delete Employee",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to delete employees",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Delete Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
   } catch (e) {
     console.log(e);
   }
@@ -69,18 +188,19 @@ function* GetEmployee() {
 export function* watchAddEmployee() {
   yield takeEvery("employee/addEmpRequested", AddEmployee);
   yield takeEvery("employee/listEmpRequested", GetEmployee);
+  yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
 }
 
 function* addSalary(action: PayloadAction<AddSalaryParams>) {
   try {
-    const employees: EmployeeResponse = yield call(
+    const response: EmpResponse = yield call(
       EmployeeAPI.addSalary,
       action.payload
     );
-    yield put(addSalaryDone(employees));
+    yield put(addSalaryDone(response.employees[0]));
     yield put(
       setFlashMessage({
-        color: "green",
+        type: "success",
         status: true,
         title: "Add salary",
         desc: "Salary added successfully",
@@ -90,7 +210,7 @@ function* addSalary(action: PayloadAction<AddSalaryParams>) {
   } catch (e) {
     yield put(
       setFlashMessage({
-        color: "red",
+        type: "error",
         status: true,
         title: "Add salary",
         desc: "Could not add salary",
@@ -115,33 +235,55 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
       yield put(editEmployeeDone(response.employee));
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "success",
           status: true,
           title: "Edit Employee",
           desc: response.success,
           duration: 3,
         })
       );
-    } else
-    {
-      console.log(response)
+    } else if (response.code === 401) {
       yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
-          color: "green",
+          type: "error",
+          status: true,
+          title: "Permition Denied",
+          desc: "You are not authorized to edit employee",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedAdd());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to edit employee",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(unfinishedEdit());
+      yield put(
+        setFlashMessage({
+          type: "error",
           status: true,
           title: "Edit Employee",
-          desc: response.error,
+          desc:
+            response.error.length < 3
+              ? "Cannot edit employee please try again"
+              : response.error,
           duration: 3,
         })
       );
     }
-  } catch (e)
-  {
+  } catch (e) {
     yield put(unfinishedEdit());
     yield put(
       setFlashMessage({
-        color: "red",
+        type: "error",
         status: true,
         title: "Edit Employee",
         desc: "Cannot edit employee please try again",

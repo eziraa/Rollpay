@@ -1,16 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Input, Form } from "../../utils/form-elements/form.style";
-import { Label, EditEmployeeBody, Field, SaveBtn } from "./edit-employee.style";
+import {
+  Label,
+  EditEmployeeBody,
+  Field,
+  SaveBtn,
+  ButtonContainer,
+  CancelBtn,
+  BackButton,
+} from "./edit-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 
-import { editEmployeeRequested } from "../../../store/employee/employee-slice";
+import {
+  editEmployeeRequested,
+  setMajorTask,
+} from "../../../store/employee/employee-slice";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { ErrorMessage } from "../../pages/sign-up/sign-up.style";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
+import { MdArrowBackIos } from "react-icons/md";
 
 export const EditEmployee = () => {
   const { curr_emp: current_employee, editing } = useAppSelector(
@@ -28,11 +40,13 @@ export const EditEmployee = () => {
     phone_number: current_employee?.phone_number ?? "",
     date_of_birth: current_employee?.date_of_birth ?? "",
     date_of_hire: current_employee?.date_of_hire ?? "",
-    salary: current_employee?.salary ?? 0, // Default to 0 if salary is undefined
+    salary: current_employee?.salary.basic_salary ?? 0, // Default to 0 if salary is undefined
   };
 
   useEffect(() => {
-    resetForm({ values: current_employee });
+    resetForm({
+      values: initialValues,
+    });
   }, [current_employee]);
   const {
     resetForm,
@@ -56,14 +70,26 @@ export const EditEmployee = () => {
             title: "No changes made",
             status: true,
             duration: 3,
-            color: "red",
+            type: "error",
           })
         );
       }
     },
   });
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form
+      style={{
+        position: "relative",
+      }}
+    >
+      <BackButton
+        onClick={(e) => {
+          e.stopPropagation();
+          dispatcher(setMajorTask(undefined));
+        }}
+      >
+        <MdArrowBackIos /> Back
+      </BackButton>
       <EditEmployeeBody>
         <Field
           style={{
@@ -240,14 +266,47 @@ export const EditEmployee = () => {
             <ErrorMessage>{errors.salary}</ErrorMessage>
           )}
         </Field>
-        <SaveBtn
-          style={{
-            alignSelf: "center",
-          }}
-          type="submit"
-        >
-          {editing ? <SmallSpinner /> : "Save"}
-        </SaveBtn>
+        <ButtonContainer>
+          <CancelBtn
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (dirty) {
+                resetForm({ values: initialValues });
+                dispatcher(
+                  setFlashMessage({
+                    desc: "Form reset successfully",
+                    title: "Resetting form",
+                    status: true,
+                    duration: 3,
+                    type: "success",
+                  })
+                );
+              } else
+                dispatcher(
+                  setFlashMessage({
+                    desc: "No changes to reset",
+                    title: "No changes made",
+                    status: true,
+                    duration: 3,
+                    type: "error",
+                  })
+                );
+            }}
+          >
+            {"Reset"}
+          </CancelBtn>
+          <SaveBtn
+            type="submit"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            {editing ? <SmallSpinner /> : "Save"}
+          </SaveBtn>
+        </ButtonContainer>
       </EditEmployeeBody>
     </Form>
   );
