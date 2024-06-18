@@ -50,7 +50,8 @@ export const TableRow = styled.tr<ThemeProps>`
   cursor: pointer;
   font-size: 1.2rem;
   width: 100%;
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.4, theme.table.tableRow)};
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.backgrounds.primary};
   }
