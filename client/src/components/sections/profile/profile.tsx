@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import {
-  LogoutButton,
   ResetLink,
   Label,
   Modal,
   ModalContainer,
+  IconContainer,
+  ItemContainer,
 } from "./profile.style";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { logoutRequested } from "../../../store/user/user-slice";
-
+import { MdLogout } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { FaRegUser } from "react-icons/fa";
 interface Props {
   show: boolean;
 }
@@ -27,15 +30,38 @@ const Profile = ({ show }: Props) => {
   };
 
   return (
-    <ModalContainer clicked={show}>
+    <ModalContainer
+      onClick={() => {
+        show = !show;
+      }}
+      clicked={show}
+    >
       <Modal>
-        <Label>Username: {user.user?.username}</Label>
-        <Label>Employee ID: {user.user?.employeeId}</Label>
-        <ResetLink>
-          <Link to="/change-password">Change Password</Link>
-        </ResetLink>
+        {/* <Label>Username: {user.user?.username}</Label>
+        <Label>Employee ID: {user.user?.employeeId}</Label> */}
+        <ItemContainer>
+          <IconContainer>
+            <FaRegUser />
+          </IconContainer>
+          <Label>Profile</Label>
+        </ItemContainer>
+        <ItemContainer>
+          <IconContainer>
+            <RiLockPasswordLine />
+          </IconContainer>
+
+          <ResetLink>
+            <Link to="/change-password">Change Password</Link>
+          </ResetLink>
+        </ItemContainer>
+
         <hr />
-        <LogoutButton onClick={handleClick}>Log out</LogoutButton>
+        <ItemContainer>
+          <IconContainer>
+            <MdLogout />
+          </IconContainer>
+          <Label onClick={handleClick}>Log out</Label>
+        </ItemContainer>
       </Modal>
     </ModalContainer>
   );
