@@ -16,6 +16,7 @@ import { setLongTask } from "../../../store/user/user-slice";
 import { SEE_EMPLOYEE } from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
+import { getTableElements } from "../../utils/custom-table/table-sizer";
 
 interface EmployeeOrderType {
   name: string;
@@ -59,13 +60,13 @@ const initialOrder: EmployeeOrderType[] = [
 function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-
   const [order, setOrder] = useState(initialOrder);
   const emplist = [...employee.employees];
 
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
     setEmpList(emplist);
+    // getTableElements(emplist);
   }, [dispatcher]);
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
@@ -87,6 +88,7 @@ function EmployeeListDisplayer() {
     setOrder([...order]);
     setEmpList([...sorted]);
   };
+
   return (
     <div
       style={{
@@ -95,18 +97,11 @@ function EmployeeListDisplayer() {
       }}
     >
       <ListContainer>
-        <ListHeader>
-          <HeaderItem>
-            <ListTitle>Employee</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(0);
-              }}
-            >
-              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
+        <ListHeader
+          style={{
+            gridTemplateColumns: getTableElements(emp_list),
+          }}
+        >
           <HeaderItem>
             <ListTitle>ID</ListTitle>
             <SortBtn
@@ -118,6 +113,18 @@ function EmployeeListDisplayer() {
               {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Employee</ListTitle>
+            <SortBtn
+              onClick={(e) => {
+                e.stopPropagation();
+                sortEmployee(0);
+              }}
+            >
+              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+            </SortBtn>
+          </HeaderItem>
+
           <HeaderItem>
             <ListTitle>Gender</ListTitle>
           </HeaderItem>
@@ -195,9 +202,14 @@ function EmployeeListDisplayer() {
           <ScrollBar>
             {emp_list.map((emp, index) => {
               return (
-                <ListRow key={index}>
-                  <Data> {emp.first_name + " " + emp.last_name} </Data>
+                <ListRow
+                  key={index}
+                  style={{
+                    gridTemplateColumns: getTableElements(emp_list),
+                  }}
+                >
                   <Data> {emp.id} </Data>
+                  <Data> {emp.first_name + " " + emp.last_name} </Data>
                   <Data> {emp.gender} </Data>
                   <Data> {emp.email} </Data>
                   <Data> {emp.phone_number} </Data>
