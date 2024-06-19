@@ -7,7 +7,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
-  width: 15vw;
+  width: 14vw;
   height: 100%;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.07, theme.buttons.secondary)};
