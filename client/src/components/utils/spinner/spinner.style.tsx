@@ -10,7 +10,7 @@ export const SpinnerContainer = styled.div<ThemeProps>`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100vw;
+  width: 85vw;
   position: relative;
   background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
