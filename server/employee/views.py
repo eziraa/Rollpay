@@ -4,6 +4,7 @@ from rest_framework.request import Request
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from .serializer import EmployeeSerializer
 from .models import Employee, Salary
@@ -22,20 +23,25 @@ def refresh_token(request):
         return Response({"error": "Invalid token"}, status=400)
 
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10  # Define how many items per page
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
 class EmployeeView (APIView):
     permission_classes = [IsUserInGroupWithClerk]
     def get(self, request: Request, format=None):
         try:
-            content = {
-                'user': str(request.user),
-                'auth': str(request.auth),
-            }
-            serializer = EmployeeSerializer(Employee.objects.all(), many=True)
-            return JsonResponse(data=serializer.data, safe=False)
-
-        except Employee.DoesNotExist:
-            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-
+            queryset = Employee.objects.all().order_by("pk")
+            paginator = StandardResultsSetPagination()
+            page = paginator.paginate_queryset(queryset, request)
+            if page is not None:
+                serializer = EmployeeSerializer(page, many=True)
+                return paginator.get_paginated_response(serializer.data)
+            serializer = EmployeeSerializer(queryset, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
     def post(self, request):
         try:
             data = json.loads(request.body)
