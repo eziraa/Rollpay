@@ -26,8 +26,10 @@ const addEmp = async (values: AddEmpParams) => {
   return response;
 };
 export interface Pagination {
-  next: string | null;
-  previous: string | null;
+  next: string | undefined;
+  previous: string | undefined;
+  count: number;
+  page_size: number;
 }
 
 export interface PaginatedEmpResponse extends EmpResponse {
@@ -47,6 +49,7 @@ export interface PaginatedBackEndResponse {
 const listEmployee = async (pageUrl?: string) => {
   // Use the provided page URL or default to the initial list endpoint
   const endpoint = pageUrl || "/employee/list";
+
   const employees = await api
     .get<PaginatedBackEndResponse>(endpoint)
     .then((res) => {
@@ -54,7 +57,8 @@ const listEmployee = async (pageUrl?: string) => {
         results: res.data.results,
         pagination: {
           next: res.data.next, // Assuming 'next' is part of your response
-          previous: res.data.previous, // Assuming 'previous' is part of your response
+          previous: res.data.previous,
+          count: res.data.count, // Assuming 'previous' is part of your response
         },
         code: res.status,
         success: "Success returned employees",
