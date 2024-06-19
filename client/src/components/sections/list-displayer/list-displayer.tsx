@@ -13,10 +13,15 @@ import {
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 import { setLongTask } from "../../../store/user/user-slice";
-import { SEE_EMPLOYEE } from "../../../constants/tasks";
+import {
+  LIST_EMP_S,
+  SEARCH_EMPLOYEE,
+  SEE_EMPLOYEE,
+} from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
 import { getTableElements } from "../../utils/custom-table/table-sizer";
+import { NoResult } from "../../utils/no-result/no-result";
 
 interface EmployeeOrderType {
   name: string;
@@ -62,12 +67,16 @@ function EmployeeListDisplayer() {
   const dispatcher = useAppDispatch();
   const [order, setOrder] = useState(initialOrder);
   const emplist = [...employee.employees];
-
+  const { long_task } = useAppSelector((state) => state.user);
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
-    setEmpList(emplist);
+    if (long_task == LIST_EMP_S) setEmpList(emplist);
+    else if (long_task == SEARCH_EMPLOYEE) {
+      setEmpList(employee.query_set);
+      console.log(employee.query_set);
+    }
     // getTableElements(emplist);
-  }, [dispatcher]);
+  }, [employee]);
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
       if (
@@ -89,6 +98,8 @@ function EmployeeListDisplayer() {
     setEmpList([...sorted]);
   };
 
+  if (long_task == SEARCH_EMPLOYEE && employee.query_set.length < 1)
+    return <NoResult />;
   return (
     <div
       style={{
@@ -99,7 +110,10 @@ function EmployeeListDisplayer() {
       <ListContainer>
         <ListHeader
           style={{
-            gridTemplateColumns: getTableElements(emp_list),
+            gridTemplateColumns:
+              emp_list.length > 0
+                ? getTableElements(emp_list)
+                : "2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr",
           }}
         >
           <HeaderItem>
