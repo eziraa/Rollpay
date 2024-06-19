@@ -13,9 +13,12 @@ export const DisplayEmployee = () => {
     <EmployeeDisplayerContainer>
       <Header>
         <Title>All Employees</Title>
-        <AddButton onClick={() => dispatcher(setTask(ADD_EMP))}>Add</AddButton>
+        <Search />
+
+        <AddButton onClick={() => dispatcher(setTask(ADD_EMP))}>
+          Add Employee
+        </AddButton>
       </Header>
-      <Search />
       <Body>
         <EmployeeListDisplayer />
         <Pagination />
