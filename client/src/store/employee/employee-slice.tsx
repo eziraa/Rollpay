@@ -70,7 +70,10 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.employees = [];
     },
-    loadNextPageRequested: (state, action: PayloadAction<string>) => {
+    loadNextPageRequested: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+    },
+    loadPrevPageRequested: (state, _: PayloadAction<string>) => {
       state.loading = true;
     },
     searching: (state, payload: PayloadAction<Employee[]>) => {
@@ -145,6 +148,7 @@ export const {
   searching,
   noSearchResult,
   loadNextPageRequested,
+  loadPrevPageRequested,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
