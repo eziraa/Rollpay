@@ -21,9 +21,10 @@ export const Header = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   width: 100%;
   padding: 1rem;
+  position: relative;
 `;
 
 export const Body = styled.div<ThemeProps>`
@@ -31,5 +32,9 @@ export const Body = styled.div<ThemeProps>`
 `;
 
 export const AddButton = styled(Button)`
-  width: 5rem;
+  width: fit-content;
+  justify-self: end;
+  display: block;
+  position: absolute;
+  right: 2rem;
 `;
