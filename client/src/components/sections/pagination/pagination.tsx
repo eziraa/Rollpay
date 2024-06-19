@@ -34,7 +34,21 @@ function Pagination() {
 
   const loadNextPage = async () => {
     if (pagination?.next) {
-      dispatcher(loadNextPageRequested(pagination?.next));
+      if (pagination.next.includes("page_size=")) {
+        const url = pagination.next.substring(
+          0,
+          pagination.next.indexOf("&page_size=")
+        );
+        if (url.length > 0)
+          dispatcher(
+            loadPrevPageRequested(url + `&page_size=${pagination.page_size}`)
+          );
+      } else
+        dispatcher(
+          loadNextPageRequested(
+            pagination?.next + `&page_size=${pagination.page_size}`
+          )
+        );
     } else
       dispatcher(
         setFlashMessage({
@@ -48,7 +62,21 @@ function Pagination() {
   };
   const loadPrevPage = async () => {
     if (pagination?.previous) {
-      dispatcher(loadPrevPageRequested(pagination?.previous));
+      if (pagination.previous.includes("page_size=")) {
+        const url = pagination.previous.substring(
+          0,
+          pagination.previous.indexOf("&page_size=")
+        );
+        if (url.length > 0)
+          dispatcher(
+            loadPrevPageRequested(url + `&page_size=${pagination.page_size}`)
+          );
+      }
+      dispatcher(
+        loadPrevPageRequested(
+          pagination.previous + `&page_size=${pagination.page_size}`
+        )
+      );
     } else
       dispatcher(
         setFlashMessage({
@@ -93,13 +121,23 @@ function Pagination() {
     <PaginationContainer>
       <BottomContainer>
         <NavButton>
-          <ButtonName onClick={loadPrevPage}>
+          <ButtonName
+            onClick={(e) => {
+              e.preventDefault();
+              loadPrevPage();
+            }}
+          >
             <MdOutlineKeyboardArrowLeft />
             <ButtonText>Prev</ButtonText>
           </ButtonName>
         </NavButton>
         <NavButton>
-          <ButtonName onClick={loadNextPage}>
+          <ButtonName
+            onClick={(e) => {
+              e.preventDefault();
+              loadNextPage();
+            }}
+          >
             <ButtonText> Next</ButtonText>
             <MdOutlineKeyboardArrowRight />
           </ButtonName>
@@ -111,7 +149,7 @@ function Pagination() {
           <Paragraph2> {page.totalPages} </Paragraph2>
         </TextContainer>
         <Paragraph>Per Page:</Paragraph>
-        <DropDown selected={page.pageSize} />
+        <DropDown />
       </BottomContainer>
     </PaginationContainer>
   );
