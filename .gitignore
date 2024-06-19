@@ -12,3 +12,5 @@ client/src/components/pages/forgot_password/send_otp.tsx
 server/employee/forms.py
 server/employee/salary.py
 client/src/components/sections/allowance/data.ts
+client/src/components/sections/add_employee/position.ts
+client/src/components/sections/add_employee/postion_data.ts
