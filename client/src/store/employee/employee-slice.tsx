@@ -17,6 +17,7 @@ const InitialEmpState: EmployeeState = {
   mini_task: undefined,
   deleting: false,
   query_set: [],
+  searching: false,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -66,6 +67,10 @@ const EmployeeSlice = createSlice({
     },
     searching: (state, payload: PayloadAction<Employee[]>) => {
       state.query_set = payload.payload;
+      state.searching = true;
+    },
+    noSearchResult: (state) => {
+      state.searching = false;
     },
     setTask: (state, task: PayloadAction<string | undefined>) => {
       state.task = task.payload;
@@ -129,7 +134,8 @@ export const {
   setMajorTask,
   setMiniTask,
   resetCurrEmployee,
-  searching
+  searching,
+  noSearchResult,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
