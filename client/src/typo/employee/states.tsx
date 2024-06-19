@@ -1,3 +1,4 @@
+import { PaginatedEmpResponse, Pagination } from "../../services/employee-api";
 import { Employee } from "./response";
 
 export interface EmployeeState {
@@ -12,4 +13,5 @@ export interface EmployeeState {
   deleting: boolean;
   query_set: Employee[];
   searching: boolean;
+  pagination: Pagination | undefined;
 }

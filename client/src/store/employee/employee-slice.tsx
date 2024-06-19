@@ -3,7 +3,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
 import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
-import { EditEmployeeParams } from "../../services/employee-api";
+import {
+  EditEmployeeParams,
+  PaginatedEmpResponse,
+} from "../../services/employee-api";
 import { Employee } from "../../typo/employee/response";
 
 const InitialEmpState: EmployeeState = {
@@ -18,6 +21,7 @@ const InitialEmpState: EmployeeState = {
   deleting: false,
   query_set: [],
   searching: false,
+  pagination: undefined,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -53,17 +57,21 @@ const EmployeeSlice = createSlice({
     unfinishedDelete: (state) => {
       state.deleting = false;
     },
-    listEmpDone: (state, payload: PayloadAction<Employee[]>) => {
-      state.employees = payload.payload;
+    listEmpDone: (state, payload: PayloadAction<PaginatedEmpResponse>) => {
+      state.employees = payload.payload.results;
       state.adding = false;
       state.task = undefined;
       state.loading = false;
+      state.pagination = payload.payload.pagination;
     },
     unfinishedList: (state) => {
       state.loading = false;
       state.task = undefined;
       state.adding = false;
       state.employees = [];
+    },
+    loadNextPageRequested: (state, action: PayloadAction<string>) => {
+      state.loading = true;
     },
     searching: (state, payload: PayloadAction<Employee[]>) => {
       state.query_set = payload.payload;
@@ -136,6 +144,7 @@ export const {
   resetCurrEmployee,
   searching,
   noSearchResult,
+  loadNextPageRequested,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
