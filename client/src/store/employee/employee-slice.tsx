@@ -30,6 +30,14 @@ const EmployeeSlice = createSlice({
     addEmpRequested: (state, _: PayloadAction<AddEmpParams>) => {
       state.adding = true;
     },
+    setPagesize: (state, _: PayloadAction<number>) => {
+      state.pagination = {
+        page_size: _.payload,
+        next: state.pagination?.next,
+        previous: state.pagination?.previous,
+        count: state.pagination?.count ?? 0,
+      };
+    },
     addEmpDone: (state) => {
       state.adding = false;
       state.task = undefined;
@@ -62,7 +70,10 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.task = undefined;
       state.loading = false;
-      state.pagination = payload.payload.pagination;
+      state.pagination = {
+        ...payload.payload.pagination,
+        page_size: state.pagination?.page_size ?? 10,
+      };
     },
     unfinishedList: (state) => {
       state.loading = false;
@@ -149,6 +160,7 @@ export const {
   noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
+  setPagesize,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
