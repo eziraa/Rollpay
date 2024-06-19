@@ -34,6 +34,7 @@ class EmployeeView (APIView):
         try:
             queryset = Employee.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
+            paginator.page_size = request.query_params.get("page_size", 10)
             page = paginator.paginate_queryset(queryset, request)
             if page is not None:
                 serializer = EmployeeSerializer(page, many=True)
