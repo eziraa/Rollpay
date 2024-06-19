@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   BottomContainer,
   Paragraph,
-  Number,
+  CurrentPageNumber,
   Paragraph2,
   ButtonName,
   ButtonText,
@@ -19,6 +20,14 @@ import {
 } from "../../../store/employee/employee-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
+import { useEffect, useState } from "react";
+
+export interface PageInfo {
+  currentPage: number;
+  totalPages: number;
+  totalRecords: number;
+  pageSize: number;
+}
 function Pagination() {
   const dispatcher = useAppDispatch();
   const { pagination } = useAppSelector((state) => state.employee);
@@ -51,6 +60,34 @@ function Pagination() {
         })
       );
   };
+  const [page, setPage] = useState<PageInfo>({
+    currentPage: 0,
+    totalPages: 0,
+    totalRecords: 0,
+    pageSize: 0,
+  });
+  const getPageInfo = (prev: string) => {
+    prev = prev.trim().slice(-1);
+    if (prev) {
+      setPage({
+        currentPage: Number.parseInt(prev.toString()),
+        totalPages: Math.round(pagination?.count ? pagination.count / 10 : 0),
+        totalRecords: pagination?.count ?? 0,
+        pageSize: 10,
+      });
+    } else {
+      setPage({
+        currentPage: 1,
+        totalPages: pagination?.count ? pagination.count / 10 : 0,
+        totalRecords: pagination?.count ?? 0,
+        pageSize: 10,
+      });
+    }
+  };
+
+  useEffect(() => {
+    getPageInfo(pagination?.previous ?? "");
+  }, [pagination]);
 
   return (
     <PaginationContainer>
@@ -68,13 +105,13 @@ function Pagination() {
           </ButtonName>
         </NavButton>
         <Paragraph>Page:</Paragraph>
-        <Number type="number" />
+        <CurrentPageNumber type="number" value={page.currentPage} />
         <TextContainer>
           <Text>of</Text>
-          <Paragraph2> 100</Paragraph2>
+          <Paragraph2> {page.totalPages} </Paragraph2>
         </TextContainer>
         <Paragraph>Per Page:</Paragraph>
-        <DropDown />
+        <DropDown selected={page.pageSize} />
       </BottomContainer>
     </PaginationContainer>
   );
