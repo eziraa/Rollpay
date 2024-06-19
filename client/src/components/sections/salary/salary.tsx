@@ -2,13 +2,17 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
-  CustomTable,
   HeaderTitle,
   TableData,
   TableHeader,
   TableRow,
 } from "../../utils/custom-table/custom-table";
-import { SalaryContainer, SearchContainer, SearchInput } from "./salary.style";
+import {
+  SalaryContainer,
+  SalaryTable,
+  SearchContainer,
+  SearchInput,
+} from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
 import { Header, Title } from "../display-employee/display-employee.style";
 import { searching } from "../../../store/employee/employee-slice";
@@ -64,7 +68,7 @@ export const Salary = () => {
       <span
         style={{
           textAlign: "center",
-          width: "50%",
+          width: "100%",
           display: "inline-block",
         }}
       >
@@ -77,17 +81,17 @@ export const Salary = () => {
     <SalaryContainer>
       <Header>
         <Title>Employees Payroll</Title>
+        <SearchContainer>
+          <SearchIcon />
+          <SearchInput
+            onInput={(e) => {
+              e.preventDefault();
+              startSearch(e.currentTarget.value);
+            }}
+          />
+        </SearchContainer>
       </Header>
-      <SearchContainer>
-        <SearchIcon />
-        <SearchInput
-          onInput={(e) => {
-            e.preventDefault();
-            startSearch(e.currentTarget.value);
-          }}
-        />
-      </SearchContainer>
-      <CustomTable>
+      <SalaryTable>
         <TableHeader>
           <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
           <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
@@ -143,7 +147,7 @@ export const Salary = () => {
                 );
               })}
               <TableData>{getSalary(employee.salary.gross_salary)}</TableData>
-              <TableData>{employee.salary.basic_salary * 1.3}</TableData>
+              <TableData>{getSalary(employee.salary.income_tax)}</TableData>
               {deductionTypes.map((deductionType) => {
                 return (
                   <TableData>
@@ -161,7 +165,7 @@ export const Salary = () => {
               <TableData> Not Paid </TableData>
             </TableRow>
           ))}
-      </CustomTable>
+      </SalaryTable>
     </SalaryContainer>
   );
 };

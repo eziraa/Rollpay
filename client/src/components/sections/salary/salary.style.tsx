@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { GoSearch } from "react-icons/go";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { Input } from "../../utils/form-elements/form.style";
+import { CustomTable } from "../../utils/custom-table/custom-table";
+import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 
 export const SalaryContainer = styled.div`
   display: flex;
@@ -11,8 +12,8 @@ export const SalaryContainer = styled.div`
   align-items: center;
   justify-content: start;
   height: 90vh;
-  width: 100%;
-  ${custom_scroll_bar}
+  position: relative;
+  overflow-x: hidden;
 `;
 
 export const SalaryTitle = styled.h1`
@@ -35,9 +36,6 @@ export const SearchContainer = styled.div<ThemeProps>`
   padding: 0rem;
   margin: 1rem;
   padding: 0 1rem;
-  position: absolute;
-  left: 27rem;
-  top: 13rem;
 `;
 
 export const SearchInput = styled(Input)`
@@ -58,4 +56,11 @@ export const SearchIcon = styled(GoSearch)`
   color: #747272;
   font-size: 2rem;
   cursor: pointer;
+`;
+
+export const SalaryTable = styled(CustomTable)`
+  ${custom_scroll_bar};
+  width: 100%;
+  height: 80%;
+  display: block;
 `;
