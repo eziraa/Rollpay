@@ -22,6 +22,7 @@ import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
 import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
+import { Employee } from "../../../typo/employee/response";
 
 interface EmployeeOrderType {
   name: string;
@@ -73,21 +74,19 @@ function EmployeeListDisplayer() {
     if (long_task == LIST_EMP_S) setEmpList(emplist);
     else if (long_task == SEARCH_EMPLOYEE) {
       setEmpList(employee.query_set);
-      console.log(employee.query_set);
     }
-    // getTableElements(emplist);
   }, [employee]);
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
       if (
-        a[order[index].name as keyof unknown] <
-        b[order[index].name as keyof unknown]
+        a[order[index].name as keyof Employee] <
+        b[order[index].name as keyof Employee]
       ) {
         return order[index].isAscending ? 1 : -1;
       }
       if (
-        a[order[index].name as keyof unknown] >
-        b[order[index].name as keyof unknown]
+        a[order[index].name as keyof Employee] >
+        b[order[index].name as keyof Employee]
       ) {
         return order[index].isAscending ? -1 : 1;
       }
