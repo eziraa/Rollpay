@@ -26,7 +26,7 @@ export const getTableElements = (data: Employee[]) => {
       if (tableElements.some((element) => element.name === key)) {
         tableElements.map((element) => {
           if (element.name === key) {
-            if (element.max_length < value.toString().length) {
+            if (value && element.max_length < value.toString().length) {
               element.max_length = getValidValue(value.toString().length);
             }
           }
