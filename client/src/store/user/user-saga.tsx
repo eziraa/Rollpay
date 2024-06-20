@@ -24,7 +24,7 @@ function* userSignUp(action: PayloadAction<SignUpParams>) {
       yield put(wrongSignup(response.error));
     }
   } catch (e) {
-         yield put(wrongSignup("User sign up failed try again!!"));
+    yield put(wrongSignup("User sign up failed try again!!"));
   }
 }
 

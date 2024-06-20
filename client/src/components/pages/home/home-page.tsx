@@ -20,14 +20,14 @@ import { CheckFlashMessage } from "../../sections/confirm-flash-message/confirm-
 import { getSalariesRequested } from "../../../store/salary/salary-slice";
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
-  const user = useAppSelector((state) => state.user);
+  const { long_task, short_task } = useAppSelector((state) => state.user);
   const salary = useAppSelector((state) => state.salary);
   const dispacher = useAppDispatch();
   useEffect(() => {
-    if (user.long_task === SEE_EMP_SALARY) dispacher(getSalariesRequested());
-    else if (user.long_task === undefined || user.long_task === LIST_EMP_S)
+    if (long_task === SEE_EMP_SALARY) dispacher(getSalariesRequested());
+    else if (long_task === undefined || long_task === LIST_EMP_S)
       dispacher(listEmpRequested());
-  }, [dispacher, user.long_task]);
+  }, [dispacher, long_task]);
   return (
     <HomeContainer>
       <Header />
@@ -38,7 +38,7 @@ export const HomePage = () => {
       </HomeBody>
       {employee.task === ADD_EMP && <AddEmployee />}
       {[ADD_ALLOWANCE, ADD_DEDUCTION, ADD_OVERTIME].includes(
-        user.short_task ?? ""
+        short_task ?? ""
       ) && <AddSalaryComponent />}
     </HomeContainer>
   );

@@ -13,13 +13,16 @@ import {
 function LeftMenu() {
   const dispatcher = useAppDispatch();
   const { loading } = useAppSelector((state) => state.employee);
+  const { long_task } = useAppSelector((state) => state.user);
+
   return (
     <LeftMenuContainer>
-      <MenuItem>
+      <MenuItem active={long_task === undefined}>
         <HomeIcon />
         <MenuItemText>Home</MenuItemText>
       </MenuItem>
       <MenuItem
+        active={long_task === LIST_EMP_S}
         onClick={(e) => {
           if (loading) return;
           e.preventDefault();
@@ -31,6 +34,7 @@ function LeftMenu() {
         <MenuItemText>All Employees</MenuItemText>
       </MenuItem>
       <MenuItem
+        active={long_task === SEE_EMP_SALARY}
         onClick={(e) => {
           if (loading) return;
           e.preventDefault();

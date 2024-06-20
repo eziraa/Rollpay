@@ -11,20 +11,27 @@ export const LeftMenuContainer = styled.div<ThemeProps>`
   height: 100%;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.07, theme.buttons.secondary)};
-  padding-top: 2vh;
+  padding-top: 3vh;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
   color: ${({ theme }) => theme.colors.secondary};
   border-right: 0.3rem solid ${({ theme }) => theme.colors.secondary};
 `;
 
-export const MenuItem = styled.div<ThemeProps>`
+interface MenuItemProps extends ThemeProps {
+  active: boolean;
+}
+export const MenuItem = styled.div<MenuItemProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  width: 90%;
   padding: 1rem;
+  margin: 0 1rem;
   text-align: left;
-  padding-left: 2vw;
   font-size: 2rem;
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
@@ -33,6 +40,9 @@ export const MenuItem = styled.div<ThemeProps>`
     color: ${({ theme }) => theme.colors.primary};
     background-color: ${({ theme }) => theme.colors.secondary};
   }
+  border-bottom: 0.4rem solid transparent;
+  background-color: ${({ active }) => (active ? "#154a426c " : "transparent")};
+  border-bottom-color: ${({ active }) => (active ? "#07a48c " : "transparent")};
 `;
 
 export const MenuItemText = styled.h1`
