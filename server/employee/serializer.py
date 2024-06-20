@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Employee, Salary, Allowance, Deduction, Overtime
+from .models import Employee, Salary, Allowance, Deduction, Overtime, Position
 from decimal import Decimal
 from django.db.models import Sum
 from . import utils
@@ -100,3 +100,9 @@ class OvertimeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Overtime
         fields = "__all__"
+
+
+class PositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Position
+        fields = ('position_name', 'basic_salary')
