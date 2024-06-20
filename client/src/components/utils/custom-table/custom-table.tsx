@@ -70,5 +70,5 @@ export const TableData = styled.td`
   color: ${({ theme }) => theme.colors.primary};
   text-align: left;
   padding-left: 0.5rem;
-  line-height: 2;
+  line-height: 2.5;
 `;
