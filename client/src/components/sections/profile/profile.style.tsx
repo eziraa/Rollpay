@@ -4,17 +4,13 @@ import { CustomLink } from "../../pages/login/login.style";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { Button } from "../../utils/form-elements/form.style";
 
-interface Props {
-  clicked: boolean;
-}
-export const ModalContainer = styled.div<Props>`
+export const ModalContainer = styled.div`
   width: 100vw;
-  height: 90vh;
-  top: 10vh;
+  height: 100vh;
+  top: 0vh;
   left: 0;
   position: absolute;
   z-index: 200;
-  display: ${(props) => (props.clicked ? "" : "none")};
 `;
 
 export const Modal = styled.div<ThemeProps>`
@@ -22,7 +18,7 @@ export const Modal = styled.div<ThemeProps>`
   height: 13rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 1.5rem;
-  top: -2rem;
+  top: 5.5rem;
   right: 2rem;
 
   position: absolute;
