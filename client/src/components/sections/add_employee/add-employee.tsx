@@ -21,10 +21,39 @@ import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addEmpRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { jobPositions } from "./postion_data";
+import api from "../../../config/api";
+import { useEffect, useState } from "react";
+interface Position {
+  name: string;
+}
+const fetchPositions = async (): Promise<Position[]> => {
+  try {
+    const response = await api.get("employee/positions");
+    const positions: Position[] = response.data.map(
+      (item: { position_name: string }) => ({
+        name: item.position_name,
+      })
+    );
+    return positions;
+  } catch (error) {
+    return []; // Return an empty array if there's an error
+  }
+};
+
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
   const { adding } = useAppSelector((state) => state.employee);
+
+  const [positions, setPositions] = useState<Position[]>([]);
+  const fetchData = async () => {
+    const positions = await fetchPositions();
+    setPositions(positions);
+    // Now you can use the positions array
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -88,7 +117,7 @@ export const AddEmployee = () => {
             </InputContainer>
             <InputContainer>
               <Label htmlFor="phone_number">Phone Number</Label>
-               <Input
+              <Input
                 placeholder=""
                 type="text"
                 id="phone_number"
@@ -150,12 +179,14 @@ export const AddEmployee = () => {
           <Column>
             <InputContainer>
               <Label htmlFor="role">Role(Position)</Label>
-              <Select name="position">
+              <Select name="position" onChange={formHandler.handleChange}>
                 <SelectOption value="" disabled selected>
                   Select Position
                 </SelectOption>
-                {jobPositions.map((position) => (
-                  <SelectOption>{position.name}</SelectOption>
+                {positions.map((position) => (
+                  <SelectOption value={position.name}>
+                    {position.name}
+                  </SelectOption>
                 ))}
               </Select>
               <FormError>
