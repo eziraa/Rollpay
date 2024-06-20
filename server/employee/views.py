@@ -6,8 +6,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from .serializer import EmployeeSerializer, SalaryEmployeeSerializer
-from .models import Employee, Salary
+from .serializer import EmployeeSerializer, SalaryEmployeeSerializer, PositionSerializer
+from .models import Employee, Salary, Position
 from .utils import refresh_jwt_token
 from .permissions import IsUserInGroupWithClerk
 from django.http import JsonResponse
@@ -53,8 +53,11 @@ class EmployeeView (APIView):
                 data['id'] = Employee.generate_employee_id(employee.id)
             else:
                 data['id'] = "ED1000"
+            if not Position.objects.filter(position_name=data['position']).exists():
+                return JsonResponse({'error': 'Position does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+            position = Position.objects.get(position_name=data['position'])
             salary = Salary.objects.create(
-                basic_salary=data['salary'])
+                basic_salary=position.basic_salary)
             data['salary'] = salary
             employee = Employee.objects.create(**data)
             employee.save()
@@ -110,7 +113,13 @@ class SalaryView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        print(request)
         employees = Employee.objects.all()
         serializer = SalaryEmployeeSerializer(employees, many=True)
         return JsonResponse(data=serializer.data, safe=False)
+
+
+class PositionView(APIView):
+    def get(self, request):
+        position_serializer = PositionSerializer(
+            Position.objects.all(), many=True)
+        return JsonResponse(data=position_serializer.data, safe=False)
