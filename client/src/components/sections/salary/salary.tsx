@@ -196,8 +196,8 @@ export const Salary = () => {
                   </TableData>
                 );
               })}
-              <TableData>{employee.salary.basic_salary * 1.5}</TableData>
-              <TableData>{employee.salary.basic_salary * 0.9}</TableData>
+              <TableData>{employee.salary.total_deduction}</TableData>
+              <TableData>{employee.salary.net_salary}</TableData>
               <TableData> Not Paid </TableData>
             </TableRow>
           ))}
