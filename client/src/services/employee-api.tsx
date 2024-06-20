@@ -30,6 +30,8 @@ export interface Pagination {
   previous: string | undefined;
   count: number;
   page_size: number;
+  current_page: number;
+  number_of_pages: number;
 }
 
 export interface PaginatedEmpResponse extends EmpResponse {
