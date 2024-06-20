@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import styled, { keyframes } from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 
@@ -10,7 +11,7 @@ export const SpinnerContainer = styled.div<ThemeProps>`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100vw;
+  width: 85vw;
   position: relative;
   background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
@@ -25,5 +26,4 @@ export const Spinner = styled.div<SpinnerProps>`
   width: 120px;
   height: 120px;
   animation: ${spin} 1s ease-in-out infinite;
-
 `;
