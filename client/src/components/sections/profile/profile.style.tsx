@@ -20,17 +20,15 @@ export const Modal = styled.div<ThemeProps>`
   padding: 1.5rem;
   top: 5.5rem;
   right: 2rem;
-
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: first baseline;
   border-radius: 0.5rem;
-  border-bottom: 1px solid
-    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
-  box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.5),
-    -5px 0 5px -5px rgba(0, 0, 0, 0.5), 0 5px 5px -5px rgba(0, 0, 0, 0.5),
-    0 -5px 5px -5px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 0 5px -5px ${({ theme }) => theme.colors.primary},
+    -5px 0 5px -5px ${({ theme }) => theme.colors.primary},
+    0 5px 5px -5px ${({ theme }) => theme.colors.primary},
+    0 -5px 5px -5px ${({ theme }) => theme.colors.primary};
 `;
 
 export const ResetLink = styled(CustomLink)<ThemeProps>`
@@ -61,6 +59,9 @@ export const Label = styled.p<ThemeProps>`
   font-size: 1.5rem;
   padding: 0.5rem;
   cursor: pointer;
+  p:hover {
+    color: ${({ theme }) => theme.colors.secondary};
+  }
 `;
 
 export const LogoutButton = styled(Button)<ThemeProps>`
@@ -68,11 +69,12 @@ export const LogoutButton = styled(Button)<ThemeProps>`
   margin: 0.5rem 5rem;
 `;
 
-export const IconContainer = styled.div`
+export const IconContainer = styled.div<ThemeProps>`
   width: 2rem;
   height: 2rem;
   margin-top: 0.5rem;
   margin-right: 1rem;
+  color: ${({ theme }) => theme.colors.primary};
   font-size: 2rem;
 `;
 export const ItemContainer = styled.div`
