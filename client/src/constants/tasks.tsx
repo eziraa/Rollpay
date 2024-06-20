@@ -9,3 +9,4 @@ export const SEE_EMP_ALLOWANCE = "see_employee_allowance";
 export const SEE_EMP_DEDUCTION = "see_employee_deduction";
 export const SEE_EMP_OVERTIME = "see_employee_overtime";
 export const SEE_EMP_SALARY = "see_employee_salary";
+export const SEE_PROFILE = "see_profile";
