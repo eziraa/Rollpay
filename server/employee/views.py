@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from .serializer import EmployeeSerializer
+from .serializer import EmployeeSerializer, SalaryEmployeeSerializer
 from .models import Employee, Salary
 from .utils import refresh_jwt_token
 from .permissions import IsUserInGroupWithClerk
@@ -110,6 +110,7 @@ class SalaryView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
+        print(request)
         employees = Employee.objects.all()
-        serializer = EmployeeSerializer(employees, many=True)
+        serializer = SalaryEmployeeSerializer(employees, many=True)
         return JsonResponse(data=serializer.data, safe=False)
