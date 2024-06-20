@@ -10,3 +10,4 @@ export const SEE_EMP_DEDUCTION = "see_employee_deduction";
 export const SEE_EMP_OVERTIME = "see_employee_overtime";
 export const SEE_EMP_SALARY = "see_employee_salary";
 export const SEARCH_EMPLOYEE = "search_employee";
+export const SEARCH_EMPLOYEE_SALARY = "search_employee_salary";
