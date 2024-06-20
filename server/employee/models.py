@@ -46,9 +46,10 @@ class Salary(models.Model):
 
 
 class Position(models.Model):
-    position_type = models.CharField(max_length=255, null=False)
+    position_name = models.CharField(
+        max_length=255, null=False, primary_key=True)
     basic_salary = models.DecimalField(
-        max_digits=7, decimal_places=2, null=False)
+        max_digits=12, decimal_places=2, null=False)
 
 class Employee(models.Model):
     Male = 'M'
