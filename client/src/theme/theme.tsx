@@ -40,13 +40,13 @@ export const lightTheme: Theme = {
     large: "2.2rem",
   },
   table: {
-    tableRow: "#ffffff",
-    tableRowHover: "#929191",
-    header: "#a2a2a2",
+    tableRow: "#7aa09f",
+    tableRowHover: "#69a199",
+    header: "#7aa09f",
   },
   buttons: {
-    primary: "#212121",
-    secondary: "#0a0a0a26",
+    primary: "#0a9280",
+    secondary: "#16dec0",
     primaryHover: "#1b1a1a",
     secondaryHover: "#0a0a0a26",
   },
@@ -58,7 +58,7 @@ export const darkTheme: Theme = {
     secondary: "#a9a7a7",
   },
   backgrounds: {
-    primary: "#212121",
+    primary: "#323232",
     secondary: "#4a4a4a",
   },
   fontSizes: {
@@ -67,14 +67,15 @@ export const darkTheme: Theme = {
     large: "2.2rem",
   },
   table: {
-    tableRow: "#000000",
-    tableRowHover: "#666464",
-    header: "#121111ef",
+    tableRow: "#7aa09f",
+    tableRowHover: "#69a199",
+    header: "#3b5e5d",
   },
   buttons: {
-    primary: "#ffffff",
-    secondary: "#a9a7a7",
-    primaryHover: "#EAEAEA",
-    secondaryHover: "#a9a7a7",
+    primary: "#2dc682",
+    secondary: "#16d9bc",
+    primaryHover: "#1b1a1a",
+    secondaryHover: "#0a0a0a26",
   },
 };
+
