@@ -11,9 +11,7 @@ export const AddEmployeeSchema = Yup.object({
   email: Yup.string()
     .email("Please enter valid email")
     .required("Please Enter email"),
-  position: Yup.string()
-    .required("Please Enter position")
-    .min(3, "Position should be at least 3 characters"),
+  position: Yup.string().required("Please selecct employee postistion"),
   date_of_birth: Yup.date()
     .max(new Date(), "Date of birth cannot be in the future")
     .required("Date of birth is required"),
@@ -24,7 +22,4 @@ export const AddEmployeeSchema = Yup.object({
     .length(10, "Phone number should be 10 digits long")
     .matches(pattern, "Phone number should start with 09 or 07")
     .required("Please Enter phone number"),
-  salary: Yup.number()
-    .positive("Salary Should be positive")
-    .required("Please Enter salary"),
 });

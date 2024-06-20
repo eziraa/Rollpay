@@ -4,7 +4,6 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
-  addSalaryDone,
   deleteEmpDone,
   editEmployeeDone,
   listEmpDone,
@@ -12,9 +11,12 @@ import {
   unfinishedDelete,
   unfinishedEdit,
 } from "./employee-slice";
-import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
-import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
-import { AddEmpResponse, EmpResponse } from "../../typo/employee/response";
+import EmployeeAPI, {
+  EditEmployeeParams,
+  PaginatedEmpResponse,
+} from "../../services/employee-api";
+import { AddEmpParams } from "../../typo/employee/params";
+import { AddEmpResponse } from "../../typo/employee/response";
 import { setLongTask } from "../user/user-slice";
 import { LIST_EMP_S } from "../../constants/tasks";
 
@@ -85,10 +87,10 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
 
 function* GetEmployee() {
   try {
-    const response: EmpResponse = yield call(EmployeeAPI.listEmployee);
+    const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
       yield put(setLongTask(LIST_EMP_S));
-      yield put(listEmpDone(response.employees));
+      yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
       yield put(
@@ -191,38 +193,92 @@ export function* watchAddEmployee() {
   yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
 }
 
-function* addSalary(action: PayloadAction<AddSalaryParams>) {
+function* loadNextPage(action: PayloadAction<string>) {
   try {
-    const response: EmpResponse = yield call(
-      EmployeeAPI.addSalary,
+    const response: PaginatedEmpResponse = yield call(
+      EmployeeAPI.listEmployee,
       action.payload
     );
-    yield put(addSalaryDone(response.employees[0]));
-    yield put(
-      setFlashMessage({
-        type: "success",
-        status: true,
-        title: "Add salary",
-        desc: "Salary added successfully",
-        duration: 3,
-      })
-    );
+    if (response.code === 200) {
+      yield put(listEmpDone(response));
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Load Next Page",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
   } catch (e) {
-    yield put(
-      setFlashMessage({
-        type: "error",
-        status: true,
-        title: "Add salary",
-        desc: "Could not add salary",
-        duration: 3,
-      })
+    console.log(e);
+  }
+
+}
+
+function* loadPrevPage(action: PayloadAction<string>) {
+  try {
+    const response: PaginatedEmpResponse = yield call(
+      EmployeeAPI.listEmployee,
+      action.payload
     );
+    if (response.code === 200) {
+      yield put(listEmpDone(response));
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Load Previous Page",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
 
-export function* watchAddSalary() {
-  yield takeEvery("employee/addSalaryRequested", addSalary);
+export function* watchLoadPage() {
+  yield takeEvery("employee/loadNextPageRequested", loadNextPage);
+  yield takeEvery("employee/loadPrevPageRequested", loadPrevPage);
 }
+
+// function* addSalary(action: PayloadAction<AddSalaryParams>) {
+//   try {
+//     const response: EmpResponse = yield call(
+//       EmployeeAPI.addSalary,
+//       action.payload
+//     );
+//     // yield put(addSalaryDone(response.employees[0]));
+//     yield put(
+//       setFlashMessage({
+//         type: "success",
+//         status: true,
+//         title: "Add salary",
+//         desc: "Salary added successfully",
+//         duration: 3,
+//       })
+//     );
+//   } catch (e) {
+//     yield put(
+//       setFlashMessage({
+//         type: "error",
+//         status: true,
+//         title: "Add salary",
+//         desc: "Could not add salary",
+//         duration: 3,
+//       })
+//     );
+//   }
+// }
+
+// export function* watchAddSalary() {
+//   yield takeEvery("employee/addSalaryRequested", addSalary);
+// }
 
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
   try {

@@ -1,7 +1,11 @@
 import { AxiosError } from "axios";
 import { AddEmpParams, AddSalaryParams } from "../typo/employee/params";
 import api from "../config/api";
-import { AddEmpResponse, EmpResponse } from "../typo/employee/response";
+import {
+  AddEmpResponse,
+  EmpResponse,
+  Employee,
+} from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
   const response = await api
@@ -21,13 +25,43 @@ const addEmp = async (values: AddEmpParams) => {
     });
   return response;
 };
+export interface Pagination {
+  next: string | undefined;
+  previous: string | undefined;
+  count: number;
+  page_size: number;
+  current_page: number;
+  number_of_pages: number;
+}
 
-const listEmployee = async () => {
+export interface PaginatedEmpResponse extends EmpResponse {
+  count: number;
+  results: Employee[];
+  pagination: Pagination;
+}
+
+export interface PaginatedBackEndResponse {
+  count: number;
+  results: Employee[];
+  next: string | null;
+  previous: string | null;
+  status: number;
+}
+
+const listEmployee = async (pageUrl?: string) => {
+  // Use the provided page URL or default to the initial list endpoint
+  const endpoint = pageUrl || "/employee/list";
+
   const employees = await api
-    .get<EmpResponse>("/employee/list")
+    .get<PaginatedBackEndResponse>(endpoint)
     .then((res) => {
       return {
-        employees: res.data,
+        results: res.data.results,
+        pagination: {
+          next: res.data.next, // Assuming 'next' is part of your response
+          previous: res.data.previous,
+          count: res.data.count, // Assuming 'previous' is part of your response
+        },
         code: res.status,
         success: "Success returned employees",
       };
@@ -39,6 +73,7 @@ const listEmployee = async () => {
         code: err.response?.status,
       } as { error: string; code: number };
     });
+
   return employees;
 };
 

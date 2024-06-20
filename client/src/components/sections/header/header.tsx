@@ -1,4 +1,5 @@
 import { Toggle } from "../../utils/buttons/toggle";
+// import { Button } from "../../utils/form_elements/form.style";
 import Logo from "../../utils/logo/logo";
 import {
   HeaderContainer,
@@ -28,6 +29,9 @@ export const Header = () => {
               else dispatcher(setShortTask(SEE_PROFILE));
             }}
           />
+
+          <Toggle />
+          <ProfileImage />
         </ProfileContainer>
       </HeaderContainer>
     </>

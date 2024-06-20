@@ -1,6 +1,6 @@
 import { LIST_EMP_S, SEE_EMP_SALARY } from "../../../constants/tasks";
 import { setLongTask } from "../../../store/user/user-slice";
-import { useAppDispatch } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   SalaryIcon,
   HomeIcon,
@@ -12,6 +12,7 @@ import {
 
 function LeftMenu() {
   const dispatcher = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.employee);
   return (
     <LeftMenuContainer>
       <MenuItem>
@@ -20,6 +21,7 @@ function LeftMenu() {
       </MenuItem>
       <MenuItem
         onClick={(e) => {
+          if (loading) return;
           e.preventDefault();
           e.stopPropagation();
           dispatcher(setLongTask(LIST_EMP_S));
@@ -30,13 +32,14 @@ function LeftMenu() {
       </MenuItem>
       <MenuItem
         onClick={(e) => {
+          if (loading) return;
           e.preventDefault();
           e.stopPropagation();
           dispatcher(setLongTask(SEE_EMP_SALARY));
         }}
       >
         <SalaryIcon />
-        <MenuItemText>Salary</MenuItemText>
+        <MenuItemText>Employees Salary</MenuItemText>
       </MenuItem>
     </LeftMenuContainer>
   );

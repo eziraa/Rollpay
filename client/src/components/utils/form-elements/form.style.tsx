@@ -110,3 +110,9 @@ export const Select = styled.select`
     padding: 2rem 2rem;
   }
 `;
+
+export const SelectOption = styled.option<ThemeProps>`
+  font-size: 1.4rem;
+  display: inline-block;
+  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
+`;

@@ -19,7 +19,6 @@ export const RouterConfig = () => (
           </ProtectedRoute>
         }
       />
-      <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/access-denied" element={<AccessDenied />} />
       <Route path="*" element={<NotFoundPage />} />

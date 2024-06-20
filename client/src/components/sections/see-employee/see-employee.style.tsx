@@ -119,8 +119,8 @@ export const Button = styled.button`
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
   padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  background-color: ${({ theme }) => theme.colors.primary};
+  border: none;
+  background-color: ${({ theme }) => theme.buttons.primary};
   border-radius: 5px;
   width: 10rem;
   display: flex;
@@ -177,11 +177,11 @@ export const NavBar = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   flex: 3.8;
-  gap: 5rem;
+  gap: 0rem;
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.05, theme.colors.primary)};
+    addOpacityToColor(0.05, theme.buttons.primary)};
 `;
 
 export const NavItem = styled.div`
@@ -200,5 +200,6 @@ export const NavItem = styled.div`
 
 export const DeleteButton = styled(Button)`
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.5, theme.colors.primary)};
+    addOpacityToColor(0.5, theme.buttons.primary)};
+  border: none;
 `;

@@ -72,7 +72,7 @@ export const SortBtn = styled.div`
   border-radius: 50%;
   cursor: pointer;
   font-size: 1.6rem;
-  text-align: center;
+  text-align: left;
   &:hover {
     background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.backgrounds.primary};
