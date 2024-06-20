@@ -4,11 +4,13 @@ import { MdAttachMoney } from "react-icons/md";
 
 import { PiUsersFourThin } from "react-icons/pi";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
-  width: 15vw;
+  width: 14vw;
   height: 100%;
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.07, theme.buttons.secondary)};
   padding-top: 2vh;
   z-index: 100;
   color: ${({ theme }) => theme.colors.secondary};

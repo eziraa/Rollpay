@@ -4,6 +4,8 @@ import {
   Input,
   InputContainer,
   Label,
+  Select,
+  SelectOption,
 } from "../../utils/form-elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import {
@@ -20,6 +22,7 @@ import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addEmpRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
+import { jobPositions } from "./postion_data";
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
   const { adding } = useAppSelector((state) => state.employee);
@@ -33,7 +36,6 @@ export const AddEmployee = () => {
       date_of_birth: "",
       date_of_hire: "",
       position: "",
-      salary: 0,
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
@@ -149,35 +151,19 @@ export const AddEmployee = () => {
           <Column>
             <InputContainer>
               <Label htmlFor="role">Role(Position)</Label>
-              <Input
-                placeholder=""
-                type="text"
-                id="position"
-                name="position"
-                value={formHandler.values.position}
-                onChange={formHandler.handleChange}
-              />
+              <Select name="position">
+                <SelectOption value="" disabled selected>
+                  Select Position
+                </SelectOption>
+                {jobPositions.map((position) => (
+                  <SelectOption>{position.name}</SelectOption>
+                ))}
+              </Select>
               <FormError>
                 {formHandler.touched.position && formHandler.errors.position ? (
                   <div>{formHandler.errors.position}</div>
                 ) : null}
               </FormError>{" "}
-            </InputContainer>
-            <InputContainer>
-              <Label htmlFor="role">Basic Salary</Label>
-              <Input
-                placeholder=""
-                type="text"
-                id="salary"
-                name="salary"
-                value={formHandler.values.salary}
-                onChange={formHandler.handleChange}
-              />
-              <FormError>
-                {formHandler.touched.salary && formHandler.errors.salary ? (
-                  <div>{formHandler.errors.salary}</div>
-                ) : null}
-              </FormError>
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_birth">Birth Date</Label>

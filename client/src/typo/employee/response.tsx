@@ -21,7 +21,6 @@ export interface AddEmpResponse {
 }
 
 export interface EmpResponse {
-  employees: Employee[];
   error: string;
   code: number;
   success: string;

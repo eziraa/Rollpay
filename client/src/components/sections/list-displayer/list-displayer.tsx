@@ -13,9 +13,16 @@ import {
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 import { setLongTask } from "../../../store/user/user-slice";
-import { SEE_EMPLOYEE } from "../../../constants/tasks";
+import {
+  LIST_EMP_S,
+  SEARCH_EMPLOYEE,
+  SEE_EMPLOYEE,
+} from "../../../constants/tasks";
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
+import { getTableElements } from "../../utils/custom-table/table-sizer";
+import { NoResult } from "../../utils/no-result/no-result";
+import { Employee } from "../../../typo/employee/response";
 
 interface EmployeeOrderType {
   name: string;
@@ -59,25 +66,27 @@ const initialOrder: EmployeeOrderType[] = [
 function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-
   const [order, setOrder] = useState(initialOrder);
   const emplist = [...employee.employees];
-
+  const { long_task } = useAppSelector((state) => state.user);
   const [emp_list, setEmpList] = useState(emplist);
   useEffect(() => {
-    setEmpList(emplist);
-  }, [dispatcher]);
+    if (long_task == LIST_EMP_S) setEmpList(emplist);
+    else if (long_task == SEARCH_EMPLOYEE) {
+      setEmpList(employee.query_set);
+    }
+  }, [employee]);
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
       if (
-        a[order[index].name as keyof unknown] <
-        b[order[index].name as keyof unknown]
+        a[order[index].name as keyof Employee] <
+        b[order[index].name as keyof Employee]
       ) {
         return order[index].isAscending ? 1 : -1;
       }
       if (
-        a[order[index].name as keyof unknown] >
-        b[order[index].name as keyof unknown]
+        a[order[index].name as keyof Employee] >
+        b[order[index].name as keyof Employee]
       ) {
         return order[index].isAscending ? -1 : 1;
       }
@@ -87,6 +96,9 @@ function EmployeeListDisplayer() {
     setOrder([...order]);
     setEmpList([...sorted]);
   };
+
+  if (long_task == SEARCH_EMPLOYEE && employee.query_set.length < 1)
+    return <NoResult />;
   return (
     <div
       style={{
@@ -95,18 +107,14 @@ function EmployeeListDisplayer() {
       }}
     >
       <ListContainer>
-        <ListHeader>
-          <HeaderItem>
-            <ListTitle>Employee</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(0);
-              }}
-            >
-              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
+        <ListHeader
+          style={{
+            gridTemplateColumns:
+              emp_list.length > 0
+                ? getTableElements(emp_list)
+                : "2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr",
+          }}
+        >
           <HeaderItem>
             <ListTitle>ID</ListTitle>
             <SortBtn
@@ -118,6 +126,18 @@ function EmployeeListDisplayer() {
               {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Employee</ListTitle>
+            <SortBtn
+              onClick={(e) => {
+                e.stopPropagation();
+                sortEmployee(0);
+              }}
+            >
+              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+            </SortBtn>
+          </HeaderItem>
+
           <HeaderItem>
             <ListTitle>Gender</ListTitle>
           </HeaderItem>
@@ -195,9 +215,14 @@ function EmployeeListDisplayer() {
           <ScrollBar>
             {emp_list.map((emp, index) => {
               return (
-                <ListRow key={index}>
-                  <Data> {emp.first_name + " " + emp.last_name} </Data>
+                <ListRow
+                  key={index}
+                  style={{
+                    gridTemplateColumns: getTableElements(emp_list),
+                  }}
+                >
                   <Data> {emp.id} </Data>
+                  <Data> {emp.first_name + " " + emp.last_name} </Data>
                   <Data> {emp.gender} </Data>
                   <Data> {emp.email} </Data>
                   <Data> {emp.phone_number} </Data>

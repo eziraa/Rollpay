@@ -12,6 +12,8 @@ const InitialState: BillEmpState = {
     success: "",
   },
   loading: false,
+  searching: false,
+  search_response: [],
 };
 
 const SalarySlice = createSlice({
@@ -25,12 +27,25 @@ const SalarySlice = createSlice({
       state.loading = false;
       state.response = action.payload;
     },
+    startSearchPaymentEmployee: (state, action: PayloadAction<Employee[]>) => {
+      state.searching = true;
+      state.search_response = action.payload;
+    },
+
+    noSearchResult: (state) => {
+      state.searching = false;
+    },
     unfinishedList: (state) => {
       state.loading = false;
     },
   },
 });
-export const { unfinishedList, getSalariesRequested, getSalariesDone } =
-  SalarySlice.actions;
+export const {
+  unfinishedList,
+  getSalariesRequested,
+  getSalariesDone,
+  startSearchPaymentEmployee,
+  noSearchResult,
+} = SalarySlice.actions;
 
 export default SalarySlice.reducer;

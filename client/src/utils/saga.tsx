@@ -7,8 +7,8 @@ import {
 } from "../store/user/user-saga";
 import {
   watchAddEmployee,
-  watchAddSalary,
   watchEditEmployee,
+  watchLoadPage,
 } from "../store/employee/employee-saga";
 import { watchGetEmployeeSalary } from "../store/salary/salary-saga";
 export function* rootSaga() {
@@ -18,8 +18,8 @@ export function* rootSaga() {
     watchUserLogin(),
     watchUserLogOut(),
     watchAddEmployee(),
-    watchAddSalary(),
     watchEditEmployee(),
     watchGetEmployeeSalary(),
+    watchLoadPage(),
   ]);
 }
