@@ -64,18 +64,20 @@ class AccountView(APIView):
         try:
             data = json.loads(request.body)
             if Employee.objects.filter(id=data['empID']).exists():
+                empoyee = Employee.objects.get(id=data['empID'])
                 if User.objects.filter(username=data['username']).exists():
                     return JsonResponse({'error': 'Username already exists'}, status=400)
+                if empoyee.user:
+                    return JsonResponse({'error': 'There is an other user registed in this ID Please check your ID '}, status=400)
                 user = User.objects.create_user(
                     username=data['username'], password=data['password'],
                 )
+                empoyee.user = user
+                empoyee.save()
                 group, created = Group.objects.get_or_create(name="employee")
                 group, created = Group.objects.get_or_create(
                     name='add_emplyee')
-                employee_permissions = Permission.objects.filter(
-                    codename__in=['add_user', 'change_user, view_user'])
 
-                # Assign permissions to the group
                 permissions = Permission.objects.filter(
                     codename__in=['add_employee', 'change_employee'])
                 group.permissions.set(permissions)
