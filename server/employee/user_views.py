@@ -14,12 +14,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializer import CustomTokenObtainPairSerializer
+
 from .serializer import EmployeeSerializer
 
 class UserView(APIView):
     permission_classes = [AllowAny]
     def get(self, request, *args, **kwargs):
         logout(request)
+   
         return Response("Logged out", status=status.HTTP_200_OK)
 
     def put(self, request, *args, **kwargs):
@@ -64,11 +68,17 @@ class AccountView(APIView):
         try:
             data = json.loads(request.body)
             if Employee.objects.filter(id=data['empID']).exists():
+                employee = Employee.objects.get(id=data['empID'])
                 if User.objects.filter(username=data['username']).exists():
                     return JsonResponse({'error': 'Username already exists'}, status=400)
+                if employee.user:
+                    return JsonResponse({'error': 'A user account is already registered with this Employee ID'}, status=400)
                 user = User.objects.create_user(
                     username=data['username'], password=data['password'],
                 )
+
+                employee.user = user
+                employee.save()
                 group, created = Group.objects.get_or_create(name="employee")
                 group, created = Group.objects.get_or_create(
                     name='add_emplyee')
@@ -87,3 +97,6 @@ class AccountView(APIView):
                 return JsonResponse({'error': 'Employee does not exist \n Check Your ID'}, status=400)
         except KeyError as e:
             return JsonResponse({'error': f'Missing field: {str(e)}'}, status=400)
+        
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
