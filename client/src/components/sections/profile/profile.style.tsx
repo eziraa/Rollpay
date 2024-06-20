@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { CustomLink } from "../../pages/login/login.style";
-import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { Button } from "../../utils/form-elements/form.style";
 
 export const ModalContainer = styled.div`
