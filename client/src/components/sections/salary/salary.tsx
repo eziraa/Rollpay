@@ -16,24 +16,24 @@ import {
 import { SearchIcon } from "../../utils/search/search.style";
 import { Header, Title } from "../display-employee/display-employee.style";
 import { searching } from "../../../store/employee/employee-slice";
+import { Select, SelectOption } from "../../utils/form-elements/form.style";
+import { setLongTask } from "../../../store/user/user-slice";
+import { SEARCH_EMPLOYEE_SALARY } from "../../../constants/tasks";
+import {
+  noSearchResult,
+  startSearchPaymentEmployee,
+} from "../../../store/salary/salary-slice";
+import { Employee } from "../../../typo/salary/response";
 
 export const Salary = () => {
-  const dispatch = useAppDispatch();
-  const employee = useAppSelector((state) => state.employee);
+  const dispatcher = useAppDispatch();
+  const salary = useAppSelector((state) => state.salary);
+  const { long_task } = useAppSelector((state) => state.user);
+  const [searchBy, setSearchBy] = useState("first_name");
 
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { response } = useAppSelector((state) => state.salary);
-
-  const startSearch = (param: string) => {
-    const lookUp = param.toLowerCase();
-
-    const employees =
-      employee!.employees?.filter((employee) =>
-        employee.first_name.toLowerCase().startsWith(lookUp)
-      ) ?? [];
-    dispatch(searching(employees));
-  };
 
   useEffect(() => {
     const tempAllowanceTypes = new Set<string>();
@@ -77,6 +77,16 @@ export const Salary = () => {
     );
   };
 
+  const [employeeSalary, setEmployeeSalary] = useState<Employee[]>([]);
+
+  useEffect(() => {
+    if (long_task === SEARCH_EMPLOYEE_SALARY) {
+      setEmployeeSalary(salary.search_response || []);
+    } else {
+      setEmployeeSalary(salary.response?.employees || []);
+    }
+  }, [salary.response, salary.search_response]);
+
   return (
     <SalaryContainer>
       <Header>
@@ -84,12 +94,39 @@ export const Salary = () => {
         <SearchContainer>
           <SearchIcon />
           <SearchInput
-            onInput={(e) => {
-              e.preventDefault();
-              startSearch(e.currentTarget.value);
+            onChange={(e) => {
+              dispatcher(setLongTask(SEARCH_EMPLOYEE_SALARY));
+              const result = startSearchPaymentEmployee(
+                salary.response?.employees.filter((employee) =>
+                  Object.entries(employee).find(([key, value]) => {
+                    return (
+                      key === searchBy &&
+                      value
+                        .toString()
+                        .toLowerCase()
+                        .startsWith(e.target.value.toString().toLowerCase())
+                    );
+                  })
+                ) || []
+              );
+              if (result) {
+                dispatcher(startSearchPaymentEmployee(result.payload));
+              } else dispatcher(noSearchResult());
             }}
           />
         </SearchContainer>
+        <Select
+          style={{
+            width: "15rem",
+          }}
+          name="search-by"
+          onChange={(e) => {
+            setSearchBy(e.currentTarget.value);
+          }}
+        >
+          <SelectOption value="name">Name</SelectOption>
+          <SelectOption value="id">ID</SelectOption>
+        </Select>
       </Header>
       <SalaryTable>
         <TableHeader>
@@ -126,7 +163,7 @@ export const Salary = () => {
             return <HeaderTitle> {deductionType} </HeaderTitle>;
           })}
         </TableHeader>
-        {response?.employees
+        {employeeSalary
           .filter((employee) => employee.salary)
           .map((employee) => (
             <TableRow key={employee.id}>
