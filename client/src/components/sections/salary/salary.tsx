@@ -15,7 +15,6 @@ import {
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
 import { Header, Title } from "../display-employee/display-employee.style";
-import { searching } from "../../../store/employee/employee-slice";
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
 import { setLongTask } from "../../../store/user/user-slice";
 import { SEARCH_EMPLOYEE_SALARY } from "../../../constants/tasks";

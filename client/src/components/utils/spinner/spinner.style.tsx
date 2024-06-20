@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import styled, { keyframes } from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 
@@ -25,5 +26,4 @@ export const Spinner = styled.div<SpinnerProps>`
   width: 120px;
   height: 120px;
   animation: ${spin} 1s ease-in-out infinite;
-
 `;

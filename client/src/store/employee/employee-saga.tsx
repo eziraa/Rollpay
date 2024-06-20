@@ -90,8 +90,6 @@ function* GetEmployee() {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
       yield put(setLongTask(LIST_EMP_S));
-      console.log(response.pagination)
-      console.log(response.results);
       yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";

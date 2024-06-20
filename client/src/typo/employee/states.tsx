@@ -1,4 +1,4 @@
-import { PaginatedEmpResponse, Pagination } from "../../services/employee-api";
+import { Pagination } from "../../services/employee-api";
 import { Employee } from "./response";
 
 export interface EmployeeState {
