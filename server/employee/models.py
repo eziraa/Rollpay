@@ -13,6 +13,10 @@ class Allowance(models.Model):
     allowance_type = models.CharField(max_length=255, null=False)
     allowance_rate = models.DecimalField(
         max_digits=6, decimal_places=2, null=False)
+    date_of_start = models.DateTimeField(auto_now=True)
+    date_of_end = models.DateTimeField(null=True, blank=True)
+
+
     def __str__(self):
         return self.allowance_type
 
