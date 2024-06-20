@@ -86,20 +86,20 @@ class SalarySerializer (serializers.ModelSerializer):
 class AllowanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allowance
-        fields = "__all__"
+        fields = ("allowance_type", "allowance_rate")
 
 
 class DeductionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Deduction
-        fields = "__all__"
+        fields = ("deduction_type", "deduction_rate")
 
 
 class OvertimeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Overtime
-        fields = "__all__"
+        fields = ("overtime_type", "overtime_rate", "length")
 
 
 class PositionSerializer(serializers.ModelSerializer):
