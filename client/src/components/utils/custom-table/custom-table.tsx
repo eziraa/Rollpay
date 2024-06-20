@@ -6,8 +6,6 @@ export const CustomTable = styled.table`
   /* display: flex;
   flex-direction: column;
   align-items: start; */
-  margin-top: 6rem;
-  margin-left: 4rem;
   border-collapse: collapse;
   border: none;
   width: 100%;
@@ -68,8 +66,9 @@ export const TableRow = styled.tr<ThemeProps>`
 
 export const TableData = styled.td`
   /* font-size: 1.4rem; */
-  font-weight: 500;
+  font-weight: 400;
   color: ${({ theme }) => theme.colors.primary};
   text-align: left;
-  padding: 1rem;
+  padding-left: 0.5rem;
+  line-height: 2;
 `;
