@@ -12,3 +12,10 @@ server/employee/migrations/0*.py
 client/src/components/sections/allowance/data.ts
 server/employee/forms.py
 server/employee/salary.py
+client/src/pdf.tsx
+client/src/table.tsx
+client/src/components/sections/add_employee/postion_data.tsx
+client/src/components/sections/salary/scr.tsx
+client/src/components/sections/salary/scroll.css
+client/src/components/sections/salary/scroll.tsx
+client/src/components/sections/salary/table.tsx
