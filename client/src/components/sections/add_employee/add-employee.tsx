@@ -12,7 +12,6 @@ import {
   AddEmployeeForm,
   Column,
   GenderContainer,
-  StyledPhoneInput,
   Title,
 } from "./add-employee.style";
 import { useFormik } from "formik";
@@ -87,13 +86,13 @@ export const AddEmployee = () => {
             </InputContainer>
             <InputContainer>
               <Label htmlFor="phone_number">Phone Number</Label>
-              <StyledPhoneInput
-                placeholder="Enter phone number"
-                country="et"
+               <Input
+                placeholder=""
+                type="text"
+                id="phone_number"
+                name="phone_number"
                 value={formHandler.values.phone_number}
-                onChange={(value) => {
-                  formHandler.setFieldValue("phone_number", value);
-                }}
+                onChange={formHandler.handleChange}
               />
               <FormError>
                 {formHandler.touched.phone_number &&
