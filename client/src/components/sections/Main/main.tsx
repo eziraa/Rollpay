@@ -1,6 +1,7 @@
 import {
   LIST_EMP_S,
   SEARCH_EMPLOYEE,
+  SEARCH_EMPLOYEE_SALARY,
   SEE_EMPLOYEE,
   SEE_EMP_SALARY,
 } from "../../../constants/tasks";
@@ -18,7 +19,9 @@ const Main = () => {
       {[LIST_EMP_S, SEARCH_EMPLOYEE].includes(user.long_task || "") && (
         <DisplayEmployee />
       )}
-      {user.long_task === SEE_EMP_SALARY && <Salary />}
+      {[SEE_EMP_SALARY, SEARCH_EMPLOYEE_SALARY].includes(
+        user.long_task || ""
+      ) && <Salary />}
     </MainContainer>
   );
 };
