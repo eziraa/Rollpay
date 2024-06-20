@@ -1,9 +1,9 @@
-import { EmployeeResponse } from "../employee/response";
+import { Employee } from "../employee/response";
 
 export type UserResponse = {
   username: string;
   employeeId: string;
-  employee: EmployeeResponse;
+  employee: Employee;
 };
 
 export type ErrorUserResponse = {

@@ -9,16 +9,14 @@ import {
 } from "./profile.style";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { logoutRequested } from "../../../store/user/user-slice";
+import { logoutRequested, setShortTask } from "../../../store/user/user-slice";
 import { MdLogout } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
-interface Props {
-  show: boolean;
-}
 
-const Profile = ({ show }: Props) => {
+const Profile = () => {
   const dispatcher = useAppDispatch();
+
   const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
@@ -32,13 +30,11 @@ const Profile = ({ show }: Props) => {
   return (
     <ModalContainer
       onClick={() => {
-        show = !show;
+        dispatcher(setShortTask(undefined));
       }}
-      clicked={show}
     >
-      <Modal>
-        {/* <Label>Username: {user.user?.username}</Label>
-        <Label>Employee ID: {user.user?.employeeId}</Label> */}
+      <Modal onClick={(e) => e.stopPropagation()}>
+      
         <ItemContainer>
           <IconContainer>
             <FaRegUser />
