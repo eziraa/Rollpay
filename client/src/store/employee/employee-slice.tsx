@@ -30,14 +30,28 @@ const EmployeeSlice = createSlice({
     addEmpRequested: (state, _: PayloadAction<AddEmpParams>) => {
       state.adding = true;
     },
-    setPagesize: (state, _: PayloadAction<number>) => {
+    setPagesize: (state, size: PayloadAction<number>) => {
+      let page = 1;
+      let number_of_pages = 1;
+      if (state.pagination) {
+        page = state.pagination?.current_page / state.pagination?.page_size;
+        page = page * size.payload;
+        page = Math.ceil(page);
+        number_of_pages = Math.ceil(
+          state.pagination.count / state.pagination.page_size
+        );
+      }
+
       state.pagination = {
-        page_size: _.payload,
+        page_size: size.payload,
         next: state.pagination?.next,
         previous: state.pagination?.previous,
         count: state.pagination?.count ?? 0,
+        current_page: 1,
+        number_of_pages,
       };
     },
+
     addEmpDone: (state) => {
       state.adding = false;
       state.task = undefined;
@@ -70,6 +84,7 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.task = undefined;
       state.loading = false;
+
       state.pagination = {
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
@@ -83,9 +98,39 @@ const EmployeeSlice = createSlice({
     },
     loadNextPageRequested: (state, _: PayloadAction<string>) => {
       state.loading = true;
+      if (state.pagination?.current_page) state.pagination.current_page++;
+      else if (state.pagination) state.pagination.current_page = 1;
+      // _.payload =
+      //   _.payload.substring(0, _.payload.indexOf("?")) +
+      //   `${
+      //     state.pagination
+      //       ? "?page=" +
+      //         (state.pagination.current_page
+      //           ? state.pagination.current_page + 1
+      //           : 1) +
+      //         "&page_size=" +
+      //         state.pagination.page_size
+      //       : "page_size=10"
+      //   }`;
+      // state.pagination?.current_page ? state.pagination.current_page++ : 1;
     },
     loadPrevPageRequested: (state, _: PayloadAction<string>) => {
       state.loading = true;
+      if (state.pagination?.current_page) state.pagination.current_page--;
+      else if (state.pagination) state.pagination.current_page = 1;
+      // _.payload =
+      //   _.payload.substring(0, _.payload.indexOf("?")) +
+      //   `?${
+      //     state.pagination?.previous
+      //       ? "page=" +
+      //         (state.pagination.current_page
+      //           ? state.pagination.current_page - 1
+      //           : 1) +
+      //         "&page_size=" +
+      //         state.pagination.page_size
+      //       : "page_size =10"
+      //   }`;
+      // console.log(_);
     },
     searching: (state, payload: PayloadAction<Employee[]>) => {
       state.query_set = payload.payload;
