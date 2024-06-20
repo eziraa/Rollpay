@@ -1,21 +1,22 @@
 import { Link } from "react-router-dom";
 import {
-  LogoutButton,
   ResetLink,
   Label,
   Modal,
   ModalContainer,
+  IconContainer,
+  ItemContainer,
 } from "./profile.style";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { logoutRequested } from "../../../store/user/user-slice";
+import { logoutRequested, setShortTask } from "../../../store/user/user-slice";
+import { MdLogout } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { FaRegUser } from "react-icons/fa";
 
-interface Props {
-  show: boolean;
-}
-
-const Profile = ({ show }: Props) => {
+const Profile = () => {
   const dispatcher = useAppDispatch();
+
   const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
@@ -27,15 +28,36 @@ const Profile = ({ show }: Props) => {
   };
 
   return (
-    <ModalContainer clicked={show}>
-      <Modal>
-        <Label>Username: {user.user?.username}</Label>
-        <Label>Employee ID: {user.user?.employeeId}</Label>
+    <ModalContainer
+      onClick={() => {
+        dispatcher(setShortTask(undefined));
+      }}
+    >
+      <Modal onClick={(e) => e.stopPropagation()}>
+      
+        <ItemContainer>
+          <IconContainer>
+            <FaRegUser />
+          </IconContainer>
+          <Label>Profile</Label>
+        </ItemContainer>
+        <ItemContainer>
+          <IconContainer>
+            <RiLockPasswordLine />
+          </IconContainer>
 
-        <ResetLink>
-          <Link to="/change-password">Change Password</Link>
-        </ResetLink>
-        <LogoutButton onClick={handleClick}>Log out</LogoutButton>
+          <ResetLink>
+            <Link to="/change-password">Change Password</Link>
+          </ResetLink>
+        </ItemContainer>
+
+        <hr />
+        <ItemContainer>
+          <IconContainer>
+            <MdLogout />
+          </IconContainer>
+          <Label onClick={handleClick}>Log out</Label>
+        </ItemContainer>
       </Modal>
     </ModalContainer>
   );

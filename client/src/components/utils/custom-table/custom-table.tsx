@@ -50,7 +50,8 @@ export const TableRow = styled.tr<ThemeProps>`
   cursor: pointer;
   font-size: 1.2rem;
   width: 100%;
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.4, theme.table.tableRow)};
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.backgrounds.primary};
   }
@@ -65,8 +66,9 @@ export const TableRow = styled.tr<ThemeProps>`
 
 export const TableData = styled.td`
   /* font-size: 1.4rem; */
-  font-weight: 500;
+  font-weight: 400;
   color: ${({ theme }) => theme.colors.primary};
   text-align: left;
-  padding: 1rem;
+  padding-left: 0.5rem;
+  line-height: 2.5;
 `;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const ListContainer = styled.div<ThemeProps>`
   width: 100%;
@@ -52,9 +53,17 @@ export const ListRow = styled.div<ThemeProps>`
   padding: 0.4rem 0.5rem;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.4, theme.table.tableRow)};
+  &:nth-child(even) {
+    background-color: ${({ theme }) => theme.backgrounds.primary};
+  }
+
   &:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
-    cursor: pointer;
+  }
+  &:last-child {
+    border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
   }
 `;
 

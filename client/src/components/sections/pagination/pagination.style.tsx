@@ -27,7 +27,7 @@ const text_css = css`
 export const Paragraph = styled.p`
   ${text_css};
 `;
-export const Number = styled.input<ThemeProps>`
+export const CurrentPageNumber = styled.input<ThemeProps>`
   font-size: 1.2rem;
   width: 6rem;
   margin: 1.5rem 0rem;

@@ -9,7 +9,7 @@ export const Button = styled.button<ThemeProps>`
   font-size: 15px;
   border-radius: 7px;
   border: none;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.buttons.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
   &:hover {
     background-color: ${({ theme }) =>

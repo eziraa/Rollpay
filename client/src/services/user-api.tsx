@@ -27,6 +27,7 @@ const signUp = async (values: SignUpParams) => {
 
 const login = async (values: LoginParams) => {
   try {
+
     const { username, password } = values;
     const response = await api.post("/user/login/", {
       username,
@@ -45,7 +46,7 @@ const login = async (values: LoginParams) => {
 
 const logout = async () => {
   const response = await api
-    .post("/user/logout") // Added an empty body `{}` and `{ withCredentials: true }`
+    .get("/user/logout") 
     .then((res) => {
       localStorage.removeItem(ACCESS_TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);

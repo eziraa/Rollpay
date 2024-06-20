@@ -39,7 +39,7 @@ export const Button = styled.button`
   cursor: pointer;
   padding: 1rem 2rem;
   border: none;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.buttons.primary};
   border-radius: 5px;
   &:hover {
     background-color: ${({ theme }) =>
@@ -50,12 +50,12 @@ export const Button = styled.button`
 
 export const SaveBtn = styled(Button)`
   width: 8rem;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.buttons.primary};
 `;
 export const CancelBtn = styled(Button)`
   width: 8rem;
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.5, theme.colors.primary)};
+    addOpacityToColor(0.5, theme.buttons.primary)};
   color: ${({ theme }) => theme.backgrounds.primary};
 `;
 export const ButtonContainer = styled.div`
