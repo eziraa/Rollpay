@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-
+from .serializer import EmployeeSerializer
 
 class UserView(APIView):
     permission_classes = [AllowAny]
@@ -33,13 +33,24 @@ class UserView(APIView):
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
         password = request.data.get('password')
+        print("login")
+
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key})
+            try:
+                    employee = Employee.objects.get(user=user)
+                    employee_serializer = EmployeeSerializer(employee)
+                    print('user data', employee_serializer.data)
+                    return Response({
+                            "token": token.key,
+                            "employee": employee_serializer.data 
+                        })
+            except Employee.DoesNotExist:
+                return Response({"error": "Employee profile not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
