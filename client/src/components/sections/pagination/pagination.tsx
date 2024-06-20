@@ -95,18 +95,36 @@ function Pagination() {
     pageSize: 0,
   });
   const getPageInfo = (prev: string) => {
-    prev = prev.trim().slice(-1);
-    if (prev) {
+    if (prev.includes("page=")) {
+      prev = prev.substring(prev.indexOf("page=") + 5, prev.indexOf("&"));
+      console.log(prev);
       setPage({
-        currentPage: Number.parseInt(prev.toString()),
-        totalPages: Math.round(pagination?.count ? pagination.count / 10 : 0),
+        currentPage: Number.parseFloat(prev) + 1,
+        totalPages:
+          Math.floor(pagination ? pagination.count / pagination.page_size : 0) +
+          1,
+        totalRecords: pagination?.count ?? 0,
+        pageSize: 10,
+      });
+    } else if (pagination?.next?.includes("page=")) {
+      prev = pagination?.next?.substring(
+        pagination?.next?.indexOf("page=") + 5,
+        pagination?.next?.indexOf("&")
+      );
+      setPage({
+        currentPage: Number.parseFloat(prev),
+        totalPages:
+          Math.floor(pagination ? pagination.count / pagination.page_size : 0) +
+          1,
         totalRecords: pagination?.count ?? 0,
         pageSize: 10,
       });
     } else {
       setPage({
-        currentPage: 1,
-        totalPages: pagination?.count ? pagination.count / 10 : 0,
+        currentPage: page.currentPage + 1,
+        totalPages:
+          Math.floor(pagination ? pagination.count / pagination.page_size : 0) +
+          1,
         totalRecords: pagination?.count ?? 0,
         pageSize: 10,
       });
@@ -143,10 +161,10 @@ function Pagination() {
           </ButtonName>
         </NavButton>
         <Paragraph>Page:</Paragraph>
-        <CurrentPageNumber type="number" value={page.currentPage} />
+        <CurrentPageNumber type="number" value={pagination?.current_page} />
         <TextContainer>
           <Text>of</Text>
-          <Paragraph2> {page.totalPages} </Paragraph2>
+          <Paragraph2> {pagination?.number_of_pages} </Paragraph2>
         </TextContainer>
         <Paragraph>Per Page:</Paragraph>
         <DropDown />
