@@ -229,10 +229,7 @@ function EmployeeListDisplayer() {
                   <Data> {emp.date_of_hire} </Data>
                   <Data> {emp.date_of_birth} </Data>
                   <Data> {emp.position} </Data>
-                  <Data>
-                    {(emp.salary as { basic_salary: number } | undefined)
-                      ?.basic_salary ?? 0}
-                  </Data>
+                  <Data>{emp.salary}</Data>
                   <Data
                     style={{
                       fontSize: "1.2rem",
