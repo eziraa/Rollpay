@@ -48,7 +48,7 @@ const UserSlice = createSlice({
     },
     loginFinished: (state) => {
       state.logging_in = false;
-      state.short_task = undefined;
+      state.long_task = undefined;
       state.is_login = true;
       state.login_error = undefined;
     },
