@@ -29,9 +29,6 @@ export const Header = () => {
               else dispatcher(setShortTask(SEE_PROFILE));
             }}
           />
-
-          <Toggle />
-          <ProfileImage />
         </ProfileContainer>
       </HeaderContainer>
     </>
