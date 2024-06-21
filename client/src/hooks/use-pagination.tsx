@@ -14,8 +14,16 @@ export const usePagination = () => {
 
   const [page, setPage] = useState<PaginationResponse>(initialPagination);
 
+  const getPath = () => {
+    if (page.prev) {
+      return new URL(page.prev).pathname;
+    } else if (page.next) {
+      return new URL(page.next).pathname;
+    } else return "";
+  };
+
   const setPageSize = (page_size: number) => {
-    const base = "/employee/list";
+    const base = getPath();
 
     const total_pages = page_size > 0 ? Math.ceil(page.total / page_size) : 1;
 
