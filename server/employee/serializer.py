@@ -18,7 +18,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
                   'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary')
 
     def get_salary(self, obj: Employee):
-        return obj.salary.basic_salary
+        return str(obj.salary.basic_salary)
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -33,7 +33,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             employee = Employee.objects.get(user=user)
             employee_serializer = EmployeeSerializer(employee)
             token['employee'] = employee_serializer.data
-            print(token['employee'])
         except Employee.DoesNotExist:
             token['employee'] = None  # Handle case where employee profile is not found
 
