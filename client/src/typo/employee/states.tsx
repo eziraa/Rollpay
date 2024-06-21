@@ -5,6 +5,7 @@ export interface EmployeeState {
   adding: boolean;
   loading: boolean;
   employees: Employee[];
+  adding_emp_error: string | undefined;
   task: string | undefined;
   curr_emp: Employee | undefined;
   editing: boolean;
