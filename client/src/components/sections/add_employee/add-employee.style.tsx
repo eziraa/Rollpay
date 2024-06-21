@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { Button } from "../../utils/form-elements/form.style";
@@ -51,5 +50,4 @@ export const AddButton = styled(Button)<ThemeProps>`
   right: 4rem;
   width: 100px;
   height: 40px;
-  color: ${({ theme }) => theme.backgrounds.primary};
 `;

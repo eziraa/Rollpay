@@ -40,7 +40,7 @@ export const Button = styled.button<ThemeProps>`
   color: #fff;
   &:hover {
     background-color: ${({ theme }) =>
-      addOpacityToColor(0.58, theme.buttons.primary)};
+      addOpacityToColor(0.75, theme.buttons.primary)};
     cursor: pointer;
   }
   border: none;
