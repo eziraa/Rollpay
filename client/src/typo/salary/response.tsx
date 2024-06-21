@@ -22,7 +22,6 @@ export interface Salary {
   overtimes: Overtime[];
   deductions: Deduction[];
   net_salary: number | null;
-  total_salary: number | null;
   total_deduction: number | null;
   income_tax: number | null;
 }

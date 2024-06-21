@@ -23,6 +23,7 @@ import {
   startSearchPaymentEmployee,
 } from "../../../store/salary/salary-slice";
 import { Employee } from "../../../typo/salary/response";
+import Pagination from "../pagination/pagination";
 
 export const Salary = () => {
   const dispatcher = useAppDispatch();
@@ -202,6 +203,7 @@ export const Salary = () => {
             </TableRow>
           ))}
       </SalaryTable>
+      <Pagination />
     </SalaryContainer>
   );
 };

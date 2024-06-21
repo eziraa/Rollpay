@@ -6,8 +6,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from .serializer import EmployeeSerializer
-from .models import Employee, Salary
+from .serializer import EmployeeSerializer, SalaryEmployeeSerializer, PositionSerializer
+from .models import Employee, Salary, Position
 from .utils import refresh_jwt_token
 from .permissions import IsUserInGroupWithClerk
 from django.http import JsonResponse
@@ -48,13 +48,18 @@ class EmployeeView (APIView):
             data = json.loads(request.body)
             if Employee.objects.filter(email=data['email']).exists():
                 return JsonResponse({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+            if Employee.objects.filter(phone_number=data['phone_number']).exists():
+                return JsonResponse({'error': 'Phone Number already exists'}, status=status.HTTP_400_BAD_REQUEST)
             employee = Employee.objects.last()
             if employee:
                 data['id'] = Employee.generate_employee_id(employee.id)
             else:
                 data['id'] = "ED1000"
+            if not Position.objects.filter(position_name=data['position']).exists():
+                return JsonResponse({'error': 'Position does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+            position = Position.objects.get(position_name=data['position'])
             salary = Salary.objects.create(
-                basic_salary=data['salary'])
+                basic_salary=position.basic_salary)
             data['salary'] = salary
             employee = Employee.objects.create(**data)
             employee.save()
@@ -95,9 +100,13 @@ class EmployeeView (APIView):
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
         data = json.loads(request.body)
-        salary = Salary.objects.create(
-            basic_salary=data['salary'])
-        employee.salary = salary
+
+        if employee.salary:
+            employee.salary.basic_salary = data['salary']
+        else:
+            salary = Salary.objects.create(
+                basic_salary=data['salary'])
+            employee.salary = salary
         data.pop('salary', None)  # Use pop to remove 'salary' safely
         serializer = EmployeeSerializer(employee, data=data)
         if serializer.is_valid():
@@ -111,5 +120,12 @@ class SalaryView(APIView):
 
     def get(self, request):
         employees = Employee.objects.all()
-        serializer = EmployeeSerializer(employees, many=True)
+        serializer = SalaryEmployeeSerializer(employees, many=True)
         return JsonResponse(data=serializer.data, safe=False)
+
+
+class PositionView(APIView):
+    def get(self, request):
+        position_serializer = PositionSerializer(
+            Position.objects.all(), many=True)
+        return JsonResponse(data=position_serializer.data, safe=False)

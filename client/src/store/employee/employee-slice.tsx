@@ -22,6 +22,7 @@ const InitialEmpState: EmployeeState = {
   query_set: [],
   searching: false,
   pagination: undefined,
+  adding_emp_error: undefined,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -55,9 +56,11 @@ const EmployeeSlice = createSlice({
     addEmpDone: (state) => {
       state.adding = false;
       state.task = undefined;
+      state.adding_emp_error = undefined;
     },
-    unfinishedAdd: (state) => {
+    unfinishedAdd: (state, action: PayloadAction<string>) => {
       state.adding = false;
+      state.adding_emp_error = action.payload;
     },
     listEmpRequested: (state) => {
       state.loading = true;

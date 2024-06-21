@@ -34,16 +34,15 @@ export const title_css = css`
 
 export const btn_css = css`
   font-size: 2rem;
-  color: ${({ theme }) => theme.backgrounds.primary};
+  color: #ffffff;
   cursor: pointer;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.buttons.primary};
   border: none;
   &:hover {
     background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.colors.primary)};
-    color: ${({ theme }) => theme.backgrounds.primary};
+      addOpacityToColor(0.75, theme.buttons.primary)};
   }
 `;
 
