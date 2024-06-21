@@ -4,7 +4,11 @@ import { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
 import api from "../config/api";
 import { SignUpResponse } from "../typo/user/response";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/token-constants";
+import {
+  ACCESS_TOKEN,
+  CURRENT_USER,
+  REFRESH_TOKEN,
+} from "../constants/token-constants";
 
 const signUp = async (values: SignUpParams) => {
   const response = await api
@@ -34,6 +38,8 @@ const login = async (values: LoginParams) => {
     });
     localStorage.setItem(ACCESS_TOKEN, response.data.access);
     localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+    localStorage.setItem(CURRENT_USER, JSON.stringify(response.data.employee));
+  
     return {
       employee: response.data.employee,
       success: "User Logged in successfully",
