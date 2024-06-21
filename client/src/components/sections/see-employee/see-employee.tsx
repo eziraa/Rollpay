@@ -66,8 +66,10 @@ export const SeeEmployee = () => {
         <NavBar>
           <NavItem
             style={{
-              backgroundColor:
-                major_task === SEE_EMP_ALLOWANCE ? "#4dc399" : "transparent",
+              borderBottom:
+                major_task === SEE_EMP_ALLOWANCE
+                  ? " 0.3 rem solid #4dc399"
+                  : "transparent",
             }}
             onClick={(e) => {
               e.preventDefault();
@@ -78,8 +80,10 @@ export const SeeEmployee = () => {
           </NavItem>
           <NavItem
             style={{
-              backgroundColor:
-                major_task === SEE_EMP_OVERTIME ? "#8e9a96" : "transparent",
+              borderBottom:
+                major_task === SEE_EMP_OVERTIME
+                  ? " 0.3 rem solid #4dc399"
+                  : "transparent",
             }}
             onClick={(e) => {
               e.preventDefault();
@@ -90,8 +94,10 @@ export const SeeEmployee = () => {
           </NavItem>
           <NavItem
             style={{
-              backgroundColor:
-                major_task === SEE_EMP_DEDUCTION ? "#4dc399" : "transparent",
+              borderBottom:
+                major_task === SEE_EMP_DEDUCTION
+                  ? " 0.3 rem solid #4dc399"
+                  : "transparent",
             }}
             onClick={(e) => {
               e.preventDefault();
