@@ -14,7 +14,7 @@ export const ModalContainer = styled.div`
 
 export const Modal = styled.div<ThemeProps>`
   width: 20rem;
-  height: 13rem;
+  height: 15rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 1.5rem;
   top: 5.5rem;
@@ -79,4 +79,8 @@ export const IconContainer = styled.div<ThemeProps>`
 export const ItemContainer = styled.div`
   display: flex;
   margin: 0.2rem;
+`;
+
+export const HorizontalLine = styled.hr`
+  margin-top: 1rem;
 `;

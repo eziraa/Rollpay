@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerialize
+
 from .models import Employee, Salary, Allowance, Deduction, Overtime, Position
 from decimal import Decimal
 from django.db.models import Sum
@@ -18,6 +20,24 @@ class EmployeeSerializer(serializers.ModelSerializer):
     def get_salary(self, obj: Employee):
         return obj.salary.basic_salary
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims to the token
+        token['username'] = user.username  # Example: Add username to the token payload
+
+        # Add additional user/employee data to the token
+        try:
+            employee = Employee.objects.get(user=user)
+            employee_serializer = EmployeeSerializer(employee)
+            token['employee'] = employee_serializer.data
+            print(token['employee'])
+        except Employee.DoesNotExist:
+            token['employee'] = None  # Handle case where employee profile is not found
+
+        return token
 
 class ProfilePicSerializer(serializers.ModelSerializer):
     class Meta:
