@@ -39,17 +39,15 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims to the token
-        token['username'] = user.username  # Example: Add username to the token payload
+        token['username'] = user.username  
 
-        # Add additional user/employee data to the token
         try:
             employee = Employee.objects.get(user=user)
             employee_serializer = EmployeeSerializer(employee)
             token['employee'] = employee_serializer.data
-            print(token['employee'])
+            # print(token['employee'])
         except Employee.DoesNotExist:
-            token['employee'] = None  # Handle case where employee profile is not found
+            token['employee'] = None  
 
         return token
 
