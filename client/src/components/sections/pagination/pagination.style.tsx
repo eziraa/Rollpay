@@ -50,7 +50,7 @@ export const PageNumber = styled.input`
 `;
 export const ButtonText = styled.p<ThemeProps>`
   font-size: 1.2rem;
-  color: ${({ theme }) => theme.backgrounds.primary};
+  color: ${({ theme }) => theme.colors.primary};
 `;
 export const ButtonName = styled.div`
   display: flex;

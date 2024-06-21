@@ -13,6 +13,10 @@ class Allowance(models.Model):
     allowance_type = models.CharField(max_length=255, null=False)
     allowance_rate = models.DecimalField(
         max_digits=6, decimal_places=2, null=False)
+    date_of_start = models.DateTimeField(auto_now=True)
+    date_of_end = models.DateTimeField(null=True, blank=True)
+
+
     def __str__(self):
         return self.allowance_type
 
@@ -43,18 +47,13 @@ class Salary(models.Model):
         Overtime,  blank=True)
     deductions = models.ManyToManyField(
         Deduction, blank=True)
-    net_salary = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=True)
-    gross_salary = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=True)
-    total_deduction = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=True)
 
 
 class Position(models.Model):
-    position_type = models.CharField(max_length=255, null=False)
+    position_name = models.CharField(
+        max_length=255, null=False, primary_key=True)
     basic_salary = models.DecimalField(
-        max_digits=7, decimal_places=2, null=False)
+        max_digits=12, decimal_places=2, null=False)
 
 class Employee(models.Model):
     Male = 'M'

@@ -1,4 +1,4 @@
-import { Employee } from "../../../typo/salary/response";
+import { Employee } from "../../../typo/employee/response";
 
 export interface TableElements {
   name: string;

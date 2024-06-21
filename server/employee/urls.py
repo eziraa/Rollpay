@@ -15,4 +15,5 @@ urlpatterns = [
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
          name='__update_emoployee__'),
+    path("positions", views.PositionView.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

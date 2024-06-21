@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerialize
 
-from .models import Employee, Salary, Allowance, Deduction, Overtime
+from .models import Employee, Salary, Allowance, Deduction, Overtime, Position
 from decimal import Decimal
 from django.db.models import Sum
 from . import utils
@@ -18,21 +18,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
                   'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary')
 
     def get_salary(self, obj: Employee):
-        return SalarySerializer(obj.salary).data if obj.salary else None
-        # base_salary = Decimal(obj.salary.basic_salary) if obj.salary else 0
-        # bonus = Decimal(5000)  # Assuming a fixed bonus
-        # calculated_salary = base_salary + bonus
-        # if (obj.salary):
-        #     if (obj.salary.allowances):
-        #         for allowance in obj.salary.allowances.all():
-        #             calculated_salary += allowance.allowance_rate * base_salary / 100
-        #     if (obj.salary.deductions):
-        #         for deduction in obj.salary.deductions.all():
-        #             calculated_salary -= deduction.deduction_rate * base_salary / 100
-        #     if (obj.salary.overtimes):
-        #         for overtime in obj.salary.overtimes.all():
-        #             calculated_salary += overtime.overtime_rate * overtime.length * base_salary / 100
-        # return calculated_salary
+        return obj.salary.basic_salary
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -59,26 +45,33 @@ class ProfilePicSerializer(serializers.ModelSerializer):
         fields = "profile_picture"
 
 
+class SalaryEmployeeSerializer(EmployeeSerializer):
+    salary = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Employee
+        fields = ('id', 'first_name', 'last_name', 'salary')
+
+    def get_salary(self, obj: Employee):
+        return SalarySerializer(obj.salary).data
+
 class SalarySerializer (serializers.ModelSerializer):
-    gross_salary = serializers.SerializerMethodField(
-        read_only=True, allow_null=True)
-    total_salary = serializers.DecimalField(
-        max_digits=7, decimal_places=2, allow_null=True)
-    net_salary = serializers.DecimalField(
-        max_digits=7, decimal_places=2, allow_null=True)
+
+    gross_salary = serializers.SerializerMethodField(read_only=True)
+    net_salary = serializers.SerializerMethodField(read_only=True)
     allowances = serializers.SerializerMethodField(read_only=True)
     deductions = serializers.SerializerMethodField(read_only=True)
     overtimes = serializers.SerializerMethodField(read_only=True)
+    total_deduction = serializers.SerializerMethodField(
+        read_only=True)
 
-    total_deduction = serializers.DecimalField(
-        max_digits=7, decimal_places=2, allow_null=True)
     income_tax = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
 
         model = Salary
         fields = ('basic_salary', 'gross_salary',
-                  "allowances", "deductions", "overtimes", "total_salary",
+                  "allowances", "deductions", "overtimes",
                   'total_deduction', "income_tax", "net_salary")
 
     def get_allowances(self, obj: Salary):
@@ -91,36 +84,45 @@ class SalarySerializer (serializers.ModelSerializer):
         return OvertimeSerializer(obj.overtimes, many=True).data
 
     def get_net_salary(self, obj: Salary):
-        return obj.gross_salary - obj.total_deduction
+        return round(Decimal(self.get_gross_salary(obj=obj)) - Decimal(self.get_total_deduction(obj)), 2)
 
-    def get_total_deduction(self, obj: Salary):
+    def get_total_deduction(self, obj: Salary) -> float:
         obj.total_deduction = 0
         for deduction in obj.deductions.all():
             obj.total_deduction += deduction.deduction_rate * obj.basic_salary / 100
-        return obj.total_deduction
+        income_tax = self.get_income_tax(obj=obj)
+        if income_tax:
+            obj.total_deduction = float(obj.total_deduction) + income_tax
+        return round(obj.total_deduction, 2)
 
     def get_gross_salary(self, obj: Salary) -> float:
         allowances_sum = sum(
             [allowance.allowance_rate for allowance in obj.allowances.all()])
         return float(obj.basic_salary + allowances_sum * obj.basic_salary / 100)
 
-    def get_income_tax(self, obj: Salary):
+    def get_income_tax(self, obj: Salary) -> Decimal:
         return utils.income_tax(self.get_gross_salary(obj))
 
 class AllowanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allowance
-        fields = "__all__"
+        fields = ("allowance_type", "allowance_rate")
 
 
 class DeductionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Deduction
-        fields = "__all__"
+        fields = ("deduction_type", "deduction_rate")
 
 
 class OvertimeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Overtime
-        fields = "__all__"
+        fields = ("overtime_type", "overtime_rate", "length")
+
+
+class PositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Position
+        fields = ('position_name', 'basic_salary')

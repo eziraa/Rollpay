@@ -132,13 +132,7 @@ export const SeeEmployee = () => {
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Salary</DataLabel>
-              <DataValue>
-                {(
-                  current_employee?.salary as
-                    | { basic_salary: number }
-                    | undefined
-                )?.basic_salary ?? 0}
-              </DataValue>
+              <DataValue>{current_employee?.salary}</DataValue>
             </EmployeeData>
             <EmployeeData>
               <DataLabel>Birth Date</DataLabel>

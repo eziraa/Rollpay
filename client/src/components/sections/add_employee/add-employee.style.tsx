@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { Button } from "../../utils/form-elements/form.style";
-import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 export const AddEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,27 +44,10 @@ export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const StyledPhoneInput = styled(PhoneInput)`
-  & input {
-    width: 100% !important;
-    padding: 10px;
-    border: 1px solid #e22323;
-    border-radius: 4px;
-  }
-`;
-
 export const AddButton = styled(Button)<ThemeProps>`
   position: absolute;
   bottom: 3rem;
   right: 4rem;
   width: 100px;
   height: 40px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.backgrounds.primary};
-  &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.colors.primary)};
-    color: ${({ theme }) => theme.backgrounds.primary};
-    cursor: pointer;
-  }
 `;
