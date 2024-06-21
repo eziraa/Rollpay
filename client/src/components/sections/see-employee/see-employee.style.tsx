@@ -180,22 +180,18 @@ export const NavBar = styled.div`
   justify-content: start;
   flex: 3.8;
   gap: 0rem;
-  background-color: ${({ theme }) =>
-    addOpacityToColor(0.05, theme.buttons.primary)};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
 export const NavItem = styled.div`
-  padding: 1rem 2rem;
+  padding: 1rem 0rem;
   display: inline-block;
   font-size: 1.7rem;
   cursor: pointer;
-  width: 20%;
+  margin-right: 3rem;
   text-align: center;
   color: ${({ theme }) => theme.colors.primary};
-  &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.5, theme.backgrounds.secondary)};
-  }
+
 `;
 
 export const DeleteButton = styled(Button)`
