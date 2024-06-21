@@ -38,18 +38,9 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd());
-      yield put(
-        setFlashMessage({
-          type: "error",
-          status: true,
-          title: "Permition Denied",
-          desc: "You are not authorized to add employee",
-          duration: 3,
-        })
-      );
+      yield put(unfinishedAdd(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd());
+      yield put(unfinishedAdd(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -60,25 +51,16 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd());
-      yield put(
-        setFlashMessage({
-          type: "error",
-          status: true,
-          title: "Add Employee",
-          desc: response.error,
-          duration: 3,
-        })
-      );
+      yield put(unfinishedAdd(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd());
+    yield put(unfinishedAdd("Cann't add employee please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
         status: true,
         title: "Add Employee",
-        desc: "Cannot add employee",
+        desc: "Cann't add employee please try again later",
         duration: 3,
       })
     );
@@ -215,7 +197,6 @@ function* loadNextPage(action: PayloadAction<string>) {
   } catch (e) {
     console.log(e);
   }
-
 }
 
 function* loadPrevPage(action: PayloadAction<string>) {
@@ -310,7 +291,7 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedAdd());
+      yield put(unfinishedAdd(response.error));
       yield put(
         setFlashMessage({
           type: "error",
