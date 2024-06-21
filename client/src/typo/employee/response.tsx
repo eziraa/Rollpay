@@ -1,5 +1,3 @@
-import { Salary } from "../salary/response";
-
 export interface Employee {
   id: string;
   first_name: string;
