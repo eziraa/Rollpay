@@ -42,7 +42,9 @@ const fetchPositions = async (): Promise<Position[]> => {
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
-  const { adding } = useAppSelector((state) => state.employee);
+  const { adding, adding_emp_error } = useAppSelector(
+    (state) => state.employee
+  );
 
   const [positions, setPositions] = useState<Position[]>([]);
   const fetchData = async () => {
@@ -227,6 +229,16 @@ export const AddEmployee = () => {
                 ) : null}
               </FormError>{" "}
             </InputContainer>
+            {adding_emp_error && (
+              <FormError
+                style={{
+                  fontSize: "1.5rem",
+                }}
+              >
+                {" "}
+                {adding_emp_error}
+              </FormError>
+            )}
           </Column>
           <AddButton type="submit">
             {adding ? <SmallSpinner /> : "Add"}
