@@ -12,6 +12,7 @@ import {
   ADD_DEDUCTION,
   ADD_OVERTIME,
   LIST_EMP_S,
+  SEARCH_EMPLOYEE_SALARY,
   SEE_EMP_SALARY,
 } from "../../../constants/tasks";
 import { AddSalaryComponent } from "../../sections/salary-components/salary-components";
@@ -22,10 +23,10 @@ import { PaginationContext } from "../../../contexts/pagination-context";
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
   const { long_task, short_task } = useAppSelector((state) => state.user);
-  const salary = useAppSelector((state) => state.salary);
   const dispacher = useAppDispatch();
   const { setPagination } = useContext(PaginationContext);
   useEffect(() => {
+    if (long_task === SEARCH_EMPLOYEE_SALARY) return;
     if (long_task === SEE_EMP_SALARY) dispacher(getSalariesRequested());
     else if (long_task === undefined || long_task === LIST_EMP_S)
       dispacher(listEmpRequested());
@@ -39,7 +40,7 @@ export const HomePage = () => {
       <HomeBody>
         <LeftMenu />
         <CheckFlashMessage />
-        {employee.loading || salary.loading ? <LoadingSpinner /> : <Main />}
+        {employee.loading ? <LoadingSpinner /> : <Main />}
       </HomeBody>
       {employee.task === ADD_EMP && <AddEmployee />}
       {[ADD_ALLOWANCE, ADD_DEDUCTION, ADD_OVERTIME].includes(
