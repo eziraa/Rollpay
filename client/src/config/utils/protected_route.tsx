@@ -40,7 +40,6 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   const auth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
     const current_user = localStorage.getItem(CURRENT_USER);
-    console.log(JSON.parse(current_user || ""));
     if (!token) {
       setIsAuthorized(false);
       return;
