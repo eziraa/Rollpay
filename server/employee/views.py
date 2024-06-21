@@ -48,6 +48,8 @@ class EmployeeView (APIView):
             data = json.loads(request.body)
             if Employee.objects.filter(email=data['email']).exists():
                 return JsonResponse({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+            if Employee.objects.filter(phone_number=data['phone_number']).exists():
+                return JsonResponse({'error': 'Phone Number already exists'}, status=status.HTTP_400_BAD_REQUEST)
             employee = Employee.objects.last()
             if employee:
                 data['id'] = Employee.generate_employee_id(employee.id)
