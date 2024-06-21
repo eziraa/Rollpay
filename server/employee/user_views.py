@@ -1,4 +1,5 @@
 
+from tokenize import TokenError
 from django.http import JsonResponse
 from django.contrib.auth.models import User, Permission, Group
 from django.contrib.auth import authenticate, logout, login
@@ -12,9 +13,11 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.exceptions import InvalidToken
 from .serializer import CustomTokenObtainPairSerializer
 
 from .serializer import EmployeeSerializer
@@ -99,4 +102,14 @@ class AccountView(APIView):
             return JsonResponse({'error': f'Missing field: {str(e)}'}, status=400)
         
 class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        data = super().post(request=request)
+        print(data.data)
+        user =User.objects.get(username = request.data['username'])
+        employee = Employee.objects.get(user=user)
+        # serializer = EmployeeSerializer(employee)
+        data.data['employee'] =  EmployeeSerializer(employee).data
+        print(data)
+        return Response(data=data.data, status=status.HTTP_200_OK)
+         
+
