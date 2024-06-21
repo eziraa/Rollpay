@@ -20,7 +20,7 @@ import {
 } from "../../../store/employee/employee-slice";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PaginationContext } from "../../../contexts/pagination-context";
 
 export interface PageInfo {
@@ -32,7 +32,7 @@ export interface PageInfo {
 function Pagination() {
   const dispatcher = useAppDispatch();
   const { pagination } = useContext(PaginationContext);
-
+  const [pageNumber, setPageNumber] = useState<number>(pagination.current_page);
   const loadNextPage = async () => {
     if (pagination?.next) {
       dispatcher(loadNextPageRequested(pagination.next));
@@ -62,6 +62,48 @@ function Pagination() {
       );
   };
 
+  const loadPage = (page: number) => {
+    if (page) {
+      if (page < 1) {
+        dispatcher(
+          setFlashMessage({
+            desc: "Page number out of range",
+            type: "error",
+            duration: 3,
+            status: true,
+            title: "Invalid page number",
+          })
+        );
+      }
+      if (page > pagination.total_pages) {
+        dispatcher(
+          setFlashMessage({
+            desc: "Page number out of range",
+            type: "error",
+            duration: 3,
+            status: true,
+            title: "Invalid page number",
+          })
+        );
+      } else {
+        let base_url;
+        if (pagination.prev) base_url = pagination.prev;
+        else if (pagination.next) base_url = pagination.next;
+        if (base_url) {
+          const url = new URL(base_url);
+          dispatcher(
+            loadNextPageRequested(
+              url.pathname + `?page=${page}&page_size=${pagination.per_page}`
+            )
+          );
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    setPageNumber(pagination.current_page);
+  }, [pagination.current_page]);
   return (
     <PaginationContainer>
       <BottomContainer>
@@ -88,7 +130,19 @@ function Pagination() {
           </ButtonName>
         </NavButton>
         <Paragraph>Page:</Paragraph>
-        <CurrentPageNumber type="number" value={pagination.current_page} />
+        <CurrentPageNumber
+          onChange={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const value = parseInt(e.currentTarget.value);
+            setPageNumber(value);
+            loadPage(value);
+          }}
+          type="number"
+          value={pageNumber}
+          min={pagination.current_page ? 1 : 0}
+          max={pagination.total_pages}
+        />
         <TextContainer>
           <Text>of</Text>
           <Paragraph2> {pagination.total_pages} </Paragraph2>
