@@ -116,7 +116,7 @@ export const EditButton = styled.div`
 
 export const Button = styled.button`
   font-size: 1.2rem;
-  color: ${({ theme }) => theme.backgrounds.primary};
+  color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;
@@ -128,8 +128,7 @@ export const Button = styled.button`
   font-size: medium;
   &:hover {
     background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.colors.primary)};
-    color: ${({ theme }) => theme.backgrounds.primary};
+      addOpacityToColor(0.75, theme.buttons.primary)};
   }
 `;
 
@@ -142,7 +141,7 @@ export const BackButton = styled.div`
   padding-bottom: -0.4rem;
   text-align: center;
   &:hover {
-    color: ${({ theme }) => addOpacityToColor(0.4, theme.buttons.primaryHover)};
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.buttons.primary)};
   }
 `;
 
@@ -200,6 +199,6 @@ export const NavItem = styled.div`
 
 export const DeleteButton = styled(Button)`
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.5, theme.buttons.primary)};
+    addOpacityToColor(0.6, theme.buttons.primary)};
   border: none;
 `;
