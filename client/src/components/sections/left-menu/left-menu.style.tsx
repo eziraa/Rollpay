@@ -41,8 +41,8 @@ export const MenuItem = styled.div<MenuItemProps>`
     background-color: ${({ theme }) => theme.colors.secondary};
   }
   border-bottom: 0.4rem solid transparent;
-  background-color: ${({ active }) => (active ? "#154a426c " : "transparent")};
-  border-bottom-color: ${({ active }) => (active ? "#07a48c " : "transparent")};
+  background-color: ${({ active }) => (active ? "#98aaa3f8 " : "transparent")};
+  border-bottom-color: ${({ active }) => (active ? "#10e4c5 " : "transparent")};
 `;
 
 export const MenuItemText = styled.h1`

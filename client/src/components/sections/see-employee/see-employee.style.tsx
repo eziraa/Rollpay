@@ -116,7 +116,7 @@ export const EditButton = styled.div`
 
 export const Button = styled.button`
   font-size: 1.2rem;
-  color: ${({ theme }) => theme.colors.primary};
+  color: #ffffff;
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;

@@ -18,24 +18,25 @@ class EmployeeSerializer(serializers.ModelSerializer):
                   'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary')
 
     def get_salary(self, obj: Employee):
-        return obj.salary.basic_salary
+        return str(obj.salary.basic_salary)
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
 
-        token['username'] = user.username  
+        token['username'] = user.username
 
         try:
             employee = Employee.objects.get(user=user)
             employee_serializer = EmployeeSerializer(employee)
             token['employee'] = employee_serializer.data
-            # print(token['employee'])
         except Employee.DoesNotExist:
-            token['employee'] = None  
+            token['employee'] = None
 
         return token
+
 
 class ProfilePicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,6 +53,7 @@ class SalaryEmployeeSerializer(EmployeeSerializer):
 
     def get_salary(self, obj: Employee):
         return SalarySerializer(obj.salary).data
+
 
 class SalarySerializer (serializers.ModelSerializer):
 
@@ -100,6 +102,7 @@ class SalarySerializer (serializers.ModelSerializer):
 
     def get_income_tax(self, obj: Salary) -> Decimal:
         return utils.income_tax(self.get_gross_salary(obj))
+
 
 class AllowanceSerializer(serializers.ModelSerializer):
     class Meta:

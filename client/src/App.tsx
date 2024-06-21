@@ -9,7 +9,7 @@ import { RouterConfig } from "./config/router/router";
 import { FlashMessage } from "./components/utils/flash-message/flash-message";
 import { AuthProvider } from "./contexts/auth-context";
 import { PaginationContext } from "./contexts/pagination-context";
-import { usePagination } from "./hooks/use-pagonation";
+import { usePagination } from "./hooks/use-pagination";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
