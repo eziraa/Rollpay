@@ -100,12 +100,12 @@ class AccountView(APIView):
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
         data = super().post(request=request)
-        print(data.data)
         user =User.objects.get(username = request.data['username'])
-        employee = Employee.objects.get(user=user)
-        # serializer = EmployeeSerializer(employee)
-        data.data['employee'] =  EmployeeSerializer(employee).data
-        print(data)
+        employee = get_object_or_404(Employee, user=user)
+        if employee:
+            data.data['employee'] = EmployeeSerializer(employee).data
+        else:
+            pass
         return Response(data=data.data, status=status.HTTP_200_OK)
          
 
