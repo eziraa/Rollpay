@@ -17,7 +17,7 @@ function LeftMenu() {
   return (
     <LeftMenuContainer>
       <MenuItem
-        active={display.list_employees || display.see_employee_salary || true}
+        active={!display.list_employees && !display.see_employee_salary}
       >
         <HomeIcon />
         <MenuItemText>Home</MenuItemText>
@@ -47,6 +47,7 @@ function LeftMenu() {
             ...display,
             list_employees: false,
             see_employee_salary: true,
+            search_employee: false,
           });
         }}
       >
