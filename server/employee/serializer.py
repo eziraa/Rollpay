@@ -18,7 +18,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
                   'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary')
 
     def get_salary(self, obj: Employee):
-        return obj.salary
+        return obj.salary.basic_salary
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
