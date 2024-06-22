@@ -9,17 +9,20 @@ import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { Title } from "../../sections/see-employee/see-employee.style";
 import { Select, SelectOption } from "../form-elements/form.style";
 import {
+  ClearIcon,
+  FilterIcon,
   SearchContainer,
   SearchIcon,
   SearchInput,
   SearchInputContainer,
 } from "./search.style";
+import { Filter } from "../search-utils/search-employee";
 
 export const Search = () => {
   const dispatcher = useAppDispatch();
   const employee = useAppSelector((state) => state.employee);
   const [searchBy, setSearchBy] = useState("first_name");
-
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
   return (
     <SearchContainer>
       <SearchInputContainer>
@@ -44,6 +47,20 @@ export const Search = () => {
             else dispatcher(noSearchResult());
           }}
         />
+        {openFilter ? (
+          <ClearIcon
+            onClick={() => {
+              setOpenFilter(false);
+            }}
+          />
+        ) : (
+          <FilterIcon
+            onClick={() => {
+              setOpenFilter(true);
+            }}
+          />
+        )}
+        {openFilter && <Filter />}
       </SearchInputContainer>
       <Title style={{ fontSize: "1.5rem" }}>Search By</Title>
       <Select
