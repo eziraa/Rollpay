@@ -5,8 +5,7 @@ import { setFlashMessage } from "../notification/flash-messsage-slice";
 import SalaryAPI from "../../services/salary-api";
 import { getSalariesDone, setSearchResult } from "./salary-slice";
 import { SalaryEmpResponse } from "../../typo/salary/response";
-import { setLongTask } from "../user/user-slice";
-import { SEE_EMP_SALARY } from "../../constants/tasks";
+
 import { PayloadAction } from "@reduxjs/toolkit";
 import { SearchParams } from "../../typo/salary/params";
 
@@ -17,7 +16,6 @@ function* GetEmployeeSalary() {
     );
     if (response.code === 200) {
       yield put(getSalariesDone(response));
-      yield put(setLongTask(SEE_EMP_SALARY));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
       yield put(

@@ -1,6 +1,5 @@
-import { ADD_OVERTIME } from "../../../constants/tasks";
-import { setShortTask } from "../../../store/user/user-slice";
-import { useAppDispatch } from "../../../utils/custom-hook";
+import { useContext } from "react";
+import { DisplayContext } from "../../../contexts/display-context";
 import {
   CustomTable,
   HeaderTitle,
@@ -21,7 +20,8 @@ import {
 } from "./overtime.style";
 
 export const EmployeeOvertime = () => {
-  const dispatcher = useAppDispatch();
+  const { display, setDisplay } = useContext(DisplayContext);
+
   return (
     <OvertimeContainer>
       <OvertimeHeader>
@@ -29,7 +29,13 @@ export const EmployeeOvertime = () => {
         <AddButton
           onClick={(e) => {
             e.stopPropagation();
-            dispatcher(setShortTask(ADD_OVERTIME));
+            setDisplay({
+              ...display,
+              add_overtime: true,
+              add_deduction: false,
+              add_allowance: false,
+              add_employee: false,
+            });
           }}
         >
           Add

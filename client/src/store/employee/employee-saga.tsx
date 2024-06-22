@@ -17,8 +17,7 @@ import EmployeeAPI, {
 } from "../../services/employee-api";
 import { AddEmpParams } from "../../typo/employee/params";
 import { AddEmpResponse } from "../../typo/employee/response";
-import { setLongTask } from "../user/user-slice";
-import { LIST_EMP_S } from "../../constants/tasks";
+
 
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
@@ -71,7 +70,6 @@ function* GetEmployee() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
-      yield put(setLongTask(LIST_EMP_S));
       yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
@@ -119,7 +117,6 @@ function* DeleteEmployee(action: PayloadAction<string>) {
     );
     if (response.code === 204) {
       yield put(deleteEmpDone(response.employee));
-      yield put(setLongTask(LIST_EMP_S));
       yield put(
         setFlashMessage({
           type: "success",

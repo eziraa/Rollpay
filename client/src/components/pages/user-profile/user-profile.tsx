@@ -19,13 +19,13 @@ import {
 } from "../../sections/see-employee/see-employee.style";
 import { Item, UserProfileContainer } from "./user-profile.style";
 
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { setMajorTask } from "../../../store/employee/employee-slice";
-import {
-  SEE_EMP_ALLOWANCE,
-  SEE_EMP_DEDUCTION,
-  SEE_EMP_OVERTIME,
-} from "../../../constants/tasks";
+// import { useAppDispatch } from "../../../utils/custom-hook";
+// import { setMajorTask } from "../../../store/employee/employee-slice";
+// import {
+//   SEE_EMP_ALLOWANCE,
+//   SEE_EMP_DEDUCTION,
+//   SEE_EMP_OVERTIME,
+// } from "../../../constants/tasks";
 
 import { FaRegUserCircle } from "react-icons/fa";
 import { IconContainer } from "../../sections/profile/profile.style";
@@ -34,13 +34,15 @@ import UserOvertime from "./user-overtime";
 import UserDeductions from "./user-deductions";
 import UserAllowance from "./user-allowance";
 import { useAuth } from "../../../contexts/auth-context";
+import { useContext } from "react";
+import { DisplayContext } from "../../../contexts/display-context";
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const { curr_user: employee } = useAuth();
-
-  const { major_task } = useAppSelector((state) => state.employee);
-  const dispatcher = useAppDispatch();
+  const { display, setDisplay } = useContext(DisplayContext);
+  // const { major_task } = useAppSelector((state) => state.employee);
+  // const dispatcher = useAppDispatch();
   return (
     <>
       <Header />
@@ -64,43 +66,43 @@ const UserProfile = () => {
             </TitleContainer>
             <NavBar>
               <NavItem
-                style={{
-                  borderBottom:
-                    major_task === undefined || major_task == SEE_EMP_ALLOWANCE
-                      ? "0.3rem solid #4dc399"
-                      : "transparent",
-                }}
+                active={display.see_employee_allowance}
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatcher(setMajorTask(SEE_EMP_ALLOWANCE));
+                  setDisplay({
+                    ...display,
+                    see_employee_allowance: true,
+                    see_employee_deduction: false,
+                    see_employee_overtime: false,
+                  });
                 }}
               >
                 Allowances
               </NavItem>
               <NavItem
-                style={{
-                  borderBottom:
-                    major_task === SEE_EMP_OVERTIME
-                      ? "0.3rem solid #4dc399"
-                      : "transparent",
-                }}
+                active={display.see_employee_overtime}
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatcher(setMajorTask(SEE_EMP_OVERTIME));
+                  setDisplay({
+                    ...display,
+                    see_employee_allowance: false,
+                    see_employee_deduction: false,
+                    see_employee_overtime: true,
+                  });
                 }}
               >
                 Overtimes
               </NavItem>
               <NavItem
-                style={{
-                  borderBottom:
-                    major_task === SEE_EMP_DEDUCTION
-                      ? "0.3rem solid #4dc399"
-                      : "transparent",
-                }}
+                active={display.see_employee_deduction}
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatcher(setMajorTask(SEE_EMP_DEDUCTION));
+                  setDisplay({
+                    ...display,
+                    see_employee_allowance: false,
+                    see_employee_deduction: true,
+                    see_employee_overtime: false,
+                  });
                 }}
               >
                 Deductions
@@ -152,11 +154,9 @@ const UserProfile = () => {
                 }}
               ></ActionBtnsContainer>
             </EmployeeeProfileContainer>
-            {(major_task === undefined || major_task == SEE_EMP_ALLOWANCE) && (
-              <UserAllowance />
-            )}
-            {major_task == SEE_EMP_OVERTIME && <UserOvertime />}
-            {major_task == SEE_EMP_DEDUCTION && <UserDeductions />}
+            {display.see_employee_allowance && <UserAllowance />}
+            {display.see_employee_overtime && <UserOvertime />}
+            {display.see_employee_deduction && <UserDeductions />}
           </EditEmployeeContent>
         </SeeEmployeeContainer>
       </UserProfileContainer>
