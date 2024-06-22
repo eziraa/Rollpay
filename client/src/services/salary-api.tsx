@@ -4,10 +4,10 @@ import { EmpResponse } from "../typo/employee/response";
 import { SearchParams } from "../typo/salary/params";
 const listEmployeeSalary = async () => {
   const employees = await api
-    .get<EmpResponse>("/employee/salary/get")
+    .get("/employee/salary/get")
     .then((res) => {
       return {
-        employees: res.data,
+        employees: res.data.results,
         code: res.status,
         success: "Success returned employees",
       };
@@ -32,6 +32,7 @@ const searchEmployeeSalary = async (search_parms: SearchParams) => {
   const employees = await api
     .get<EmpResponse>(endpoint)
     .then((res) => {
+      console.log(res);
       return {
         employees: res.data,
         code: res.status,
