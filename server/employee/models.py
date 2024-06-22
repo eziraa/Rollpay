@@ -89,8 +89,8 @@ class Employee(models.Model):
 class Payment(models.Model):
     employee = models.ForeignKey(Employee, blank=True,on_delete=models.PROTECT)
     payment_date = models.DateField(null=True, blank=True)
+    month = MonthField()
+    salary = models.ForeignKey(Salary, blank=False, on_delete=models.PROTECT)
 
-class Payroll(models.Model):
-    payment = models.ForeignKey(Payment, blank=True ,on_delete=models.PROTECT)
-    salary_month =MonthField()
-    
+    class Meta:
+        unique_together = ('employee', 'month')

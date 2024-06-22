@@ -112,17 +112,6 @@ function EmployeeListDisplayer() {
           }}
         >
           <HeaderItem>
-            <ListTitle>ID</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(1);
-              }}
-            >
-              {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
             <ListTitle>Employee</ListTitle>
             <SortBtn
               onClick={(e) => {
@@ -133,7 +122,17 @@ function EmployeeListDisplayer() {
               {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
-
+          <HeaderItem>
+            <ListTitle>ID</ListTitle>
+            <SortBtn
+              onClick={(e) => {
+                e.stopPropagation();
+                sortEmployee(1);
+              }}
+            >
+              {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+            </SortBtn>
+          </HeaderItem>
           <HeaderItem>
             <ListTitle>Gender</ListTitle>
           </HeaderItem>
@@ -217,8 +216,8 @@ function EmployeeListDisplayer() {
                     gridTemplateColumns: getTableElements(emp_list),
                   }}
                 >
-                  <Data> {emp.id} </Data>
                   <Data> {emp.first_name + " " + emp.last_name} </Data>
+                  <Data> {emp.id} </Data>
                   <Data> {emp.gender} </Data>
                   <Data> {emp.email} </Data>
                   <Data> {emp.phone_number} </Data>

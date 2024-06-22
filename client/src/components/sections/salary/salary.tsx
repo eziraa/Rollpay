@@ -17,9 +17,11 @@ import { SearchIcon } from "../../utils/search/search.style";
 import { Header, Title } from "../display-employee/display-employee.style";
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
 import { searchEmployeeRequested } from "../../../store/salary/salary-slice";
-import { Employee } from "../../../typo/salary/response";
 import Pagination from "../pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
+import { Payment } from "../../../typo/payment/response";
+import { getFormattedMonth } from "./utils";
+import { Label } from "../profile/profile.style";
 
 export const Salary = () => {
   const dispatcher = useAppDispatch();
@@ -46,16 +48,16 @@ export const Salary = () => {
   useEffect(() => {
     const tempAllowanceTypes = new Set<string>();
     const tempDeductionTypes = new Set<string>();
-
+    console.log(response?.employees);
     response?.employees.forEach((employee) => {
-      if (employee.salary) {
-        employee.salary.allowances.forEach((allowance) => {
-          tempAllowanceTypes.add(allowance.allowance_type);
-        });
-        employee.salary.deductions.forEach((deduction) => {
-          tempDeductionTypes.add(deduction.deduction_type);
-        });
-      }
+      // if (employee) {
+      employee.allowances.forEach((allowance) => {
+        tempAllowanceTypes.add(allowance.allowance_type);
+      });
+      employee.deductions.forEach((deduction) => {
+        tempDeductionTypes.add(deduction.deduction_type);
+      });
+      // }
     });
 
     setAllowanceTypes(Array.from(tempAllowanceTypes));
@@ -85,7 +87,7 @@ export const Salary = () => {
     );
   };
 
-  const [employeeSalary, setEmployeeSalary] = useState<Employee[]>([]);
+  const [employeeSalary, setEmployeeSalary] = useState<Payment[]>([]);
 
   useEffect(() => {
     if (salary.searching && salary.search_response)
@@ -118,6 +120,19 @@ export const Salary = () => {
           <SelectOption value="name">Name</SelectOption>
           <SelectOption value="id">ID</SelectOption>
         </Select>
+        <Label
+          style={{
+            position: "absolute",
+            right: "10px",
+            top: "10px",
+            fontSize: "1.5rem",
+          }}
+        >
+          {!salary.loading &&
+            getFormattedMonth(
+              new Date(employeeSalary.at(0)?.month || "2024-04-04")
+            )}
+        </Label>
       </Header>
       {salary.loading ? (
         <LoadingSpinner />
@@ -147,6 +162,7 @@ export const Salary = () => {
             <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
             <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
             <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
+            <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
           </TableHeader>
           <TableHeader>
             {allowanceTypes.map((allowanceType) => {
@@ -158,19 +174,17 @@ export const Salary = () => {
             })}
           </TableHeader>
           {employeeSalary
-            .filter((employee) => employee.salary)
+            .filter((employee) => employee)
             .map((employee) => (
-              <TableRow key={employee.id}>
-                <TableData>{employee.id}</TableData>
-                <TableData>
-                  {employee.first_name + " " + employee.last_name}
-                </TableData>
-                <TableData>{employee.salary.basic_salary}</TableData>
+              <TableRow key={employee.employee_id}>
+                <TableData>{employee.employee_id}</TableData>
+                <TableData>{employee.employee_name}</TableData>
+                <TableData>{employee.basic_salary}</TableData>
                 {allowanceTypes.map((allowanceType) => {
                   return (
                     <TableData>
                       {getRate(
-                        employee.salary.allowances.find(
+                        employee.allowances.find(
                           (alowance) =>
                             alowance.allowance_type === allowanceType
                         )?.allowance_rate
@@ -178,13 +192,13 @@ export const Salary = () => {
                     </TableData>
                   );
                 })}
-                <TableData>{getSalary(employee.salary.gross_salary)}</TableData>
-                <TableData>{getSalary(employee.salary.income_tax)}</TableData>
+                <TableData>{getSalary(employee.gross_salary)}</TableData>
+                <TableData>{getSalary(employee.income_tax)}</TableData>
                 {deductionTypes.map((deductionType) => {
                   return (
                     <TableData>
                       {getRate(
-                        employee.salary.deductions.find(
+                        employee.deductions.find(
                           (deduction) =>
                             deduction.deduction_type === deductionType
                         )?.deduction_rate
@@ -192,9 +206,13 @@ export const Salary = () => {
                     </TableData>
                   );
                 })}
-                <TableData>{employee.salary.total_deduction}</TableData>
-                <TableData>{employee.salary.net_salary}</TableData>
-                <TableData> Not Paid </TableData>
+                <TableData>{employee.total_deduction}</TableData>
+                <TableData>{employee.net_salary}</TableData>
+                <TableData>
+                  {" "}
+                  {!employee.payment_status && "Not"} Paid{" "}
+                </TableData>
+                <TableData> {employee.payment_date} </TableData>
               </TableRow>
             ))}
         </SalaryTable>

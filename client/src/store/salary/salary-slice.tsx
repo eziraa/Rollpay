@@ -2,8 +2,9 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { BillEmpState } from "../../typo/salary/states";
-import { Employee, SalaryEmpResponse } from "../../typo/salary/response";
+import { SalaryEmpResponse } from "../../typo/salary/response";
 import { SearchParams } from "../../typo/salary/params";
+import { Payment } from "../../typo/payment/response";
 
 const InitialState: BillEmpState = {
   response: {
@@ -30,7 +31,7 @@ const SalarySlice = createSlice({
       state.searching = false;
     },
     searchEmployeeRequested: (_, __: PayloadAction<SearchParams>) => {},
-    setSearchResult: (state, action: PayloadAction<Employee[]>) => {
+    setSearchResult: (state, action: PayloadAction<Payment[]>) => {
       state.searching = true;
       state.search_response = action.payload;
     },

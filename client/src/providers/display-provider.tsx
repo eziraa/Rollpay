@@ -9,7 +9,7 @@ export const DisplayProvider = ({
   const [display, setDisplay] = useState({
     add_employee: false,
     edit_employee: false,
-    list_employees: false,
+    list_employees: true,
     add_allowance: false,
     add_deduction: false,
     add_overtime: false,

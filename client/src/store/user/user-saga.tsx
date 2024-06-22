@@ -38,7 +38,7 @@ function* userLogin(action: PayloadAction<LoginParams>) {
       yield put(wrongLogin(response.error));
     }
   } catch (e) {
-    yield put(wrongLogin("User log in failed try again!!"));
+    yield put(wrongLogin("Network error please check your connection"));
   }
 }
 
