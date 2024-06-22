@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Profile from "../../../assets/profile.png";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+import { ThemeProps } from "../../../typo/theme/theme";
 export const SeeEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -182,15 +183,21 @@ export const NavBar = styled.div`
   background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
-export const NavItem = styled.div`
-  padding: 1rem 0rem;
+interface NavItemProps extends ThemeProps {
+  active?: boolean;
+}
+
+export const NavItem = styled.div<NavItemProps>`
+  padding: 1rem 2rem;
   display: inline-block;
   font-size: 1.7rem;
+  letter-spacing: 1px;
   cursor: pointer;
-  margin-right: 3rem;
   text-align: center;
   color: ${({ theme }) => theme.colors.primary};
-
+  border-bottom: 0.5rem solid;
+  border-bottom-color: ${({ active, theme }) =>
+    active ? theme.buttons.primary : "transparent"};
 `;
 
 export const DeleteButton = styled(Button)`

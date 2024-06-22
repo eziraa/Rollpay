@@ -65,12 +65,7 @@ export const SeeEmployee = () => {
         </TitleContainer>
         <NavBar>
           <NavItem
-            style={{
-              borderBottom:
-                major_task === SEE_EMP_ALLOWANCE
-                  ? " 0.3 rem solid #4dc399"
-                  : "transparent",
-            }}
+            active={major_task === SEE_EMP_ALLOWANCE}
             onClick={(e) => {
               e.preventDefault();
               dispatcher(setMajorTask(SEE_EMP_ALLOWANCE));
@@ -79,12 +74,7 @@ export const SeeEmployee = () => {
             Allowances
           </NavItem>
           <NavItem
-            style={{
-              borderBottom:
-                major_task === SEE_EMP_OVERTIME
-                  ? " 0.3 rem solid #4dc399"
-                  : "transparent",
-            }}
+            active={major_task === SEE_EMP_OVERTIME}
             onClick={(e) => {
               e.preventDefault();
               dispatcher(setMajorTask(SEE_EMP_OVERTIME));
@@ -93,12 +83,7 @@ export const SeeEmployee = () => {
             Overtimes
           </NavItem>
           <NavItem
-            style={{
-              borderBottom:
-                major_task === SEE_EMP_DEDUCTION
-                  ? " 0.3 rem solid #4dc399"
-                  : "transparent",
-            }}
+            active={major_task === SEE_EMP_DEDUCTION}
             onClick={(e) => {
               e.preventDefault();
               dispatcher(setMajorTask(SEE_EMP_DEDUCTION));
