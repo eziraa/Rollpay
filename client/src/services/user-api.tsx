@@ -40,7 +40,6 @@ const login = async (values: LoginParams) => {
       localStorage.setItem(ACCESS_TOKEN, res.data.access);
       localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
       localStorage.setItem(CURRENT_USER, JSON.stringify(res.data.employee));
-      console.log(res);
       return {
         employee: res.data.employee,
         success: "User Logged in successfully",
