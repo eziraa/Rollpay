@@ -70,7 +70,7 @@ export const SeeEmployee = () => {
             active={display.see_employee_allowance}
             onClick={(e) => {
               e.preventDefault();
-              setDisplay({ ...display, see_employee_allowance: true, see_employee_overtime: false, see_employee_deduction: false});
+              setDisplay({ ...display, see_employee_allowance: true, see_employee_overtime: false, see_employee_deduction: false, edit_employee: false});
             }}
           >
             Allowances
@@ -79,7 +79,13 @@ export const SeeEmployee = () => {
             active={display.see_employee_overtime}
             onClick={(e) => {
               e.preventDefault();
-              setDisplay({...display, see_employee_overtime: true, see_employee_allowance:false, see_employee_deduction:false });
+              setDisplay({
+                ...display,
+                see_employee_overtime: true,
+                see_employee_allowance: false,
+                see_employee_deduction: false,
+                edit_employee: false,
+              });
               // dispatcher(setMajorTask(SEE_EMP_OVERTIME));
             }}
           >
@@ -89,7 +95,13 @@ export const SeeEmployee = () => {
             active={display.see_employee_deduction}
             onClick={(e) => {
               e.preventDefault();
-              setDisplay({...display, see_employee_deduction: true, see_employee_allowance:false, see_employee_overtime:false });
+              setDisplay({
+                ...display,
+                see_employee_deduction: true,
+                see_employee_allowance: false,
+                see_employee_overtime: false,
+                edit_employee: false,
+              });
               // dispatcher(setMajorTask(SEE_EMP_DEDUCTION));
             }}
           >
