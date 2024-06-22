@@ -23,11 +23,14 @@ const listEmployeeSalary = async () => {
 };
 
 const searchEmployeeSalary = async (search_parms: SearchParams) => {
+  let endpoint = "/employee/salary/get";
+  if (
+    search_parms.search_by.trim().length > 0 &&
+    search_parms.search_value.trim().length > 0
+  )
+    endpoint += `?search_by=${search_parms.search_by}&search_value=${search_parms.search_value}`;
   const employees = await api
-    .get<EmpResponse>(
-      "/employee/salary/get" +
-        `?search_by=${search_parms.search_by}&search_value=${search_parms.search_value}`
-    )
+    .get<EmpResponse>(endpoint)
     .then((res) => {
       return {
         employees: res.data,
