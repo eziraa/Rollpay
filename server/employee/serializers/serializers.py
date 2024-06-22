@@ -3,7 +3,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from ..models import Employee, Salary, Allowance, Deduction, Overtime, Position
 from decimal import Decimal
-from employee.utils.income_tax import income_tax
+from employee.utils.salary_calculator import SalaryCalculator
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -66,6 +66,12 @@ class SalarySerializer (serializers.ModelSerializer):
 
     income_tax = serializers.SerializerMethodField(read_only=True)
 
+    def __init__(self, instance, *args, **kwargs):
+        self.calculator = SalaryCalculator(instance)
+        super(SalarySerializer, self).__init__(
+            instance=instance, *args, **kwargs)
+
+
     class Meta:
 
         model = Salary
@@ -83,24 +89,16 @@ class SalarySerializer (serializers.ModelSerializer):
         return OvertimeSerializer(obj.overtimes, many=True).data
 
     def get_net_salary(self, obj: Salary):
-        return round(Decimal(self.get_gross_salary(obj=obj)) - Decimal(self.get_total_deduction(obj)), 2)
+        return self.calculator.net_salary
 
     def get_total_deduction(self, obj: Salary) -> float:
-        obj.total_deduction = 0
-        for deduction in obj.deductions.all():
-            obj.total_deduction += deduction.deduction_rate * obj.basic_salary / 100
-        income_tax = self.get_income_tax(obj=obj)
-        if income_tax:
-            obj.total_deduction = float(obj.total_deduction) + income_tax
-        return round(obj.total_deduction, 2)
+        return self.calculator.total_deduction
 
     def get_gross_salary(self, obj: Salary) -> float:
-        allowances_sum = sum(
-            [allowance.allowance_rate for allowance in obj.allowances.all()])
-        return float(obj.basic_salary + allowances_sum * obj.basic_salary / 100)
+        return self.calculator.gross_salary
 
     def get_income_tax(self, obj: Salary) -> Decimal:
-        return income_tax(self.get_gross_salary(obj))
+        return self.calculator.income_tax
 
 
 class AllowanceSerializer(serializers.ModelSerializer):
