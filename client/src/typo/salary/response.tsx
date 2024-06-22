@@ -1,3 +1,5 @@
+import { Payment } from "../payment/response";
+
 export interface Allowance {
   allowance_type: string;
   allowance_rate: number;
@@ -39,7 +41,7 @@ export interface Employee {
   salary: Salary;
 }
 export interface SalaryEmpResponse {
-  employees: Employee[];
+  employees: Payment[];
   error: string | undefined;
   code: number | undefined;
   success: string | undefined;
