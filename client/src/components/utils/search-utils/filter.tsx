@@ -27,17 +27,22 @@ export const FilterRow = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 export const FilterLabel = styled.h3`
   font-size: 1.4rem;
   color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+  flex: 0.9;
+  &:not(:first-child) {
+    margin-left: 1rem;
+  }
 `;
 export const FilterSelect = styled(Select)`
-  width: 30%;
   padding: 1rem;
   font-size: 1.2rem;
+  flex: 1;
+  max-width: 30%;
 `;
 
 export const FilterInput = styled(Input)`
@@ -114,6 +119,16 @@ export const Filter = () => {
         </FilterSelect>
       </FilterRow>
       <FilterRow>
+        <FilterLabel>Select Position</FilterLabel>
+        <FilterSelect>
+          <SelectOption>Sales Manager</SelectOption>
+          <SelectOption>Backend Developer</SelectOption>
+          <SelectOption>Software Engineer</SelectOption>
+          <SelectOption>DeVops Engineer</SelectOption>
+          <SelectOption>QA Engineer</SelectOption>
+        </FilterSelect>
+      </FilterRow>
+      <FilterRow>
         <FilterLabel>Salary Range </FilterLabel>
         <FilterLabel>From</FilterLabel>
         <FilterSelect>
@@ -134,16 +149,7 @@ export const Filter = () => {
           <SelectOption>30000</SelectOption>
         </FilterSelect>
       </FilterRow>
-      <FilterRow>
-        <FilterLabel>Select Position</FilterLabel>
-        <FilterSelect>
-          <SelectOption>Sales Manager</SelectOption>
-          <SelectOption>Backend Developer</SelectOption>
-          <SelectOption>Software Engineer</SelectOption>
-          <SelectOption>DeVops Engineer</SelectOption>
-          <SelectOption>QA Engineer</SelectOption>
-        </FilterSelect>
-      </FilterRow>
+
       <FilterRow>
         <FilterLabel>Date of Birth</FilterLabel>
         <FilterLabel>From</FilterLabel>
