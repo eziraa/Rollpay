@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User as BaseUser
+from month.models import MonthField
 
 
 class TaxRules(models.Model):
@@ -84,3 +85,12 @@ class Employee(models.Model):
     
     def __str__(self):
         return self.first_name + " " + self.last_name
+    
+class Payment(models.Model):
+    employee = models.ForeignKey(Employee, blank=True,on_delete=models.PROTECT)
+    payment_date = models.DateField(null=True, blank=True)
+
+class Payroll(models.Model):
+    payment = models.ForeignKey(Payment, blank=True ,on_delete=models.PROTECT)
+    salary_month =MonthField()
+    

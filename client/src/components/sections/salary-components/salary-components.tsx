@@ -11,28 +11,28 @@ import {
   AllowanceContainer,
   AllowanceForm,
 } from "./style";
-import { ADD_ALLOWANCE, ADD_DEDUCTION } from "../../../constants/tasks";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useContext } from "react";
+import { DisplayContext } from "../../../contexts/display-context";
 export const AddSalaryComponent = () => {
-  const user = useAppSelector((state) => state.user);
+  const { display } = useContext(DisplayContext);
   return (
     <Modal>
       <AllowanceContainer>
         <AllowanceBody>
           <Title>
             Add{" "}
-            {user.short_task === ADD_ALLOWANCE
+            {display.add_allowance
               ? "Allowance"
-              : user.short_task === ADD_DEDUCTION
+              : display.add_deduction
               ? "Deduction"
               : "Overtime"}
           </Title>
           <AllowanceForm>
             <InputContainer>
               <Label>
-                {user.short_task === ADD_ALLOWANCE
+                {display.add_allowance
                   ? "Allowance"
-                  : user.short_task === ADD_DEDUCTION
+                  : display.add_deduction
                   ? "Deduction"
                   : "Overtime"}{" "}
                 Name
@@ -41,9 +41,9 @@ export const AddSalaryComponent = () => {
             </InputContainer>
             <InputContainer>
               <Label>
-                {user.short_task === ADD_ALLOWANCE
+                {display.add_allowance
                   ? "Allowance"
-                  : user.short_task === ADD_DEDUCTION
+                  : display.add_deduction
                   ? "Deduction"
                   : "Overtime"}{" "}
                 Value

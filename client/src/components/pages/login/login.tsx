@@ -42,7 +42,9 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (is_login) window.location.href = "/home-page";
+    if (is_login) {
+      window.location.href = "/home-page";
+    }
   }, [is_login]);
   const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
     useFormik({

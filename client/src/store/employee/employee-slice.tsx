@@ -12,12 +12,9 @@ import { Employee } from "../../typo/employee/response";
 const InitialEmpState: EmployeeState = {
   adding: false,
   employees: [],
-  task: undefined,
   loading: false,
   curr_emp: undefined,
   editing: false,
-  major_task: undefined,
-  mini_task: undefined,
   deleting: false,
   query_set: [],
   searching: false,
@@ -55,7 +52,6 @@ const EmployeeSlice = createSlice({
 
     addEmpDone: (state) => {
       state.adding = false;
-      state.task = undefined;
       state.adding_emp_error = undefined;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
@@ -69,9 +65,9 @@ const EmployeeSlice = createSlice({
       state.deleting = true;
     },
     deleteEmpRequested: (__, _: PayloadAction<string>) => {},
-    searchRequested: (state, action: PayloadAction<string>) => {
-      state.mini_task = action.payload;
-    },
+    // searchRequested: (state, action: PayloadAction<string>) => {
+    //   state.mini_task = action.payload;
+    // },
     addSearched: (state, action: PayloadAction<Employee[]>) => {
       state.query_set = action.payload;
     },
@@ -85,7 +81,7 @@ const EmployeeSlice = createSlice({
     listEmpDone: (state, payload: PayloadAction<PaginatedEmpResponse>) => {
       state.employees = payload.payload.results;
       state.adding = false;
-      state.task = undefined;
+      // state.task = undefined;
       state.loading = false;
 
       state.pagination = {
@@ -95,7 +91,7 @@ const EmployeeSlice = createSlice({
     },
     unfinishedList: (state) => {
       state.loading = false;
-      state.task = undefined;
+      // state.task = undefined;
       state.adding = false;
       state.employees = [];
     },
@@ -142,15 +138,15 @@ const EmployeeSlice = createSlice({
     noSearchResult: (state) => {
       state.searching = false;
     },
-    setTask: (state, task: PayloadAction<string | undefined>) => {
-      state.task = task.payload;
-    },
-    setMajorTask: (state, task: PayloadAction<string | undefined>) => {
-      state.major_task = task.payload;
-    },
-    setMiniTask: (state, task: PayloadAction<string | undefined>) => {
-      state.mini_task = task.payload;
-    },
+    // setTask: (state, task: PayloadAction<string | undefined>) => {
+    //   // state.task = task.payload;
+    // },
+    // setMajorTask: (state, task: PayloadAction<string | undefined>) => {
+    //   state.major_task = task.payload;
+    // },
+    // setMiniTask: (state, task: PayloadAction<string | undefined>) => {
+    //   state.mini_task = task.payload;
+    // },
     setCurrentEmployee: (
       state,
       payload: PayloadAction<Employee | undefined>
@@ -174,9 +170,9 @@ const EmployeeSlice = createSlice({
     resetCurrEmployee: (state) => {
       state.curr_emp = undefined;
       state.editing = false;
-      state.major_task = undefined;
-      state.mini_task = undefined;
-      state.task = undefined;
+      // state.major_task = undefined;
+      // state.mini_task = undefined;
+      // state.task = undefined;
     },
     unfinishedEdit: (state) => {
       state.editing = false;
@@ -194,15 +190,15 @@ export const {
   deleteEmpRequested,
   deleteEmpDone,
   unfinishedDelete,
-  setTask,
+  // setTask,
   setCurrentEmployee,
   addSalaryRequested,
   addSalaryDone,
   editEmployeeRequested,
   editEmployeeDone,
   unfinishedEdit,
-  setMajorTask,
-  setMiniTask,
+  // setMajorTask,
+  // setMiniTask,
   resetCurrEmployee,
   searching,
   noSearchResult,

@@ -1,8 +1,9 @@
+import { Loading } from "./dots-loading";
 import { Spinner, SpinnerContainer } from "./spinner.style";
 
 const LoadingSpinner = () => (
   <SpinnerContainer>
-    <Spinner length={16} />
+    <Loading />
   </SpinnerContainer>
 );
 export const SmallSpinner = () => (

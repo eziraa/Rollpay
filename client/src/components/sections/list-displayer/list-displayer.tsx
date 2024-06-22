@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Data,
   HeaderItem,
@@ -12,17 +12,13 @@ import {
   SortBtn,
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
-import { setLongTask } from "../../../store/user/user-slice";
-import {
-  LIST_EMP_S,
-  SEARCH_EMPLOYEE,
-  SEE_EMPLOYEE,
-} from "../../../constants/tasks";
+
 import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
 import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
 import { Employee } from "../../../typo/employee/response";
+import { DisplayContext } from "../../../contexts/display-context";
 
 interface EmployeeOrderType {
   name: string;
@@ -68,11 +64,11 @@ function EmployeeListDisplayer() {
   const dispatcher = useAppDispatch();
   const [order, setOrder] = useState(initialOrder);
   const emplist = [...employee.employees];
-  const { long_task } = useAppSelector((state) => state.user);
   const [emp_list, setEmpList] = useState(emplist);
+  const { display, setDisplay } = useContext(DisplayContext);
   useEffect(() => {
-    if (long_task == LIST_EMP_S) setEmpList(emplist);
-    else if (long_task == SEARCH_EMPLOYEE) {
+    if (display.list_employees) setEmpList(emplist);
+    else if (display.search_employee) {
       setEmpList(employee.query_set);
     }
   }, [employee]);
@@ -97,7 +93,7 @@ function EmployeeListDisplayer() {
     setEmpList([...sorted]);
   };
 
-  if (long_task == SEARCH_EMPLOYEE && employee.query_set.length < 1)
+  if (display.search_employee && employee.query_set.length < 1)
     return <NoResult />;
   return (
     <div
@@ -239,7 +235,15 @@ function EmployeeListDisplayer() {
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      dispatcher(setLongTask(SEE_EMPLOYEE));
+                      setDisplay({
+                        ...display,
+                        see_employee: true,
+                        list_employees: false,
+                        see_employee_allowance: true,
+                        see_employee_deduction: false,
+                        see_employee_overtime: false,
+                      });
+                      // dispatcher(setLongTask(SEE_EMPLOYEE));
                       dispatcher(setCurrentEmployee(emp));
                     }}
                   >

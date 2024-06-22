@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from .serializer import EmployeeSerializer, SalaryEmployeeSerializer, PositionSerializer
 from .models import Employee, Salary, Position
 from .utils import refresh_jwt_token
+from .search import Search
 from .permissions import IsUserInGroupWithClerk
 from django.http import JsonResponse
 import json
@@ -118,8 +119,13 @@ class SalaryView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
 
-    def get(self, request):
-        employees = Employee.objects.all()
+    def get(self, request: Request):
+        search_by = request.query_params.get("search_by")
+        search_value = request.query_params.get("search_value")
+        if search_by and search_value:
+            employees = Search().search(search_string=search_by, value=search_value)
+        else:
+            employees = Employee.objects.all()
         serializer = SalaryEmployeeSerializer(employees, many=True)
         return JsonResponse(data=serializer.data, safe=False)
 
