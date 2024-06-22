@@ -32,6 +32,7 @@ function LeftMenu() {
             ...display,
             list_employees: true,
             see_employee_salary: false,
+            see_employee: false
           });
           // dispatcher(setLongTask(LIST_EMP_S));
         }}
@@ -48,6 +49,7 @@ function LeftMenu() {
             list_employees: false,
             see_employee_salary: true,
             search_employee: false,
+            see_employee: false
           });
         }}
       >
