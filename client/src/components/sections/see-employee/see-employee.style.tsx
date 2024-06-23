@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Profile from "../../../assets/profile.png";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+import { ThemeProps } from "../../../typo/theme/theme";
 export const SeeEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,7 +117,7 @@ export const EditButton = styled.div`
 
 export const Button = styled.button`
   font-size: 1.2rem;
-  color: ${({ theme }) => theme.backgrounds.primary};
+  color: #ffffff;
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;
@@ -128,8 +129,7 @@ export const Button = styled.button`
   font-size: medium;
   &:hover {
     background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.colors.primary)};
-    color: ${({ theme }) => theme.backgrounds.primary};
+      addOpacityToColor(0.75, theme.buttons.primary)};
   }
 `;
 
@@ -142,7 +142,7 @@ export const BackButton = styled.div`
   padding-bottom: -0.4rem;
   text-align: center;
   &:hover {
-    color: ${({ theme }) => addOpacityToColor(0.4, theme.buttons.primaryHover)};
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.buttons.primary)};
   }
 `;
 
@@ -180,26 +180,28 @@ export const NavBar = styled.div`
   justify-content: start;
   flex: 3.8;
   gap: 0rem;
-  background-color: ${({ theme }) =>
-    addOpacityToColor(0.05, theme.buttons.primary)};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
-export const NavItem = styled.div`
+interface NavItemProps extends ThemeProps {
+  active?: boolean;
+}
+
+export const NavItem = styled.div<NavItemProps>`
   padding: 1rem 2rem;
   display: inline-block;
   font-size: 1.7rem;
+  letter-spacing: 1px;
   cursor: pointer;
-  width: 20%;
   text-align: center;
   color: ${({ theme }) => theme.colors.primary};
-  &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.5, theme.backgrounds.secondary)};
-  }
+  border-bottom: 0.5rem solid;
+  border-bottom-color: ${({ active, theme }) =>
+    active ? theme.buttons.primary : "transparent"};
 `;
 
 export const DeleteButton = styled(Button)`
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.5, theme.buttons.primary)};
+    addOpacityToColor(0.6, theme.buttons.primary)};
   border: none;
 `;

@@ -40,7 +40,7 @@ export const Button = styled.button<ThemeProps>`
   color: #fff;
   &:hover {
     background-color: ${({ theme }) =>
-      addOpacityToColor(0.58, theme.buttons.primary)};
+      addOpacityToColor(0.75, theme.buttons.primary)};
     cursor: pointer;
   }
   border: none;
@@ -98,18 +98,19 @@ export const Select = styled.select`
     border: 1px solid ${({ theme }) => theme.colors.primary};
   }
   option {
-    color: black;
-    background: white;
+    background: transparent;
     padding: 0px 2px 1px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     height: 100%;
-    padding: 2rem 2rem;
+    line-height: 1.6;
   }
 `;
 
 export const SelectOption = styled.option<ThemeProps>`
-  font-size: 1.4rem;
+  padding: 2rem 2rem;
+  font-size: 1.6rem;
   display: inline-block;
+  line-height: 2;
   color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
 `;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+import { Button } from "../../utils/form-elements/form.style";
 
 export const EditEmployeeBody = styled.div`
   display: flex;
@@ -33,30 +34,16 @@ export const Label = styled.h5`
   padding: 1rem 2rem;
 `;
 
-export const Button = styled.button`
-  font-size: 1.2rem;
-  color: ${({ theme }) => theme.backgrounds.primary};
-  cursor: pointer;
-  padding: 1rem 2rem;
-  border: none;
-  background-color: ${({ theme }) => theme.buttons.primary};
-  border-radius: 5px;
-  &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.colors.primary)};
-    color: ${({ theme }) => theme.backgrounds.primary};
-  }
-`;
-
 export const SaveBtn = styled(Button)`
+  padding: 0.5rem;
   width: 8rem;
   background-color: ${({ theme }) => theme.buttons.primary};
 `;
 export const CancelBtn = styled(Button)`
   width: 8rem;
+  padding: 0.6rem 0.4rem;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.5, theme.buttons.primary)};
-  color: ${({ theme }) => theme.backgrounds.primary};
 `;
 export const ButtonContainer = styled.div`
   display: flex;

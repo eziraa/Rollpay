@@ -17,8 +17,7 @@ import EmployeeAPI, {
 } from "../../services/employee-api";
 import { AddEmpParams } from "../../typo/employee/params";
 import { AddEmpResponse } from "../../typo/employee/response";
-import { setLongTask } from "../user/user-slice";
-import { LIST_EMP_S } from "../../constants/tasks";
+
 
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
@@ -38,18 +37,9 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd());
-      yield put(
-        setFlashMessage({
-          type: "error",
-          status: true,
-          title: "Permition Denied",
-          desc: "You are not authorized to add employee",
-          duration: 3,
-        })
-      );
+      yield put(unfinishedAdd(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd());
+      yield put(unfinishedAdd(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -60,25 +50,16 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd());
-      yield put(
-        setFlashMessage({
-          type: "error",
-          status: true,
-          title: "Add Employee",
-          desc: response.error,
-          duration: 3,
-        })
-      );
+      yield put(unfinishedAdd(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd());
+    yield put(unfinishedAdd("Cann't add employee please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
         status: true,
         title: "Add Employee",
-        desc: "Cannot add employee",
+        desc: "Cann't add employee please try again later",
         duration: 3,
       })
     );
@@ -89,7 +70,6 @@ function* GetEmployee() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
-      yield put(setLongTask(LIST_EMP_S));
       yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
@@ -137,7 +117,6 @@ function* DeleteEmployee(action: PayloadAction<string>) {
     );
     if (response.code === 204) {
       yield put(deleteEmpDone(response.employee));
-      yield put(setLongTask(LIST_EMP_S));
       yield put(
         setFlashMessage({
           type: "success",
@@ -215,7 +194,6 @@ function* loadNextPage(action: PayloadAction<string>) {
   } catch (e) {
     console.log(e);
   }
-
 }
 
 function* loadPrevPage(action: PayloadAction<string>) {
@@ -310,7 +288,7 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedAdd());
+      yield put(unfinishedAdd(response.error));
       yield put(
         setFlashMessage({
           type: "error",

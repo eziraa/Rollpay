@@ -7,8 +7,6 @@ import { LoginParams, SignUpParams } from "../../typo/user/params";
 const InitialEmpState: UserState = {
   creating: false,
   user: undefined,
-  long_task: undefined,
-  short_task: undefined,
   loading: false,
   is_login: false,
   logging_in: false,
@@ -29,7 +27,7 @@ const UserSlice = createSlice({
 
     signUpFinished: (state) => {
       state.creating = false;
-      state.short_task = undefined;
+      // state.short_task = undefined;
       state.signup_error = undefined;
       state.acc_created = true;
     },
@@ -48,7 +46,7 @@ const UserSlice = createSlice({
     },
     loginFinished: (state) => {
       state.logging_in = false;
-      state.short_task = undefined;
+      // state.long_task = undefined;
       state.is_login = true;
       state.login_error = undefined;
     },
@@ -60,16 +58,16 @@ const UserSlice = createSlice({
       state.is_login = false;
       state.creating = false;
       state.user = undefined;
-      state.short_task = undefined;
-      state.long_task = undefined;
+      // state.short_task = undefined;
+      // state.long_task = undefined;
       state.logging_in = false;
     },
-    setShortTask: (state, actions: PayloadAction<string | undefined>) => {
-      state.short_task = actions.payload;
-    },
-    setLongTask: (state, actions: PayloadAction<string | undefined>) => {
-      state.long_task = actions.payload;
-    },
+    // setShortTask: (state, actions: PayloadAction<string | undefined>) => {
+    //   state.short_task = actions.payload;
+    // },
+    // setLongTask: (state, actions: PayloadAction<string | undefined>) => {
+    //   state.long_task = actions.payload;
+    // },
   },
 });
 
@@ -82,7 +80,7 @@ export const {
   logout,
   wrongLogin,
   wrongSignup,
-  setShortTask,
-  setLongTask,
+  // setShortTask,
+  // setLongTask,
 } = UserSlice.actions;
 export default UserSlice.reducer;

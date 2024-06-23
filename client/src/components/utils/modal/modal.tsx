@@ -1,24 +1,33 @@
 import { CloseIcon } from "../buttons/close";
 import { ModalContainer, ModalContent } from "./modal.style";
-import { useAppDispatch } from "../../../utils/custom-hook";
-import { setTask } from "../../../store/employee/employee-slice";
-import { setShortTask } from "../../../store/user/user-slice";
+import { useContext } from "react";
+import { DisplayContext } from "../../../contexts/display-context";
 
 export const Modal = ({ children }: { children: React.ReactNode }) => {
-  const dispatcher = useAppDispatch();
+  const { display, setDisplay } = useContext(DisplayContext);
   return (
     <ModalContainer
       onClick={(e) => {
         e.stopPropagation();
-        dispatcher(setTask(undefined));
-        dispatcher(setShortTask(undefined));
+        setDisplay({
+          ...display,
+          add_employee: false,
+          add_allowance: false,
+          add_overtime: false,
+          add_deduction: false,
+        });
       }}
     >
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <CloseIcon
           onClick={() => {
-            dispatcher(setTask(undefined));
-            dispatcher(setShortTask(undefined));
+            setDisplay({
+              ...display,
+              add_employee: false,
+              add_allowance: false,
+              add_overtime: false,
+              add_deduction: false,
+            });
           }}
         />
         {children}

@@ -1,3 +1,5 @@
+import { Payment } from "../payment/response";
+
 export interface Allowance {
   allowance_type: string;
   allowance_rate: number;
@@ -22,7 +24,6 @@ export interface Salary {
   overtimes: Overtime[];
   deductions: Deduction[];
   net_salary: number | null;
-  total_salary: number | null;
   total_deduction: number | null;
   income_tax: number | null;
 }
@@ -40,7 +41,7 @@ export interface Employee {
   salary: Salary;
 }
 export interface SalaryEmpResponse {
-  employees: Employee[];
+  employees: Payment[];
   error: string | undefined;
   code: number | undefined;
   success: string | undefined;

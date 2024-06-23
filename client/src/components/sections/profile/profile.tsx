@@ -6,19 +6,20 @@ import {
   ModalContainer,
   IconContainer,
   ItemContainer,
+  HorizontalLine,
 } from "./profile.style";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { logoutRequested, setShortTask } from "../../../store/user/user-slice";
+import { logoutRequested } from "../../../store/user/user-slice";
 import { MdLogout } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
+import { DisplayContext } from "../../../contexts/display-context";
 
 const Profile = () => {
   const dispatcher = useAppDispatch();
-
+  const { display, setDisplay } = useContext(DisplayContext);
   const user = useAppSelector((state) => state.user);
-
   useEffect(() => {
     if (user.is_login) window.location.href = "/";
   }, [user]);
@@ -30,16 +31,24 @@ const Profile = () => {
   return (
     <ModalContainer
       onClick={() => {
-        dispatcher(setShortTask(undefined));
+        setDisplay({ ...display, see_profile: false });
       }}
     >
       <Modal onClick={(e) => e.stopPropagation()}>
-      
         <ItemContainer>
           <IconContainer>
             <FaRegUser />
           </IconContainer>
-          <Label>Profile</Label>
+          <ResetLink>
+            <Label
+              onClick={(e) => {
+                e.stopPropagation();
+                setDisplay({ ...display, see_profile: false });
+              }}
+            >
+              <Link to="/user-profile">Profile</Link>
+            </Label>
+          </ResetLink>
         </ItemContainer>
         <ItemContainer>
           <IconContainer>
@@ -51,7 +60,7 @@ const Profile = () => {
           </ResetLink>
         </ItemContainer>
 
-        <hr />
+        <HorizontalLine />
         <ItemContainer>
           <IconContainer>
             <MdLogout />

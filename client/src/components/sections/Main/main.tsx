@@ -1,27 +1,21 @@
-import {
-  LIST_EMP_S,
-  SEARCH_EMPLOYEE,
-  SEARCH_EMPLOYEE_SALARY,
-  SEE_EMPLOYEE,
-  SEE_EMP_SALARY,
-} from "../../../constants/tasks";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useContext } from "react";
 import { DisplayEmployee } from "../display-employee/display-employee";
 import { Salary } from "../salary/salary";
 import { SeeEmployee } from "../see-employee/see-employee";
 import { MainContainer } from "./main.style";
+import { DisplayContext } from "../../../contexts/display-context";
 
 const Main = () => {
-  const user = useAppSelector((state) => state.user);
+  const { display } = useContext(DisplayContext);
   return (
     <MainContainer>
-      {user.long_task === SEE_EMPLOYEE && <SeeEmployee />}
-      {[LIST_EMP_S, SEARCH_EMPLOYEE].includes(user.long_task || "") && (
+      {display.see_employee && <SeeEmployee />}
+      {(display.list_employees || display.search_employee) && (
         <DisplayEmployee />
       )}
-      {[SEE_EMP_SALARY, SEARCH_EMPLOYEE_SALARY].includes(
-        user.long_task || ""
-      ) && <Salary />}
+      {(display.see_employee_salary || display.search_employee_salary) && (
+        <Salary />
+      )}
     </MainContainer>
   );
 };
