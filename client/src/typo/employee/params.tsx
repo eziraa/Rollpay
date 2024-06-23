@@ -16,3 +16,8 @@ export interface AddSalaryParams {
   empID: string;
   salary: string;
 }
+
+export interface AddPositionParams {
+  position_name: string;
+  base_salary: string;
+}
