@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { DisplayContext } from "../contexts/display-context";
+import { DisplayContext, DisplayInterface } from "../contexts/display-context";
 
 export const DisplayProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [display, setDisplay] = useState({
+  const [display, setDisplay] = useState<DisplayInterface>({
     add_employee: false,
     edit_employee: false,
     list_employees: true,
     add_allowance: false,
     add_deduction: false,
     add_overtime: false,
+    add_position: false,
     see_employee: false,
     see_employee_allowance: false,
     see_employee_deduction: false,
