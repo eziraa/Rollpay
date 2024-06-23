@@ -6,7 +6,7 @@ import { LoginPage } from "../../components/pages/login/login";
 import ProtectedRoute from "../utils/protected_route";
 import NotFoundPage from "../../components/pages/4_0_4/404";
 import AccessDenied from "../../components/utils/access-denied/access-denied";
-import { ChangePassword } from "../../components/sections/change-password/change-password";
+import { ChangePassword } from "../../components/pages/change-password/change-password";
 import UserProfile from "../../components/pages/user-profile/user-profile";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (

@@ -1,6 +1,20 @@
 import styled from "styled-components";
-import { LoginContainer } from "../login/login.style";
+import { LoginContainer } from "../../pages/login/login.style";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+export const ForgotPasswordBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
+  box-shadow: 0px 0px 1rem
+    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
+`;
+
 
 export const ForgotPasswordContainer = styled(LoginContainer)`
   padding: 4rem 2rem;

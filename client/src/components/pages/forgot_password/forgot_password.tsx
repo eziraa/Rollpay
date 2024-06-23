@@ -2,7 +2,7 @@
 import { useState } from "react";
 import emailjs from "emailjs-com";
 import { ForgotPasswordContainer } from "./forgot_password.style";
-import { Title } from "../sign-up/sign-up.style";
+import { Title } from "../../pages/sign-up/sign-up.style";
 import {
   Button,
   Form,
@@ -17,12 +17,13 @@ export const ForgotPassword = () => {
   const sendEmail = (e: any) => {
     e.preventDefault();
     emailjs
-      .send(
-        "service_tfrx1er",
-        "template_3ol2yro",
-        { email },
-        "k3GlkvUNSNjbu-6bp"
-      )
+      .send("service_tfrx1er", "template_rhoznur", {
+        from_name: "ED Payroll",
+        to_name: "Ezira Tigab",
+        message: `Your OTP is ${20000}`,
+        reply_to: "No replay to",
+        to_email: "ezirayallew@gmail.com",
+      })
       .then(
         (result) => {
           console.log(result.text);
@@ -45,7 +46,7 @@ export const ForgotPassword = () => {
             type="email"
             name="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.currentTarget.value)}
             required
           />
         </InputContainer>
