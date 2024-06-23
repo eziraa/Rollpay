@@ -34,15 +34,23 @@ import UserOvertime from "./user-overtime";
 import UserDeductions from "./user-deductions";
 import UserAllowance from "./user-allowance";
 import { useAuth } from "../../../contexts/auth-context";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DisplayContext } from "../../../contexts/display-context";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const { curr_user: employee } = useAuth();
   const { display, setDisplay } = useContext(DisplayContext);
-  // const { major_task } = useAppSelector((state) => state.employee);
-  // const dispatcher = useAppDispatch();
+  const dispatcher = useAppDispatch();
+  const payments = useAppSelector(
+    (state) => state.salary.curr_emp?.employee.payments
+  );
+
+  useEffect(() => {
+    dispatcher(getCurrEmpPaymentInfo(employee.id));
+  }, [payments, dispatcher, employee.id]);
   return (
     <>
       <Header />
