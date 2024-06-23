@@ -19,6 +19,7 @@ import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
 import { Employee } from "../../../typo/employee/response";
 import { DisplayContext } from "../../../contexts/display-context";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 interface EmployeeOrderType {
   name: string;
@@ -94,7 +95,7 @@ function EmployeeListDisplayer() {
   };
 
   if (display.search_employee && employee.query_set.length < 1)
-    return <NoResult />;
+    return <NoResult text=" No Serch Results" />;
   return (
     <div
       style={{
@@ -244,6 +245,7 @@ function EmployeeListDisplayer() {
                       });
                       // dispatcher(setLongTask(SEE_EMPLOYEE));
                       dispatcher(setCurrentEmployee(emp));
+                      dispatcher(getCurrEmpPaymentInfo(emp.id));
                     }}
                   >
                     View
