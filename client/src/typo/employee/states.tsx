@@ -6,11 +6,8 @@ export interface EmployeeState {
   loading: boolean;
   employees: Employee[];
   adding_emp_error: string | undefined;
-  task: string | undefined;
   curr_emp: Employee | undefined;
   editing: boolean;
-  major_task: string | undefined;
-  mini_task: string | undefined;
   deleting: boolean;
   query_set: Employee[];
   searching: boolean;

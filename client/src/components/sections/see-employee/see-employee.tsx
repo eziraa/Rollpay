@@ -21,32 +21,33 @@ import {
 } from "./see-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
-import { setLongTask } from "../../../store/user/user-slice";
-import {
-  EDIT_EMP,
-  LIST_EMP_S,
-  SEE_EMP_ALLOWANCE,
-  SEE_EMP_DEDUCTION,
-  SEE_EMP_OVERTIME,
-} from "../../../constants/tasks";
+// import { setLongTask } from "../../../store/user/user-slice";
+// import {
+//   EDIT_EMP,
+//   LIST_EMP_S,
+//   SEE_EMP_ALLOWANCE,
+//   SEE_EMP_DEDUCTION,
+//   SEE_EMP_OVERTIME,
+// } from "../../../constants/tasks";
 import { MdModeEditOutline } from "react-icons/md";
 import { EmployeeAllowance } from "../allowance/allowance";
 import {
   resetCurrEmployee,
-  setMajorTask,
   tryingToDelete,
 } from "../../../store/employee/employee-slice";
 import { EditEmployee } from "../edit-employee/edit-employee";
 import { EmployeeOvertime } from "../overtime/overtime";
 import { EmployeeDeduction } from "../deduction/deduction";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useContext } from "react";
+import { DisplayContext } from "../../../contexts/display-context";
 
 export const SeeEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
-
-  const { major_task } = useAppSelector((state) => state.employee);
+  const {display, setDisplay} = useContext(DisplayContext)
+  // const { major_task } = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
 
   return (
@@ -55,7 +56,8 @@ export const SeeEmployee = () => {
         <TitleContainer>
           <BackButton
             onClick={() => {
-              dispatcher(setLongTask(LIST_EMP_S));
+              setDisplay({ ...display, see_employee: false, list_employees: true });
+              // dispatcher(setLongTask(LIST_EMP_S));
               dispatcher(resetCurrEmployee());
             }}
           >
@@ -65,37 +67,42 @@ export const SeeEmployee = () => {
         </TitleContainer>
         <NavBar>
           <NavItem
-            style={{
-              backgroundColor:
-                major_task === SEE_EMP_ALLOWANCE ? "#4dc399" : "transparent",
-            }}
+            active={display.see_employee_allowance}
             onClick={(e) => {
               e.preventDefault();
-              dispatcher(setMajorTask(SEE_EMP_ALLOWANCE));
+              setDisplay({ ...display, see_employee_allowance: true, see_employee_overtime: false, see_employee_deduction: false, edit_employee: false});
             }}
           >
             Allowances
           </NavItem>
           <NavItem
-            style={{
-              backgroundColor:
-                major_task === SEE_EMP_OVERTIME ? "#8e9a96" : "transparent",
-            }}
+            active={display.see_employee_overtime}
             onClick={(e) => {
               e.preventDefault();
-              dispatcher(setMajorTask(SEE_EMP_OVERTIME));
+              setDisplay({
+                ...display,
+                see_employee_overtime: true,
+                see_employee_allowance: false,
+                see_employee_deduction: false,
+                edit_employee: false,
+              });
+              // dispatcher(setMajorTask(SEE_EMP_OVERTIME));
             }}
           >
             Overtimes
           </NavItem>
           <NavItem
-            style={{
-              backgroundColor:
-                major_task === SEE_EMP_DEDUCTION ? "#4dc399" : "transparent",
-            }}
+            active={display.see_employee_deduction}
             onClick={(e) => {
               e.preventDefault();
-              dispatcher(setMajorTask(SEE_EMP_DEDUCTION));
+              setDisplay({
+                ...display,
+                see_employee_deduction: true,
+                see_employee_allowance: false,
+                see_employee_overtime: false,
+                edit_employee: false,
+              });
+              // dispatcher(setMajorTask(SEE_EMP_DEDUCTION));
             }}
           >
             Deductions
@@ -161,21 +168,22 @@ export const SeeEmployee = () => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                dispatcher(setMajorTask(EDIT_EMP));
+                setDisplay({...display, edit_employee: true, list_employees: false, see_employee_allowance : false, see_employee_deduction: false, see_employee_overtime: false});
+                // dispatcher(setMajorTask(EDIT_EMP));
               }}
-              disabled={major_task === EDIT_EMP}
+              disabled={display.edit_employee}
               style={{
-                cursor: major_task === EDIT_EMP ? "not-allowed" : "pointer",
+                cursor: display.edit_employee ? "not-allowed" : "pointer",
               }}
             >
               <MdModeEditOutline /> Edit
             </Button>
           </ActionBtnsContainer>
         </EmployeeeProfileContainer>
-        {major_task == EDIT_EMP && <EditEmployee />}
-        {major_task == SEE_EMP_ALLOWANCE && <EmployeeAllowance />}
-        {major_task == SEE_EMP_OVERTIME && <EmployeeOvertime />}
-        {major_task == SEE_EMP_DEDUCTION && <EmployeeDeduction />}
+        {display.edit_employee && <EditEmployee />}
+        {display.see_employee_allowance && <EmployeeAllowance />}
+        {display.see_employee_overtime && <EmployeeOvertime />}
+        {display.see_employee_deduction && <EmployeeDeduction />}
       </EditEmployeeContent>
     </SeeEmployeeContainer>
   );

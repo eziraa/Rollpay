@@ -1,7 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { GoSearch } from "react-icons/go";
+import { GiSettingsKnobs } from "react-icons/gi";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { Input } from "../form-elements/form.style";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
+import { MdClear } from "react-icons/md";
 export const SearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -19,12 +22,13 @@ export const SearchInputContainer = styled.div<ThemeProps>`
   justify-content: flex-start;
   border: 1px solid ${({ theme }) => theme.colors.primary};
   border-radius: 3rem;
-  width: 40rem;
+  width: 40vw;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 0rem;
   margin: 0rem;
   margin-left: 4rem;
   padding: 0 1rem;
+  position: relative;
 `;
 
 export const SearchInput = styled(Input)`
@@ -43,4 +47,23 @@ export const SearchIcon = styled(GoSearch)`
   color: #747272;
   font-size: 2rem;
   cursor: pointer;
+`;
+
+const icons_style = css`
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: #747272;
+  font-size: 2rem;
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
+  }
+`;
+export const FilterIcon = styled(GiSettingsKnobs)`
+  ${icons_style}
+`;
+
+export const ClearIcon = styled(MdClear)`
+  ${icons_style}
 `;

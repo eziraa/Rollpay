@@ -7,6 +7,7 @@ import ProtectedRoute from "../utils/protected_route";
 import NotFoundPage from "../../components/pages/4_0_4/404";
 import AccessDenied from "../../components/utils/access-denied/access-denied";
 import { ChangePassword } from "../../components/sections/change-password/change-password";
+import UserProfile from "../../components/pages/user-profile/user-profile";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -23,7 +24,7 @@ export const RouterConfig = () => (
       <Route path="/signup" element={<SignUp />} />
       <Route path="/access-denied" element={<AccessDenied />} />
       <Route path="/change-password" element={<ChangePassword />} />
-      {/* <Route path="/user-profile" element={<UserProfile />} /> */}
+      <Route path="/user-profile" element={<UserProfile />} />
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

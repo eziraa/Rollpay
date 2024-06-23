@@ -35,7 +35,7 @@ export const getTableElements = (data: Employee[]) => {
       } else {
         tableElements.push({
           name: key,
-          max_length: getValidValue(value.toString().length),
+          max_length: getValidValue(value),
         });
       }
     });

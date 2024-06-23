@@ -10,6 +10,7 @@ import { FlashMessage } from "./components/utils/flash-message/flash-message";
 import { AuthProvider } from "./contexts/auth-context";
 import { PaginationContext } from "./contexts/pagination-context";
 import { usePagination } from "./hooks/use-pagination";
+import { DisplayProvider } from "./providers/display-provider";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
@@ -32,12 +33,14 @@ function App() {
             ...usePagination(),
           }}
         >
-          <AuthProvider>
-            <ThemeProvider theme={theme}>
-              <FlashMessage />
-              <RouterConfig />
-            </ThemeProvider>
-          </AuthProvider>
+          <DisplayProvider>
+            <AuthProvider>
+              <ThemeProvider theme={theme}>
+                <FlashMessage />
+                <RouterConfig />
+              </ThemeProvider>
+            </AuthProvider>
+          </DisplayProvider>
         </PaginationContext.Provider>
       </ThemeContext.Provider>
     </Provider>

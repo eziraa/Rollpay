@@ -1,32 +1,40 @@
-import { useState } from "react";
-import { SEARCH_EMPLOYEE } from "../../../constants/tasks";
+import { useContext, useState } from "react";
 import {
   noSearchResult,
   searching,
 } from "../../../store/employee/employee-slice";
-import { setLongTask } from "../../../store/user/user-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { Title } from "../../sections/see-employee/see-employee.style";
 import { Select, SelectOption } from "../form-elements/form.style";
 import {
+  ClearIcon,
+  FilterIcon,
   SearchContainer,
   SearchIcon,
   SearchInput,
   SearchInputContainer,
 } from "./search.style";
+import { Filter } from "../search-utils/filter";
+import { DisplayContext } from "../../../contexts/display-context";
 
 export const Search = () => {
   const dispatcher = useAppDispatch();
   const employee = useAppSelector((state) => state.employee);
   const [searchBy, setSearchBy] = useState("first_name");
-
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const { display, setDisplay } = useContext(DisplayContext);
   return (
     <SearchContainer>
       <SearchInputContainer>
         <SearchIcon />
         <SearchInput
           onChange={(e) => {
-            dispatcher(setLongTask(SEARCH_EMPLOYEE));
+            // dispatcher(setLongTask(SEARCH_EMPLOYEE));
+            setDisplay({
+              ...display,
+              search_employee: true,
+              list_employees: false,
+            });
             const result = searching(
               employee.employees.filter((employee) =>
                 Object.entries(employee).find(([key, value]) => {
@@ -44,6 +52,20 @@ export const Search = () => {
             else dispatcher(noSearchResult());
           }}
         />
+        {openFilter ? (
+          <ClearIcon
+            onClick={() => {
+              setOpenFilter(false);
+            }}
+          />
+        ) : (
+          <FilterIcon
+            onClick={() => {
+              setOpenFilter(true);
+            }}
+          />
+        )}
+        {openFilter && <Filter />}
       </SearchInputContainer>
       <Title style={{ fontSize: "1.5rem" }}>Search By</Title>
       <Select

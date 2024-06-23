@@ -1,4 +1,5 @@
 
+from tokenize import TokenError
 from django.http import JsonResponse
 from django.contrib.auth.models import User, Permission, Group
 from django.contrib.auth import authenticate, logout, login
@@ -12,18 +13,22 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializer import CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.exceptions import InvalidToken
 
-from .serializer import EmployeeSerializer
+from employee.serializers.serializers import EmployeeSerializer
+# from serializers.serializers import EmployeeSerializer
+
 
 class UserView(APIView):
     permission_classes = [AllowAny]
+
     def get(self, request, *args, **kwargs):
         logout(request)
-   
+
         return Response("Logged out", status=status.HTTP_200_OK)
 
     def put(self, request, *args, **kwargs):
@@ -34,27 +39,6 @@ class UserView(APIView):
         user.save()
         return Response(status=status.HTTP_200_OK)
 
-    def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
-        password = request.data.get('password')
-
-        user = authenticate(username=username, password=password)
-        if user:
-            login(request, user)
-            token, _ = Token.objects.get_or_create(user=user)
-            try:
-                    employee = Employee.objects.get(user=user)
-                    employee_serializer = EmployeeSerializer(employee)
-                    print('user data', employee_serializer.data)
-                    return Response({
-                            "token": token.key,
-                            "employee": employee_serializer.data 
-                        })
-            except Employee.DoesNotExist:
-                return Response({"error": "Employee profile not found"}, status=status.HTTP_404_NOT_FOUND)
-        else:
-                    return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
-
     def delete(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
         user.delete()
@@ -63,6 +47,7 @@ class UserView(APIView):
 
 class AccountView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body)
@@ -93,6 +78,15 @@ class AccountView(APIView):
                 return JsonResponse({'error': 'Employee does not exist \n Check Your ID'}, status=400)
         except KeyError as e:
             return JsonResponse({'error': f'Missing field: {str(e)}'}, status=400)
-        
+
+
 class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        data = super().post(request=request)
+        user = User.objects.get(username=request.data['username'])
+        employee = get_object_or_404(Employee, user=user)
+        if employee:
+            data.data['employee'] = EmployeeSerializer(employee).data
+        else:
+            pass
+        return Response(data=data.data, status=status.HTTP_200_OK)
