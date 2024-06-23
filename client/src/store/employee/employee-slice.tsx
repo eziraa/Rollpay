@@ -144,9 +144,6 @@ const EmployeeSlice = createSlice({
     resetCurrEmployee: (state) => {
       state.curr_emp = undefined;
       state.editing = false;
-      // state.major_task = undefined;
-      // state.mini_task = undefined;
-      // state.task = undefined;
     },
     unfinishedEdit: (state) => {
       state.editing = false;
@@ -164,15 +161,12 @@ export const {
   deleteEmpRequested,
   deleteEmpDone,
   unfinishedDelete,
-  // setTask,
   setCurrentEmployee,
   addSalaryRequested,
   addSalaryDone,
   editEmployeeRequested,
   editEmployeeDone,
   unfinishedEdit,
-  // setMajorTask,
-  // setMiniTask,
   resetCurrEmployee,
   searching,
   noSearchResult,
