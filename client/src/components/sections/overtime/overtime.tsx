@@ -4,13 +4,11 @@ import {
   CustomTable,
   HeaderTitle,
   TableBody,
-  TableCaption,
+  Caption,
   TableData,
   TableHeader,
   TableRow,
 } from "../../utils/custom-table/custom-table";
-import { monthsOvertimes } from "../allowance/data";
-
 import {
   AddButton,
   OvertimeBody,
@@ -18,10 +16,13 @@ import {
   OvertimeHeader,
   OvertimeTitle,
 } from "./overtime.style";
+import { useAppSelector } from "../../../utils/custom-hook";
+import { getFormattedMonth } from "../salary/utils";
+import { NoResult } from "../../utils/containers/containers.style";
 
 export const EmployeeOvertime = () => {
   const { display, setDisplay } = useContext(DisplayContext);
-
+  const { curr_emp } = useAppSelector((state) => state.salary);
   return (
     <OvertimeContainer>
       <OvertimeHeader>
@@ -42,10 +43,10 @@ export const EmployeeOvertime = () => {
         </AddButton>
       </OvertimeHeader>
       <OvertimeBody>
-        {monthsOvertimes.map((Overtime, index) => {
-          return (
+        {curr_emp?.employee.payments.map((payment, index) => {
+          return payment.overtimes.length > 0 ? (
             <CustomTable key={index}>
-              <TableCaption>{Overtime.month} 2024 </TableCaption>
+              <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
               <TableHeader>
                 <HeaderTitle>Overtime Name</HeaderTitle>
                 <HeaderTitle>Overtime Value</HeaderTitle>
@@ -53,20 +54,25 @@ export const EmployeeOvertime = () => {
                 <HeaderTitle>Date of Given</HeaderTitle>
               </TableHeader>
               <TableBody>
-                {Overtime.overtimes.map((overtime, index) => {
+                {payment.overtimes.map((overtime, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableData>{overtime.type}</TableData>
-                      <TableData>{overtime.valuePerHour}</TableData>
-                      <TableData>{overtime.lengthOfTime}</TableData>
+                      <TableData>{overtime.overtime_type}</TableData>
+                      <TableData>{overtime.overtime_rate}</TableData>
+                      <TableData>{overtime.length}</TableData>
                       <TableData>
-                        {overtime.date.toLocaleDateString()}
+                        {new Date(payment.payment_date).toLocaleDateString()}
                       </TableData>
                     </TableRow>
                   );
                 })}
               </TableBody>
             </CustomTable>
+          ) : (
+            <div>
+              <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
+              <NoResult>No Overtime</NoResult>
+            </div>
           );
         })}
       </OvertimeBody>
