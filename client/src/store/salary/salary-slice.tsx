@@ -2,7 +2,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { BillEmpState } from "../../typo/salary/states";
-import { SalaryEmpResponse } from "../../typo/salary/response";
+import {
+  CurrentEmpPaymentsResponse,
+  SalaryEmpResponse,
+} from "../../typo/salary/response";
 import { SearchParams } from "../../typo/salary/params";
 import { Payment } from "../../typo/payment/response";
 
@@ -13,6 +16,7 @@ const InitialState: BillEmpState = {
     code: 0,
     success: "",
   },
+  curr_emp: undefined,
   loading: false,
   searching: false,
   search_response: [],
@@ -29,6 +33,16 @@ const SalarySlice = createSlice({
       state.loading = false;
       state.response = action.payload;
       state.searching = false;
+    },
+    getCurrEmpPaymentInfo: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+    },
+    currentEmpPaymentInfoDone: (
+      state,
+      action: PayloadAction<CurrentEmpPaymentsResponse>
+    ) => {
+      state.loading = false;
+      state.curr_emp = action.payload;
     },
     searchEmployeeRequested: (_, __: PayloadAction<SearchParams>) => {},
     setSearchResult: (state, action: PayloadAction<Payment[]>) => {
@@ -48,6 +62,8 @@ const SalarySlice = createSlice({
 export const {
   unfinishedList,
   getSalariesRequested,
+  getCurrEmpPaymentInfo,
+  currentEmpPaymentInfoDone,
   getSalariesDone,
   setSearchResult,
   noSearchResult,

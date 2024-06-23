@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import styled, { css } from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
 import { custom_scroll_bar } from "../scroll-bar/scroll-bar";
 
@@ -57,4 +57,18 @@ export const body_css = css`
   padding: 0 1rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   ${custom_scroll_bar};
+`;
+
+export const NoResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 10rem;
+  color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+  letter-spacing: 0.1rem;
+  font-size: 2rem;
+  font-weight: 500;
+  padding: 1rem;
 `;

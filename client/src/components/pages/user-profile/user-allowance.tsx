@@ -5,7 +5,15 @@ import {
   AllowanceTitle,
 } from "../../sections/allowance/allowance.style";
 import { monthlyAllowances2024 } from "../../sections/allowance/data";
-import { CustomTable, HeaderTitle, TableBody, TableCaption, TableData, TableHeader, TableRow } from "../../utils/custom-table/custom-table";
+import {
+  CustomTable,
+  HeaderTitle,
+  TableBody,
+  Caption,
+  TableData,
+  TableHeader,
+  TableRow,
+} from "../../utils/custom-table/custom-table";
 
 const UserAllowance = () => {
   return (
@@ -17,7 +25,7 @@ const UserAllowance = () => {
         {Object.entries(monthlyAllowances2024).map((allowance, index) => {
           return (
             <CustomTable key={index}>
-              <TableCaption>{allowance[0]} 2024 </TableCaption>
+              <Caption>{allowance[0]} 2024 </Caption>
               <TableHeader>
                 <HeaderTitle>Allowance Name</HeaderTitle>
                 <HeaderTitle>Allowance Value</HeaderTitle>

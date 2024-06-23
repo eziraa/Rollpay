@@ -3,10 +3,10 @@
 import { useContext } from "react";
 // import { useAppDispatch } from "../../../utils/custom-hook";
 import {
+  Caption,
   CustomTable,
   HeaderTitle,
   TableBody,
-  TableCaption,
   TableData,
   TableHeader,
   TableRow,
@@ -18,12 +18,15 @@ import {
   AllowanceHeader,
   AllowanceTitle,
 } from "./allowance.style";
-import { monthlyAllowances2024 } from "./data";
 import { DisplayContext } from "../../../contexts/display-context";
+import { useAppSelector } from "../../../utils/custom-hook";
+import { getFormattedMonth } from "../salary/utils";
+import { NoResult } from "../../utils/containers/containers.style";
 
 export const EmployeeAllowance = () => {
   // const dispatcher = useAppDispatch();
   const { display, setDisplay } = useContext(DisplayContext);
+  const { curr_emp } = useAppSelector((state) => state.salary);
   return (
     <AllowanceContainer>
       <AllowanceHeader>
@@ -46,27 +49,32 @@ export const EmployeeAllowance = () => {
         </AddButton>
       </AllowanceHeader>
       <AllowanceBody>
-        {Object.entries(monthlyAllowances2024).map((allowance, index) => {
-          return (
+        {curr_emp?.employee.payments.map((payment, index) => {
+          return payment.allowances.length > 0 ? (
             <CustomTable key={index}>
-              <TableCaption>{allowance[0]} 2024 </TableCaption>
+              <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
               <TableHeader>
                 <HeaderTitle>Allowance Name</HeaderTitle>
                 <HeaderTitle>Allowance Value</HeaderTitle>
                 <HeaderTitle>Date of Given</HeaderTitle>
               </TableHeader>
               <TableBody>
-                {allowance[1].map((allowance, index) => {
+                {payment.allowances.map((allowance, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableData>{allowance.name}</TableData>
-                      <TableData>{allowance.value}</TableData>
-                      <TableData>{allowance.dateGiven}</TableData>
+                      <TableData>{allowance.allowance_type}</TableData>
+                      <TableData>{allowance.allowance_rate}</TableData>
+                      <TableData>{payment.payment_date}</TableData>
                     </TableRow>
                   );
                 })}
               </TableBody>
             </CustomTable>
+          ) : (
+            <div>
+              <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
+              <NoResult>No Allowance</NoResult>
+            </div>
           );
         })}
       </AllowanceBody>

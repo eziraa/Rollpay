@@ -1,19 +1,26 @@
 import { monthsDeductions } from "../../sections/allowance/data";
 import { DeductionBody, DeductionContainer, DeductionHeader, DeductionTitle } from "../../sections/deduction/deduction.style";
-import { CustomTable, HeaderTitle, TableBody, TableCaption, TableData, TableHeader, TableRow } from "../../utils/custom-table/custom-table";
+import {
+  CustomTable,
+  HeaderTitle,
+  TableBody,
+  Caption,
+  TableData,
+  TableHeader,
+  TableRow,
+} from "../../utils/custom-table/custom-table";
 
 const UserDeductions = () => {
   return (
     <DeductionContainer>
       <DeductionHeader>
         <DeductionTitle>Employee Deduction</DeductionTitle>
-       
       </DeductionHeader>
       <DeductionBody>
         {monthsDeductions.map((Deduction, index) => {
           return (
             <CustomTable key={index}>
-              <TableCaption>{Deduction.month} 2024 </TableCaption>
+              <Caption>{Deduction.month} 2024 </Caption>
               <TableHeader>
                 <HeaderTitle>Deduction Name</HeaderTitle>
                 <HeaderTitle>Deduction Value</HeaderTitle>

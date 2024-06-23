@@ -72,3 +72,12 @@ class PaymentSerializer(serializers.ModelSerializer):
         calculator = SalaryCalculator(obj.salary)
         calculator.calc_income_tax()
         return calculator.income_tax
+
+
+class MonthlyPaymentSerializer(PaymentSerializer):
+    class Meta:
+        model = Payment
+        fields = ('payment_status', 'payment_date',
+                  'month', 'basic_salary', 'gross_salary',
+                  "allowances", "deductions", "overtimes",
+                  'total_deduction', "income_tax", "net_salary")

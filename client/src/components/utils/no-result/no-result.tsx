@@ -1,9 +1,9 @@
 import { NoResultContainer, NoResultText } from "./no-result.style";
 
-export const NoResult = () => {
+export const NoResult = ({ text }: { text: string }) => {
   return (
     <NoResultContainer>
-      <NoResultText>No Results</NoResultText>
+      <NoResultText>{text}</NoResultText>
     </NoResultContainer>
   );
 };
