@@ -1,4 +1,4 @@
-import { CurrEmpPayments, Payment } from "../payment/response";
+import { CurrEmpPayments, EmployeePayment } from "../payment/response";
 
 export interface Allowance {
   allowance_type: string;
@@ -41,7 +41,7 @@ export interface Employee {
   salary: Salary;
 }
 export interface SalaryEmpResponse {
-  employees: Payment[];
+  employees: EmployeePayment[];
   error: string | undefined;
   code: number | undefined;
   success: string | undefined;

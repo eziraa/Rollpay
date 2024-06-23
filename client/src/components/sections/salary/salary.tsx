@@ -19,9 +19,9 @@ import { Select, SelectOption } from "../../utils/form-elements/form.style";
 import { searchEmployeeRequested } from "../../../store/salary/salary-slice";
 import Pagination from "../pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
-import { Payment } from "../../../typo/payment/response";
 import { getFormattedMonth } from "./utils";
 import { Label } from "../profile/profile.style";
+import { EmployeePayment } from "../../../typo/payment/response";
 
 export const Salary = () => {
   const dispatcher = useAppDispatch();
@@ -48,9 +48,7 @@ export const Salary = () => {
   useEffect(() => {
     const tempAllowanceTypes = new Set<string>();
     const tempDeductionTypes = new Set<string>();
-    console.log(response?.employees);
     response?.employees.forEach((employee) => {
-      // if (employee) {
       employee.allowances.forEach((allowance) => {
         tempAllowanceTypes.add(allowance.allowance_type);
       });
@@ -87,7 +85,7 @@ export const Salary = () => {
     );
   };
 
-  const [employeeSalary, setEmployeeSalary] = useState<Payment[]>([]);
+  const [employeeSalary, setEmployeeSalary] = useState<EmployeePayment[]>([]);
 
   useEffect(() => {
     if (salary.searching && salary.search_response)

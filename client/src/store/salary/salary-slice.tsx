@@ -7,7 +7,7 @@ import {
   SalaryEmpResponse,
 } from "../../typo/salary/response";
 import { SearchParams } from "../../typo/salary/params";
-import { Payment } from "../../typo/payment/response";
+import { EmployeePayment, Payment } from "../../typo/payment/response";
 
 const InitialState: BillEmpState = {
   response: {
@@ -45,7 +45,7 @@ const SalarySlice = createSlice({
       state.curr_emp = action.payload;
     },
     searchEmployeeRequested: (_, __: PayloadAction<SearchParams>) => {},
-    setSearchResult: (state, action: PayloadAction<Payment[]>) => {
+    setSearchResult: (state, action: PayloadAction<EmployeePayment[]>) => {
       state.searching = true;
       state.search_response = action.payload;
     },
