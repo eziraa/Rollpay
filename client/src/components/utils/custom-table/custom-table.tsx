@@ -11,7 +11,7 @@ export const CustomTable = styled.table`
   width: 100%;
 `;
 
-export const TableCaption = styled.h4`
+export const Caption = styled.h4`
   font-size: 1.4rem;
   font-weight: bold;
   color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};
