@@ -11,7 +11,7 @@ import {
   OvertimeContainer,
   OvertimeForm,
 } from "./add-overtime.style";
-export const AddOvertimes = () => {
+export const AddOvertime = () => {
   return (
     <Modal>
       <OvertimeContainer>
