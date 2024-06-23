@@ -11,6 +11,8 @@ urlpatterns = [
          name='__edit_emoployee__'),
     path('delete/<employee_id>', views.EmployeeView.as_view(),
          name='__delete_emoployee__'),
+    path("salary/get/<employee_id>",
+         salary_view.SalaryView.as_view(), name='__get_emp_salary__'),
     path("salary/get", salary_view.SalaryView.as_view(), name='__get_salary__'),
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
