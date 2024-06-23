@@ -9,6 +9,7 @@ export const PageContainer = styled.div<ThemeProps>`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100vw;
   margin: 0;
 `;
 
