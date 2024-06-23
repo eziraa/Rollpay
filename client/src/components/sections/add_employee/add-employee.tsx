@@ -9,6 +9,7 @@ import {
 } from "../../utils/form-elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import {
+  AddBtn,
   AddButton,
   AddEmployeeContainer,
   AddEmployeeForm,
@@ -23,6 +24,8 @@ import { addEmpRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import api from "../../../config/api";
 import { useEffect, useState } from "react";
+import { useModal } from "../../../hooks/modal-hook";
+import { ADD_POSITION } from "../../../constants/tasks";
 interface Position {
   name: string;
 }
@@ -45,6 +48,7 @@ export const AddEmployee = () => {
   const { adding, adding_emp_error } = useAppSelector(
     (state) => state.employee
   );
+  const { openModal } = useModal();
 
   const [positions, setPositions] = useState<Position[]>([]);
   const fetchData = async () => {
@@ -181,21 +185,45 @@ export const AddEmployee = () => {
           <Column>
             <InputContainer>
               <Label htmlFor="role">Role(Position)</Label>
-              <Select name="position" onChange={formHandler.handleChange}>
-                <SelectOption value="" disabled selected>
-                  Select Position
-                </SelectOption>
-                {positions.map((position) => (
-                  <SelectOption value={position.name}>
-                    {position.name}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                  gap: "1rem",
+                }}
+              >
+                <Select
+                  style={{ flex: 2 }}
+                  name="position"
+                  onChange={formHandler.handleChange}
+                >
+                  <SelectOption value="" disabled selected>
+                    Select Position
                   </SelectOption>
-                ))}
-              </Select>
+                  {positions.map((position) => (
+                    <SelectOption value={position.name}>
+                      {position.name}
+                    </SelectOption>
+                  ))}
+                </Select>
+                <AddBtn
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(ADD_POSITION);
+                  }}
+                  style={{ flex: 1.2 }}
+                >
+                  {"Add New"}
+                </AddBtn>
+              </div>
               <FormError>
                 {formHandler.touched.position && formHandler.errors.position ? (
                   <div>{formHandler.errors.position}</div>
                 ) : null}
-              </FormError>{" "}
+              </FormError>
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_birth">Birth Date</Label>

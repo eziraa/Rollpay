@@ -51,3 +51,9 @@ export const AddButton = styled(Button)<ThemeProps>`
   width: 100px;
   height: 40px;
 `;
+
+export const AddBtn = styled(Button)<ThemeProps>`
+  width: 100px;
+  padding: 0.7rem 1rem;
+`;
+
