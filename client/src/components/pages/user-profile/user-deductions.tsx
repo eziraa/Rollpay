@@ -1,5 +1,11 @@
-import { monthsDeductions } from "../../sections/allowance/data";
-import { DeductionBody, DeductionContainer, DeductionHeader, DeductionTitle } from "../../sections/deduction/deduction.style";
+import { useAppSelector } from "../../../utils/custom-hook";
+import {
+  DeductionBody,
+  DeductionContainer,
+  DeductionHeader,
+  DeductionTitle,
+} from "../../sections/deduction/deduction.style";
+import { getFormattedMonth } from "../../sections/salary/utils";
 import {
   CustomTable,
   HeaderTitle,
@@ -11,28 +17,33 @@ import {
 } from "../../utils/custom-table/custom-table";
 
 const UserDeductions = () => {
+  const payments = useAppSelector(
+    (state) => state.salary.curr_emp?.employee.payments
+  );
   return (
     <DeductionContainer>
       <DeductionHeader>
         <DeductionTitle>Employee Deduction</DeductionTitle>
       </DeductionHeader>
       <DeductionBody>
-        {monthsDeductions.map((Deduction, index) => {
+        {payments?.map((payment, index) => {
           return (
             <CustomTable key={index}>
-              <Caption>{Deduction.month} 2024 </Caption>
+              <Caption>
+                {getFormattedMonth(new Date(payment.payment_date))}{" "}
+              </Caption>
               <TableHeader>
                 <HeaderTitle>Deduction Name</HeaderTitle>
                 <HeaderTitle>Deduction Value</HeaderTitle>
-                <HeaderTitle>Date of Given</HeaderTitle>
+                <HeaderTitle>Payment Date</HeaderTitle>
               </TableHeader>
               <TableBody>
-                {Deduction.Deductions.map((Deduction, index) => {
+                {payment.deductions.map((deduction, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableData>{Deduction.type}</TableData>
-                      <TableData>{Deduction.value}</TableData>
-                      <TableData>{Deduction.date}</TableData>
+                      <TableData>{deduction.deduction_type}</TableData>
+                      <TableData>{deduction.deduction_rate}</TableData>
+                      <TableData>{payment.payment_date}</TableData>
                     </TableRow>
                   );
                 })}
