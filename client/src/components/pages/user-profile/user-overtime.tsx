@@ -1,5 +1,10 @@
-import { monthsOvertimes } from "../../sections/allowance/data";
-import { OvertimeBody, OvertimeContainer, OvertimeHeader, OvertimeTitle } from "../../sections/overtime/overtime.style";
+import { useAppSelector } from "../../../utils/custom-hook";
+import {
+  OvertimeBody,
+  OvertimeContainer,
+  OvertimeHeader,
+  OvertimeTitle,
+} from "../../sections/overtime/overtime.style";
 import {
   CustomTable,
   HeaderTitle,
@@ -11,31 +16,34 @@ import {
 } from "../../utils/custom-table/custom-table";
 
 const UserOvertime = () => {
+  const payments = useAppSelector(
+    (state) => state.salary.curr_emp?.employee.payments
+  );
   return (
     <OvertimeContainer>
       <OvertimeHeader>
         <OvertimeTitle>Employee Overtime</OvertimeTitle>
       </OvertimeHeader>
       <OvertimeBody>
-        {monthsOvertimes.map((Overtime, index) => {
+        {payments?.map((payment, index) => {
           return (
             <CustomTable key={index}>
-              <Caption>{Overtime.month} 2024 </Caption>
+              <Caption>{payment.month} 2024 </Caption>
               <TableHeader>
                 <HeaderTitle>Overtime Name</HeaderTitle>
                 <HeaderTitle>Overtime Value</HeaderTitle>
                 <HeaderTitle>Length of Time</HeaderTitle>
-                <HeaderTitle>Date of Given</HeaderTitle>
+                <HeaderTitle>Payment Date</HeaderTitle>
               </TableHeader>
               <TableBody>
-                {Overtime.overtimes.map((overtime, index) => {
+                {payment.overtimes.map((overtime, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableData>{overtime.type}</TableData>
-                      <TableData>{overtime.valuePerHour}</TableData>
-                      <TableData>{overtime.lengthOfTime}</TableData>
+                      <TableData>{overtime.overtime_type}</TableData>
+                      <TableData>{overtime.overtime_type}</TableData>
+                      <TableData>{overtime.length}</TableData>
                       <TableData>
-                        {overtime.date.toLocaleDateString()}
+                        {new Date(payment.payment_date).toLocaleDateString()}
                       </TableData>
                     </TableRow>
                   );
