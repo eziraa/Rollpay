@@ -7,6 +7,7 @@ export interface DisplayInterface {
   add_allowance: boolean;
   add_deduction: boolean;
   add_overtime: boolean;
+  add_position: boolean;
   see_employee: boolean;
   see_employee_allowance: boolean;
   see_employee_deduction: boolean;
@@ -29,6 +30,7 @@ export const DisplayContext = createContext<DisplayContextInterface>({
     add_allowance: false,
     add_deduction: false,
     add_overtime: false,
+    add_position: false,
     see_employee: false,
     see_employee_allowance: false,
     see_employee_deduction: false,
