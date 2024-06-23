@@ -2,7 +2,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
-import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
+import {
+  AddEmpParams,
+  AddPositionParams,
+  AddSalaryParams,
+} from "../../typo/employee/params";
 import {
   EditEmployeeParams,
   PaginatedEmpResponse,
@@ -49,7 +53,10 @@ const EmployeeSlice = createSlice({
         number_of_pages,
       };
     },
-
+    addPositionRequested: (state, _: PayloadAction<AddPositionParams>) => {
+      state.adding = true;
+    },
+    addPositionDone: (state, _: PayloadAction<AddPositionParams>) => {},
     addEmpDone: (state) => {
       state.adding = false;
       state.adding_emp_error = undefined;
@@ -99,37 +106,11 @@ const EmployeeSlice = createSlice({
       state.loading = true;
       if (state.pagination?.current_page) state.pagination.current_page++;
       else if (state.pagination) state.pagination.current_page = 1;
-      // _.payload =
-      //   _.payload.substring(0, _.payload.indexOf("?")) +
-      //   `${
-      //     state.pagination
-      //       ? "?page=" +
-      //         (state.pagination.current_page
-      //           ? state.pagination.current_page + 1
-      //           : 1) +
-      //         "&page_size=" +
-      //         state.pagination.page_size
-      //       : "page_size=10"
-      //   }`;
-      // state.pagination?.current_page ? state.pagination.current_page++ : 1;
     },
     loadPrevPageRequested: (state, _: PayloadAction<string>) => {
       state.loading = true;
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
-      // _.payload =
-      //   _.payload.substring(0, _.payload.indexOf("?")) +
-      //   `?${
-      //     state.pagination?.previous
-      //       ? "page=" +
-      //         (state.pagination.current_page
-      //           ? state.pagination.current_page - 1
-      //           : 1) +
-      //         "&page_size=" +
-      //         state.pagination.page_size
-      //       : "page_size =10"
-      //   }`;
-      // console.log(_);
     },
     searching: (state, payload: PayloadAction<Employee[]>) => {
       state.query_set = payload.payload;
@@ -138,14 +119,7 @@ const EmployeeSlice = createSlice({
     noSearchResult: (state) => {
       state.searching = false;
     },
-    // setTask: (state, task: PayloadAction<string | undefined>) => {
-    //   // state.task = task.payload;
-    // },
-    // setMajorTask: (state, task: PayloadAction<string | undefined>) => {
-    //   state.major_task = task.payload;
-    // },
-    // setMiniTask: (state, task: PayloadAction<string | undefined>) => {
-    //   state.mini_task = task.payload;
+
     // },
     setCurrentEmployee: (
       state,
