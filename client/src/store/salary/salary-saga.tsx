@@ -3,8 +3,11 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 
 import SalaryAPI from "../../services/salary-api";
-import { getSalariesDone, setSearchResult } from "./salary-slice";
-import { SalaryEmpResponse } from "../../typo/salary/response";
+import { currentEmpPaymentInfoDone, getSalariesDone } from "./salary-slice";
+import {
+  CurrentEmpPaymentsResponse,
+  SalaryEmpResponse,
+} from "../../typo/salary/response";
 
 import { PayloadAction } from "@reduxjs/toolkit";
 import { SearchParams } from "../../typo/salary/params";
@@ -61,7 +64,7 @@ function* searchEmployee(action: PayloadAction<SearchParams>) {
       action.payload
     );
     if (response.code === 200) {
-      yield put(setSearchResult(response.employees));
+      // yield put(setSearchResult(response.employees));
       // yield put(setLongTask(SEE_EMP_SALARY));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
@@ -100,7 +103,36 @@ function* searchEmployee(action: PayloadAction<SearchParams>) {
     console.log(e);
   }
 }
+
+function* getEmpSalaryInfo(action: PayloadAction<string>) {
+  try {
+    const response: CurrentEmpPaymentsResponse = yield call(
+      SalaryAPI.getEmployeeSalary,
+      action.payload
+    );
+    if (response.code === 200) {
+      console.log(response);
+      yield put(currentEmpPaymentInfoDone(response));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    }
+    console.log(response);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchGetEmployeeSalary() {
   yield takeEvery("salary/getSalariesRequested", GetEmployeeSalary);
   yield takeEvery("salary/searchEmployeeRequested", searchEmployee);
+  yield takeEvery("salary/getCurrEmpPaymentInfo", getEmpSalaryInfo);
 }
