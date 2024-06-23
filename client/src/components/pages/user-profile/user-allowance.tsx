@@ -1,10 +1,11 @@
+import { useAppSelector } from "../../../utils/custom-hook";
 import {
   AllowanceBody,
   AllowanceContainer,
   AllowanceHeader,
   AllowanceTitle,
 } from "../../sections/allowance/allowance.style";
-import { monthlyAllowances2024 } from "../../sections/allowance/data";
+import { getFormattedMonth } from "../../sections/salary/utils";
 import {
   CustomTable,
   HeaderTitle,
@@ -16,28 +17,31 @@ import {
 } from "../../utils/custom-table/custom-table";
 
 const UserAllowance = () => {
+  const payments = useAppSelector(
+    (state) => state.salary.curr_emp?.employee.payments
+  );
   return (
     <AllowanceContainer>
       <AllowanceHeader>
         <AllowanceTitle>Employee Allowance</AllowanceTitle>
       </AllowanceHeader>
       <AllowanceBody>
-        {Object.entries(monthlyAllowances2024).map((allowance, index) => {
+        {payments?.map((payment, index) => {
           return (
             <CustomTable key={index}>
-              <Caption>{allowance[0]} 2024 </Caption>
+              <Caption>{getFormattedMonth(new Date(payment.month))} </Caption>
               <TableHeader>
                 <HeaderTitle>Allowance Name</HeaderTitle>
                 <HeaderTitle>Allowance Value</HeaderTitle>
-                <HeaderTitle>Date of Given</HeaderTitle>
+                <HeaderTitle>Date of Payment</HeaderTitle>
               </TableHeader>
               <TableBody>
-                {allowance[1].map((allowance, index) => {
+                {payment.allowances.map((allowance, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableData>{allowance.name}</TableData>
-                      <TableData>{allowance.value}</TableData>
-                      <TableData>{allowance.dateGiven}</TableData>
+                      <TableData>{allowance.allowance_type}</TableData>
+                      <TableData>{allowance.allowance_rate}</TableData>
+                      <TableData>{payment.payment_date}</TableData>
                     </TableRow>
                   );
                 })}
