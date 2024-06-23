@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import emailjs from "emailjs-com";
-import { ForgotPasswordContainer } from "../forgot_password/forgot_password.style";
+import { ForgotPasswordContainer } from "../../pages/forgot_password/forgot_password.style";
 import { Title } from "../../pages/sign-up/sign-up.style";
 import {
   Button,

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LoginContainer } from "../../pages/login/login.style";
+import { LoginContainer } from "../login/login.style";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const ForgotPasswordContainer = styled(LoginContainer)`
