@@ -1,8 +1,6 @@
 import { Allowance, Deduction, Overtime } from "../salary/response";
 
 export interface Payment {
-  employee_id: string;
-  employee_name: string;
   basic_salary: number;
   gross_salary: number;
   allowances: Allowance[];
@@ -16,8 +14,18 @@ export interface Payment {
   month: string;
 }
 
+export interface EmployeePayment extends Payment {
+  employee_id: string;
+  employee_name: string;
+}
 export interface PaymentResponse {
   error: string;
   code: number;
   success: string;
+}
+
+export interface CurrEmpPayments {
+  employee_id: string;
+  employee_name: string;
+  payments: Payment[];
 }
