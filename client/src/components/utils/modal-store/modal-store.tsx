@@ -12,8 +12,8 @@ export const ModalStore = () => {
       {modal.add_allowance && <AddAllowance />}
       {modal.add_overtime && <AddOvertime />}
       {modal.add_deduction && <AddDeduction />}
-      {modal.add_position && <AddPosition />}
       {modal.add_employee && <AddEmployee />}
+      {modal.add_position && <AddPosition />}
     </>
   );
 };
