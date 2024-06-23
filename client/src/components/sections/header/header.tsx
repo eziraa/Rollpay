@@ -7,26 +7,26 @@ import {
   ProfileImage,
 } from "./header.style";
 import Profile from "../profile/profile";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { setShortTask } from "../../../store/user/user-slice";
-import { SEE_PROFILE } from "../../../constants/tasks";
+import { useContext } from "react";
+import { DisplayContext } from "../../../contexts/display-context";
+// import { setShortTask } from "../../../store/user/user-slice";
+// import { SEE_PROFILE } from "../../../constants/tasks";
 
 export const Header = () => {
-  const { short_task } = useAppSelector((state) => state.user);
-  const dispatcher = useAppDispatch();
+  // const { short_task } = useAppSelector((state) => state.user);
+  const { display, setDisplay } = useContext(DisplayContext);
+
   return (
     <>
       <HeaderContainer>
         <Logo />
         <ProfileContainer>
           <Toggle />
-          {short_task && <Profile />}
+          {display.see_profile && <Profile />}
 
           <ProfileImage
             onClick={() => {
-              if (short_task === SEE_PROFILE)
-                dispatcher(setShortTask(undefined));
-              else dispatcher(setShortTask(SEE_PROFILE));
+              setDisplay({ ...display, see_profile: !display.see_profile });
             }}
           />
         </ProfileContainer>

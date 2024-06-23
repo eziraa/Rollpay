@@ -1,6 +1,7 @@
-import { ADD_ALLOWANCE } from "../../../constants/tasks";
-import { setShortTask } from "../../../store/user/user-slice";
-import { useAppDispatch } from "../../../utils/custom-hook";
+// import { ADD_ALLOWANCE } from "../../../constants/tasks";
+// import { setShortTask } from "../../../store/user/user-slice";
+import { useContext } from "react";
+// import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   CustomTable,
   HeaderTitle,
@@ -18,9 +19,11 @@ import {
   AllowanceTitle,
 } from "./allowance.style";
 import { monthlyAllowances2024 } from "./data";
+import { DisplayContext } from "../../../contexts/display-context";
 
 export const EmployeeAllowance = () => {
-  const dispatcher = useAppDispatch();
+  // const dispatcher = useAppDispatch();
+  const { display, setDisplay } = useContext(DisplayContext);
   return (
     <AllowanceContainer>
       <AllowanceHeader>
@@ -29,7 +32,14 @@ export const EmployeeAllowance = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            dispatcher(setShortTask(ADD_ALLOWANCE));
+            setDisplay({
+              ...display,
+              add_overtime: false,
+              add_deduction: false,
+              add_allowance: true,
+              add_employee: false,
+            });
+            // dispatcher(setShortTask(ADD_ALLOWANCE));
           }}
         >
           Add

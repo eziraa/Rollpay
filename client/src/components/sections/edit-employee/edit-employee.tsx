@@ -12,24 +12,22 @@ import {
 } from "./edit-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 
-import {
-  editEmployeeRequested,
-  setMajorTask,
-} from "../../../store/employee/employee-slice";
+import { editEmployeeRequested } from "../../../store/employee/employee-slice";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { ErrorMessage } from "../../pages/sign-up/sign-up.style";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { MdArrowBackIos } from "react-icons/md";
+import { DisplayContext } from "../../../contexts/display-context";
 
 export const EditEmployee = () => {
   const { curr_emp: current_employee, editing } = useAppSelector(
     (state) => state.employee
   );
   const dispatcher = useAppDispatch();
-
+  const { display, setDisplay } = useContext(DisplayContext);
   const initialValues = {
     id: current_employee?.id ?? "",
     first_name: current_employee?.first_name ?? "",
@@ -40,7 +38,7 @@ export const EditEmployee = () => {
     phone_number: current_employee?.phone_number ?? "",
     date_of_birth: current_employee?.date_of_birth ?? "",
     date_of_hire: current_employee?.date_of_hire ?? "",
-    salary: current_employee?.salary?.basic_salary ?? 0, // Default to 0 if salary is undefined
+    salary: current_employee?.salary ?? 0, // Default to 0 if salary is undefined
   };
 
   useEffect(() => {
@@ -85,7 +83,11 @@ export const EditEmployee = () => {
       <BackButton
         onClick={(e) => {
           e.stopPropagation();
-          dispatcher(setMajorTask(undefined));
+          setDisplay({
+            ...display,
+            edit_employee: false,
+          });
+          // dispatcher(setMajorTask(undefined));
         }}
       >
         <MdArrowBackIos /> Back

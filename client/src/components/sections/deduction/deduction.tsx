@@ -1,6 +1,7 @@
-import { ADD_DEDUCTION } from "../../../constants/tasks";
-import { setShortTask } from "../../../store/user/user-slice";
-import { useAppDispatch } from "../../../utils/custom-hook";
+// import { ADD_DEDUCTION } from "../../../constants/tasks";
+// import { setShortTask } from "../../../store/user/user-slice";
+import { useContext } from "react";
+// import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   CustomTable,
   HeaderTitle,
@@ -18,9 +19,11 @@ import {
   DeductionHeader,
   DeductionTitle,
 } from "./deduction.style";
+import { DisplayContext } from "../../../contexts/display-context";
 
 export const EmployeeDeduction = () => {
-  const dispatcher = useAppDispatch();
+  // const dispatcher = useAppDispatch();
+  const { display, setDisplay } = useContext(DisplayContext);
   return (
     <DeductionContainer>
       <DeductionHeader>
@@ -29,7 +32,14 @@ export const EmployeeDeduction = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            dispatcher(setShortTask(ADD_DEDUCTION));
+            // dispatcher(setShortTask(ADD_DEDUCTION));
+            setDisplay({
+              ...display,
+              add_overtime: false,
+              add_deduction: true,
+              add_allowance: false,
+              add_employee: false,
+            });
           }}
         >
           Add

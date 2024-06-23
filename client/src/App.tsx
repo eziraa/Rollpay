@@ -8,10 +8,12 @@ import { store } from "./utils/store";
 import { RouterConfig } from "./config/router/router";
 import { FlashMessage } from "./components/utils/flash-message/flash-message";
 import { AuthProvider } from "./contexts/auth-context";
+import { PaginationContext } from "./contexts/pagination-context";
+import { usePagination } from "./hooks/use-pagination";
+import { DisplayProvider } from "./providers/display-provider";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
-
   const [theme, setTheme] = useState<Theme>(
     current_theme == "dark_theme" ? darkTheme : lightTheme
   );
@@ -22,15 +24,24 @@ function App() {
     );
     setTheme(theme === lightTheme ? darkTheme : lightTheme);
   };
+
   return (
     <Provider store={store}>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <AuthProvider>
-          <ThemeProvider theme={theme}>
-            <FlashMessage />
-            <RouterConfig />
-          </ThemeProvider>
-        </AuthProvider>
+        <PaginationContext.Provider
+          value={{
+            ...usePagination(),
+          }}
+        >
+          <DisplayProvider>
+            <AuthProvider>
+              <ThemeProvider theme={theme}>
+                <FlashMessage />
+                <RouterConfig />
+              </ThemeProvider>
+            </AuthProvider>
+          </DisplayProvider>
+        </PaginationContext.Provider>
       </ThemeContext.Provider>
     </Provider>
   );

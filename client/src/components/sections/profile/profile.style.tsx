@@ -14,7 +14,7 @@ export const ModalContainer = styled.div`
 
 export const Modal = styled.div<ThemeProps>`
   width: 20rem;
-  height: 13rem;
+  height: 17rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 1.5rem;
   top: 5.5rem;
@@ -57,6 +57,7 @@ export const Label = styled.p<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.5rem;
   padding: 0.5rem;
+  margin-top: 0.5rem;
   cursor: pointer;
   p:hover {
     color: ${({ theme }) => theme.colors.secondary};
@@ -66,6 +67,7 @@ export const Label = styled.p<ThemeProps>`
 export const LogoutButton = styled(Button)<ThemeProps>`
   width: 9rem;
   margin: 0.5rem 5rem;
+
 `;
 
 export const IconContainer = styled.div<ThemeProps>`
@@ -79,4 +81,9 @@ export const IconContainer = styled.div<ThemeProps>`
 export const ItemContainer = styled.div`
   display: flex;
   margin: 0.2rem;
+  align-items: center;
+`;
+
+export const HorizontalLine = styled.hr`
+  margin-top: 1rem;
 `;
