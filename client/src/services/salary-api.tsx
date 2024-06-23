@@ -32,7 +32,6 @@ const searchEmployeeSalary = async (search_parms: SearchParams) => {
   const employees = await api
     .get<EmpResponse>(endpoint)
     .then((res) => {
-      console.log(res);
       return {
         employees: res.data,
         code: res.status,
@@ -49,8 +48,29 @@ const searchEmployeeSalary = async (search_parms: SearchParams) => {
   return employees;
 };
 
+const getEmployeeSalary = async (employee_id: string) => {
+  const response = await api
+    .get(`/employee/salary/get/${employee_id}`)
+    .then((res) => {
+      return {
+        employee: res.data,
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const SalaryAPI = {
   listEmployeeSalary,
   searchEmployeeSalary,
+  getEmployeeSalary,
 };
 export default SalaryAPI;
