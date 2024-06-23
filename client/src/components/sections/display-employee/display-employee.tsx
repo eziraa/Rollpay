@@ -1,17 +1,13 @@
-// import { setTask } from "../../../store/employee/employee-slice";
-// import { ADD_EMP } from "../../../utils/constants/tasks";
-// import { useAppDispatch } from "../../../utils/custom-hook";
-import { useContext } from "react";
 import { Search } from "../../utils/search/search";
 import EmployeeListDisplayer from "../list-displayer/list-displayer";
 import Pagination from "../pagination/pagination";
 import { AddButton, Body, Header, Title } from "./display-employee.style";
 import { EmployeeDisplayerContainer } from "./display-employee.style";
-import { DisplayContext } from "../../../contexts/display-context";
+import { useModal } from "../../../hooks/modal-hook";
+import { ADD_EMPLOYEE } from "../../../constants/tasks";
 
 export const DisplayEmployee = () => {
-  // const dispatcher = useAppDispatch();
-  const { display, setDisplay } = useContext(DisplayContext);
+  const { openModal } = useModal();
   return (
     <EmployeeDisplayerContainer>
       <Header>
@@ -22,13 +18,7 @@ export const DisplayEmployee = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            setDisplay({
-              ...display,
-              add_overtime: false,
-              add_deduction: false,
-              add_allowance: false,
-              add_employee: true,
-            });
+            openModal(ADD_EMPLOYEE);
           }}
         >
           Add Employee
