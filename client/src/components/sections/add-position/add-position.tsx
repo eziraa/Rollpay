@@ -1,4 +1,6 @@
+import { useFormik } from "formik";
 import {
+  FormError,
   Input,
   InputContainer,
   Label,
@@ -12,6 +14,13 @@ import {
   PositionForm,
 } from "./add-position.style";
 export const AddPosition = () => {
+  const { touched, errors, values, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      position_name: "",
+      base_salary: "",
+    },
+    onSubmit: (values) => {},
+  });
   return (
     <Modal>
       <PositionContainer>
@@ -20,13 +29,29 @@ export const AddPosition = () => {
           <PositionForm>
             <InputContainer>
               <Label>Position Name Name</Label>
-              <Input type="text" />
+              <Input
+                type="text"
+                onChange={handleChange}
+                name="position_name"
+                value={values.position_name}
+              />
+              {touched.position_name && errors.position_name && (
+                <FormError> {errors.position_name} </FormError>
+              )}
             </InputContainer>
             <InputContainer>
               <Label>Base Salary</Label>
-              <Input type="number" />
+              <Input
+                type="number"
+                value={values.base_salary}
+                name="base_salary"
+                onChange={handleChange}
+              />
+              {touched.base_salary && errors.base_salary && (
+                <FormError> {errors.base_salary} </FormError>
+              )}
             </InputContainer>
-            <AddBtn>Add</AddBtn>
+            <AddBtn type="submit">Add</AddBtn>
           </PositionForm>
         </PositionBody>
       </PositionContainer>
