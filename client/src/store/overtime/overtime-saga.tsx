@@ -285,3 +285,12 @@ function* loadPrevPage(action: PayloadAction<string>) {
     console.log(e);
   }
 }
+
+export function* watchOvertimeRequest() {
+  yield takeEvery("overtime/editOvertimeRequested", editOvertime);
+  yield takeEvery("overtime/loadNextPageRequested", loadNextPage);
+  yield takeEvery("overtime/loadPrevPageRequested", loadPrevPage);
+  yield takeEvery("overtime/addOvertimeRequested", addOvertime);
+  yield takeEvery("overtime/listOvertimesRequested", GetOvertimes);
+  yield takeEvery("overtime/deleteOvertimeRequested", DeleteOvertime);
+}
