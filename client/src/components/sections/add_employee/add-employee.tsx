@@ -24,7 +24,7 @@ import { addEmpRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useEffect, useState } from "react";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_POSITION } from "../../../constants/tasks";
+import { ADD_EMPLOYEE, ADD_POSITION } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 
 export const AddEmployee = () => {
@@ -59,7 +59,7 @@ export const AddEmployee = () => {
     },
   });
   return (
-    <Modal>
+    <Modal content={ADD_EMPLOYEE}>
       <AddEmployeeContainer>
         <Title>Add Employee</Title>
         <AddEmployeeForm

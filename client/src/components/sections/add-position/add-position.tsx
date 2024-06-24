@@ -16,12 +16,12 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addPositionRequested } from "../../../store/position/position-slice";
 import { useModal } from "../../../hooks/modal-hook";
-import { CLOSE_MODAL } from "../../../constants/tasks";
+import { ADD_POSITION } from "../../../constants/tasks";
 import { AddPositionSchema } from "../../../schema/add-position-schema";
 import { useEffect } from "react";
 export const AddPosition = () => {
   const dispatcher = useAppDispatch();
-  const { openModal } = useModal();
+  const { closeModal } = useModal();
   const { adding_position_error, curr_position } = useAppSelector(
     (state) => state.position
   );
@@ -37,10 +37,10 @@ export const AddPosition = () => {
   });
 
   useEffect(() => {
-    curr_position && openModal(CLOSE_MODAL);
+    curr_position && closeModal(ADD_POSITION);
   }, [curr_position]);
   return (
-    <Modal>
+    <Modal content={ADD_POSITION}>
       <PositionContainer>
         <PositionBody>
           <Title>Add Position</Title>
