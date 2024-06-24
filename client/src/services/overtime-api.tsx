@@ -28,3 +28,32 @@ const addOvertime = async (values: AddOvertimeParams) => {
     });
   return response;
 };
+
+const listOvertimes = async (pageUrl?: string) => {
+  const endpoint = pageUrl || "/employee/overtime/list";
+
+  const overtimes = await api
+    .get<PaginatedBackEndResponse>(endpoint)
+    .then((res) => {
+      console.log(res);
+      return {
+        results: res.data,
+        pagination: {
+          next: res.data.next,
+          previous: res.data.previous,
+          count: res.data.count,
+        },
+        code: res.status,
+        success: "Success returned overtimes",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return overtimes;
+};
