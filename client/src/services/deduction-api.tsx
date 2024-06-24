@@ -1,7 +1,10 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import { AddDeductionParams, EditDeductionParams } from "../typo/ded/params";
-import { AddDeductionResponse, Deduction } from "../typo/ded/response";
+import {
+  AddDeductionParams,
+  EditDeductionParams,
+} from "../typo/deduction/params";
+import { AddDeductionResponse, Deduction } from "../typo/deduction/response";
 export interface PaginatedBackEndResponse {
   count: number;
   results: Deduction[];
@@ -11,7 +14,7 @@ export interface PaginatedBackEndResponse {
 }
 const addDeduction = async (values: AddDeductionParams) => {
   const response = await api
-    .post("/employee/ded/add", values)
+    .post("/employee/deduction/add", values)
     .then((res) => {
       return {
         success: "Deduction added successfully",
@@ -30,7 +33,7 @@ const addDeduction = async (values: AddDeductionParams) => {
 };
 
 const listDeductions = async (pageUrl?: string) => {
-  const endpoint = pageUrl || "/employee/ded/list";
+  const endpoint = pageUrl || "/employee/deduction/list";
 
   const deds = await api
     .get<PaginatedBackEndResponse>(endpoint)
@@ -44,7 +47,7 @@ const listDeductions = async (pageUrl?: string) => {
           count: res.data.count,
         },
         code: res.status,
-        success: "Success returned deds",
+        success: "Success returned deductions",
       };
     })
     .catch((err: AxiosError) => {
@@ -60,7 +63,7 @@ const listDeductions = async (pageUrl?: string) => {
 
 const editDeduction = async (ded_id: string, values: EditDeductionParams) => {
   const response = await api
-    .put<AddDeductionResponse[]>("/employee/edit/" + ded_id, values)
+    .put<AddDeductionResponse[]>("/employee/deduction/edit/" + ded_id, values)
     .then((res) => {
       return {
         success: "Deduction updated successfully",
@@ -82,7 +85,7 @@ const editDeduction = async (ded_id: string, values: EditDeductionParams) => {
 
 const deleteDeduction = async (empployee_id: string) => {
   const response = await api
-    .delete("/employee/ded/delete/" + empployee_id)
+    .delete("/employee/deduction/delete/" + empployee_id)
     .then((res) => {
       return {
         success: "Deduction deleted successfully",
