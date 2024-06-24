@@ -82,3 +82,23 @@ const editOvertime = async (
     });
   return response;
 };
+
+const deleteOvertime = async (empployee_id: string) => {
+  const response = await api
+    .delete("/employee/overtime/delete/" + empployee_id)
+    .then((res) => {
+      return {
+        success: "Overtime deleted successfully",
+        code: res.status,
+        data: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
