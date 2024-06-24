@@ -237,3 +237,51 @@ function* editOvertime(action: PayloadAction<EditOvertimeParams>) {
     );
   }
 }
+
+function* loadNextPage(action: PayloadAction<string>) {
+  try {
+    const response: PaginatedOvertimeResponse = yield call(
+      OvertimeAPI.listOvertimes,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(listOvertimeDone(response));
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Load Next Page",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* loadPrevPage(action: PayloadAction<string>) {
+  try {
+    const response: PaginatedOvertimeResponse = yield call(
+      OvertimeAPI.listOvertimes,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(listOvertimeDone(response));
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Load Previous Page",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
