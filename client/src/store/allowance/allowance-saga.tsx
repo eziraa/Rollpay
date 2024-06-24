@@ -6,10 +6,11 @@ import {
   AddAllowanceParams,
   EditAllowanceParams,
 } from "../../typo/allowance/params";
-import { AddAllowanceResponse } from "../../typo/allowance/response";
-import AllowanceAPI, {
+import {
+  AddAllowanceResponse,
   PaginatedAllowanceResponse,
-} from "../../services/allowance-api";
+} from "../../typo/allowance/response";
+import AllowanceAPI from "../../services/allowance-api";
 import {
   addAllowanceDone,
   deleteAllowanceDone,

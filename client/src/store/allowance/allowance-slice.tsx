@@ -2,12 +2,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AllowanceState } from "../../typo/allowance/states";
-import { Allowance } from "../../typo/allowance/response";
+import {
+  Allowance,
+  PaginatedAllowanceResponse,
+} from "../../typo/allowance/response";
 import {
   AddAllowanceParams,
   EditAllowanceParams,
 } from "../../typo/allowance/params";
-import { PaginatedAllowanceResponse } from "../../services/allowance-api";
 
 const InitialEmpState: AllowanceState = {
   adding: false,
