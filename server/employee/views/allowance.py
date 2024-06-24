@@ -28,7 +28,7 @@ class AllowanceView (APIView):
     def post(self, request):
         try:
             data = json.loads(request.body)
-            if Allowance.objects.filter(email=data['allowance_name']).exists():
+            if Allowance.objects.filter(email=data['allowance_type']).exists():
                 return JsonResponse({'error': 'Allowance already exists'}, status=status.HTTP_400_BAD_REQUEST)
             allowance = Allowance.objects.create(**data)
             serializer = AllowanceSerializer(allowance, data=data)

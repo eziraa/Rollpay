@@ -28,7 +28,7 @@ class DeductionView (APIView):
     def post(self, request):
         try:
             data = json.loads(request.body)
-            if Deduction.objects.filter(email=data['deduction_name']).exists():
+            if Deduction.objects.filter(email=data['deduction_type']).exists():
                 return JsonResponse({'error': 'Deduction already exists'}, status=status.HTTP_400_BAD_REQUEST)
             deduction = Deduction.objects.create(**data)
             serializer = DeductionSerializer(deduction, data=data)
