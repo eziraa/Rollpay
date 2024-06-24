@@ -87,4 +87,21 @@ const OvertimeSlice = createSlice({
     unfinishedEdit: (state) => {
       state.editing = false;
     },
+    searching: (state, payload: PayloadAction<Overtime[]>) => {
+      state.query_set = payload.payload;
+      state.searching = true;
+    },
+    noSearchResult: (state) => {
+      state.searching = false;
+    },
+    setCurrentOvertime: (
+      state,
+      payload: PayloadAction<Overtime | undefined>
+    ) => {
+      state.curr_overtime = payload.payload;
+    },
+    editOvertimeRequested: (state, _: PayloadAction<EditOvertimeParams>) => {
+      state.editing = true;
+    },
+
     
