@@ -4,7 +4,7 @@ import { EditOvertimeParams } from "./params";
 export interface Overtime extends EditOvertimeParams {}
 
 export interface AddOvertimeResponse extends CustomResponse {
-  allowance: Overtime;
+  overtime: Overtime;
 }
 export interface EditOvertimeResponse extends AddOvertimeResponse {}
 export interface DeleteOvertimeResponse extends AddOvertimeResponse {}
