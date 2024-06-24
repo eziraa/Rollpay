@@ -135,3 +135,27 @@ const AllowanceSlice = createSlice({
     },
   },
 });
+export const {
+  listAllowancesRequested,
+  unfinishedAdd,
+  listAllowanceDone,
+  unfinishedList,
+  tryingToDelete,
+  deleteAllowanceRequested,
+  deleteAllowanceDone,
+  unfinishedDelete,
+  setCurrentAllowance,
+  addAllowanceRequested,
+  addAllowanceDone,
+  editAllowanceRequested,
+  editAllowanceDone,
+  unfinishedEdit,
+  resetCurrAllowance,
+  searching,
+  noSearchResult,
+  loadNextPageRequested,
+  loadPrevPageRequested,
+  setPagesize,
+} = AllowanceSlice.actions;
+
+export default AllowanceSlice.reducer;
