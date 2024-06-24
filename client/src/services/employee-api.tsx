@@ -1,5 +1,9 @@
 import { AxiosError } from "axios";
-import { AddEmpParams, AddSalaryParams } from "../typo/employee/params";
+import {
+  AddAllowanceToEmployeesParams,
+  AddEmpParams,
+  AddSalaryParams,
+} from "../typo/employee/params";
 import api from "../config/api";
 import {
   AddEmpResponse,
@@ -85,6 +89,20 @@ const addSalary = async (values: AddSalaryParams) => {
   return employees;
 };
 
+const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
+  const employees = await api
+    .post<EmpResponse>(
+      "/employee/allowance/add" +
+        values.empployee_id +
+        "/" +
+        values.allowance_id
+    )
+    .then((res) => {
+      return res.data;
+    });
+  return employees;
+};
+
 export interface EditEmployeeParams extends AddEmpParams {
   id: string | undefined;
 }
@@ -140,6 +158,7 @@ const EmployeeAPI = {
   addSalary,
   editEmployee,
   deleteEmployee,
+  addAllowance,
 };
 
 export default EmployeeAPI;
