@@ -2,11 +2,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
-import {
-  AddEmpParams,
-  AddPositionParams,
-  AddSalaryParams,
-} from "../../typo/employee/params";
+import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
 import {
   EditEmployeeParams,
   PaginatedEmpResponse,
