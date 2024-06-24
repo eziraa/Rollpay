@@ -40,4 +40,24 @@ const OvertimeSlice = createSlice({
       state.adding = false;
       state.adding_overtime_error = action.payload;
     },
-    
+    listOvertimeDone: (
+      state,
+      payload: PayloadAction<PaginatedOvertimeResponse>
+    ) => {
+      state.overtimes = payload.payload.results;
+      state.adding = false;
+      state.loading = false;
+      state.pagination = {
+        ...payload.payload.pagination,
+        page_size: state.pagination?.page_size ?? 10,
+      };
+    },
+
+    listOvertimesRequested: (state) => {
+      state.loading = true;
+    },
+    unfinishedList: (state) => {
+      state.loading = false;
+      state.adding = false;
+      state.overtimes = [];
+    },
