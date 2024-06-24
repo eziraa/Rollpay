@@ -4,7 +4,7 @@ import {
   OvertimeContainer,
   OvertimeHeader,
   OvertimeTitle,
-} from "../../sections/overtime/overtime.style";
+} from "../../sections/employee-overtime/overtime.style";
 import {
   CustomTable,
   HeaderTitle,

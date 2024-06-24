@@ -4,7 +4,7 @@ import {
   DeductionContainer,
   DeductionHeader,
   DeductionTitle,
-} from "../../sections/deduction/deduction.style";
+} from "../../sections/employee-deduction/deduction.style";
 import { getFormattedMonth } from "../../sections/salary/utils";
 import {
   CustomTable,

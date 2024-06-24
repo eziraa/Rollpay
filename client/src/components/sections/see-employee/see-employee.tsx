@@ -29,14 +29,14 @@ import { IoChevronBackCircleOutline } from "react-icons/io5";
 //   SEE_EMP_OVERTIME,
 // } from "../../../constants/tasks";
 import { MdModeEditOutline } from "react-icons/md";
-import { EmployeeAllowance } from "../allowance/allowance";
+import { EmployeeAllowance } from "../employee-allowance/allowance";
 import {
   resetCurrEmployee,
   tryingToDelete,
 } from "../../../store/employee/employee-slice";
 import { EditEmployee } from "../edit-employee/edit-employee";
-import { EmployeeOvertime } from "../overtime/overtime";
-import { EmployeeDeduction } from "../deduction/deduction";
+import { EmployeeOvertime } from "../employee-overtime/overtime";
+import { EmployeeDeduction } from "../employee-deduction/deduction";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useContext } from "react";
 import { DisplayContext } from "../../../contexts/display-context";
