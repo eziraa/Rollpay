@@ -31,3 +31,32 @@ const addDeduction = async (values: AddDeductionParams) => {
     });
   return response;
 };
+
+const listDeductions = async (pageUrl?: string) => {
+  const endpoint = pageUrl || "/employee/deduction/list";
+
+  const deductions = await api
+    .get<PaginatedBackEndResponse>(endpoint)
+    .then((res) => {
+      console.log(res);
+      return {
+        results: res.data,
+        pagination: {
+          next: res.data.next,
+          previous: res.data.previous,
+          count: res.data.count,
+        },
+        code: res.status,
+        success: "Success returned deductions",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return deductions;
+};
