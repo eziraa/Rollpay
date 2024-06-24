@@ -14,7 +14,7 @@ export interface PaginatedBackEndResponse {
 }
 const addDeduction = async (values: AddDeductionParams) => {
   const response = await api
-    .post("/employee/deduction/add", values)
+    .post("/deduction/add", values)
     .then((res) => {
       return {
         success: "Deduction added successfully",
@@ -33,7 +33,7 @@ const addDeduction = async (values: AddDeductionParams) => {
 };
 
 const listDeductions = async (pageUrl?: string) => {
-  const endpoint = pageUrl || "/employee/deduction/list";
+  const endpoint = pageUrl || "/deduction/list";
 
   const deds = await api
     .get<PaginatedBackEndResponse>(endpoint)
@@ -63,7 +63,7 @@ const listDeductions = async (pageUrl?: string) => {
 
 const editDeduction = async (ded_id: string, values: EditDeductionParams) => {
   const response = await api
-    .put<AddDeductionResponse[]>("/employee/deduction/edit/" + ded_id, values)
+    .put<AddDeductionResponse[]>("/deduction/edit/" + ded_id, values)
     .then((res) => {
       return {
         success: "Deduction updated successfully",
@@ -85,7 +85,7 @@ const editDeduction = async (ded_id: string, values: EditDeductionParams) => {
 
 const deleteDeduction = async (empployee_id: string) => {
   const response = await api
-    .delete("/employee/deduction/delete/" + empployee_id)
+    .delete("/deduction/delete/" + empployee_id)
     .then((res) => {
       return {
         success: "Deduction deleted successfully",

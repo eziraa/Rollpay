@@ -14,7 +14,7 @@ export interface PaginatedBackEndResponse {
 }
 const addAllowance = async (values: AddAllowanceParams) => {
   const response = await api
-    .post("/employee/allowance/add", values)
+    .post("/allowance/add", values)
     .then((res) => {
       return {
         success: "Allowance added successfully",
@@ -33,7 +33,7 @@ const addAllowance = async (values: AddAllowanceParams) => {
 };
 
 const listAllowances = async (pageUrl?: string) => {
-  const endpoint = pageUrl || "/employee/allowance/list";
+  const endpoint = pageUrl || "/allowance/list";
 
   const allowances = await api
     .get<PaginatedBackEndResponse>(endpoint)
@@ -66,7 +66,7 @@ const editAllowance = async (
   values: EditAllowanceParams
 ) => {
   const response = await api
-    .put<AddAllowanceResponse[]>("/employee/edit/" + allowance_id, values)
+    .put<AddAllowanceResponse[]>("/edit/" + allowance_id, values)
     .then((res) => {
       return {
         success: "Allowance updated successfully",
@@ -88,7 +88,7 @@ const editAllowance = async (
 
 const deleteAllowance = async (empployee_id: string) => {
   const response = await api
-    .delete("/employee/allowance/delete/" + empployee_id)
+    .delete("/allowance/delete/" + empployee_id)
     .then((res) => {
       return {
         success: "Allowance deleted successfully",

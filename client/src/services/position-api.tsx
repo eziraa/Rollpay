@@ -6,7 +6,7 @@ import { AddPositionResponse, Position } from "../typo/position/response";
 
 const addPosition = async (values: AddPositionParams) => {
   const response = await api
-    .post("/employee/position/add", values)
+    .post("/position/add", values)
     .then((res) => {
       return {
         success: "Position added successfully",
@@ -47,7 +47,7 @@ export interface PaginatedBackEndResponse {
 }
 
 const listPositions = async (pageUrl?: string) => {
-  const endpoint = pageUrl || "/employee/position/list";
+  const endpoint = pageUrl || "/position/list";
 
   const positions = await api
     .get<PaginatedBackEndResponse>(endpoint)
@@ -80,7 +80,7 @@ const editPosition = async (
   values: EditPositionParams
 ) => {
   const response = await api
-    .put<AddPositionResponse[]>("/employee/edit/" + position_id, values)
+    .put<AddPositionResponse[]>("/edit/" + position_id, values)
     .then((res) => {
       return {
         success: "Position updated successfully",
@@ -102,7 +102,7 @@ const editPosition = async (
 
 const deletePosition = async (empployee_id: string) => {
   const response = await api
-    .delete("/employee/position/delete/" + empployee_id)
+    .delete("/position/delete/" + empployee_id)
     .then((res) => {
       return {
         success: "Position deleted successfully",

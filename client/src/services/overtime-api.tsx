@@ -11,7 +11,7 @@ export interface PaginatedBackEndResponse {
 }
 const addOvertime = async (values: AddOvertimeParams) => {
   const response = await api
-    .post("/employee/overtime/add", values)
+    .post("/overtime/add", values)
     .then((res) => {
       return {
         success: "Overtime added successfully",
@@ -30,7 +30,7 @@ const addOvertime = async (values: AddOvertimeParams) => {
 };
 
 const listOvertimes = async (pageUrl?: string) => {
-  const endpoint = pageUrl || "/employee/overtime/list";
+  const endpoint = pageUrl || "/overtime/list";
 
   const overtimes = await api
     .get<PaginatedBackEndResponse>(endpoint)
@@ -63,7 +63,7 @@ const editOvertime = async (
   values: EditOvertimeParams
 ) => {
   const response = await api
-    .put<AddOvertimeResponse[]>("/employee/edit/" + overtime_id, values)
+    .put<AddOvertimeResponse[]>("/edit/" + overtime_id, values)
     .then((res) => {
       return {
         success: "Overtime updated successfully",
@@ -85,7 +85,7 @@ const editOvertime = async (
 
 const deleteOvertime = async (empployee_id: string) => {
   const response = await api
-    .delete("/employee/overtime/delete/" + empployee_id)
+    .delete("/overtime/delete/" + empployee_id)
     .then((res) => {
       return {
         success: "Overtime deleted successfully",
