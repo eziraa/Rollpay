@@ -84,5 +84,21 @@ const AllowanceSlice = createSlice({
     unfinishedEdit: (state) => {
       state.editing = false;
     },
+    searching: (state, payload: PayloadAction<Allowance[]>) => {
+      state.query_set = payload.payload;
+      state.searching = true;
+    },
+    noSearchResult: (state) => {
+      state.searching = false;
+    },
+    setCurrentAllowance: (
+      state,
+      payload: PayloadAction<Allowance | undefined>
+    ) => {
+      state.curr_allowance = payload.payload;
+    },
+    editAllowanceRequested: (state, _: PayloadAction<EditAllowanceParams>) => {
+      state.editing = true;
+    },
 
     
