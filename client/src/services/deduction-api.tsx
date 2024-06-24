@@ -60,3 +60,28 @@ const listDeductions = async (pageUrl?: string) => {
 
   return deductions;
 };
+
+const editDeduction = async (
+  deduction_id: string,
+  values: EditDeductionParams
+) => {
+  const response = await api
+    .put<AddDeductionResponse[]>("/employee/edit/" + deduction_id, values)
+    .then((res) => {
+      return {
+        success: "Deduction updated successfully",
+        code: res.status,
+        employee: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
+  return response;
+};
