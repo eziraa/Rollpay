@@ -25,7 +25,7 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 import api from "../../../config/api";
 import { useEffect, useState } from "react";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_POSITION } from "../../../constants/tasks";
+import { ADD_POSITION, CLOSE_MODAL } from "../../../constants/tasks";
 interface Position {
   name: string;
 }
@@ -74,6 +74,7 @@ export const AddEmployee = () => {
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
       dispatcher(addEmpRequested(values));
+      if (!adding) openModal(CLOSE_MODAL);
     },
   });
   return (
@@ -263,7 +264,6 @@ export const AddEmployee = () => {
                   fontSize: "1.5rem",
                 }}
               >
-                {" "}
                 {adding_emp_error}
               </FormError>
             )}
