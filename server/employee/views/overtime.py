@@ -29,7 +29,7 @@ class OvertimeView (APIView):
     def post(self, request):
         try:
             data = json.loads(request.body)
-            if Overtime.objects.filter(email=data['overtime_type']).exists():
+            if Overtime.objects.filter(overtime_type=data['overtime_type']).exists():
                 return JsonResponse({'error': 'Overtime already exists'}, status=status.HTTP_400_BAD_REQUEST)
             overtime = Overtime.objects.create(**data)
             serializer = OvertimeSerializer(overtime, data=data)

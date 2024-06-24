@@ -28,7 +28,7 @@ class PositionView (APIView):
     def post(self, request):
         try:
             data = json.loads(request.body)
-            if Position.objects.filter(email=data['position_name']).exists():
+            if Position.objects.filter(position_name=data['position_name']).exists():
                 return JsonResponse({'error': 'Position already exists'}, status=status.HTTP_400_BAD_REQUEST)
             position = Position.objects.create(**data)
             serializer = PositionSerializer(position, data=data)
