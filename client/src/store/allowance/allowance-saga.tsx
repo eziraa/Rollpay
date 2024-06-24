@@ -285,3 +285,13 @@ function* loadPrevPage(action: PayloadAction<string>) {
     console.log(e);
   }
 }
+
+
+export function* watchAllowanceRequest() {
+  yield takeEvery("allowance/editAllowanceRequested", editAllowance);
+  yield takeEvery("allowance/loadNextPageRequested", loadNextPage);
+  yield takeEvery("allowance/loadPrevPageRequested", loadPrevPage);
+  yield takeEvery("allowance/addAllowanceRequested", addAllowance);
+  yield takeEvery("allowance/listAllowancesRequested", GetAllowances);
+  yield takeEvery("allowance/deleteAllowanceRequested", DeleteAllowance);
+}
