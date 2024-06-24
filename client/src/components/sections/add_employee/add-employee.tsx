@@ -22,44 +22,28 @@ import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addEmpRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import api from "../../../config/api";
 import { useEffect, useState } from "react";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_POSITION } from "../../../constants/tasks";
-interface Position {
-  name: string;
-}
-const fetchPositions = async (): Promise<Position[]> => {
-  try {
-    const response = await api.get("employee/positions");
-    const positions: Position[] = response.data.map(
-      (item: { position_name: string }) => ({
-        name: item.position_name,
-      })
-    );
-    return positions;
-  } catch (error) {
-    return []; // Return an empty array if there's an error
-  }
-};
+import { listPositionsRequested } from "../../../store/position/position-slice";
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
   const { adding, adding_emp_error } = useAppSelector(
     (state) => state.employee
   );
+
+  const {
+    positions,
+    curr_position,
+    adding: add_pos,
+  } = useAppSelector((state) => state.position);
   const { openModal } = useModal();
-
-  const [positions, setPositions] = useState<Position[]>([]);
-  const fetchData = async () => {
-    const positions = await fetchPositions();
-    setPositions(positions);
-    // Now you can use the positions array
-  };
-
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (curr_position) {
+      dispatcher(listPositionsRequested());
+    }
+  }, [curr_position, dispatcher]);
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -69,7 +53,7 @@ export const AddEmployee = () => {
       gender: "",
       date_of_birth: "",
       date_of_hire: "",
-      position: "",
+      position: curr_position?.position_name || "",
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
@@ -199,14 +183,20 @@ export const AddEmployee = () => {
                   name="position"
                   onChange={formHandler.handleChange}
                 >
-                  <SelectOption value="" disabled selected>
+                  <SelectOption value="" disabled selected={!curr_position}>
                     Select Position
                   </SelectOption>
-                  {positions.map((position) => (
-                    <SelectOption value={position.name}>
-                      {position.name}
-                    </SelectOption>
-                  ))}
+                  {positions.map(
+                    (position) =>
+                      position && (
+                        <SelectOption
+                          selected={position.id === curr_position?.id}
+                          value={position.position_name}
+                        >
+                          {position.position_name}
+                        </SelectOption>
+                      )
+                  )}
                 </Select>
                 <AddBtn
                   onClick={(e) => {
