@@ -60,3 +60,28 @@ const listAllowances = async (pageUrl?: string) => {
 
   return allowances;
 };
+
+const editAllowance = async (
+  allowance_id: string,
+  values: EditAllowanceParams
+) => {
+  const response = await api
+    .put<AddAllowanceResponse[]>("/employee/edit/" + allowance_id, values)
+    .then((res) => {
+      return {
+        success: "Allowance updated successfully",
+        code: res.status,
+        employee: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
+  return response;
+};
