@@ -112,3 +112,128 @@ function* GetOvertimes() {
     console.log(e);
   }
 }
+
+function* DeleteOvertime(action: PayloadAction<string>) {
+  try {
+    const response: AddOvertimeResponse = yield call(
+      OvertimeAPI.deleteOvertime,
+      action.payload
+    );
+    if (response.code === 204) {
+      yield put(deleteOvertimeDone(response.overtime));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Delete Overtime",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(unfinishedDelete());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to delete overtimes",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Delete Overtime",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* editOvertime(action: PayloadAction<EditOvertimeParams>) {
+  try {
+    const response: AddOvertimeResponse = yield call(
+      OvertimeAPI.editOvertime,
+      action.payload.id || "",
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(editOvertimeDone(response.overtime));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Edit Overtime",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(unfinishedEdit());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Permition Denied",
+          desc: "You are not authorized to edit overtime",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedAdd(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to edit overtimes",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(unfinishedEdit());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Edit Employee",
+          desc:
+            response.error.length < 3
+              ? "Cannot edit overtimes please try again"
+              : response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    yield put(unfinishedEdit());
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Edit Employee",
+        desc: "Cannot edit overtimes please try again",
+        duration: 3,
+      })
+    );
+  }
+}
