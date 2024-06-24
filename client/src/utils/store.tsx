@@ -6,6 +6,7 @@ import { rootSaga } from "./saga";
 import employeeSlice from "../store/employee/employee-slice";
 import userSLice from "../store/user/user-slice";
 import salarySlice from "../store/salary/salary-slice";
+import positionSlice from "../store/position/position-slice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -18,6 +19,7 @@ const store = configureStore({
     flashMessage: flashMessageSlice,
     user: userSLice,
     salary: salarySlice,
+    position: positionSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
