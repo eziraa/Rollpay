@@ -85,3 +85,23 @@ const editAllowance = async (
     });
   return response;
 };
+
+const deleteAllowance = async (empployee_id: string) => {
+  const response = await api
+    .delete("/employee/allowance/delete/" + empployee_id)
+    .then((res) => {
+      return {
+        success: "Allowance deleted successfully",
+        code: res.status,
+        data: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
