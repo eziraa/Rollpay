@@ -5,9 +5,12 @@ import { AddButton, Body, Header, Title } from "./display-employee.style";
 import { EmployeeDisplayerContainer } from "./display-employee.style";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_EMPLOYEE } from "../../../constants/tasks";
+import { listPositionsRequested } from "../../../store/position/position-slice";
+import { useAppDispatch } from "../../../utils/custom-hook";
 
 export const DisplayEmployee = () => {
   const { openModal } = useModal();
+  const dispatcher = useAppDispatch();
   return (
     <EmployeeDisplayerContainer>
       <Header>
@@ -19,6 +22,7 @@ export const DisplayEmployee = () => {
             e.preventDefault();
             e.stopPropagation();
             openModal(ADD_EMPLOYEE);
+            dispatcher(listPositionsRequested());
           }}
         >
           Add Employee
