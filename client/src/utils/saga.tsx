@@ -11,6 +11,7 @@ import {
   watchLoadPage,
 } from "../store/employee/employee-saga";
 import { watchGetEmployeeSalary } from "../store/salary/salary-saga";
+import { watchPositionRequest } from "../store/position/position-saga";
 export function* rootSaga() {
   yield all([
     watchSetFlashMessage(),
@@ -21,5 +22,6 @@ export function* rootSaga() {
     watchEditEmployee(),
     watchGetEmployeeSalary(),
     watchLoadPage(),
+    watchPositionRequest(),
   ]);
 }
