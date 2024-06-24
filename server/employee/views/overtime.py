@@ -7,7 +7,7 @@ from employee.serializers.overtime import OvertimeSerializer
 from ..models import Overtime
 from django.http import JsonResponse
 import json
-from utils.pagination import StandardResultsSetPagination
+from employee.views.utils.pagination import StandardResultsSetPagination
 
 
 class OvertimeView (APIView):

@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User, Permission, Group
 from django.contrib.auth import logout
 import json
+
+from django.shortcuts import get_object_or_404
 from employee.models import Employee
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,7 +13,6 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from employee.serializers.employee import EmployeeSerializer
-# from serializers.serializers import EmployeeSerializer
 
 
 class UserView(APIView):

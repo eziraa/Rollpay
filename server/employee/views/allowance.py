@@ -6,7 +6,7 @@ from ..models import Allowance
 from employee.serializers.allowance import AllowanceSerializer
 from django.http import JsonResponse
 import json
-from utils.pagination import StandardResultsSetPagination
+from employee.views.utils.pagination import StandardResultsSetPagination
 
 
 class AllowanceView (APIView):

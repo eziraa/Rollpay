@@ -6,7 +6,7 @@ from ..models import Position
 from employee.serializers.position import PositionSerializer
 from django.http import JsonResponse
 import json
-from utils.pagination import StandardResultsSetPagination
+from employee.views.utils.pagination import StandardResultsSetPagination
 
 
 class PositionView (APIView):

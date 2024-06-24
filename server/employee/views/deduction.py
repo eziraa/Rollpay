@@ -6,7 +6,7 @@ from ..models import Deduction
 from employee.serializers.deduction import DeductionSerializer
 from django.http import JsonResponse
 import json
-from utils.pagination import StandardResultsSetPagination
+from employee.views.utils.pagination import StandardResultsSetPagination
 
 
 class DeductionView (APIView):
