@@ -102,3 +102,12 @@ const deleteOvertime = async (empployee_id: string) => {
     });
   return response;
 };
+
+const OvertimeAPI = {
+  listOvertimes,
+  editOvertime,
+  deleteOvertime,
+  addOvertime,
+};
+
+export default OvertimeAPI;
