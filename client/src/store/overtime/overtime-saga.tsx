@@ -67,3 +67,48 @@ function* addOvertime(action: PayloadAction<AddOvertimeParams>) {
     );
   }
 }
+
+function* GetOvertimes() {
+  try {
+    const response: PaginatedOvertimeResponse = yield call(
+      OvertimeAPI.listOvertimes
+    );
+    if (response.code === 200) {
+      yield put(listOvertimeDone(response));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view employees",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
