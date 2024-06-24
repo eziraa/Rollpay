@@ -138,3 +138,27 @@ const OvertimeSlice = createSlice({
     },
   },
 });
+export const {
+  listOvertimesRequested,
+  unfinishedAdd,
+  listOvertimeDone,
+  unfinishedList,
+  tryingToDelete,
+  deleteOvertimeRequested,
+  deleteOvertimeDone,
+  unfinishedDelete,
+  setCurrentOvertime,
+  addOvertimeRequested,
+  addOvertimeDone,
+  editOvertimeRequested,
+  editOvertimeDone,
+  unfinishedEdit,
+  resetCurrOvertime,
+  searching,
+  noSearchResult,
+  loadNextPageRequested,
+  loadPrevPageRequested,
+  setPagesize,
+} = OvertimeSlice.actions;
+
+export default OvertimeSlice.reducer;
