@@ -1,10 +1,7 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import {
-  AddDeductionParams,
-  EditDeductionParams,
-} from "../typo/deduction/params";
-import { AddDeductionResponse, Deduction } from "../typo/deduction/response";
+import { AddDeductionParams, EditDeductionParams } from "../typo/ded/params";
+import { AddDeductionResponse, Deduction } from "../typo/ded/response";
 export interface PaginatedBackEndResponse {
   count: number;
   results: Deduction[];
@@ -14,12 +11,12 @@ export interface PaginatedBackEndResponse {
 }
 const addDeduction = async (values: AddDeductionParams) => {
   const response = await api
-    .post("/employee/deduction/add", values)
+    .post("/employee/ded/add", values)
     .then((res) => {
       return {
         success: "Deduction added successfully",
         code: res.status,
-        deduction: res.data,
+        ded: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -33,9 +30,9 @@ const addDeduction = async (values: AddDeductionParams) => {
 };
 
 const listDeductions = async (pageUrl?: string) => {
-  const endpoint = pageUrl || "/employee/deduction/list";
+  const endpoint = pageUrl || "/employee/ded/list";
 
-  const deductions = await api
+  const deds = await api
     .get<PaginatedBackEndResponse>(endpoint)
     .then((res) => {
       console.log(res);
@@ -47,7 +44,7 @@ const listDeductions = async (pageUrl?: string) => {
           count: res.data.count,
         },
         code: res.status,
-        success: "Success returned deductions",
+        success: "Success returned deds",
       };
     })
     .catch((err: AxiosError) => {
@@ -58,15 +55,12 @@ const listDeductions = async (pageUrl?: string) => {
       } as { error: string; code: number };
     });
 
-  return deductions;
+  return deds;
 };
 
-const editDeduction = async (
-  deduction_id: string,
-  values: EditDeductionParams
-) => {
+const editDeduction = async (ded_id: string, values: EditDeductionParams) => {
   const response = await api
-    .put<AddDeductionResponse[]>("/employee/edit/" + deduction_id, values)
+    .put<AddDeductionResponse[]>("/employee/edit/" + ded_id, values)
     .then((res) => {
       return {
         success: "Deduction updated successfully",
@@ -85,3 +79,24 @@ const editDeduction = async (
     });
   return response;
 };
+
+const deleteDeduction = async (empployee_id: string) => {
+  const response = await api
+    .delete("/employee/ded/delete/" + empployee_id)
+    .then((res) => {
+      return {
+        success: "Deduction deleted successfully",
+        code: res.status,
+        data: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
