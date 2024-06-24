@@ -100,3 +100,11 @@ const deleteDeduction = async (empployee_id: string) => {
   return response;
 };
 
+const DeductionAPI = {
+  listDeductions,
+  editDeduction,
+  deleteDeduction,
+  addDeduction,
+};
+
+export default DeductionAPI;
