@@ -49,7 +49,6 @@ export interface PaginatedBackEndResponse {
 }
 
 const listEmployee = async (pageUrl?: string) => {
-  // Use the provided page URL or default to the initial list endpoint
   const endpoint = pageUrl || "/employee/list";
 
   const employees = await api
@@ -58,9 +57,9 @@ const listEmployee = async (pageUrl?: string) => {
       return {
         results: res.data.results,
         pagination: {
-          next: res.data.next, // Assuming 'next' is part of your response
+          next: res.data.next,
           previous: res.data.previous,
-          count: res.data.count, // Assuming 'previous' is part of your response
+          count: res.data.count,
         },
         code: res.status,
         success: "Success returned employees",
