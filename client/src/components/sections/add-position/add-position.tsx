@@ -13,30 +13,43 @@ import {
   PositionContainer,
   PositionForm,
 } from "./add-position.style";
-import { useAppDispatch } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addPositionRequested } from "../../../store/position/position-slice";
 import { useModal } from "../../../hooks/modal-hook";
 import { CLOSE_MODAL } from "../../../constants/tasks";
+import { AddPositionSchema } from "../../../schema/add-position-schema";
+import { useEffect } from "react";
 export const AddPosition = () => {
   const dispatcher = useAppDispatch();
   const { openModal } = useModal();
+  const { adding_position_error, curr_position } = useAppSelector(
+    (state) => state.position
+  );
   const { touched, errors, values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       position_name: "",
       basic_salary: "",
     },
-    onSubmit: (values) => {
-      dispatcher(addPositionRequested(values));
-      openModal(CLOSE_MODAL);
+    validationSchema: AddPositionSchema,
+    onSubmit: async (values) => {
+      await dispatcher(addPositionRequested(values));
     },
   });
 
+  useEffect(() => {
+    curr_position && openModal(CLOSE_MODAL);
+  }, [curr_position]);
   return (
     <Modal>
       <PositionContainer>
         <PositionBody>
           <Title>Add Position</Title>
-          <PositionForm onSubmit={handleSubmit}>
+          <PositionForm
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(e);
+            }}
+          >
             <InputContainer>
               <Label>Position Name</Label>
               <Input
@@ -61,6 +74,16 @@ export const AddPosition = () => {
                 <FormError> {errors.basic_salary} </FormError>
               )}
             </InputContainer>
+            {adding_position_error && (
+              <FormError
+                style={{
+                  fontSize: "1.5rem",
+                }}
+              >
+                {" "}
+                {adding_position_error}
+              </FormError>
+            )}
             <AddBtn type="submit">Add</AddBtn>
           </PositionForm>
         </PositionBody>
