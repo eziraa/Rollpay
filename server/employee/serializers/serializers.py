@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
 from ..models import Employee, Salary, Allowance, Deduction, Overtime, Position
 from decimal import Decimal
 from employee.utils.salary_calculator import SalaryCalculator
@@ -17,7 +16,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
                   'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary')
 
     def get_salary(self, obj: Employee):
-        return obj.salary.basic_salary
+        if obj.salary:
+            return obj.salary.basic_salary
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
