@@ -31,3 +31,32 @@ const addAllowance = async (values: AddAllowanceParams) => {
     });
   return response;
 };
+
+const listAllowances = async (pageUrl?: string) => {
+  const endpoint = pageUrl || "/employee/allowance/list";
+
+  const allowances = await api
+    .get<PaginatedBackEndResponse>(endpoint)
+    .then((res) => {
+      console.log(res);
+      return {
+        results: res.data,
+        pagination: {
+          next: res.data.next,
+          previous: res.data.previous,
+          count: res.data.count,
+        },
+        code: res.status,
+        success: "Success returned allowances",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return allowances;
+};
