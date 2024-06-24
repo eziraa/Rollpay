@@ -54,4 +54,24 @@ const AllowanceSlice = createSlice({
       state.adding = false;
       state.allowances = [];
     },
+    unfinishedAdd: (state, action: PayloadAction<string>) => {
+      state.adding = false;
+      state.adding_allowance_error = action.payload;
+    },
+
+    tryingToDelete: (state) => {
+      state.deleting = true;
+    },
+    deleteAllowanceRequested: (__, _: PayloadAction<string>) => {},
+    addSearched: (state, action: PayloadAction<Allowance[]>) => {
+      state.query_set = action.payload;
+    },
+    deleteAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.deleting = false;
+      state.allowances.splice(state.allowances.indexOf(action.payload), 1);
+    },
+    unfinishedDelete: (state) => {
+      state.deleting = false;
+    },
+
     
