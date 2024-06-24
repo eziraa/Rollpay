@@ -57,3 +57,28 @@ const listOvertimes = async (pageUrl?: string) => {
 
   return overtimes;
 };
+
+const editOvertime = async (
+  overtime_id: string,
+  values: EditOvertimeParams
+) => {
+  const response = await api
+    .put<AddOvertimeResponse[]>("/employee/edit/" + overtime_id, values)
+    .then((res) => {
+      return {
+        success: "Overtime updated successfully",
+        code: res.status,
+        employee: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
+  return response;
+};
