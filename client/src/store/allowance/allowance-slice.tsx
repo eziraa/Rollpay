@@ -73,5 +73,16 @@ const AllowanceSlice = createSlice({
     unfinishedDelete: (state) => {
       state.deleting = false;
     },
+    editAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.editing = false;
+      state.curr_allowance = action.payload;
+    },
+    resetCurrAllowance: (state) => {
+      state.curr_allowance = undefined;
+      state.editing = false;
+    },
+    unfinishedEdit: (state) => {
+      state.editing = false;
+    },
 
     
