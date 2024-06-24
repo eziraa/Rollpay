@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from django.http.response import JsonResponse
 from employee.utils.search import Search
-from employee.serializers.serializers import EmployeeSerializer, SalaryEmployeeSerializer
+from employee.serializers.serializers import EmployeeSerializer
 from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerializer
 from employee.views.views import StandardResultsSetPagination
 from ..models import Employee, Payment

@@ -3,7 +3,7 @@ from rest_framework.request import Request
 from rest_framework import status
 from rest_framework.views import APIView
 from ..models import Position
-from employee.serializers.serializers import PositionSerializer
+from employee.serializers.position import PositionSerializer
 from django.http import JsonResponse
 import json
 from utils.pagination import StandardResultsSetPagination
