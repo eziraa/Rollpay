@@ -61,3 +61,19 @@ const OvertimeSlice = createSlice({
       state.adding = false;
       state.overtimes = [];
     },
+
+    tryingToDelete: (state) => {
+      state.deleting = true;
+    },
+    deleteOvertimeRequested: (__, _: PayloadAction<string>) => {},
+    addSearched: (state, action: PayloadAction<Overtime[]>) => {
+      state.query_set = action.payload;
+    },
+    deleteOvertimeDone: (state, action: PayloadAction<Overtime>) => {
+      state.deleting = false;
+      state.overtimes.splice(state.overtimes.indexOf(action.payload), 1);
+    },
+    unfinishedDelete: (state) => {
+      state.deleting = false;
+    },
+    
