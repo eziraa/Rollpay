@@ -105,3 +105,12 @@ const deleteAllowance = async (empployee_id: string) => {
     });
   return response;
 };
+
+const AllowanceAPI = {
+  listAllowances,
+  editAllowance,
+  deleteAllowance,
+  addAllowance,
+};
+
+export default AllowanceAPI;
