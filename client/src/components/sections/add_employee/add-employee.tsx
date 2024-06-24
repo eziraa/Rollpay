@@ -66,7 +66,7 @@ export const AddEmployee = () => {
       last_name: "",
       phone_number: "",
       email: "",
-      gender: "",
+      gender: "M",
       date_of_birth: "",
       date_of_hire: "",
       position: "",
