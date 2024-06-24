@@ -76,4 +76,15 @@ const OvertimeSlice = createSlice({
     unfinishedDelete: (state) => {
       state.deleting = false;
     },
+    editOvertimeDone: (state, action: PayloadAction<Overtime>) => {
+      state.editing = false;
+      state.curr_overtime = action.payload;
+    },
+    resetCurrOvertime: (state) => {
+      state.curr_overtime = undefined;
+      state.editing = false;
+    },
+    unfinishedEdit: (state) => {
+      state.editing = false;
+    },
     
