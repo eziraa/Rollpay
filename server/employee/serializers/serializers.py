@@ -17,7 +17,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
                   'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary')
 
     def get_salary(self, obj: Employee):
-        return obj.salary.basic_salary
+        if obj.salary:
+         return obj.salary.basic_salary
+        else:
+            return 0
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -123,4 +126,4 @@ class OvertimeSerializer(serializers.ModelSerializer):
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
-        fields = ('position_name', 'basic_salary')
+        fields = ('id', 'position_name', 'basic_salary')
