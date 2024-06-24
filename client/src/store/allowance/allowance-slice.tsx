@@ -101,4 +101,37 @@ const AllowanceSlice = createSlice({
       state.editing = true;
     },
 
-    
+    setPagesize: (state, size: PayloadAction<number>) => {
+      let page = 1;
+      let number_of_pages = 1;
+      if (state.pagination) {
+        page = state.pagination?.current_page / state.pagination?.page_size;
+        page = page * size.payload;
+        page = Math.ceil(page);
+        number_of_pages = Math.ceil(
+          state.pagination.count / state.pagination.page_size
+        );
+      }
+
+      state.pagination = {
+        page_size: size.payload,
+        next: state.pagination?.next,
+        previous: state.pagination?.previous,
+        count: state.pagination?.count ?? 0,
+        current_page: 1,
+        number_of_pages,
+      };
+    },
+
+    loadNextPageRequested: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+      if (state.pagination?.current_page) state.pagination.current_page++;
+      else if (state.pagination) state.pagination.current_page = 1;
+    },
+    loadPrevPageRequested: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+      if (state.pagination?.current_page) state.pagination.current_page--;
+      else if (state.pagination) state.pagination.current_page = 1;
+    },
+  },
+});
