@@ -33,11 +33,9 @@ export const AddEmployee = () => {
     (state) => state.employee
   );
 
-  const {
-    positions,
-    curr_position,
-    adding: add_pos,
-  } = useAppSelector((state) => state.position);
+  const { positions, curr_position } = useAppSelector(
+    (state) => state.position
+  );
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_position) {
@@ -50,7 +48,7 @@ export const AddEmployee = () => {
       last_name: "",
       phone_number: "",
       email: "",
-      gender: "",
+      gender: "M",
       date_of_birth: "",
       date_of_hire: "",
       position: curr_position?.position_name || "",
