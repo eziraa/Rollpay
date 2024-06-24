@@ -111,3 +111,59 @@ function* GetAllowances() {
     console.log(e);
   }
 }
+
+function* DeleteAllowance(action: PayloadAction<string>) {
+  try {
+    const response: AddAllowanceResponse = yield call(
+      AllowanceAPI.deleteAllowance,
+      action.payload
+    );
+    if (response.code === 204) {
+      yield put(deleteAllowanceDone(response.allowance));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Delete Allowance",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(unfinishedDelete());
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(unfinishedDelete());
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to delete allowances",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Delete Allowance",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
