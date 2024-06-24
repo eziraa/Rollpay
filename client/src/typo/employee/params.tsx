@@ -19,5 +19,5 @@ export interface AddSalaryParams {
 
 export interface AddPositionParams {
   position_name: string;
-  base_salary: string;
+  basic_salary: string;
 }
