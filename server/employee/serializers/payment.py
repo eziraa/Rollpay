@@ -7,7 +7,7 @@ from employee.serializers.deduction import DeductionSerializer
 from employee.serializers.overtime import OvertimeSerializer
 from employee.utils.salary_calculator import SalaryCalculator
 from ..models import Payment
-from .serializers import *
+from .employee import *
 
 
 class PaymentSerializer(serializers.ModelSerializer):
