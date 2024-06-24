@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ModalContext, ModalInterface } from "../contexts/modal-context";
-import { CLOSE_MODAL } from "../constants/tasks";
+import { ADD_POSITION, CLOSE_MODAL } from "../constants/tasks";
 
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [modal, setModal] = useState<ModalInterface>({
@@ -14,7 +14,11 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const openModal = (name: string) => {
     Object.entries(modal).map(([key, isOpened]) => {
       if (name === CLOSE_MODAL) {
-        if (isOpened) setModal({ ...modal, [key]: false });
+        if (isOpened) {
+          if (isOpened && key === ADD_POSITION)
+            setModal({ ...modal, [key]: false, add_employee: true });
+          else setModal({ ...modal, [key]: false });
+        }
       } else if (key !== name) {
         setModal({
           ...modal,
