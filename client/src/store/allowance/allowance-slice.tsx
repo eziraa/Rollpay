@@ -34,4 +34,24 @@ const AllowanceSlice = createSlice({
       state.allowances.push(action.payload);
       state.curr_allowance = action.payload;
     },
-   
+    listAllowanceDone: (
+      state,
+      payload: PayloadAction<PaginatedAllowanceResponse>
+    ) => {
+      state.allowances = payload.payload.results;
+      state.adding = false;
+      state.loading = false;
+      state.pagination = {
+        ...payload.payload.pagination,
+        page_size: state.pagination?.page_size ?? 10,
+      };
+    },
+    listAllowancesRequested: (state) => {
+      state.loading = true;
+    },
+    unfinishedList: (state) => {
+      state.loading = false;
+      state.adding = false;
+      state.allowances = [];
+    },
+    
