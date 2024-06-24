@@ -4,7 +4,7 @@ import { EditDeductionParams } from "./params";
 export interface Deduction extends EditDeductionParams {}
 
 export interface AddDeductionResponse extends CustomResponse {
-  allowance: Deduction;
+  deduction: Deduction;
 }
 export interface EditDeductionResponse extends AddDeductionResponse {}
 export interface DeleteDeductionResponse extends AddDeductionResponse {}
