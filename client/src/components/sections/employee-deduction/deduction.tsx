@@ -18,7 +18,7 @@ import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_DEDUCTION } from "../../../constants/tasks";
+import { ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
 
 export const EmployeeDeduction = () => {
   const { curr_emp } = useAppSelector((state) => state.salary);
@@ -31,7 +31,7 @@ export const EmployeeDeduction = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            openModal(ADD_DEDUCTION);
+            openModal(ADD_DEDUCTION_TO_EMP);
           }}
         >
           Add

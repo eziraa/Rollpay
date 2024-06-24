@@ -18,7 +18,7 @@ import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_OVERTIME } from "../../../constants/tasks";
+import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
 
 export const EmployeeOvertime = () => {
   const { curr_emp } = useAppSelector((state) => state.salary);
@@ -30,7 +30,7 @@ export const EmployeeOvertime = () => {
         <AddButton
           onClick={(e) => {
             e.stopPropagation();
-            openModal(ADD_OVERTIME);
+            openModal(ADD_OVERTIME_TO_EMP);
           }}
         >
           Add
