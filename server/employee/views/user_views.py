@@ -19,7 +19,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken
 
-from employee.serializers.serializers import EmployeeSerializer
+from employee.serializers.serializers import EmployeeSerializer, ProfilePicSerializer
 # from serializers.serializers import EmployeeSerializer
 
 
@@ -44,7 +44,26 @@ class UserView(APIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class ProfilePicture(APIView):
+    permission_classes = [AllowAny]
+    # parser_classes = [MultiPartParser, FormParser]
 
+    def put(self, request, employee_id, format=None):
+        try:
+            employee = Employee.objects.get(pk=employee_id)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+        profile_picture = request.data.get('profile_picture')
+
+        if profile_picture:
+            employee.profile_picture = profile_picture
+
+        serializer = ProfilePicSerializer(employee, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class AccountView(APIView):
     permission_classes = [AllowAny]
 
