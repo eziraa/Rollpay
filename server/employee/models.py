@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User as BaseUser
 from month.models import MonthField
 
+def upload_to(instance, filename):
+    return 'photos/{filename}'.format(filename = filename)
 
 class TaxRules(models.Model):
     salary_min = models.IntegerField(null=False)
@@ -63,6 +65,7 @@ class Employee(models.Model):
     )
     id = models.CharField(max_length=9, db_index=True,
                           primary_key=True, unique=True, null=False)
+    profile_picture = models.ImageField(upload_to=upload_to, default="photos/profile.png")
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
     phone_number = models.CharField(max_length=15, null=False)

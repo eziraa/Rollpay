@@ -12,6 +12,7 @@ import {
   SalaryTable,
   SearchContainer,
   SearchInput,
+  ExportButton,
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
 import { Header, Title } from "../display-employee/display-employee.style";
@@ -22,7 +23,7 @@ import LoadingSpinner from "../../utils/spinner/spinner";
 import { getFormattedMonth } from "./utils";
 import { Label } from "../profile/profile.style";
 import { EmployeePayment } from "../../../typo/payment/response";
-
+import * as XLSX from "xlsx";
 export const Salary = () => {
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
@@ -86,6 +87,14 @@ export const Salary = () => {
   };
 
   const [employeeSalary, setEmployeeSalary] = useState<EmployeePayment[]>([]);
+  const handleExport = () => {
+    console.log(employeeSalary);
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(employeeSalary);
+
+    XLSX.utils.book_append_sheet(wb, ws, "SalarySheet1");
+    XLSX.writeFile(wb, "MyExcel.xlsx");
+  };
 
   useEffect(() => {
     if (salary.searching && salary.search_response)
@@ -131,6 +140,7 @@ export const Salary = () => {
               new Date(employeeSalary.at(0)?.month || "2024-04-04")
             )}
         </Label>
+        <ExportButton onClick={handleExport}>Export </ExportButton>
       </Header>
       {salary.loading ? (
         <LoadingSpinner />

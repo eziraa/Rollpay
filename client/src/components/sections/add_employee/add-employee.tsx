@@ -22,9 +22,9 @@ import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addEmpRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_EMPLOYEE, ADD_POSITION } from "../../../constants/tasks";
+import { ADD_EMPLOYEE, ADD_POSITION, CLOSE_MODAL } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 
 export const AddEmployee = () => {
@@ -56,6 +56,7 @@ export const AddEmployee = () => {
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
       dispatcher(addEmpRequested(values));
+      if (!adding) openModal(CLOSE_MODAL);
     },
   });
   return (
@@ -251,7 +252,6 @@ export const AddEmployee = () => {
                   fontSize: "1.5rem",
                 }}
               >
-                {" "}
                 {adding_emp_error}
               </FormError>
             )}

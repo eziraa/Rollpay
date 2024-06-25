@@ -36,7 +36,7 @@ import UserAllowance from "./user-allowance";
 import { useAuth } from "../../../contexts/auth-context";
 import { useContext, useEffect } from "react";
 import { DisplayContext } from "../../../contexts/display-context";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch} from "../../../utils/custom-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 const UserProfile = () => {
@@ -44,13 +44,18 @@ const UserProfile = () => {
   const { curr_user: employee } = useAuth();
   const { display, setDisplay } = useContext(DisplayContext);
   const dispatcher = useAppDispatch();
-  const payments = useAppSelector(
-    (state) => state.salary.curr_emp?.employee.payments
-  );
+
 
   useEffect(() => {
     dispatcher(getCurrEmpPaymentInfo(employee.id));
-  }, [payments, dispatcher, employee.id]);
+    setDisplay({
+      ...display,
+      list_employees: false,
+      see_employee_allowance: true,
+      see_employee_deduction: false,
+      see_employee_overtime: false,
+    });
+  }, [ employee.id]);
   return (
     <>
       <Header />
@@ -80,8 +85,8 @@ const UserProfile = () => {
                   setDisplay({
                     ...display,
                     see_employee_allowance: true,
-                    see_employee_deduction: false,
                     see_employee_overtime: false,
+                    see_employee_deduction: false,
                   });
                 }}
               >
