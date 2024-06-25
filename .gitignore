@@ -28,3 +28,4 @@ client/src/components/sections/salary/scroll.css
 client/src/components/sections/salary/table.tsx
 client/src/components/sections/add_employee/position.ts
 client/src/components/sections/add_employee/postion_data.ts
+client/src/components/sections/employee-allowance/data.ts

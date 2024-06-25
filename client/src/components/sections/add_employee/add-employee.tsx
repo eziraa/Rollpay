@@ -9,6 +9,7 @@ import {
 } from "../../utils/form-elements/form.style";
 import { Modal } from "../../utils/modal/modal";
 import {
+  AddBtn,
   AddButton,
   AddEmployeeContainer,
   AddEmployeeForm,
@@ -21,24 +22,10 @@ import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { addEmpRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import api from "../../../config/api";
-import { useEffect, useState } from "react";
-interface Position {
-  name: string;
-}
-const fetchPositions = async (): Promise<Position[]> => {
-  try {
-    const response = await api.get("employee/positions");
-    const positions: Position[] = response.data.map(
-      (item: { position_name: string }) => ({
-        name: item.position_name,
-      })
-    );
-    return positions;
-  } catch (error) {
-    return []; // Return an empty array if there's an error
-  }
-};
+import { useEffect } from "react";
+import { useModal } from "../../../hooks/modal-hook";
+import { ADD_EMPLOYEE, ADD_POSITION, CLOSE_MODAL } from "../../../constants/tasks";
+import { listPositionsRequested } from "../../../store/position/position-slice";
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
@@ -46,34 +33,34 @@ export const AddEmployee = () => {
     (state) => state.employee
   );
 
-  const [positions, setPositions] = useState<Position[]>([]);
-  const fetchData = async () => {
-    const positions = await fetchPositions();
-    setPositions(positions);
-    // Now you can use the positions array
-  };
-
+  const { positions, curr_position } = useAppSelector(
+    (state) => state.position
+  );
+  const { openModal } = useModal();
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (curr_position) {
+      dispatcher(listPositionsRequested());
+    }
+  }, [curr_position, dispatcher]);
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
       last_name: "",
       phone_number: "",
       email: "",
-      gender: "",
+      gender: "M",
       date_of_birth: "",
       date_of_hire: "",
-      position: "",
+      position: curr_position?.position_name || "",
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
       dispatcher(addEmpRequested(values));
+      if (!adding) openModal(CLOSE_MODAL);
     },
   });
   return (
-    <Modal>
+    <Modal content={ADD_EMPLOYEE}>
       <AddEmployeeContainer>
         <Title>Add Employee</Title>
         <AddEmployeeForm
@@ -181,21 +168,51 @@ export const AddEmployee = () => {
           <Column>
             <InputContainer>
               <Label htmlFor="role">Role(Position)</Label>
-              <Select name="position" onChange={formHandler.handleChange}>
-                <SelectOption value="" disabled selected>
-                  Select Position
-                </SelectOption>
-                {positions.map((position) => (
-                  <SelectOption value={position.name}>
-                    {position.name}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                  gap: "1rem",
+                }}
+              >
+                <Select
+                  style={{ flex: 2 }}
+                  name="position"
+                  onChange={formHandler.handleChange}
+                >
+                  <SelectOption value="" disabled selected={!curr_position}>
+                    Select Position
                   </SelectOption>
-                ))}
-              </Select>
+                  {positions.map(
+                    (position) =>
+                      position && (
+                        <SelectOption
+                          selected={position.id === curr_position?.id}
+                          value={position.position_name}
+                        >
+                          {position.position_name}
+                        </SelectOption>
+                      )
+                  )}
+                </Select>
+                <AddBtn
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(ADD_POSITION);
+                  }}
+                  style={{ flex: 1.2 }}
+                >
+                  {"Add New"}
+                </AddBtn>
+              </div>
               <FormError>
                 {formHandler.touched.position && formHandler.errors.position ? (
                   <div>{formHandler.errors.position}</div>
                 ) : null}
-              </FormError>{" "}
+              </FormError>
             </InputContainer>
             <InputContainer>
               <Label htmlFor="date_of_birth">Birth Date</Label>
@@ -235,7 +252,6 @@ export const AddEmployee = () => {
                   fontSize: "1.5rem",
                 }}
               >
-                {" "}
                 {adding_emp_error}
               </FormError>
             )}

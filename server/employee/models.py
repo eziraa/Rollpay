@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User as BaseUser
 from month.models import MonthField
 
+def upload_to(instance, filename):
+    return 'photos/{filename}'.format(filename = filename)
 
 class TaxRules(models.Model):
     salary_min = models.IntegerField(null=False)
@@ -27,6 +29,7 @@ class Overtime(models.Model):
     overtime_rate = models.DecimalField(
         max_digits=6, decimal_places=2, null=False)
     length = models.IntegerField(null=True)
+    overtime_date = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.overtime_type    
 
@@ -35,6 +38,8 @@ class Deduction(models.Model):
     deduction_type = models.CharField(max_length=255, null=False)
     deduction_rate = models.DecimalField(
         max_digits=7, decimal_places=2, null=False)
+    date_of_start = models.DateField(auto_now=True)
+    date_of_end = models.DateField(auto_now=True)
     def __str__(self):
         return self.deduction_type
 
@@ -50,11 +55,6 @@ class Salary(models.Model):
         Deduction, blank=True)
 
 
-class Position(models.Model):
-    position_name = models.CharField(
-        max_length=255, null=False, primary_key=True)
-    basic_salary = models.DecimalField(
-        max_digits=12, decimal_places=2, null=False)
 
 class Employee(models.Model):
     Male = 'M'
@@ -65,6 +65,7 @@ class Employee(models.Model):
     )
     id = models.CharField(max_length=9, db_index=True,
                           primary_key=True, unique=True, null=False)
+    profile_picture = models.ImageField(upload_to=upload_to, default="photos/profile.png")
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
     phone_number = models.CharField(max_length=15, null=False)
@@ -94,3 +95,13 @@ class Payment(models.Model):
 
     class Meta:
         unique_together = ('employee', 'month')
+
+
+class Position(models.Model):
+    id = models.AutoField(primary_key=True)
+    position_name = models.CharField(
+        max_length=255, null=False, unique=True)
+    basic_salary = models.DecimalField(
+        max_digits=12, decimal_places=2, null=False)
+    start_date = models.DateField(auto_now=True)
+    end_date = models.DateField(null=True, blank=True)

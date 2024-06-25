@@ -11,6 +11,7 @@ import { AuthProvider } from "./contexts/auth-context";
 import { PaginationContext } from "./contexts/pagination-context";
 import { usePagination } from "./hooks/use-pagination";
 import { DisplayProvider } from "./providers/display-provider";
+import { ModalProvider } from "./providers/modal-provider";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
@@ -34,12 +35,14 @@ function App() {
           }}
         >
           <DisplayProvider>
-            <AuthProvider>
-              <ThemeProvider theme={theme}>
-                <FlashMessage />
-                <RouterConfig />
-              </ThemeProvider>
-            </AuthProvider>
+            <ModalProvider>
+              <AuthProvider>
+                <ThemeProvider theme={theme}>
+                  <FlashMessage />
+                  <RouterConfig />
+                </ThemeProvider>
+              </AuthProvider>
+            </ModalProvider>
           </DisplayProvider>
         </PaginationContext.Provider>
       </ThemeContext.Provider>

@@ -1,7 +1,3 @@
-// import { ADD_ALLOWANCE } from "../../../constants/tasks";
-// import { setShortTask } from "../../../store/user/user-slice";
-import { useContext } from "react";
-// import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   Caption,
   CustomTable,
@@ -18,14 +14,14 @@ import {
   AllowanceHeader,
   AllowanceTitle,
 } from "./allowance.style";
-import { DisplayContext } from "../../../contexts/display-context";
 import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
+import { useModal } from "../../../hooks/modal-hook";
+import { ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
 
 export const EmployeeAllowance = () => {
-  // const dispatcher = useAppDispatch();
-  const { display, setDisplay } = useContext(DisplayContext);
+  const { openModal } = useModal();
   const { curr_emp } = useAppSelector((state) => state.salary);
   return (
     <AllowanceContainer>
@@ -35,14 +31,7 @@ export const EmployeeAllowance = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            setDisplay({
-              ...display,
-              add_overtime: false,
-              add_deduction: false,
-              add_allowance: true,
-              add_employee: false,
-            });
-            // dispatcher(setShortTask(ADD_ALLOWANCE));
+            openModal(ADD_ALLOWANCE_TO_EMP);
           }}
         >
           Add

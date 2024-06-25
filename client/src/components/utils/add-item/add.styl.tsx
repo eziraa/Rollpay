@@ -29,6 +29,7 @@ export const add_btn = css`
   cursor: pointer;
   font-size: 1.3rem;
   text-align: center;
+  border: none;
   background-color: ${({ theme }) => theme.buttons.primary};
   color: #ffffff;
   &:hover {

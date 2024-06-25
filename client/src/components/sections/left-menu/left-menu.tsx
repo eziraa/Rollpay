@@ -23,7 +23,7 @@ function LeftMenu() {
         <MenuItemText>Home</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={display.list_employees}
+        active={display.list_employees && true}
         onClick={(e) => {
           if (loading) return;
           e.preventDefault();
@@ -32,7 +32,7 @@ function LeftMenu() {
             ...display,
             list_employees: true,
             see_employee_salary: false,
-            see_employee: false
+            see_employee: false,
           });
           // dispatcher(setLongTask(LIST_EMP_S));
         }}
@@ -41,7 +41,7 @@ function LeftMenu() {
         <MenuItemText>All Employees</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={display.see_employee_salary}
+        active={display.see_employee_salary && true}
         onClick={() => {
           if (loading) return;
           setDisplay({
@@ -49,7 +49,7 @@ function LeftMenu() {
             list_employees: false,
             see_employee_salary: true,
             search_employee: false,
-            see_employee: false
+            see_employee: false,
           });
         }}
       >

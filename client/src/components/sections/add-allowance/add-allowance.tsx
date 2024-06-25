@@ -1,3 +1,4 @@
+import { ADD_ALLOWANCE } from "../../../constants/tasks";
 import {
   Input,
   InputContainer,
@@ -13,7 +14,7 @@ import {
 } from "./add-allowance.style";
 export const AddAllowance = () => {
   return (
-    <Modal>
+    <Modal content={ADD_ALLOWANCE}>
       <AllowanceContainer>
         <AllowanceBody>
           <Title>Add Allowance</Title>

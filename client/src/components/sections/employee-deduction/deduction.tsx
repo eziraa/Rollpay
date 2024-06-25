@@ -1,7 +1,3 @@
-// import { ADD_DEDUCTION } from "../../../constants/tasks";
-// import { setShortTask } from "../../../store/user/user-slice";
-import { useContext } from "react";
-// import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   CustomTable,
   HeaderTitle,
@@ -18,16 +14,15 @@ import {
   DeductionHeader,
   DeductionTitle,
 } from "./deduction.style";
-import { DisplayContext } from "../../../contexts/display-context";
 import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
+import { useModal } from "../../../hooks/modal-hook";
+import { ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
 
 export const EmployeeDeduction = () => {
-  // const dispatcher = useAppDispatch();
-  const { display, setDisplay } = useContext(DisplayContext);
   const { curr_emp } = useAppSelector((state) => state.salary);
-
+  const { openModal } = useModal();
   return (
     <DeductionContainer>
       <DeductionHeader>
@@ -36,13 +31,7 @@ export const EmployeeDeduction = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            setDisplay({
-              ...display,
-              add_overtime: false,
-              add_deduction: true,
-              add_allowance: false,
-              add_employee: false,
-            });
+            openModal(ADD_DEDUCTION_TO_EMP);
           }}
         >
           Add
@@ -58,7 +47,7 @@ export const EmployeeDeduction = () => {
                 <HeaderTitle>Deduction Value</HeaderTitle>
                 <HeaderTitle>Date of Given</HeaderTitle>
               </TableHeader>
-              (
+
               <TableBody>
                 {payment.deductions.map((deduction, index) => {
                   return (

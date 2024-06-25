@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { DisplayContext } from "../../../contexts/display-context";
 import {
   CustomTable,
   HeaderTitle,
@@ -19,10 +17,12 @@ import {
 import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
+import { useModal } from "../../../hooks/modal-hook";
+import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
 
 export const EmployeeOvertime = () => {
-  const { display, setDisplay } = useContext(DisplayContext);
   const { curr_emp } = useAppSelector((state) => state.salary);
+  const { openModal } = useModal();
   return (
     <OvertimeContainer>
       <OvertimeHeader>
@@ -30,13 +30,7 @@ export const EmployeeOvertime = () => {
         <AddButton
           onClick={(e) => {
             e.stopPropagation();
-            setDisplay({
-              ...display,
-              add_overtime: true,
-              add_deduction: false,
-              add_allowance: false,
-              add_employee: false,
-            });
+            openModal(ADD_OVERTIME_TO_EMP);
           }}
         >
           Add

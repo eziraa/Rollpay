@@ -1,5 +1,9 @@
 import { AxiosError } from "axios";
-import { AddEmpParams, AddSalaryParams } from "../typo/employee/params";
+import {
+  AddAllowanceToEmployeesParams,
+  AddEmpParams,
+  AddSalaryParams,
+} from "../typo/employee/params";
 import api from "../config/api";
 import {
   AddEmpResponse,
@@ -49,7 +53,6 @@ export interface PaginatedBackEndResponse {
 }
 
 const listEmployee = async (pageUrl?: string) => {
-  // Use the provided page URL or default to the initial list endpoint
   const endpoint = pageUrl || "/employee/list";
 
   const employees = await api
@@ -58,9 +61,9 @@ const listEmployee = async (pageUrl?: string) => {
       return {
         results: res.data.results,
         pagination: {
-          next: res.data.next, // Assuming 'next' is part of your response
+          next: res.data.next,
           previous: res.data.previous,
-          count: res.data.count, // Assuming 'previous' is part of your response
+          count: res.data.count,
         },
         code: res.status,
         success: "Success returned employees",
@@ -80,6 +83,20 @@ const listEmployee = async (pageUrl?: string) => {
 const addSalary = async (values: AddSalaryParams) => {
   const employees = await api
     .post<EmpResponse>("/employee/salary/add/" + values.empID, values)
+    .then((res) => {
+      return res.data;
+    });
+  return employees;
+};
+
+const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
+  const employees = await api
+    .post<EmpResponse>(
+      "/employee/allowance/add" +
+        values.empployee_id +
+        "/" +
+        values.allowance_id
+    )
     .then((res) => {
       return res.data;
     });
@@ -141,6 +158,7 @@ const EmployeeAPI = {
   addSalary,
   editEmployee,
   deleteEmployee,
+  addAllowance,
 };
 
 export default EmployeeAPI;

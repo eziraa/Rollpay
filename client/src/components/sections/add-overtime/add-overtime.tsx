@@ -1,3 +1,4 @@
+import { ADD_OVERTIME } from "../../../constants/tasks";
 import {
   Input,
   InputContainer,
@@ -11,9 +12,9 @@ import {
   OvertimeContainer,
   OvertimeForm,
 } from "./add-overtime.style";
-export const AddOvertimes = () => {
+export const AddOvertime = () => {
   return (
-    <Modal>
+    <Modal content={ADD_OVERTIME}>
       <OvertimeContainer>
         <OvertimeBody>
           <Title>Add Overtime</Title>
