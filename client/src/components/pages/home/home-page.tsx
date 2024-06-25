@@ -23,7 +23,7 @@ export const HomePage = () => {
   }, [dispacher, display]);
   useEffect(() => {
     employee.pagination && setPagination(employee.pagination);
-  }, [employee.pagination]);
+  }, [employee.pagination,setPagination]);
   return (
     <HomeContainer>
       <Header />
@@ -31,8 +31,8 @@ export const HomePage = () => {
         <LeftMenu />
         <CheckFlashMessage />
         {employee.loading ? <LoadingSpinner /> : <Main />}
+        <ModalStore />
       </HomeBody>
-      <ModalStore />
     </HomeContainer>
   );
 };
