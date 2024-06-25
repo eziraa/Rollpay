@@ -18,6 +18,8 @@ export const HomePage = () => {
   const { display } = useContext(DisplayContext);
   useEffect(() => {
     if (display.search_employee_salary) return;
+    if (display.see_profile) return;
+
     if (display.see_employee_salary) dispacher(getSalariesRequested());
     else if (display.list_employees) dispacher(listEmpRequested());
   }, [dispacher, display]);
