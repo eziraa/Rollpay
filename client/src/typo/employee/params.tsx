@@ -24,6 +24,11 @@ export interface AddPositionParams {
 
 
 export interface AddAllowanceToEmployeesParams {
-  empployee_id: string;
-  allowance_id: string;
+  employee_id: string;
+  allowance_type: string;
+}
+
+export interface AddDeductionToEmployeesParams {
+  employee_id: string;
+  deduction_type: string;
 }
