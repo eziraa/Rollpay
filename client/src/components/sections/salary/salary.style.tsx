@@ -5,6 +5,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { Input } from "../../utils/form-elements/form.style";
 import { CustomTable } from "../../utils/custom-table/custom-table";
 import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
+import { Button } from "../see-employee/see-employee.style";
 
 export const SalaryContainer = styled.div`
   display: flex;
@@ -64,3 +65,8 @@ export const SalaryTable = styled(CustomTable)`
   height: 78%;
   display: block;
 `;
+
+export const ExportButton = styled(Button)`
+  width: 7rem;
+  margin-left: 1rem;
+`
