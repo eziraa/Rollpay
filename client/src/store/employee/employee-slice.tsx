@@ -2,7 +2,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
-import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
+import {
+  AddAllowanceToEmployeesParams,
+  AddDeductionToEmployeesParams,
+  AddEmpParams,
+  AddSalaryParams,
+} from "../../typo/employee/params";
 import {
   EditEmployeeParams,
   PaginatedEmpResponse,
@@ -20,6 +25,7 @@ const InitialEmpState: EmployeeState = {
   searching: false,
   pagination: undefined,
   adding_emp_error: undefined,
+  task_finished: true,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -53,7 +59,7 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.adding_emp_error = undefined;
     },
-    unfinishedAdd: (state, action: PayloadAction<string>) => {
+    unfinishedAdd: (state, action: PayloadAction<string | undefined>) => {
       state.adding = false;
       state.adding_emp_error = action.payload;
     },
@@ -125,12 +131,36 @@ const EmployeeSlice = createSlice({
       state.editing = false;
       state.curr_emp = action.payload;
     },
+    unfinishedEdit: (state) => {
+      state.editing = false;
+    },
     resetCurrEmployee: (state) => {
       state.curr_emp = undefined;
       state.editing = false;
     },
-    unfinishedEdit: (state) => {
+    addEmpAllowanceRequested: (
+      state,
+      _: PayloadAction<AddAllowanceToEmployeesParams>
+    ) => {
+      state.task_finished = false;
+      state.editing = true;
+    },
+    finishAddAllowanceDone: (state) => {
+      state.task_finished = true;
       state.editing = false;
+      state.adding_emp_error = undefined;
+    },
+    addEmpDeductionRequested: (
+      state,
+      _: PayloadAction<AddDeductionToEmployeesParams>
+    ) => {
+      state.task_finished = false;
+      state.editing = true;
+    },
+    addingDone: (state) => {
+      state.task_finished = true;
+      state.editing = false;
+      state.adding_emp_error = undefined;
     },
   },
 });
@@ -143,6 +173,10 @@ export const {
   unfinishedList,
   tryingToDelete,
   deleteEmpRequested,
+  addEmpAllowanceRequested,
+  finishAddAllowanceDone,
+  addEmpDeductionRequested,
+  addingDone,
   deleteEmpDone,
   unfinishedDelete,
   setCurrentEmployee,
