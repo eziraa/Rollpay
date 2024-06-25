@@ -1,8 +1,13 @@
 
+from decimal import Decimal
 from rest_framework import serializers
+from employee.serializers.allowance import AllowanceSerializer
+from employee.serializers.salary import SalarySerializer
+from employee.serializers.deduction import DeductionSerializer
+from employee.serializers.overtime import OvertimeSerializer
+from employee.utils.salary_calculator import SalaryCalculator
 from ..models import Payment
-from .serializers import *
-from collections.abc import Iterable
+from .employee import *
 
 
 class PaymentSerializer(serializers.ModelSerializer):

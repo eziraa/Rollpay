@@ -19,5 +19,11 @@ export interface AddSalaryParams {
 
 export interface AddPositionParams {
   position_name: string;
-  base_salary: string;
+  basic_salary: string;
+}
+
+
+export interface AddAllowanceToEmployeesParams {
+  empployee_id: string;
+  allowance_id: string;
 }

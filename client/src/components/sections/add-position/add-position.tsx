@@ -13,22 +13,45 @@ import {
   PositionContainer,
   PositionForm,
 } from "./add-position.style";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { addPositionRequested } from "../../../store/position/position-slice";
+import { useModal } from "../../../hooks/modal-hook";
+import { ADD_POSITION } from "../../../constants/tasks";
+import { AddPositionSchema } from "../../../schema/add-position-schema";
+import { useEffect } from "react";
 export const AddPosition = () => {
+  const dispatcher = useAppDispatch();
+  const { closeModal } = useModal();
+  const { adding_position_error, curr_position } = useAppSelector(
+    (state) => state.position
+  );
   const { touched, errors, values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       position_name: "",
-      base_salary: "",
+      basic_salary: "",
     },
-    onSubmit: (values) => {},
+    validationSchema: AddPositionSchema,
+    onSubmit: async (values) => {
+      await dispatcher(addPositionRequested(values));
+    },
   });
+
+  useEffect(() => {
+    curr_position && closeModal(ADD_POSITION);
+  }, [curr_position]);
   return (
-    <Modal>
+    <Modal content={ADD_POSITION}>
       <PositionContainer>
         <PositionBody>
           <Title>Add Position</Title>
-          <PositionForm>
+          <PositionForm
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(e);
+            }}
+          >
             <InputContainer>
-              <Label>Position Name Name</Label>
+              <Label>Position Name</Label>
               <Input
                 type="text"
                 onChange={handleChange}
@@ -43,14 +66,24 @@ export const AddPosition = () => {
               <Label>Base Salary</Label>
               <Input
                 type="number"
-                value={values.base_salary}
-                name="base_salary"
+                value={values.basic_salary}
+                name="basic_salary"
                 onChange={handleChange}
               />
-              {touched.base_salary && errors.base_salary && (
-                <FormError> {errors.base_salary} </FormError>
+              {touched.basic_salary && errors.basic_salary && (
+                <FormError> {errors.basic_salary} </FormError>
               )}
             </InputContainer>
+            {adding_position_error && (
+              <FormError
+                style={{
+                  fontSize: "1.5rem",
+                }}
+              >
+                {" "}
+                {adding_position_error}
+              </FormError>
+            )}
             <AddBtn type="submit">Add</AddBtn>
           </PositionForm>
         </PositionBody>

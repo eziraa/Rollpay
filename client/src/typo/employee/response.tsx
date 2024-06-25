@@ -24,10 +24,3 @@ export interface EmpResponse {
   success: string;
 }
 
-export interface Position {
-  position_name: string;
-  base_salary: number;
-  position_description: string;
-  date_of_started: string;
-  date_of_ended: string;
-}

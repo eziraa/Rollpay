@@ -1,21 +1,26 @@
-import { CLOSE_MODAL } from "../../../constants/tasks";
 import { useModal } from "../../../hooks/modal-hook";
 import { CloseIcon } from "../buttons/close";
 import { ModalContainer, ModalContent } from "./modal.style";
 
-export const Modal = ({ children }: { children: React.ReactNode }) => {
-  const { openModal } = useModal();
+export const Modal = ({
+  children,
+  content,
+}: {
+  children: React.ReactNode;
+  content: string;
+}) => {
+  const { closeModal } = useModal();
   return (
     <ModalContainer
       onClick={(e) => {
         e.stopPropagation();
-        openModal(CLOSE_MODAL);
+        closeModal(content);
       }}
     >
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <CloseIcon
           onClick={() => {
-            openModal(CLOSE_MODAL);
+            closeModal(content);
           }}
         />
         {children}

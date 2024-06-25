@@ -9,51 +9,51 @@ import {
 } from "../../utils/custom-table/custom-table";
 import {
   AddButton,
-  DeductionBody,
-  DeductionContainer,
-  DeductionHeader,
-  DeductionTitle,
-} from "./deduction.style";
+  OvertimeBody,
+  OvertimeContainer,
+  OvertimeHeader,
+  OvertimeTitle,
+} from "./overtime.style";
 import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_DEDUCTION } from "../../../constants/tasks";
+import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
 
-export const EmployeeDeduction = () => {
+export const EmployeeOvertime = () => {
   const { curr_emp } = useAppSelector((state) => state.salary);
   const { openModal } = useModal();
   return (
-    <DeductionContainer>
-      <DeductionHeader>
-        <DeductionTitle>Employee Deduction</DeductionTitle>
+    <OvertimeContainer>
+      <OvertimeHeader>
+        <OvertimeTitle>Employee Overtime</OvertimeTitle>
         <AddButton
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
-            openModal(ADD_DEDUCTION);
+            openModal(ADD_OVERTIME_TO_EMP);
           }}
         >
           Add
         </AddButton>
-      </DeductionHeader>
-      <DeductionBody>
+      </OvertimeHeader>
+      <OvertimeBody>
         {curr_emp?.employee.payments.map((payment, index) => {
-          return payment.allowances.length > 0 ? (
+          return payment.overtimes.length > 0 ? (
             <CustomTable key={index}>
               <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
               <TableHeader>
-                <HeaderTitle>Deduction Name</HeaderTitle>
-                <HeaderTitle>Deduction Value</HeaderTitle>
+                <HeaderTitle>Overtime Name</HeaderTitle>
+                <HeaderTitle>Overtime Value</HeaderTitle>
+                <HeaderTitle>Length of Time</HeaderTitle>
                 <HeaderTitle>Date of Given</HeaderTitle>
               </TableHeader>
-
               <TableBody>
-                {payment.deductions.map((deduction, index) => {
+                {payment.overtimes.map((overtime, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableData>{deduction.deduction_type}</TableData>
-                      <TableData>{deduction.deduction_rate}</TableData>
+                      <TableData>{overtime.overtime_type}</TableData>
+                      <TableData>{overtime.overtime_rate}</TableData>
+                      <TableData>{overtime.length}</TableData>
                       <TableData>
                         {new Date(payment.payment_date).toLocaleDateString()}
                       </TableData>
@@ -65,11 +65,11 @@ export const EmployeeDeduction = () => {
           ) : (
             <div>
               <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-              <NoResult>No Deduction</NoResult>
+              <NoResult>No Overtime</NoResult>
             </div>
           );
         })}
-      </DeductionBody>
-    </DeductionContainer>
+      </OvertimeBody>
+    </OvertimeContainer>
   );
 };

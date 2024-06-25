@@ -2,11 +2,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeeState } from "../../typo/employee/states";
-import {
-  AddEmpParams,
-  AddPositionParams,
-  AddSalaryParams,
-} from "../../typo/employee/params";
+import { AddEmpParams, AddSalaryParams } from "../../typo/employee/params";
 import {
   EditEmployeeParams,
   PaginatedEmpResponse,
@@ -53,10 +49,6 @@ const EmployeeSlice = createSlice({
         number_of_pages,
       };
     },
-    addPositionRequested: (state, _: PayloadAction<AddPositionParams>) => {
-      state.adding = true;
-    },
-    addPositionDone: (state, _: PayloadAction<AddPositionParams>) => {},
     addEmpDone: (state) => {
       state.adding = false;
       state.adding_emp_error = undefined;
@@ -72,9 +64,6 @@ const EmployeeSlice = createSlice({
       state.deleting = true;
     },
     deleteEmpRequested: (__, _: PayloadAction<string>) => {},
-    // searchRequested: (state, action: PayloadAction<string>) => {
-    //   state.mini_task = action.payload;
-    // },
     addSearched: (state, action: PayloadAction<Employee[]>) => {
       state.query_set = action.payload;
     },
@@ -88,9 +77,7 @@ const EmployeeSlice = createSlice({
     listEmpDone: (state, payload: PayloadAction<PaginatedEmpResponse>) => {
       state.employees = payload.payload.results;
       state.adding = false;
-      // state.task = undefined;
       state.loading = false;
-
       state.pagination = {
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
@@ -98,7 +85,6 @@ const EmployeeSlice = createSlice({
     },
     unfinishedList: (state) => {
       state.loading = false;
-      // state.task = undefined;
       state.adding = false;
       state.employees = [];
     },
@@ -119,8 +105,6 @@ const EmployeeSlice = createSlice({
     noSearchResult: (state) => {
       state.searching = false;
     },
-
-    // },
     setCurrentEmployee: (
       state,
       payload: PayloadAction<Employee | undefined>

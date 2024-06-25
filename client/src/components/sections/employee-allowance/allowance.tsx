@@ -18,7 +18,7 @@ import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_ALLOWANCE } from "../../../constants/tasks";
+import { ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
 
 export const EmployeeAllowance = () => {
   const { openModal } = useModal();
@@ -31,7 +31,7 @@ export const EmployeeAllowance = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            openModal(ADD_ALLOWANCE);
+            openModal(ADD_ALLOWANCE_TO_EMP);
           }}
         >
           Add

@@ -18,7 +18,6 @@ import EmployeeAPI, {
 import { AddEmpParams } from "../../typo/employee/params";
 import { AddEmpResponse } from "../../typo/employee/response";
 
-
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
     const response: AddEmpResponse = yield call(
@@ -225,39 +224,6 @@ export function* watchLoadPage() {
   yield takeEvery("employee/loadPrevPageRequested", loadPrevPage);
 }
 
-// function* addSalary(action: PayloadAction<AddSalaryParams>) {
-//   try {
-//     const response: EmpResponse = yield call(
-//       EmployeeAPI.addSalary,
-//       action.payload
-//     );
-//     // yield put(addSalaryDone(response.employees[0]));
-//     yield put(
-//       setFlashMessage({
-//         type: "success",
-//         status: true,
-//         title: "Add salary",
-//         desc: "Salary added successfully",
-//         duration: 3,
-//       })
-//     );
-//   } catch (e) {
-//     yield put(
-//       setFlashMessage({
-//         type: "error",
-//         status: true,
-//         title: "Add salary",
-//         desc: "Could not add salary",
-//         duration: 3,
-//       })
-//     );
-//   }
-// }
-
-// export function* watchAddSalary() {
-//   yield takeEvery("employee/addSalaryRequested", addSalary);
-// }
-
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
   try {
     const response: AddEmpResponse = yield call(
@@ -329,4 +295,5 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
 
 export function* watchEditEmployee() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
+  // yield takeEvery("employee/addPositionRequested", addPosition);
 }

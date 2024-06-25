@@ -4,7 +4,7 @@ import {
   AllowanceContainer,
   AllowanceHeader,
   AllowanceTitle,
-} from "../../sections/allowance/allowance.style";
+} from "../../sections/employee-allowance/allowance.style";
 import { getFormattedMonth } from "../../sections/salary/utils";
 import {
   CustomTable,

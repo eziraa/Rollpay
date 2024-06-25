@@ -1,3 +1,4 @@
+import { ADD_DEDUCTION } from "../../../constants/tasks";
 import {
   Input,
   InputContainer,
@@ -13,7 +14,7 @@ import {
 } from "./add-deduction.style";
 export const AddDeduction = () => {
   return (
-    <Modal>
+    <Modal content={ADD_DEDUCTION}>
       <DeductionContainer>
         <DeductionBody>
           <Title>Add Deduction</Title>
