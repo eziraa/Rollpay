@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import { useAllowance } from "../../../hooks/allowance-hook";
-import { useEmployee } from "../../../hooks/employee-hook";
-import { useAppDispatch } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   FormError,
   InputContainer,
@@ -19,12 +18,14 @@ import {
 import { Title } from "../add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
-import { useModal } from "../../../hooks/modal-hook";
 import { ADD_ALLOWANCE, ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
+import { addEmpAllowanceRequested } from "../../../store/employee/employee-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
+import { useModal } from "../../../hooks/modal-hook";
 export const AddAllowanceToEmp = () => {
   const { allowances, curr_allowance } = useAllowance();
   const dispatcher = useAppDispatch();
-  const employee = useEmployee();
+  const employee = useAppSelector((state) => state.employee);
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_allowance) {
@@ -33,13 +34,14 @@ export const AddAllowanceToEmp = () => {
   }, [curr_allowance, dispatcher]);
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      allowance_name: "",
-      employee_id: employee.curr_emp?.id,
+      allowance_type: "",
+      employee_id: employee.curr_emp?.id || "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      dispatcher(addEmpAllowanceRequested(values));
     },
   });
+
   return (
     <Modal content={ADD_ALLOWANCE_TO_EMP}>
       <AllowanceContainer>
@@ -48,6 +50,7 @@ export const AddAllowanceToEmp = () => {
           <AllowanceForm
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               handleSubmit(e);
             }}
           >
@@ -62,7 +65,11 @@ export const AddAllowanceToEmp = () => {
                   gap: "1rem",
                 }}
               >
-                <Select style={{ flex: 2 }} onChange={handleChange}>
+                <Select
+                  name="allowance_type"
+                  style={{ flex: 2 }}
+                  onChange={handleChange}
+                >
                   <SelectOption value="" disabled selected={!curr_allowance}>
                     Select Position
                   </SelectOption>
@@ -71,10 +78,9 @@ export const AddAllowanceToEmp = () => {
                       allowance && (
                         <SelectOption
                           selected={allowance.id === curr_allowance?.id}
-                          value={allowance.allowance_name}
-                          onChange={handleChange}
+                          value={allowance.allowance_type}
                         >
-                          {allowance.allowance_name}
+                          {allowance.allowance_type}
                         </SelectOption>
                       )
                   )}
@@ -91,12 +97,29 @@ export const AddAllowanceToEmp = () => {
                 </AddBtn>
               </div>
               <FormError>
-                {touched.allowance_name && errors.allowance_name ? (
-                  <div>{errors.allowance_name}</div>
+                {touched.allowance_type && errors.allowance_type ? (
+                  <div>{errors.allowance_type}</div>
                 ) : null}
               </FormError>
             </InputContainer>
-            <AddBtn>Add</AddBtn>
+            {employee.adding_emp_error && (
+              <FormError
+                style={{
+                  fontSize: "1.5rem",
+                }}
+              >
+                {" "}
+                {employee.adding_emp_error}
+              </FormError>
+            )}
+            <AddBtn type="submit">
+              {" "}
+              {employee.editing && !employee.adding_emp_error ? (
+                <SmallSpinner />
+              ) : (
+                "Add"
+              )}{" "}
+            </AddBtn>
           </AllowanceForm>
         </AllowanceBody>
       </AllowanceContainer>
