@@ -14,14 +14,12 @@ import {
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import DropDown from "../../utils/drop-down/drop-down";
-import {
-  loadNextPageRequested,
-  loadPrevPageRequested,
-} from "../../../store/employee/employee-slice";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { useContext, useEffect, useState } from "react";
 import { PaginationContext } from "../../../contexts/pagination-context";
+import { loadNextEmployeeListPage } from "../../../store/employee/employee-slice";
+import { loadNextPaymentListPage } from "../../../store/salary/salary-slice";
 
 export interface PageInfo {
   currentPage: number;
@@ -35,7 +33,10 @@ function Pagination() {
   const [pageNumber, setPageNumber] = useState<number>(pagination.current_page);
   const loadNextPage = async () => {
     if (pagination?.next) {
-      dispatcher(loadNextPageRequested(pagination.next));
+      pagination.type === "employee" &&
+        dispatcher(loadNextEmployeeListPage(pagination.next));
+      pagination.type === "salary" &&
+        dispatcher(loadNextPaymentListPage(pagination.next));
     } else
       dispatcher(
         setFlashMessage({
@@ -49,7 +50,10 @@ function Pagination() {
   };
   const loadPrevPage = async () => {
     if (pagination?.prev) {
-      dispatcher(loadPrevPageRequested(pagination.prev));
+      pagination.type === "employee" &&
+        dispatcher(loadNextEmployeeListPage(pagination.prev));
+      pagination.type === "salary" &&
+        dispatcher(loadNextPaymentListPage(pagination.prev));
     } else
       dispatcher(
         setFlashMessage({
@@ -92,7 +96,7 @@ function Pagination() {
         if (base_url) {
           const url = new URL(base_url);
           dispatcher(
-            loadNextPageRequested(
+            loadNextEmployeeListPage(
               url.pathname + `?page=${page}&page_size=${pagination.per_page}`
             )
           );
