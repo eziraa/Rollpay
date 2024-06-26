@@ -25,7 +25,7 @@ export const HomePage = () => {
   }, [dispacher, display]);
   useEffect(() => {
     employee.pagination && setPagination(employee.pagination);
-  }, [employee.pagination,setPagination]);
+  }, [employee.pagination]);
   return (
     <HomeContainer>
       <Header />
