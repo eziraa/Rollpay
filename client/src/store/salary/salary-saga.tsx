@@ -6,6 +6,7 @@ import SalaryAPI from "../../services/salary-api";
 import { currentEmpPaymentInfoDone, getSalariesDone } from "./salary-slice";
 import {
   CurrentEmpPaymentsResponse,
+  PaginatedPaymentResponse,
   SalaryEmpResponse,
 } from "../../typo/salary/response";
 
@@ -14,7 +15,7 @@ import { SearchParams } from "../../typo/salary/params";
 
 function* GetEmployeeSalary() {
   try {
-    const response: SalaryEmpResponse = yield call(
+    const response: PaginatedPaymentResponse = yield call(
       SalaryAPI.listEmployeeSalary
     );
     if (response.code === 200) {
@@ -130,8 +131,57 @@ function* getEmpSalaryInfo(action: PayloadAction<string>) {
   }
 }
 
+function* loadNextPage(action: PayloadAction<string>) {
+  try {
+    const response: PaginatedPaymentResponse = yield call(
+      SalaryAPI.listEmployeeSalary,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getSalariesDone(response));
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Load Next Page",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* loadPrevPage(action: PayloadAction<string>) {
+  try {
+    const response: PaginatedPaymentResponse = yield call(
+      SalaryAPI.listEmployeeSalary,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getSalariesDone(response));
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Load Previous Page",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 export function* watchGetEmployeeSalary() {
   yield takeEvery("salary/getSalariesRequested", GetEmployeeSalary);
   yield takeEvery("salary/searchEmployeeRequested", searchEmployee);
   yield takeEvery("salary/getCurrEmpPaymentInfo", getEmpSalaryInfo);
+  yield takeEvery("salary/loadNextPaymentListPage", loadNextPage);
+  yield takeEvery("salary/loadNextPaymentListPage", loadPrevPage);
 }
