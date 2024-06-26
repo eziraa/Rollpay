@@ -1,7 +1,6 @@
 import { createContext } from "react";
 import { PaginationResponse } from "../typo/pagination/response";
-import { Pagination } from "../services/employee-api";
-
+import { Pagination } from "../typo/utils/response";
 export interface PaginationContextType {
   pagination: PaginationResponse;
   setPagination: (pagination: Pagination) => void;
@@ -16,6 +15,7 @@ export const PaginationContext = createContext<PaginationContextType>({
     per_page: 10,
     prev: undefined,
     next: undefined,
+    type: undefined,
   },
   setPagination: () => {},
   setPageSize: () => {},
