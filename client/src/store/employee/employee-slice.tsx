@@ -8,11 +8,8 @@ import {
   AddEmpParams,
   AddSalaryParams,
 } from "../../typo/employee/params";
-import {
-  EditEmployeeParams,
-  PaginatedEmpResponse,
-} from "../../services/employee-api";
-import { Employee } from "../../typo/employee/response";
+import { EditEmployeeParams } from "../../services/employee-api";
+import { Employee, PaginatedEmpResponse } from "../../typo/employee/response";
 
 const InitialEmpState: EmployeeState = {
   adding: false,

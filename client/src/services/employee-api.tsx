@@ -3,14 +3,13 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
-  AddSalaryParams,
 } from "../typo/employee/params";
 import api from "../config/api";
 import {
   AddEmpResponse,
-  EmpResponse,
-  Employee,
+  PaginatedEmpBackEndResponse,
 } from "../typo/employee/response";
+import { BaseResponse } from "../typo/utils/response";
 
 const addEmp = async (values: AddEmpParams) => {
   const response = await api
@@ -38,26 +37,11 @@ export interface Pagination {
   current_page: number;
   number_of_pages: number;
 }
-
-export interface PaginatedEmpResponse extends EmpResponse {
-  count: number;
-  results: Employee[];
-  pagination: Pagination;
-}
-
-export interface PaginatedBackEndResponse {
-  count: number;
-  results: Employee[];
-  next: string | null;
-  previous: string | null;
-  status: number;
-}
-
 const listEmployee = async (pageUrl?: string) => {
   const endpoint = pageUrl || "/employee/list";
 
   const employees = await api
-    .get<PaginatedBackEndResponse>(endpoint)
+    .get<PaginatedEmpBackEndResponse>(endpoint)
     .then((res) => {
       return {
         results: res.data.results,
@@ -81,18 +65,18 @@ const listEmployee = async (pageUrl?: string) => {
   return employees;
 };
 
-const addSalary = async (values: AddSalaryParams) => {
-  const employees = await api
-    .post<EmpResponse>("/employee/salary/add/" + values.empID, values)
-    .then((res) => {
-      return res.data;
-    });
-  return employees;
-};
+// const addSalary = async (values: AddSalaryParams) => {
+//   const employees = await api
+//     .post<EmpResponse>("/employee/salary/add/" + values.empID, values)
+//     .then((res) => {
+//       return res.data;
+//     });
+//   return employees;
+// };
 
 const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
   const employees = await api
-    .patch<EmpResponse>(
+    .patch<BaseResponse>(
       "/employee/allowance/add/" +
         values.employee_id +
         "/" +
@@ -117,7 +101,7 @@ const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
 
 const addDeduction = async (values: AddDeductionToEmployeesParams) => {
   const employees = await api
-    .patch<EmpResponse>(
+    .patch<BaseResponse>(
       "/employee/deduction/add/" +
         values.employee_id +
         "/" +
@@ -173,7 +157,7 @@ const editEmployee = async (
 
 const deleteEmployee = async (empployee_id: string) => {
   const response = await api
-    .delete<EmpResponse>("/employee/delete/" + empployee_id)
+    .delete<BaseResponse>("/employee/delete/" + empployee_id)
     .then((res) => {
       return {
         success: "Employee deleted successfully",
@@ -194,7 +178,6 @@ const deleteEmployee = async (empployee_id: string) => {
 const EmployeeAPI = {
   addEmp,
   listEmployee,
-  addSalary,
   editEmployee,
   deleteEmployee,
   addAllowance,

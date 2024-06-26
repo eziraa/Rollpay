@@ -13,16 +13,16 @@ import {
   unfinishedDelete,
   unfinishedEdit,
 } from "./employee-slice";
-import EmployeeAPI, {
-  EditEmployeeParams,
-  PaginatedEmpResponse,
-} from "../../services/employee-api";
+import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
 import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
 } from "../../typo/employee/params";
-import { AddEmpResponse } from "../../typo/employee/response";
+import {
+  AddEmpResponse,
+  PaginatedEmpResponse,
+} from "../../typo/employee/response";
 import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
 import { currentEmpPaymentInfoDone } from "../salary/salary-slice";
 // import { closeModal } from "../../providers/actions";
