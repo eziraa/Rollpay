@@ -148,7 +148,7 @@ export const BackButton = styled.div`
 
 export const ActionBtnsContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 1rem;
   width: 100%;
   padding: 2rem 0;
@@ -201,7 +201,13 @@ export const NavItem = styled.div<NavItemProps>`
 `;
 
 export const DeleteButton = styled(Button)`
-  background-color: ${({ theme }) =>
-    addOpacityToColor(0.6, theme.buttons.primary)};
-  border: none;
+  /* background-color: ${({ theme }) =>
+    addOpacityToColor(0.6, theme.buttons.primary)}; */
+  background-color: white;
+  border: 0.2rem solid #dc3545;
+  color: #dc3545;
+  &:hover {
+    background-color: #dc3545;
+    color: white;
+  }
 `;
