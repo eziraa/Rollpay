@@ -65,7 +65,7 @@ class Employee(models.Model):
     )
     id = models.CharField(max_length=9, db_index=True,
                           primary_key=True, unique=True, null=False)
-    profile_picture = models.ImageField(upload_to=upload_to, default="photos/profile.png")
+    # profile_picture = models.ImageField(upload_to=upload_to, default="photos/profile.png")
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
     phone_number = models.CharField(max_length=15, null=False)
