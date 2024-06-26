@@ -86,6 +86,7 @@ const EmployeeSlice = createSlice({
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
         type: "employee",
+        number_of_pages: payload.payload.pagination.number_of_pages,
       };
     },
     unfinishedList: (state) => {

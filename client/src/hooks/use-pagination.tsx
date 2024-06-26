@@ -62,8 +62,9 @@ export const usePagination = () => {
       const url = new URL(pagination.next);
       const current_page = parseInt(url.searchParams.get("page") || "2") - 1;
       const page_size = parseInt(url.searchParams.get("page_size") || "10");
-      const total_pages = page_size > 0 ? Math.ceil(page.total / page_size) : 1;
-
+      const total_pages = page_size
+        ? Math.ceil(pagination.count / page_size)
+        : Math.ceil(pagination.count / 10);
       setPage({
         ...page,
         current_page,
