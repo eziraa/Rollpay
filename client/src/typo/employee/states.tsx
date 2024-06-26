@@ -12,4 +12,5 @@ export interface EmployeeState {
   query_set: Employee[];
   searching: boolean;
   pagination: Pagination | undefined;
+  task_finished: boolean;
 }
