@@ -13,6 +13,7 @@ import { DisplayContext } from "../../../contexts/display-context";
 import { ModalStore } from "../../utils/modal-store/modal-store";
 export const HomePage = () => {
   const employee = useAppSelector((state) => state.employee);
+  const salary = useAppSelector((state) => state.salary);
   const dispacher = useAppDispatch();
   const { setPagination } = useContext(PaginationContext);
   const { display } = useContext(DisplayContext);
@@ -24,8 +25,10 @@ export const HomePage = () => {
     else if (display.list_employees) dispacher(listEmpRequested());
   }, [dispacher, display]);
   useEffect(() => {
-    employee.pagination && setPagination(employee.pagination);
-  }, [employee.pagination]);
+    if (display.see_employee_salary)
+      salary.pagination && setPagination(salary.pagination);
+    else employee.pagination && setPagination(employee.pagination);
+  }, [employee.pagination, salary.pagination]);
   return (
     <HomeContainer>
       <Header />
