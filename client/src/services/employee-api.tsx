@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import {
   AddAllowanceToEmployeesParams,
+  AddDeductionToEmployeesParams,
   AddEmpParams,
   AddSalaryParams,
 } from "../typo/employee/params";
@@ -91,14 +92,52 @@ const addSalary = async (values: AddSalaryParams) => {
 
 const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
   const employees = await api
-    .post<EmpResponse>(
-      "/employee/allowance/add" +
-        values.empployee_id +
+    .patch<EmpResponse>(
+      "/employee/allowance/add/" +
+        values.employee_id +
         "/" +
-        values.allowance_id
+        values.allowance_type
     )
     .then((res) => {
-      return res.data;
+      return {
+        employee: res.data,
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return employees;
+};
+
+const addDeduction = async (values: AddDeductionToEmployeesParams) => {
+  const employees = await api
+    .patch<EmpResponse>(
+      "/employee/deduction/add/" +
+        values.employee_id +
+        "/" +
+        values.deduction_type
+    )
+    .then((res) => {
+      console.log(res);
+      return {
+        employee: res.data,
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      console.log(err);
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
     });
   return employees;
 };
@@ -159,6 +198,7 @@ const EmployeeAPI = {
   editEmployee,
   deleteEmployee,
   addAllowance,
+  addDeduction,
 };
 
 export default EmployeeAPI;

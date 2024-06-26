@@ -244,8 +244,8 @@ function EmployeeListDisplayer() {
                         see_employee_overtime: false,
                       });
                       // dispatcher(setLongTask(SEE_EMPLOYEE));
-                      dispatcher(setCurrentEmployee(emp));
                       dispatcher(getCurrEmpPaymentInfo(emp.id));
+                      dispatcher(setCurrentEmployee(emp));
                     }}
                   >
                     View

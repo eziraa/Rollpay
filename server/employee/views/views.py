@@ -6,9 +6,13 @@ from rest_framework.views import APIView
 from employee.serializers.employee import EmployeeSerializer
 from employee.serializers.position import PositionSerializer
 from employee.permissions.clerk_permission import IsUserInGroupWithClerk
-from ..models import Employee, Salary, Position
+from employee.serializers.payment import MonthlyPaymentSerializer, PaymentSerializer
+from employee.serializers.salary import SalarySerializer
+from ..models import Employee, Payment, Salary, Position, Allowance, Deduction
 from django.http import JsonResponse
 import json
+import datetime
+from month import Month
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -62,16 +66,43 @@ class EmployeeView (APIView):
         except KeyError:
             return JsonResponse({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, id):
+    def patch(self, request, employee_id, allowance_type=None, overtime_type=None, deduction_type=None, position_name=None):
         try:
-            employe = Employee.objects.get(pk=id)
+            employe = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = EmployeeSerializer(employe, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if allowance_type:
+            if employe.salary.allowances.filter(allowance_type=allowance_type).exists():
+                return JsonResponse({'error': 'This allowance already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                employe.salary.allowances.add(
+                    Allowance.objects.get(allowance_type=allowance_type))
+                employe.save()
+                if not Payment.objects.filter(employee_id=employee_id, salary_id=employe.salary.id).exists():
+                    payment = Payment.objects.create(employee=employe, month=Month(datetime.datetime.now(
+                    ).year, datetime.datetime.now().month), salary=employe.salary)
+                    payment.save()
+        elif deduction_type:
+            if employe.salary.deductions.filter(deduction_type=deduction_type).exists():
+                return JsonResponse({'error': 'This deduction already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                employe.salary.deductions.add(
+                    Deduction.objects.get(deduction_type=deduction_type))
+                employe.save()
+                if not Payment.objects.filter(employee_id=employee_id, salary_id=employe.salary.id).exists():
+                    payment = Payment.objects.create(employee=employe, month=Month(datetime.datetime.now(
+                    ).year, datetime.datetime.now().month), salary=employe.salary)
+                    payment.save()
+        payments = Payment.objects.filter(employee_id=employee_id)
+        if payments.exists():
+            serializer = MonthlyPaymentSerializer(payments, many=True)
+            data = {
+                **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+                'payments': serializer.data,
+            }
+            return Response(data, status=status.HTTP_201_CREATED)
+        else:
+            return Response("serializer.errors", status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, employee_id):
         try:

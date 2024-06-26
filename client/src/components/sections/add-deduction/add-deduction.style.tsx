@@ -14,7 +14,7 @@ export const DeductionBody = styled.div`
   ${add_body}
 `;
 
-export const AddBtn = styled.div`
+export const AddBtn = styled.button`
   ${add_btn}
 `;
 

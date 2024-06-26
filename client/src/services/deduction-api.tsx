@@ -38,9 +38,8 @@ const listDeductions = async (pageUrl?: string) => {
   const deds = await api
     .get<PaginatedBackEndResponse>(endpoint)
     .then((res) => {
-      console.log(res);
       return {
-        results: res.data,
+        results: res.data.results,
         pagination: {
           next: res.data.next,
           previous: res.data.previous,

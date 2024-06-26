@@ -14,15 +14,17 @@ import {
   DeductionHeader,
   DeductionTitle,
 } from "./deduction.style";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
+import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 
 export const EmployeeDeduction = () => {
   const { curr_emp } = useAppSelector((state) => state.salary);
   const { openModal } = useModal();
+  const dispatcher = useAppDispatch();
   return (
     <DeductionContainer>
       <DeductionHeader>
@@ -32,6 +34,7 @@ export const EmployeeDeduction = () => {
             e.preventDefault();
             e.stopPropagation();
             openModal(ADD_DEDUCTION_TO_EMP);
+            dispatcher(listDeductionsRequested());
           }}
         >
           Add
@@ -39,7 +42,7 @@ export const EmployeeDeduction = () => {
       </DeductionHeader>
       <DeductionBody>
         {curr_emp?.employee.payments.map((payment, index) => {
-          return payment.allowances.length > 0 ? (
+          return payment.deductions.length > 0 ? (
             <CustomTable key={index}>
               <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
               <TableHeader>

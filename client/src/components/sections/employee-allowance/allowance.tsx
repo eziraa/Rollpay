@@ -14,15 +14,17 @@ import {
   AllowanceHeader,
   AllowanceTitle,
 } from "./allowance.style";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
+import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
 
 export const EmployeeAllowance = () => {
   const { openModal } = useModal();
   const { curr_emp } = useAppSelector((state) => state.salary);
+  const dispatcher = useAppDispatch();
   return (
     <AllowanceContainer>
       <AllowanceHeader>
@@ -32,6 +34,7 @@ export const EmployeeAllowance = () => {
             e.preventDefault();
             e.stopPropagation();
             openModal(ADD_ALLOWANCE_TO_EMP);
+            dispatcher(listAllowancesRequested());
           }}
         >
           Add
