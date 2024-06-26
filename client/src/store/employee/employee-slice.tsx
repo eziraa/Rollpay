@@ -50,6 +50,7 @@ const EmployeeSlice = createSlice({
         count: state.pagination?.count ?? 0,
         current_page: 1,
         number_of_pages,
+        type: state.pagination?.type,
       };
     },
     addEmpDone: (state) => {
@@ -84,6 +85,7 @@ const EmployeeSlice = createSlice({
       state.pagination = {
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
+        type: "employee",
       };
     },
     unfinishedList: (state) => {
@@ -91,12 +93,12 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.employees = [];
     },
-    loadNextPageRequested: (state, _: PayloadAction<string>) => {
+    loadNextEmployeeListPage: (state, _: PayloadAction<string>) => {
       state.loading = true;
       if (state.pagination?.current_page) state.pagination.current_page++;
       else if (state.pagination) state.pagination.current_page = 1;
     },
-    loadPrevPageRequested: (state, _: PayloadAction<string>) => {
+    loadPrevEmployeeListPage: (state, _: PayloadAction<string>) => {
       state.loading = true;
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
@@ -185,8 +187,8 @@ export const {
   resetCurrEmployee,
   searching,
   noSearchResult,
-  loadNextPageRequested,
-  loadPrevPageRequested,
+  loadNextEmployeeListPage,
+  loadPrevEmployeeListPage,
   setPagesize,
 } = EmployeeSlice.actions;
 
