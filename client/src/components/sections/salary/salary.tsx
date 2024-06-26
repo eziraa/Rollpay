@@ -17,12 +17,12 @@ import {
 import { SearchIcon } from "../../utils/search/search.style";
 import { Header, Title } from "../display-employee/display-employee.style";
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
-import { searchEmployeeRequested } from "../../../store/salary/salary-slice";
+import { searchPaymentRequested } from "../../../store/salary/salary-slice";
 import Pagination from "../pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
 import { getFormattedMonth } from "./utils";
 import { Label } from "../profile/profile.style";
-import { EmployeePayment } from "../../../typo/payment/response";
+import { PaymentEmployee } from "../../../typo/payment/response";
 import * as XLSX from "xlsx";
 export const Salary = () => {
   const dispatcher = useAppDispatch();
@@ -31,13 +31,13 @@ export const Salary = () => {
 
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
-  const { response } = useAppSelector((state) => state.salary);
+  const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
 
   useEffect(() => {
     const loadEmployee = setTimeout(() => {
       dispatcher(
-        searchEmployeeRequested({
+        searchPaymentRequested({
           search_by: searchBy,
           search_value: search_val,
         })
@@ -49,7 +49,7 @@ export const Salary = () => {
   useEffect(() => {
     const tempAllowanceTypes = new Set<string>();
     const tempDeductionTypes = new Set<string>();
-    response?.employees.forEach((employee) => {
+    employees.forEach((employee) => {
       employee.allowances.forEach((allowance) => {
         tempAllowanceTypes.add(allowance.allowance_type);
       });
@@ -61,7 +61,7 @@ export const Salary = () => {
 
     setAllowanceTypes(Array.from(tempAllowanceTypes));
     setDeductionTypes(Array.from(tempDeductionTypes));
-  }, [response]);
+  }, [employees]);
   const getSalary = (salary: number | null) => {
     if (salary) {
       return (salary * 1.0).toFixed(2);
@@ -86,7 +86,7 @@ export const Salary = () => {
     );
   };
 
-  const [employeeSalary, setEmployeeSalary] = useState<EmployeePayment[]>([]);
+  const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
   const handleExport = () => {
     console.log(employeeSalary);
     const wb = XLSX.utils.book_new();
@@ -99,8 +99,8 @@ export const Salary = () => {
   useEffect(() => {
     if (salary.searching && salary.search_response)
       setEmployeeSalary(salary.search_response || []);
-    else setEmployeeSalary(salary.response?.employees || []);
-  }, [salary.response, salary.search_response]);
+    else setEmployeeSalary(salary.employees || []);
+  }, [salary.employees, salary.search_response]);
 
   return (
     <SalaryContainer>
