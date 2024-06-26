@@ -29,14 +29,7 @@ const addEmp = async (values: AddEmpParams) => {
     });
   return response;
 };
-export interface Pagination {
-  next: string | undefined;
-  previous: string | undefined;
-  count: number;
-  page_size: number;
-  current_page: number;
-  number_of_pages: number;
-}
+
 const listEmployee = async (pageUrl?: string) => {
   const endpoint = pageUrl || "/employee/list";
 
