@@ -4,8 +4,10 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
+  addingDone,
   deleteEmpDone,
   editEmployeeDone,
+  finishAddAllowanceDone,
   listEmpDone,
   unfinishedAdd,
   unfinishedDelete,
@@ -15,8 +17,16 @@ import EmployeeAPI, {
   EditEmployeeParams,
   PaginatedEmpResponse,
 } from "../../services/employee-api";
-import { AddEmpParams } from "../../typo/employee/params";
+import {
+  AddAllowanceToEmployeesParams,
+  AddDeductionToEmployeesParams,
+  AddEmpParams,
+} from "../../typo/employee/params";
 import { AddEmpResponse } from "../../typo/employee/response";
+import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
+import { currentEmpPaymentInfoDone } from "../salary/salary-slice";
+// import { closeModal } from "../../providers/actions";
+// import { ADD_ALLOWANCE_TO_EMP } from "../../constants/tasks";
 
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
@@ -59,6 +69,104 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         status: true,
         title: "Add Employee",
         desc: "Cann't add employee please try again later",
+        duration: 3,
+      })
+    );
+  }
+}
+
+function* addAllowance(action: PayloadAction<AddAllowanceToEmployeesParams>) {
+  try {
+    const response: CurrentEmpPaymentsResponse = yield call(
+      EmployeeAPI.addAllowance,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(finishAddAllowanceDone());
+      yield put(currentEmpPaymentInfoDone(response));
+      // yield put(closeModal(ADD_ALLOWANCE_TO_EMP));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Adding allowance to employee",
+          desc: "Allowance successfully added to employee",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(unfinishedAdd(response.error));
+    } else if (response.code === 403) {
+      yield put(unfinishedAdd(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to add employee",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(unfinishedAdd(response.error));
+    }
+  } catch (e) {
+    yield put(unfinishedAdd("Cann't add allowance please try again later"));
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Add Employee",
+        desc: "Cann't add allowance please try again later",
+        duration: 3,
+      })
+    );
+  }
+}
+
+function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
+  try {
+    const response: CurrentEmpPaymentsResponse = yield call(
+      EmployeeAPI.addDeduction,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(addingDone());
+      yield put(currentEmpPaymentInfoDone(response));
+      // yield put(closeModal(ADD_ALLOWANCE_TO_EMP));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Adding allowance to employee",
+          desc: "Deduction successfully added to employee",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(unfinishedAdd(response.error));
+    } else if (response.code === 403) {
+      yield put(unfinishedAdd(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to add employee",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(unfinishedAdd(response.error));
+    }
+  } catch (e) {
+    yield put(unfinishedAdd("Cann't add allowance please try again later"));
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Add Employee",
+        desc: "Cann't add allowance please try again later",
         duration: 3,
       })
     );
@@ -169,6 +277,8 @@ export function* watchAddEmployee() {
   yield takeEvery("employee/addEmpRequested", AddEmployee);
   yield takeEvery("employee/listEmpRequested", GetEmployee);
   yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
+  yield takeEvery("employee/addEmpAllowanceRequested", addAllowance);
+  yield takeEvery("employee/addEmpDeductionRequested", addDeduction);
 }
 
 function* loadNextPage(action: PayloadAction<string>) {

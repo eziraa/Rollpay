@@ -38,7 +38,7 @@ export const AddPosition = () => {
 
   useEffect(() => {
     curr_position && closeModal(ADD_POSITION);
-  }, [curr_position]);
+  }, [curr_position, closeModal]);
   return (
     <Modal content={ADD_POSITION}>
       <PositionContainer>

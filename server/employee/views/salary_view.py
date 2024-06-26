@@ -18,7 +18,6 @@ class SalaryView(APIView):
 
     def get(self, request: Request, employee_id=None):
         if employee_id:
-            # Logic for handling request with employee_id
             payments = Payment.objects.filter(employee_id=employee_id)
             if payments.exists():
                 serializer = MonthlyPaymentSerializer(payments, many=True)
@@ -29,7 +28,24 @@ class SalaryView(APIView):
                 }
                 return Response(data)
             else:
-                return JsonResponse({"error": "No payments found for the given employee ID"}, status=404)
+                employee = Employee.objects.get(pk=employee_id)
+                for year in range(2022, 2025):
+                    for curent_month in range(1, 13):
+                        curr_month = month.Month(year, curent_month)
+                        payment = Payment.objects.create(
+                            employee=employee, month=curr_month, salary=employee.salary)
+                        payment.save()
+                payments = Payment.objects.filter(employee_id=employee_id)
+                if payments.exists():
+                    serializer = MonthlyPaymentSerializer(payments, many=True)
+                    data = {
+                        **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+                        'payments': serializer.data,
+
+                    }
+                    return Response(data)
+                else:
+                    return JsonResponse({"error": "No payments found for the given employee ID"}, status=404)
         else:
             try:
                 queryset = Payment.objects.all().order_by("month")

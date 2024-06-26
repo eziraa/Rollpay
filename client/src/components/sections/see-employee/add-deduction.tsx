@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
-import { useEmployee } from "../../../hooks/employee-hook";
-import { useAppDispatch } from "../../../utils/custom-hook";
+import { useDeduction } from "../../../hooks/deduction-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   FormError,
   InputContainer,
@@ -18,13 +18,14 @@ import {
 import { Title } from "../add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
-import { useModal } from "../../../hooks/modal-hook";
 import { ADD_DEDUCTION, ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
-import { useDeduction } from "../../../hooks/deduction-hook";
+import { addEmpDeductionRequested } from "../../../store/employee/employee-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
+import { useModal } from "../../../hooks/modal-hook";
 export const AddDeductionToEmp = () => {
   const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
-  const employee = useEmployee();
+  const employee = useAppSelector((state) => state.employee);
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_deduction) {
@@ -33,13 +34,14 @@ export const AddDeductionToEmp = () => {
   }, [curr_deduction, dispatcher]);
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      deduction_name: "",
-      employee_id: employee.curr_emp?.id,
+      deduction_type: "",
+      employee_id: employee.curr_emp?.id || "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      dispatcher(addEmpDeductionRequested(values));
     },
   });
+
   return (
     <Modal content={ADD_DEDUCTION_TO_EMP}>
       <DeductionContainer>
@@ -48,6 +50,7 @@ export const AddDeductionToEmp = () => {
           <DeductionForm
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               handleSubmit(e);
             }}
           >
@@ -62,7 +65,11 @@ export const AddDeductionToEmp = () => {
                   gap: "1rem",
                 }}
               >
-                <Select style={{ flex: 2 }} onChange={handleChange}>
+                <Select
+                  name="deduction_type"
+                  style={{ flex: 2 }}
+                  onChange={handleChange}
+                >
                   <SelectOption value="" disabled selected={!curr_deduction}>
                     Select Position
                   </SelectOption>
@@ -71,10 +78,9 @@ export const AddDeductionToEmp = () => {
                       deduction && (
                         <SelectOption
                           selected={deduction.id === curr_deduction?.id}
-                          value={deduction.deduction_name}
-                          onChange={handleChange}
+                          value={deduction.deduction_type}
                         >
-                          {deduction.deduction_name}
+                          {deduction.deduction_type}
                         </SelectOption>
                       )
                   )}
@@ -91,12 +97,29 @@ export const AddDeductionToEmp = () => {
                 </AddBtn>
               </div>
               <FormError>
-                {touched.deduction_name && errors.deduction_name ? (
-                  <div>{errors.deduction_name}</div>
+                {touched.deduction_type && errors.deduction_type ? (
+                  <div>{errors.deduction_type}</div>
                 ) : null}
               </FormError>
             </InputContainer>
-            <AddBtn>Add</AddBtn>
+            {employee.adding_emp_error && (
+              <FormError
+                style={{
+                  fontSize: "1.5rem",
+                }}
+              >
+                {" "}
+                {employee.adding_emp_error}
+              </FormError>
+            )}
+            <AddBtn type="submit">
+              {" "}
+              {employee.editing && !employee.adding_emp_error ? (
+                <SmallSpinner />
+              ) : (
+                "Add"
+              )}{" "}
+            </AddBtn>
           </DeductionForm>
         </DeductionBody>
       </DeductionContainer>
