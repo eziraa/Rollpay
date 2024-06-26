@@ -10,6 +10,7 @@ export interface Pagination {
   page_size: number;
   current_page: number;
   number_of_pages: number;
+  type: string | undefined;
 }
 
 export interface PaginatedResponse extends BaseResponse {

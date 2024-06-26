@@ -1,4 +1,5 @@
-import { CurrEmpPayments, EmployeePayment } from "../payment/response";
+import { CurrEmpPayments, PaymentEmployee } from "../payment/response";
+import { PaginatedBackEndResponse, PaginatedResponse } from "../utils/response";
 
 export interface Allowance {
   allowance_type: string;
@@ -41,7 +42,7 @@ export interface Employee {
   salary: Salary;
 }
 export interface SalaryEmpResponse {
-  employees: EmployeePayment[];
+  employees: PaymentEmployee[];
   error: string | undefined;
   code: number | undefined;
   success: string | undefined;
@@ -52,4 +53,12 @@ export interface CurrentEmpPaymentsResponse {
   error: string | undefined;
   code: number | undefined;
   scuccess: string | undefined;
+}
+
+export interface PaginatedPaymentResponse extends PaginatedResponse {
+  results: PaymentEmployee[];
+}
+
+export interface PaginatedPayBackEndResponse extends PaginatedBackEndResponse {
+  results: PaymentEmployee[];
 }

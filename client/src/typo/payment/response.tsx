@@ -14,7 +14,7 @@ export interface Payment {
   month: string;
 }
 
-export interface EmployeePayment extends Payment {
+export interface PaymentEmployee extends Payment {
   employee_id: string;
   employee_name: string;
 }
