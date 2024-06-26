@@ -29,3 +29,6 @@ client/src/components/sections/salary/table.tsx
 client/src/components/sections/add_employee/position.ts
 client/src/components/sections/add_employee/postion_data.ts
 client/src/components/sections/employee-allowance/data.ts
+server/payroll/__pycache__/__init__.cpython-311.pyc
+server/media/photos/
+server/payroll/__pycache__/__init__.cpython-311.pyc
