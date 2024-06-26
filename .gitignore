@@ -29,3 +29,8 @@ client/src/components/sections/salary/table.tsx
 client/src/components/sections/add_employee/position.ts
 client/src/components/sections/add_employee/postion_data.ts
 client/src/components/sections/employee-allowance/data.ts
+client/src/providers/reducer.tsx
+client/src/services/modal-api.tsx
+client/src/providers/actions.tsx
+client/src/store/modal/modal-slice.tsx
+client/src/typo/modal/state.tsx

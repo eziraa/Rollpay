@@ -177,6 +177,7 @@ function* GetEmployee() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
+      console.log(response);
       yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
@@ -330,8 +331,8 @@ function* loadPrevPage(action: PayloadAction<string>) {
 }
 
 export function* watchLoadPage() {
-  yield takeEvery("employee/loadNextPageRequested", loadNextPage);
-  yield takeEvery("employee/loadPrevPageRequested", loadPrevPage);
+  yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
+  yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
 }
 
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
