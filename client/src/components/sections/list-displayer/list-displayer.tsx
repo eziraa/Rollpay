@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppSelector } from "../../../utils/custom-hook";
 import { useContext, useEffect, useState } from "react";
 import {
   Data,
@@ -13,13 +13,11 @@ import {
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 
-import { setCurrentEmployee } from "../../../store/employee/employee-slice";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
 import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
 import { Employee } from "../../../typo/employee/response";
 import { DisplayContext } from "../../../contexts/display-context";
-import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useNavigate } from "react-router";
 
 interface EmployeeOrderType {
@@ -64,7 +62,6 @@ const initialOrder: EmployeeOrderType[] = [
 function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
   const navigate = useNavigate();
-  const dispatcher = useAppDispatch();
   const [order, setOrder] = useState(initialOrder);
   const emplist = [...employee.employees];
   const [emp_list, setEmpList] = useState(emplist);
@@ -237,19 +234,8 @@ function EmployeeListDisplayer() {
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      // setDisplay({
-                      //   ...display,
-                      //   see_employee: true,
-                      //   list_employees: false,
-                      //   see_employee_allowance: true,
-                      //   see_employee_deduction: false,
-                      //   see_employee_overtime: false,
-                      // });
-                      navigate("/employees/single-employee");
-
-                      // dispatcher(setLongTask(SEE_EMPLOYEE));
-                      dispatcher(getCurrEmpPaymentInfo(emp.id));
-                      dispatcher(setCurrentEmployee(emp));
+                      localStorage.setItem("curr_emp_id", emp.id);
+                      navigate("/employees/single-employee/");
                     }}
                   >
                     View
