@@ -11,7 +11,7 @@ export const custom_scroll_bar = css`
     border-radius: 4px;
   }
 `;
-export const ScrollBar = styled.tbody`
+export const ScrollBar = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;

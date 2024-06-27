@@ -77,10 +77,9 @@ export const Search = () => {
         onChange={(e) => {
           setSearchBy(e.currentTarget.value);
         }}
+        defaultValue={"first_name"}
       >
-        <SelectOption selected value="first_name">
-          First Name
-        </SelectOption>
+        <SelectOption value="first_name">First Name</SelectOption>
         <SelectOption value="last_name">Last Name</SelectOption>
         <SelectOption value="email">Email</SelectOption>
         <SelectOption value="phone_number">Phone Number</SelectOption>

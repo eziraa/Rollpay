@@ -1,8 +1,13 @@
 import { Search } from "../../utils/search/search";
 import EmployeeListDisplayer from "../list-displayer/list-displayer";
 import Pagination from "../pagination/pagination";
-import { AddButton, Body, Header, Title } from "./display-employee.style";
-import { EmployeeDisplayerContainer } from "./display-employee.style";
+import {
+  AddButton,
+  Body,
+  Header,
+  Title,
+  EmployeeDisplayerContainer,
+} from "./display-employee.style";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_EMPLOYEE } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
