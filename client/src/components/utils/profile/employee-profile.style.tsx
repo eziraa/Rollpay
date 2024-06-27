@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
 import ProfileI from "../../../assets/profile.png";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { IconContainer } from "../../sections/profile/profile.style";
 
 export const EmployeeeProfileContainer = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ export const EmployeeeProfileContainer = styled.div`
   min-width: 30rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   border-radius: 10px;
-  height: 100%;
+  height: auto;
   padding: 1rem;
   gap: 2rem;
 `;

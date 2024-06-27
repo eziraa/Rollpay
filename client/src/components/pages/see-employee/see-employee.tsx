@@ -22,7 +22,7 @@ import { Header } from "../../sections/header/header";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
-import { SEE_EMPLOYEE } from "../../../constants/tasks";
+import { SEE_EMPLOYEE, SEE_EMP_ALLOWANCE } from "../../../constants/tasks";
 
 export const SeeEmployee = () => {
   const { display, setDisplay } = useContext(DisplayContext);
@@ -53,7 +53,7 @@ export const SeeEmployee = () => {
               </BackButton>
               <Title>Edit Employee</Title>
             </TitleContainer>
-            <NavigationBar />
+            <NavigationBar current_nav={SEE_EMP_ALLOWANCE} />
           </SeeEmployeeHeader>
           <EditEmployeeContent>
             <EmployeeProfile />
