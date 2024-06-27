@@ -2,24 +2,20 @@ import styled from "styled-components";
 import Profile from "../../../assets/profile.png";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { ThemeProps } from "../../../typo/theme/theme";
+import {
+  body,
+  container,
+  sub_header_css,
+} from "../../utils/pages-utils/containers.style";
 export const SeeEmployeeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  padding: 3rem;
-  position: relative;
-  gap: 1rem;
+  ${container}
 `;
 
+export const SeeEmployeeBody = styled.div`
+  ${body}
+`;
 export const SeeEmployeeHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 1rem;
-  gap: 1rem;
+  ${sub_header_css}
 `;
 
 export const TitleContainer = styled.div`

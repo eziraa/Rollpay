@@ -9,6 +9,7 @@ import AccessDenied from "../../components/pages/access-denied/access-denied";
 import { ChangePassword } from "../../components/pages/change-password/change-password";
 import UserProfile from "../../components/pages/user-profile/user-profile";
 import { EmployeesListPage } from "../../components/pages/display-employee/display-employee";
+import { SeeEmployee } from "../../components/pages/see-employee/see-employee";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -27,6 +28,7 @@ export const RouterConfig = () => (
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/user-profile" element={<UserProfile />} />
       <Route path="/employees" element={<EmployeesListPage />} />
+      <Route path="/employees/single-employee" element={<SeeEmployee />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   </Router>

@@ -14,8 +14,8 @@ import {
   AllowanceBody,
   AllowanceContainer,
   AllowanceForm,
-} from "../add-allowance/add-allowance.style";
-import { Title } from "../add_employee/add-employee.style";
+} from "../../sections/add-allowance/add-allowance.style";
+import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
 import { ADD_ALLOWANCE, ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";

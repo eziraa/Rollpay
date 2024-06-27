@@ -14,8 +14,8 @@ import {
   DeductionBody,
   DeductionContainer,
   DeductionForm,
-} from "../add-deduction/add-deduction.style";
-import { Title } from "../add_employee/add-employee.style";
+} from "../../sections/add-deduction/add-deduction.style";
+import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 import { ADD_DEDUCTION, ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
