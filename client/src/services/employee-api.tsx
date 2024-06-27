@@ -175,7 +175,7 @@ const editEmployee = async (
 
 const updatProfilePicture = async (values: UpdateProfileParams) => {
   console.log("from api", values.profile_url);
-  const response = await axios
+  const response = await api
     .put<Profile>("/user/profile/" + values.employee_id, values.profile_url, {
       headers: {
         "Content-Type": "multipart/form-data",
