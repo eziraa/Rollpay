@@ -4,12 +4,14 @@ import {
   AddDeductionToEmployeesParams,
   AddEmpParams,
   AddSalaryParams,
+  UpdateProfileParams,
 } from "../typo/employee/params";
 import api from "../config/api";
 import {
   AddEmpResponse,
   EmpResponse,
   Employee,
+  Profile,
 } from "../typo/employee/response";
 
 const addEmp = async (values: AddEmpParams) => {
@@ -171,6 +173,54 @@ const editEmployee = async (
   return response;
 };
 
+const updatProfilePicture = async (values: UpdateProfileParams) => {
+  console.log("from api", values.profile_url);
+  const response = await axios
+    .put<Profile>("/user/profile/" + values.employee_id, values.profile_url, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      return {
+        success: "Profile picture updated successfully",
+        code: res.status,
+        profile: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
+  return response;
+};
+
+const getProfilePicture = async (employee_id: string) => {
+  const response = await api
+    .get<Profile>("/user/profile" + employee_id)
+    .then((res) => {
+      return {
+        profile: res.data,
+        code: res.status,
+        success: "Successfully returned profile picture",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return response;
+};
+
 const deleteEmployee = async (empployee_id: string) => {
   const response = await api
     .delete<EmpResponse>("/employee/delete/" + empployee_id)
@@ -199,6 +249,8 @@ const EmployeeAPI = {
   deleteEmployee,
   addAllowance,
   addDeduction,
+  updatProfilePicture,
+  getProfilePicture,
 };
 
 export default EmployeeAPI;
