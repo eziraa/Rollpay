@@ -14,9 +14,6 @@ import { IoChevronBackCircleOutline } from "react-icons/io5";
 
 import { EmployeeAllowance } from "../../sections/employee-allowance/allowance";
 import { resetCurrEmployee } from "../../../store/employee/employee-slice";
-import { EditEmployee } from "../../sections/edit-employee/edit-employee";
-import { EmployeeOvertime } from "../../sections/employee-overtime/overtime";
-import { EmployeeDeduction } from "../../sections/employee-deduction/deduction";
 import { useContext, useEffect } from "react";
 import { DisplayContext } from "../../../contexts/display-context";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
@@ -60,9 +57,6 @@ export const SeeEmployee = () => {
           <EditEmployeeContent>
             <EmployeeProfile />
             <EmployeeAllowance />
-            {display.edit_employee && <EditEmployee />}
-            {display.see_employee_overtime && <EmployeeOvertime />}
-            {display.see_employee_deduction && <EmployeeDeduction />}
           </EditEmployeeContent>
         </MainContainer>
       </SeeEmployeeBody>

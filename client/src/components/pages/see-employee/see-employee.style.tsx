@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Profile from "../../../assets/profile.png";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
-import { ThemeProps } from "../../../typo/theme/theme";
 import {
   body,
   container,
@@ -78,39 +77,6 @@ export const EmployeeInfoContainer = styled.div`
   gap: 1.5rem;
 `;
 
-export const EmployeeData = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 0.5rem;
-  width: 100%;
-`;
-
-export const DataLabel = styled.h5`
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
-  flex: 1;
-  text-align: left;
-`;
-
-export const DataValue = styled.h5`
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
-  flex: 1.5;
-`;
-
-export const EditButton = styled.div`
-  font-size: 2rem;
-  color: ${({ theme }) => theme.colors.primary};
-  cursor: pointer;
-  width: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export const Button = styled.button`
   font-size: 1.2rem;
   color: #ffffff;
@@ -169,35 +135,4 @@ export const ActionBtn = styled.div`
   }
 `;
 
-export const NavBar = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  flex: 3.8;
-  gap: 0rem;
-  background-color: ${({ theme }) => theme.backgrounds.primary};
-`;
 
-interface NavItemProps extends ThemeProps {
-  active?: boolean;
-}
-
-export const NavItem = styled.div<NavItemProps>`
-  padding: 1rem 2rem;
-  display: inline-block;
-  font-size: 1.7rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.primary};
-  border-bottom: 0.5rem solid;
-  border-bottom-color: ${({ active, theme }) =>
-    active ? theme.buttons.primary : "transparent"};
-`;
-
-export const DeleteButton = styled(Button)`
-  background-color: ${({ theme }) =>
-    addOpacityToColor(0.6, theme.buttons.primary)};
-  border: none;
-`;
