@@ -22,7 +22,6 @@ export interface AddPositionParams {
   basic_salary: string;
 }
 
-
 export interface AddAllowanceToEmployeesParams {
   employee_id: string;
   allowance_type: string;
@@ -31,4 +30,9 @@ export interface AddAllowanceToEmployeesParams {
 export interface AddDeductionToEmployeesParams {
   employee_id: string;
   deduction_type: string;
+}
+
+export interface UpdateProfileParams {
+  employee_id: string;
+  profile_url: File;
 }

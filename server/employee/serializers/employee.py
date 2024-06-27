@@ -22,8 +22,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
 class ProfilePicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = "profile_picture"
-
+        fields = ('profile_picture',)  
 
 class SalaryEmployeeSerializer(EmployeeSerializer):
     salary = serializers.SerializerMethodField(read_only=True)

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
-import Profile from "../../../assets/profile.png";
+import ProfileI from "../../../assets/profile.png";
 import { ThemeProps } from "../../../typo/theme/theme";
 
 export const EmployeeeProfileContainer = styled.div`
@@ -16,12 +16,74 @@ export const EmployeeeProfileContainer = styled.div`
   gap: 2rem;
 `;
 
+export const Button = styled.button`
+  font-size: 1.2rem;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: ${({ theme }) => theme.buttons.primary};
+  border-radius: 5px;
+  width: 10rem;
+  display: flex;
+  gap: 1rem;
+  font-size: medium;
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.75, theme.buttons.primary)};
+  }
+`;
+interface Props {
+  profile: string;
+}
+export const ProfileContainer = styled.div<Props>`
+  display: inline-block;
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  border: 0.1rem solid green;
+  border-radius: 50%;
+  padding: 0rem;
+  background-image: url(${(props) => props.profile});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  padding: 4rem 0 0 3rem;
+`;
+
+export const InputButton = styled.button`
+  font-size: 1.2rem;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  gap: 1rem;
+  font-size: medium;
+  width: 5rem;
+  height: 2.5rem;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+`;
+
+export const Icon = styled(IconContainer)`
+  margin: 0;
+  padding: 0;
+  color: ${({ theme }) => theme.backgrounds.primary};
+`;
+
+export const FileInput = styled.input`
+  display: none;
+`;
+
 export const ProfileImage = styled.img`
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
   padding: 0rem;
-  background: url(${Profile}), linear-gradient(90deg, #60565596, #6866619d);
+  background: url(${ProfileI}), linear-gradient(90deg, #60565596, #6866619d);
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
@@ -73,24 +135,6 @@ export const EditButton = styled.div`
   align-items: center;
 `;
 
-export const Button = styled.button`
-  font-size: 1.2rem;
-  color: #ffffff;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: ${({ theme }) => theme.buttons.primary};
-  border-radius: 5px;
-  width: 10rem;
-  display: flex;
-  gap: 1rem;
-  font-size: medium;
-  &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.buttons.primary)};
-  }
-`;
-
 export const BackButton = styled.div`
   font-size: 3rem;
   display: inline-block;
@@ -106,7 +150,7 @@ export const BackButton = styled.div`
 
 export const ActionBtnsContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 1rem;
   width: 100%;
   padding: 2rem 0;
@@ -159,7 +203,13 @@ export const NavItem = styled.div<NavItemProps>`
 `;
 
 export const DeleteButton = styled(Button)`
-  background-color: ${({ theme }) =>
-    addOpacityToColor(0.6, theme.buttons.primary)};
-  border: none;
+  /* background-color: ${({ theme }) =>
+    addOpacityToColor(0.6, theme.buttons.primary)}; */
+  background-color: white;
+  border: 0.2rem solid #dc3545;
+  color: #dc3545;
+  &:hover {
+    background-color: #dc3545;
+    color: white;
+  }
 `;

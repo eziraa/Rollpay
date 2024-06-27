@@ -31,7 +31,11 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {},
+      serializableCheck: {
+        ignoredActions: ["employee/updateProfileRequest"],
+        ignoredActionPaths: ["payload.profile_picture"],
+        ignoredPaths: ["employee.curr_emp.profile_picture"],
+      },
     }).concat(sagaMiddleware),
 });
 

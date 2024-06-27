@@ -1,7 +1,8 @@
 
 from rest_framework_simplejwt.views import TokenRefreshView
 from employee.views.user_views import CustomTokenObtainPairView
-
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 urlpatterns = [
@@ -16,4 +17,5 @@ urlpatterns = [
     path('allowance/', include('employee.urls.allowance')),
     path('overtime/', include('employee.urls.overtime')),
     path('user/', include('employee.urls.user')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
