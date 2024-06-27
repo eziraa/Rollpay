@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useAllowance } from "../../../hooks/allowance-hook";
+import { useDeduction } from "../../../hooks/deduction-hook";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   FormError,
@@ -11,43 +11,43 @@ import {
 import { Modal } from "../../utils/modal/modal";
 import {
   AddBtn,
-  AllowanceBody,
-  AllowanceContainer,
-  AllowanceForm,
-} from "../add-allowance/add-allowance.style";
-import { Title } from "../add_employee/add-employee.style";
+  DeductionBody,
+  DeductionContainer,
+  DeductionForm,
+} from "../../sections/add-deduction/add-deduction.style";
+import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
-import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
-import { ADD_ALLOWANCE, ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
-import { addEmpAllowanceRequested } from "../../../store/employee/employee-slice";
+import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
+import { ADD_DEDUCTION, ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
+import { addEmpDeductionRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useModal } from "../../../hooks/modal-hook";
-export const AddAllowanceToEmp = () => {
-  const { allowances, curr_allowance } = useAllowance();
+export const AddDeductionToEmp = () => {
+  const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
   const employee = useAppSelector((state) => state.employee);
   const { openModal } = useModal();
   useEffect(() => {
-    if (curr_allowance) {
-      dispatcher(listAllowancesRequested());
+    if (curr_deduction) {
+      dispatcher(listDeductionsRequested());
     }
-  }, [curr_allowance, dispatcher]);
+  }, [curr_deduction, dispatcher]);
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      allowance_type: "",
+      deduction_type: "",
       employee_id: employee.curr_emp?.id || "",
     },
     onSubmit: (values) => {
-      dispatcher(addEmpAllowanceRequested(values));
+      dispatcher(addEmpDeductionRequested(values));
     },
   });
 
   return (
-    <Modal content={ADD_ALLOWANCE_TO_EMP}>
-      <AllowanceContainer>
-        <AllowanceBody>
-          <Title>Adding Allowance to {employee.curr_emp?.first_name}</Title>
-          <AllowanceForm
+    <Modal content={ADD_DEDUCTION_TO_EMP}>
+      <DeductionContainer>
+        <DeductionBody>
+          <Title>Adding Deduction to {employee.curr_emp?.first_name}</Title>
+          <DeductionForm
             onSubmit={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -55,7 +55,7 @@ export const AddAllowanceToEmp = () => {
             }}
           >
             <InputContainer>
-              <Label htmlFor="role">Select Allowance</Label>
+              <Label htmlFor="role">Select Deduction</Label>
               <div
                 style={{
                   display: "flex",
@@ -66,21 +66,21 @@ export const AddAllowanceToEmp = () => {
                 }}
               >
                 <Select
-                  name="allowance_type"
+                  name="deduction_type"
                   style={{ flex: 2 }}
                   onChange={handleChange}
                 >
-                  <SelectOption value="" disabled selected={!curr_allowance}>
-                    Select Allowance
+                  <SelectOption value="" disabled selected={!curr_deduction}>
+                    Select Deduction
                   </SelectOption>
-                  {allowances.map(
-                    (allowance) =>
-                      allowance && (
+                  {deductions.map(
+                    (deduction) =>
+                      deduction && (
                         <SelectOption
-                          selected={allowance.id === curr_allowance?.id}
-                          value={allowance.allowance_type}
+                          selected={deduction.id === curr_deduction?.id}
+                          value={deduction.deduction_type}
                         >
-                          {allowance.allowance_type}
+                          {deduction.deduction_type}
                         </SelectOption>
                       )
                   )}
@@ -89,7 +89,7 @@ export const AddAllowanceToEmp = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openModal(ADD_ALLOWANCE);
+                    openModal(ADD_DEDUCTION);
                   }}
                   style={{ flex: 1.2 }}
                 >
@@ -97,8 +97,8 @@ export const AddAllowanceToEmp = () => {
                 </AddBtn>
               </div>
               <FormError>
-                {touched.allowance_type && errors.allowance_type ? (
-                  <div>{errors.allowance_type}</div>
+                {touched.deduction_type && errors.deduction_type ? (
+                  <div>{errors.deduction_type}</div>
                 ) : null}
               </FormError>
             </InputContainer>
@@ -120,9 +120,9 @@ export const AddAllowanceToEmp = () => {
                 "Add"
               )}{" "}
             </AddBtn>
-          </AllowanceForm>
-        </AllowanceBody>
-      </AllowanceContainer>
+          </DeductionForm>
+        </DeductionBody>
+      </DeductionContainer>
     </Modal>
   );
 };

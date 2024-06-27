@@ -14,8 +14,8 @@ import {
   OvertimeBody,
   OvertimeContainer,
   OvertimeForm,
-} from "../add-overtime/add-overtime.style";
-import { Title } from "../add_employee/add-employee.style";
+} from "../../sections/add-overtime/add-overtime.style";
+import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
 import { useModal } from "../../../hooks/modal-hook";

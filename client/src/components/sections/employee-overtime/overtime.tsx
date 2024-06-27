@@ -15,7 +15,7 @@ import {
   OvertimeTitle,
 } from "./overtime.style";
 import { useAppSelector } from "../../../utils/custom-hook";
-import { getFormattedMonth } from "../salary/utils";
+import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";

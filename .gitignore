@@ -34,3 +34,8 @@ client/src/services/modal-api.tsx
 client/src/providers/actions.tsx
 client/src/store/modal/modal-slice.tsx
 client/src/typo/modal/state.tsx
+client/src/components/pages/salary/scroll.css
+client/src/components/pages/salary/scr.tsx
+client/src/components/pages/salary/scroll.tsx
+client/src/components/pages/salary/table.tsx
+server/media/photos/

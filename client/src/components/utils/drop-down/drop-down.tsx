@@ -14,7 +14,6 @@ function DropDown() {
       name="page"
       onChange={(e) => {
         setPageSize(parseInt(e.currentTarget.value));
-
         pagination.type === "employee" &&
           dispatcher(
             loadNextEmployeeListPage(

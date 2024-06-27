@@ -4,7 +4,7 @@ import {
   searching,
 } from "../../../store/employee/employee-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { Title } from "../../sections/see-employee/see-employee.style";
+import { Title } from "../../pages/see-employee/see-employee.style";
 import { Select, SelectOption } from "../form-elements/form.style";
 import {
   ClearIcon,

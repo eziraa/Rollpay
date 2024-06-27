@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useAppSelector } from "../../../utils/custom-hook";
 import {
   SalaryIcon,
@@ -8,50 +7,36 @@ import {
   MenuItemText,
   UsersIcon,
 } from "./left-menu.style";
-import { DisplayContext } from "../../../contexts/display-context";
+import { useNavigate } from "react-router";
+import { LIST_EMP_S, SEE_EMP_SALARY } from "../../../constants/tasks";
 
-function LeftMenu() {
+function LeftMenu({ current_menu }: { current_menu: string }) {
   const { loading } = useAppSelector((state) => state.employee);
-  // const { long_task } = useAppSelector((state) => state.user);
-  const { display, setDisplay } = useContext(DisplayContext);
+  const navigate = useNavigate();
   return (
     <LeftMenuContainer>
-      <MenuItem
-        active={Boolean(
-          !display.list_employees && !display.see_employee_salary
-        )}
-      >
+      <MenuItem active={false}>
         <HomeIcon />
         <MenuItemText>Home</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={display.list_employees}
+        active={current_menu === LIST_EMP_S}
         onClick={(e) => {
           if (loading) return;
           e.preventDefault();
           e.stopPropagation();
-          setDisplay({
-            ...display,
-            list_employees: true,
-            see_employee_salary: false,
-            see_employee: false,
-          });
+          navigate("/employees");
         }}
       >
         <UsersIcon />
         <MenuItemText>All Employees</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={display.see_employee_salary}
+        active={current_menu === SEE_EMP_SALARY}
         onClick={() => {
           if (loading) return;
-          setDisplay({
-            ...display,
-            list_employees: false,
-            see_employee_salary: true,
-            search_employee: false,
-            see_employee: false,
-          });
+
+          navigate("/employees-salary");
         }}
       >
         <SalaryIcon />
