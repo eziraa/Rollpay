@@ -15,10 +15,12 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { tryingToDelete } from "../../../store/employee/employee-slice";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export const EmployeeProfile = () => {
   const { curr_emp } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     const curr_emp_id = localStorage.getItem("curr_emp_id");
     curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
@@ -82,6 +84,7 @@ export const EmployeeProfile = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            navigate("/employees/edit-employee");
           }}
         >
           <MdModeEditOutline /> Edit
