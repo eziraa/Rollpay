@@ -1,3 +1,4 @@
+import { Employee } from "../employee/response";
 import { Allowance, Deduction, Overtime } from "../salary/response";
 
 export interface Payment {
@@ -14,7 +15,7 @@ export interface Payment {
   month: string;
 }
 
-export interface EmployeePayment extends Payment {
+export interface PaymentEmployee extends Payment {
   employee_id: string;
   employee_name: string;
 }
@@ -24,8 +25,6 @@ export interface PaymentResponse {
   success: string;
 }
 
-export interface CurrEmpPayments {
-  employee_id: string;
-  employee_name: string;
+export interface CurrEmpPayments extends Employee {
   payments: Payment[];
 }

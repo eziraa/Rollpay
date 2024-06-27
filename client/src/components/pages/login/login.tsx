@@ -29,7 +29,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { Toggle } from "../../utils/buttons/toggle";
-import { Header } from "../../sections/display-employee/display-employee.style";
+import { EmpsDisplayerHeader as Header } from "../display-employee/display-employee.style";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();

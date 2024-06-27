@@ -5,7 +5,7 @@ import {
   DeductionHeader,
   DeductionTitle,
 } from "../../sections/employee-deduction/deduction.style";
-import { getFormattedMonth } from "../../sections/salary/utils";
+import { getFormattedMonth } from "../salary/utils";
 import {
   CustomTable,
   HeaderTitle,

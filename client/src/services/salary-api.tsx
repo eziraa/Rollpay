@@ -1,13 +1,20 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import { EmpResponse } from "../typo/employee/response";
 import { SearchParams } from "../typo/salary/params";
-const listEmployeeSalary = async () => {
+import { BaseResponse } from "../typo/utils/response";
+import { PaginatedPayBackEndResponse } from "../typo/salary/response";
+const listEmployeeSalary = async (pageUrl?: string) => {
+  const endpoint = pageUrl || "/employee/salary/get";
   const employees = await api
-    .get("/employee/salary/get")
+    .get<PaginatedPayBackEndResponse>(endpoint)
     .then((res) => {
       return {
-        employees: res.data.results,
+        results: res.data.results,
+        pagination: {
+          next: res.data.next,
+          previous: res.data.previous,
+          count: res.data.count,
+        },
         code: res.status,
         success: "Success returned employees",
       };
@@ -30,7 +37,7 @@ const searchEmployeeSalary = async (search_parms: SearchParams) => {
   )
     endpoint += `?search_by=${search_parms.search_by}&search_value=${search_parms.search_value}`;
   const employees = await api
-    .get<EmpResponse>(endpoint)
+    .get<BaseResponse>(endpoint)
     .then((res) => {
       return {
         employees: res.data,

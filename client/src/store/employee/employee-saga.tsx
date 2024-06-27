@@ -14,10 +14,7 @@ import {
   unfinishedEdit,
   updateProfileDone,
 } from "./employee-slice";
-import EmployeeAPI, {
-  EditEmployeeParams,
-  PaginatedEmpResponse,
-} from "../../services/employee-api";
+import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
 import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
@@ -26,6 +23,7 @@ import {
 } from "../../typo/employee/params";
 import {
   AddEmpResponse,
+  PaginatedEmpResponse,
 } from "../../typo/employee/response";
 import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
 import { currentEmpPaymentInfoDone } from "../salary/salary-slice";
@@ -181,6 +179,7 @@ function* GetEmployee() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
+      console.log(response);
       yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
@@ -334,8 +333,8 @@ function* loadPrevPage(action: PayloadAction<string>) {
 }
 
 export function* watchLoadPage() {
-  yield takeEvery("employee/loadNextPageRequested", loadNextPage);
-  yield takeEvery("employee/loadPrevPageRequested", loadPrevPage);
+  yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
+  yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
 }
 
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {

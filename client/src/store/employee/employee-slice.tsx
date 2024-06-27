@@ -9,11 +9,8 @@ import {
   AddSalaryParams,
   UpdateProfileParams,
 } from "../../typo/employee/params";
-import {
-  EditEmployeeParams,
-  PaginatedEmpResponse,
-} from "../../services/employee-api";
-import { Employee } from "../../typo/employee/response";
+import { EditEmployeeParams } from "../../services/employee-api";
+import { Employee, PaginatedEmpResponse } from "../../typo/employee/response";
 
 const InitialEmpState: EmployeeState = {
   adding: false,
@@ -54,6 +51,7 @@ const EmployeeSlice = createSlice({
         count: state.pagination?.count ?? 0,
         current_page: 1,
         number_of_pages,
+        type: state.pagination?.type,
       };
     },
     addEmpDone: (state) => {
@@ -88,6 +86,8 @@ const EmployeeSlice = createSlice({
       state.pagination = {
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
+        type: "employee",
+        number_of_pages: payload.payload.pagination.number_of_pages,
       };
     },
     unfinishedList: (state) => {
@@ -95,12 +95,12 @@ const EmployeeSlice = createSlice({
       state.adding = false;
       state.employees = [];
     },
-    loadNextPageRequested: (state, _: PayloadAction<string>) => {
+    loadNextEmployeeListPage: (state, _: PayloadAction<string>) => {
       state.loading = true;
       if (state.pagination?.current_page) state.pagination.current_page++;
       else if (state.pagination) state.pagination.current_page = 1;
     },
-    loadPrevPageRequested: (state, _: PayloadAction<string>) => {
+    loadPrevEmployeeListPage: (state, _: PayloadAction<string>) => {
       state.loading = true;
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
@@ -196,8 +196,8 @@ export const {
   resetCurrEmployee,
   searching,
   noSearchResult,
-  loadNextPageRequested,
-  loadPrevPageRequested,
+  loadNextEmployeeListPage,
+  loadPrevEmployeeListPage,
   setPagesize,
   updateProfileDone,
   updateProfileRequest,

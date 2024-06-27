@@ -2,6 +2,20 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { Button } from "../../utils/form-elements/form.style";
 import styled from "styled-components";
 
+import {
+  body,
+  container,
+  sub_header_css,
+} from "../../utils/pages-utils/containers.style";
+
+export const EmployeesListContainer = styled.div<ThemeProps>`
+  ${container}
+`;
+
+export const EmployeesListBody = styled.div<ThemeProps>`
+  ${body}
+`;
+
 export const EmployeeDisplayerContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,14 +31,12 @@ export const Title = styled.h1<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const Header = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  width: 100%;
-  padding: 1rem;
-  position: relative;
+export const EmpsDisplayerHeader = styled.div`
+  ${sub_header_css}
+`;
+
+export const EmployeesListHeader = styled.div`
+  ${sub_header_css}
 `;
 
 export const Body = styled.div<ThemeProps>`

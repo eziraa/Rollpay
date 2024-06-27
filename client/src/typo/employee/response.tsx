@@ -1,3 +1,4 @@
+import { PaginatedBackEndResponse, PaginatedResponse } from "../utils/response";
 export interface Employee {
   id: string;
   first_name: string;
@@ -22,8 +23,10 @@ export interface AddEmpResponse {
   employee: Employee;
 }
 
-export interface EmpResponse {
-  error: string;
-  code: number;
-  success: string;
+export interface PaginatedEmpResponse extends PaginatedResponse {
+  results: Employee[];
+}
+
+export interface PaginatedEmpBackEndResponse extends PaginatedBackEndResponse {
+  results: Employee[];
 }

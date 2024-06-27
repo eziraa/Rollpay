@@ -5,4 +5,5 @@ export interface PaginationResponse {
   total_pages: number;
   prev: string | undefined;
   next: string | undefined;
+  type: string | undefined;
 }

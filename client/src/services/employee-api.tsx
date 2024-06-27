@@ -1,18 +1,13 @@
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
-  AddSalaryParams,
   UpdateProfileParams,
 } from "../typo/employee/params";
 import api from "../config/api";
-import {
-  AddEmpResponse,
-  EmpResponse,
-  Employee,
-  Profile,
-} from "../typo/employee/response";
+import { AddEmpResponse, Employee, Profile } from "../typo/employee/response";
+import { BaseResponse } from "../typo/utils/response";
 
 const addEmp = async (values: AddEmpParams) => {
   const response = await api
@@ -41,7 +36,7 @@ export interface Pagination {
   number_of_pages: number;
 }
 
-export interface PaginatedEmpResponse extends EmpResponse {
+export interface PaginatedEmpResponse extends BaseResponse {
   count: number;
   results: Employee[];
   pagination: Pagination;
@@ -83,18 +78,18 @@ const listEmployee = async (pageUrl?: string) => {
   return employees;
 };
 
-const addSalary = async (values: AddSalaryParams) => {
-  const employees = await api
-    .post<EmpResponse>("/employee/salary/add/" + values.empID, values)
-    .then((res) => {
-      return res.data;
-    });
-  return employees;
-};
+// const addSalary = async (values: AddSalaryParams) => {
+//   const employees = await api
+//     .post<EmpResponse>("/employee/salary/add/" + values.empID, values)
+//     .then((res) => {
+//       return res.data;
+//     });
+//   return employees;
+// };
 
 const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
   const employees = await api
-    .patch<EmpResponse>(
+    .patch<BaseResponse>(
       "/employee/allowance/add/" +
         values.employee_id +
         "/" +
@@ -119,7 +114,7 @@ const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
 
 const addDeduction = async (values: AddDeductionToEmployeesParams) => {
   const employees = await api
-    .patch<EmpResponse>(
+    .patch<BaseResponse>(
       "/employee/deduction/add/" +
         values.employee_id +
         "/" +
@@ -175,7 +170,7 @@ const editEmployee = async (
 
 const updatProfilePicture = async (values: UpdateProfileParams) => {
   console.log("from api", values.profile_url);
-  const response = await api
+  const response = await axios
     .put<Profile>("/user/profile/" + values.employee_id, values.profile_url, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -223,7 +218,7 @@ const getProfilePicture = async (employee_id: string) => {
 
 const deleteEmployee = async (empployee_id: string) => {
   const response = await api
-    .delete<EmpResponse>("/employee/delete/" + empployee_id)
+    .delete<BaseResponse>("/employee/delete/" + empployee_id)
     .then((res) => {
       return {
         success: "Employee deleted successfully",
@@ -244,7 +239,6 @@ const deleteEmployee = async (empployee_id: string) => {
 const EmployeeAPI = {
   addEmp,
   listEmployee,
-  addSalary,
   editEmployee,
   deleteEmployee,
   addAllowance,

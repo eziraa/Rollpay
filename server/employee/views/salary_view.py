@@ -53,7 +53,7 @@ class SalaryView(APIView):
                 queryset = queryset.filter(month__lt=my_month)
                 paginator = StandardResultsSetPagination()
                 paginator.page_size = request.query_params.get(
-                    "page_size", 100)
+                    "page_size", 10)
                 page = paginator.paginate_queryset(queryset, request)
                 if page is not None:
                     serializer = PaymentSerializer(page, many=True)

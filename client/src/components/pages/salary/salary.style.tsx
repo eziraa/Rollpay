@@ -6,7 +6,15 @@ import { Input } from "../../utils/form-elements/form.style";
 import { CustomTable } from "../../utils/custom-table/custom-table";
 import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 import { Button } from "../see-employee/see-employee.style";
+import { body, container } from "../../utils/pages-utils/containers.style";
 
+export const EmployeesSalaryContainer = styled.div<ThemeProps>`
+  ${container}
+`;
+
+export const EmployeesSalarytBody = styled.div<ThemeProps>`
+  ${body}
+`;
 export const SalaryContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,4 +77,4 @@ export const SalaryTable = styled(CustomTable)`
 export const ExportButton = styled(Button)`
   width: 7rem;
   margin-left: 1rem;
-`
+`;

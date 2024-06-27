@@ -12,21 +12,44 @@ import {
 } from "./edit-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 
-import { editEmployeeRequested } from "../../../store/employee/employee-slice";
+import {
+  editEmployeeRequested,
+  resetCurrEmployee,
+} from "../../../store/employee/employee-slice";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
-import { ErrorMessage } from "../../pages/sign-up/sign-up.style";
+import { ErrorMessage, Title } from "../../pages/sign-up/sign-up.style";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { useContext, useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { MdArrowBackIos } from "react-icons/md";
 import { DisplayContext } from "../../../contexts/display-context";
+import {
+  EditEmployeeContent,
+  SeeEmployeeBody,
+  SeeEmployeeContainer,
+  SeeEmployeeHeader,
+  TitleContainer,
+} from "../../pages/see-employee/see-employee.style";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
+import { Header } from "../header/header";
+import LeftMenu from "../left-menu/left-menu";
+import { MainContainer } from "../../utils/pages-utils/containers.style";
+import { IoChevronBackCircleOutline } from "react-icons/io5";
+import { NavigationBar } from "../../utils/nav-bar/nav-bar";
+import { EmployeeProfile } from "../../utils/profile/employee-profile";
+import { LIST_EMP_S } from "../../../constants/tasks";
 
-export const EditEmployee = () => {
-  const { curr_emp: current_employee, editing } = useAppSelector(
-    (state) => state.employee
+export const EditEmployeePage = () => {
+  const current_employee = useAppSelector(
+    (state) => state.salary?.curr_emp?.employee
   );
+  const { editing } = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
+  useEffect(() => {
+    const curr_emp_id = localStorage.getItem("curr_emp_id");
+    curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
+  }, []);
   const { display, setDisplay } = useContext(DisplayContext);
   const initialValues = {
     id: current_employee?.id ?? "",
@@ -75,241 +98,270 @@ export const EditEmployee = () => {
     },
   });
   return (
-    <Form
-      style={{
-        position: "relative",
-      }}
-    >
-      <BackButton
-        onClick={(e) => {
-          e.stopPropagation();
-          setDisplay({
-            ...display,
-            edit_employee: false,
-          });
-          // dispatcher(setMajorTask(undefined));
-        }}
-      >
-        <MdArrowBackIos /> Back
-      </BackButton>
-      <EditEmployeeBody>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>First Name</Label>
-          <Input
-            type="text"
-            name="first_name"
-            required
-            value={values.first_name}
-            onChange={handleChange}
-          />
-          {touched.first_name && errors.first_name && (
-            <ErrorMessage>{errors.first_name}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Last Name</Label>
-          <Input
-            type="text"
-            name="last_name"
-            required
-            value={values.last_name}
-            onChange={handleChange}
-          />
-          {touched.last_name && errors.last_name && (
-            <ErrorMessage>{errors.last_name}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Gender</Label>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "1rem",
-              justifyContent: "start",
-            }}
-          >
-            <Label>Male</Label>
-            <input
-              type="radio"
-              name="gender"
-              id=""
-              value="M"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              checked={values.gender === "M"}
-            />
-            <Label>Female</Label>
-            <input
-              type="radio"
-              name="gender"
-              id=""
-              value="F"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              checked={values.gender === "F"}
-            />
-          </div>
-          {touched.gender && errors.gender && (
-            <ErrorMessage>{errors.gender}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Email</Label>
-          <Input
-            type="text"
-            name="email"
-            required
-            value={values.email}
-            onChange={handleChange}
-          />
-          {touched.email && errors.email && (
-            <ErrorMessage>{errors.email}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Phone Number</Label>
-          <Input
-            type="text"
-            name="phone_number"
-            required
-            value={values.phone_number}
-            onChange={handleChange}
-          />
-          {touched.phone_number && errors.phone_number && (
-            <ErrorMessage>{errors.phone_number}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Role</Label>
-          <Input
-            type="text"
-            name="position"
-            required
-            value={values.position}
-            onChange={handleChange}
-          />
-          {touched.position && errors.position && (
-            <ErrorMessage>{errors.position}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Birth Date</Label>
-          <Input
-            type="date"
-            name="date_of_birth"
-            required
-            value={values.date_of_birth}
-            onChange={handleChange}
-          />
-          {touched.date_of_birth && errors.date_of_birth && (
-            <ErrorMessage>{errors.date_of_birth}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Date of Hire</Label>
-          <Input
-            type="date"
-            name="salary"
-            required
-            value={values.date_of_hire}
-            onChange={handleChange}
-          />
-          {touched.date_of_hire && errors.date_of_hire && (
-            <ErrorMessage>{errors.date_of_hire}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Salary</Label>
-          <Input
-            type="text"
-            name="salary"
-            required
-            value={values.salary}
-            onChange={handleChange}
-          />
-          {touched.salary && errors.salary && (
-            <ErrorMessage>{errors.salary}</ErrorMessage>
-          )}
-        </Field>
-        <ButtonContainer>
-          <CancelBtn
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (dirty) {
-                resetForm({ values: initialValues });
-                dispatcher(
-                  setFlashMessage({
-                    desc: "Form reset successfully",
-                    title: "Resetting form",
-                    status: true,
-                    duration: 3,
-                    type: "success",
-                  })
-                );
-              } else
-                dispatcher(
-                  setFlashMessage({
-                    desc: "No changes to reset",
-                    title: "No changes made",
-                    status: true,
-                    duration: 3,
-                    type: "error",
-                  })
-                );
-            }}
-          >
-            {"Reset"}
-          </CancelBtn>
-          <SaveBtn
-            type="submit"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleSubmit();
-            }}
-          >
-            {editing ? <SmallSpinner /> : "Save"}
-          </SaveBtn>
-        </ButtonContainer>
-      </EditEmployeeBody>
-    </Form>
+    <SeeEmployeeContainer>
+      <Header />
+      <SeeEmployeeBody>
+        <LeftMenu current_menu={LIST_EMP_S} />
+        <MainContainer>
+          <SeeEmployeeHeader>
+            <TitleContainer>
+              <BackButton
+                onClick={() => {
+                  setDisplay({
+                    ...display,
+                    see_employee: false,
+                    list_employees: true,
+                  });
+                  dispatcher(resetCurrEmployee());
+                }}
+              >
+                <IoChevronBackCircleOutline />
+              </BackButton>
+              <Title>Edit Employee</Title>
+            </TitleContainer>
+            <NavigationBar />
+          </SeeEmployeeHeader>
+          <EditEmployeeContent>
+            <EmployeeProfile />
+            <Form
+              style={{
+                position: "relative",
+              }}
+            >
+              <BackButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDisplay({
+                    ...display,
+                    edit_employee: false,
+                  });
+                  // dispatcher(setMajorTask(undefined));
+                }}
+              >
+                <MdArrowBackIos /> Back
+              </BackButton>
+              <EditEmployeeBody>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>First Name</Label>
+                  <Input
+                    type="text"
+                    name="first_name"
+                    required
+                    value={values.first_name}
+                    onChange={handleChange}
+                  />
+                  {touched.first_name && errors.first_name && (
+                    <ErrorMessage>{errors.first_name}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Last Name</Label>
+                  <Input
+                    type="text"
+                    name="last_name"
+                    required
+                    value={values.last_name}
+                    onChange={handleChange}
+                  />
+                  {touched.last_name && errors.last_name && (
+                    <ErrorMessage>{errors.last_name}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Gender</Label>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: "1rem",
+                      justifyContent: "start",
+                    }}
+                  >
+                    <Label>Male</Label>
+                    <input
+                      type="radio"
+                      name="gender"
+                      id=""
+                      value="M"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      checked={values.gender === "M"}
+                    />
+                    <Label>Female</Label>
+                    <input
+                      type="radio"
+                      name="gender"
+                      id=""
+                      value="F"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      checked={values.gender === "F"}
+                    />
+                  </div>
+                  {touched.gender && errors.gender && (
+                    <ErrorMessage>{errors.gender}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Email</Label>
+                  <Input
+                    type="text"
+                    name="email"
+                    required
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                  {touched.email && errors.email && (
+                    <ErrorMessage>{errors.email}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Phone Number</Label>
+                  <Input
+                    type="text"
+                    name="phone_number"
+                    required
+                    value={values.phone_number}
+                    onChange={handleChange}
+                  />
+                  {touched.phone_number && errors.phone_number && (
+                    <ErrorMessage>{errors.phone_number}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Role</Label>
+                  <Input
+                    type="text"
+                    name="position"
+                    required
+                    value={values.position}
+                    onChange={handleChange}
+                  />
+                  {touched.position && errors.position && (
+                    <ErrorMessage>{errors.position}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Birth Date</Label>
+                  <Input
+                    type="date"
+                    name="date_of_birth"
+                    required
+                    value={values.date_of_birth}
+                    onChange={handleChange}
+                  />
+                  {touched.date_of_birth && errors.date_of_birth && (
+                    <ErrorMessage>{errors.date_of_birth}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Date of Hire</Label>
+                  <Input
+                    type="date"
+                    name="salary"
+                    required
+                    value={values.date_of_hire}
+                    onChange={handleChange}
+                  />
+                  {touched.date_of_hire && errors.date_of_hire && (
+                    <ErrorMessage>{errors.date_of_hire}</ErrorMessage>
+                  )}
+                </Field>
+                <Field
+                  style={{
+                    gap: "3rem",
+                  }}
+                >
+                  <Label>Salary</Label>
+                  <Input
+                    type="text"
+                    name="salary"
+                    required
+                    value={values.salary}
+                    onChange={handleChange}
+                  />
+                  {touched.salary && errors.salary && (
+                    <ErrorMessage>{errors.salary}</ErrorMessage>
+                  )}
+                </Field>
+                <ButtonContainer>
+                  <CancelBtn
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (dirty) {
+                        resetForm({ values: initialValues });
+                        dispatcher(
+                          setFlashMessage({
+                            desc: "Form reset successfully",
+                            title: "Resetting form",
+                            status: true,
+                            duration: 3,
+                            type: "success",
+                          })
+                        );
+                      } else
+                        dispatcher(
+                          setFlashMessage({
+                            desc: "No changes to reset",
+                            title: "No changes made",
+                            status: true,
+                            duration: 3,
+                            type: "error",
+                          })
+                        );
+                    }}
+                  >
+                    {"Reset"}
+                  </CancelBtn>
+                  <SaveBtn
+                    type="submit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      handleSubmit();
+                    }}
+                  >
+                    {editing ? <SmallSpinner /> : "Save"}
+                  </SaveBtn>
+                </ButtonContainer>
+              </EditEmployeeBody>
+            </Form>
+          </EditEmployeeContent>
+        </MainContainer>
+      </SeeEmployeeBody>
+    </SeeEmployeeContainer>
   );
 };

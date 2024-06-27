@@ -4,7 +4,7 @@ import {
   searching,
 } from "../../../store/employee/employee-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { Title } from "../../sections/see-employee/see-employee.style";
+import { Title } from "../../pages/see-employee/see-employee.style";
 import { Select, SelectOption } from "../form-elements/form.style";
 import {
   ClearIcon,
@@ -77,10 +77,9 @@ export const Search = () => {
         onChange={(e) => {
           setSearchBy(e.currentTarget.value);
         }}
+        defaultValue={"first_name"}
       >
-        <SelectOption selected value="first_name">
-          First Name
-        </SelectOption>
+        <SelectOption value="first_name">First Name</SelectOption>
         <SelectOption value="last_name">Last Name</SelectOption>
         <SelectOption value="email">Email</SelectOption>
         <SelectOption value="phone_number">Phone Number</SelectOption>

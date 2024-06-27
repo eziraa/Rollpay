@@ -10,6 +10,7 @@ import positionSlice from "../store/position/position-slice";
 import allowanceSlice from "../store/allowance/allowance-slice";
 import deductionSlice from "../store/deduction/deduction-slice";
 import overtimeSlice from "../store/overtime/overtime-slice";
+// import modalSlice from "../store/modal/modal-slice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -26,6 +27,7 @@ const store = configureStore({
     allowance: allowanceSlice,
     deduction: deductionSlice,
     overtime: overtimeSlice,
+    // modal: modalSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

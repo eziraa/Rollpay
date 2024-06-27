@@ -1,10 +1,12 @@
-import { EmployeePayment } from "../payment/response";
-import { CurrentEmpPaymentsResponse, SalaryEmpResponse } from "./response";
+import { PaymentEmployee } from "../payment/response";
+import { Pagination } from "../utils/response";
+import { CurrentEmpPaymentsResponse } from "./response";
 
-export interface BillEmpState {
+export interface PaymentState {
   loading: boolean;
-  response: SalaryEmpResponse | undefined;
   searching: boolean;
-  search_response: EmployeePayment[];
+  search_response: PaymentEmployee[];
   curr_emp: CurrentEmpPaymentsResponse | undefined;
+  employees: PaymentEmployee[];
+  pagination: Pagination | undefined;
 }

@@ -1,51 +1,7 @@
 import styled from "styled-components";
-import ProfileI from "../../../assets/images.jpg";
-import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
+import ProfileI from "../../../assets/profile.png";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { IconContainer } from "../profile/profile.style";
-
-export const SeeEmployeeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  padding: 3rem;
-  position: relative;
-  gap: 1rem;
-`;
-
-export const SeeEmployeeHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 1rem;
-  gap: 1rem;
-`;
-
-export const TitleContainer = styled.div`
-  display: flex;
-  flex: 1.4;
-  align-items: center;
-  gap: 2rem;
-`;
-export const EditEmployeeContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  justify-content: start;
-  width: 100%;
-  height: 90%;
-  gap: 4rem;
-`;
-
-export const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  color: ${({ theme }) => theme.colors.primary};
-`;
 
 export const EmployeeeProfileContainer = styled.div`
   display: flex;

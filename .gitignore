@@ -29,6 +29,13 @@ client/src/components/sections/salary/table.tsx
 client/src/components/sections/add_employee/position.ts
 client/src/components/sections/add_employee/postion_data.ts
 client/src/components/sections/employee-allowance/data.ts
-server/payroll/__pycache__/__init__.cpython-311.pyc
+client/src/providers/reducer.tsx
+client/src/services/modal-api.tsx
+client/src/providers/actions.tsx
+client/src/store/modal/modal-slice.tsx
+client/src/typo/modal/state.tsx
+client/src/components/pages/salary/scroll.css
+client/src/components/pages/salary/scr.tsx
+client/src/components/pages/salary/scroll.tsx
+client/src/components/pages/salary/table.tsx
 server/media/photos/
-server/payroll/__pycache__/__init__.cpython-311.pyc
