@@ -7,6 +7,7 @@ import {
   AddDeductionToEmployeesParams,
   AddEmpParams,
   AddSalaryParams,
+  UpdateProfileParams,
 } from "../../typo/employee/params";
 import {
   EditEmployeeParams,
@@ -162,6 +163,13 @@ const EmployeeSlice = createSlice({
       state.editing = false;
       state.adding_emp_error = undefined;
     },
+    updateProfileRequest: (state, _: PayloadAction<UpdateProfileParams>) => {
+      state.editing = true;
+    },
+    updateProfileDone: (state, action: PayloadAction<string>) => {
+      state.editing = false;
+      if (state.curr_emp) state.curr_emp.profile_picture = action.payload;
+    },
   },
 });
 export const {
@@ -191,6 +199,8 @@ export const {
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
+  updateProfileDone,
+  updateProfileRequest,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
