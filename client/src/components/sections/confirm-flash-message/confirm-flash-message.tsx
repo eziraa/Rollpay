@@ -1,7 +1,7 @@
 import { MdClose } from "react-icons/md";
 import { TiWarning } from "react-icons/ti";
 import { ModalContainer } from "../../utils/modal/modal.style";
-import { CancelBtn } from "../edit-employee/edit-employee.style";
+import { CancelBtn } from "../../pages/edit-employee/edit-employee.style";
 import {
   BtnsContainer,
   CheckFlashMessageContainer,

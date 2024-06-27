@@ -18,7 +18,7 @@ import {
 } from "../../../store/employee/employee-slice";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
-import { ErrorMessage, Title } from "../../pages/sign-up/sign-up.style";
+import { ErrorMessage, Title } from "../sign-up/sign-up.style";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { useContext, useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
@@ -30,10 +30,10 @@ import {
   SeeEmployeeContainer,
   SeeEmployeeHeader,
   TitleContainer,
-} from "../../pages/see-employee/see-employee.style";
+} from "../see-employee/see-employee.style";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
-import { Header } from "../header/header";
-import LeftMenu from "../left-menu/left-menu";
+import { Header } from "../../sections/header/header";
+import LeftMenu from "../../sections/left-menu/left-menu";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";

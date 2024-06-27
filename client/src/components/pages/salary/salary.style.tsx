@@ -6,7 +6,11 @@ import { Input } from "../../utils/form-elements/form.style";
 import { CustomTable } from "../../utils/custom-table/custom-table";
 import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 import { Button } from "../see-employee/see-employee.style";
-import { body, container } from "../../utils/pages-utils/containers.style";
+import {
+  MainContainer,
+  body,
+  container,
+} from "../../utils/pages-utils/containers.style";
 
 export const EmployeesSalaryContainer = styled.div<ThemeProps>`
   ${container}
@@ -15,7 +19,7 @@ export const EmployeesSalaryContainer = styled.div<ThemeProps>`
 export const EmployeesSalarytBody = styled.div<ThemeProps>`
   ${body}
 `;
-export const SalaryContainer = styled.div`
+export const SalaryContainer = styled(MainContainer)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,6 +27,7 @@ export const SalaryContainer = styled.div`
   height: 90vh;
   position: relative;
   overflow-x: hidden;
+  padding: 2rem;
 `;
 
 export const SalaryTitle = styled.h1`
