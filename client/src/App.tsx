@@ -12,6 +12,7 @@ import { PaginationContext } from "./contexts/pagination-context";
 import { usePagination } from "./hooks/use-pagination";
 import { DisplayProvider } from "./providers/display-provider";
 import { ModalProvider } from "./providers/modal-provider";
+import { ModalStore } from "./components/utils/modal-store/modal-store";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
@@ -40,6 +41,7 @@ function App() {
                 <ThemeProvider theme={theme}>
                   <FlashMessage />
                   <RouterConfig />
+                  <ModalStore />
                 </ThemeProvider>
               </AuthProvider>
             </ModalProvider>
