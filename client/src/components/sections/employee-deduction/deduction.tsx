@@ -44,6 +44,12 @@ export const EmployeeDeduction = () => {
       <DeductionBody>
         {loading ? (
           <ThreeDots size={2} />
+        ) : curr_emp?.employee.payments.every(
+            (payment) => payment.deductions.length === 0
+          ) ? (
+          <div>
+            <NoResult>No deductions found for all month</NoResult>
+          </div>
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.deductions.length > 0 ? (

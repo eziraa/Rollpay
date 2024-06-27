@@ -44,7 +44,7 @@ export const EmployeeOvertime = () => {
             (payment) => payment.overtimes.length === 0
           ) ? (
           <div>
-            <NoResult>No Overtime for all month</NoResult>
+            <NoResult>No overtimes found for all month</NoResult>
           </div>
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
