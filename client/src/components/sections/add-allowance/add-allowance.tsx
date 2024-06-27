@@ -31,7 +31,6 @@ export const AddAllowance = () => {
     },
     validationSchema: AddAllowanceSchema,
     onSubmit(values) {
-      alert("reached");
       dispatcher(addAllowanceRequested(values));
     },
   });

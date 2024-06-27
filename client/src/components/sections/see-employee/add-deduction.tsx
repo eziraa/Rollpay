@@ -71,7 +71,7 @@ export const AddDeductionToEmp = () => {
                   onChange={handleChange}
                 >
                   <SelectOption value="" disabled selected={!curr_deduction}>
-                    Select Position
+                    Select Deduction
                   </SelectOption>
                   {deductions.map(
                     (deduction) =>

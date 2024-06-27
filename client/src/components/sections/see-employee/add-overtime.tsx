@@ -64,7 +64,7 @@ export const AddOvertimeToEmp = () => {
               >
                 <Select style={{ flex: 2 }} onChange={handleChange}>
                   <SelectOption value="" disabled selected={!curr_overtime}>
-                    Select Position
+                    Select Overtime
                   </SelectOption>
                   {overtimes.map(
                     (overtime) =>

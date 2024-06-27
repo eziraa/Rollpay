@@ -12,12 +12,15 @@ import {
   EmployeeeProfileContainer,
   NavBar,
   NavItem,
-  ProfileImage,
   Title,
   SeeEmployeeHeader,
   TitleContainer,
   ActionBtnsContainer,
   DeleteButton,
+  ProfileContainer,
+  InputButton,
+  Icon,
+  FileInput,
 } from "./see-employee.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
@@ -33,13 +36,19 @@ import { EmployeeAllowance } from "../employee-allowance/allowance";
 import {
   resetCurrEmployee,
   tryingToDelete,
+  // updateProfileRequest,
 } from "../../../store/employee/employee-slice";
 import { EditEmployee } from "../edit-employee/edit-employee";
 import { EmployeeOvertime } from "../employee-overtime/overtime";
 import { EmployeeDeduction } from "../employee-deduction/deduction";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useContext } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { DisplayContext } from "../../../contexts/display-context";
+import { Label } from "../profile/profile.style";
+import { FiCamera } from "react-icons/fi";
+import axios from "axios";
+import { Profile } from "../../../typo/employee/response";
+import Placeholder from "../../../assets/placeholde.jpg";
 
 export const SeeEmployee = () => {
   const { curr_emp: current_employee } = useAppSelector(
@@ -47,6 +56,59 @@ export const SeeEmployee = () => {
   );
   const { display, setDisplay } = useContext(DisplayContext);
   const dispatcher = useAppDispatch();
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [data, setData] = useState<Profile>({ profile_picture: Placeholder });
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
+  const handleClick = () => {
+    if (hiddenFileInput && hiddenFileInput.current) {
+      hiddenFileInput?.current.click();
+    }
+  };
+
+  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (event && event.target && event.target.files) {
+      setProfilePicture(event.target.files[0]);
+
+      // dispatcher(
+      //   updateProfileRequest({
+      //     employee_id: current_employee?.id || "",
+      //     profile_url: event.target?.files[0],
+      //   })
+      // );
+    }
+  };
+
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+  const url = `http://127.0.0.1:8000/user/profile/${current_employee?.id}`;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<Profile>(url);
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [url, current_employee?.id, profilePicture]);
+
+  const formData = new FormData();
+  if (profilePicture) {
+    formData.append("profile_picture", profilePicture);
+  }
+  axios
+    .put(url, formData, config)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   return (
     <SeeEmployeeContainer>
@@ -116,7 +178,24 @@ export const SeeEmployee = () => {
       </SeeEmployeeHeader>
       <EditEmployeeContent>
         <EmployeeeProfileContainer>
-          <ProfileImage />
+          <ProfileContainer
+            profile={"http://127.0.0.1:8000/" + data.profile_picture}
+          >
+            <Label>
+              <InputButton onClick={handleClick}>
+                <Icon>
+                  <FiCamera />
+                </Icon>
+              </InputButton>
+            </Label>
+
+            <FileInput
+              accept="image/*"
+              type="file"
+              ref={hiddenFileInput}
+              onChange={handleChange}
+            />
+          </ProfileContainer>
           <EmployeeInfoContainer>
             <EmployeeData>
               <DataLabel>Full Name</DataLabel>

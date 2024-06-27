@@ -71,7 +71,7 @@ export const AddAllowanceToEmp = () => {
                   onChange={handleChange}
                 >
                   <SelectOption value="" disabled selected={!curr_allowance}>
-                    Select Position
+                    Select Allowance
                   </SelectOption>
                   {allowances.map(
                     (allowance) =>

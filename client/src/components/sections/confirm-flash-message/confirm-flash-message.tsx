@@ -45,7 +45,7 @@ export const CheckFlashMessage = () => {
           <MdClose />
         </CloseButton>
         <CheckFlashMessageHeader>
-          <TiWarning color="#F7D309" size={30} />
+          <TiWarning color="#dc3545" size={30} />
           <CheckFlashMessageTitle>Deleting Item</CheckFlashMessageTitle>
         </CheckFlashMessageHeader>
         <CheckFlashMessageText>
