@@ -10,7 +10,7 @@ import {
   EmployeesListContainer,
 } from "./display-employee.style";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_EMPLOYEE } from "../../../constants/tasks";
+import { ADD_EMPLOYEE, LIST_EMP_S } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
@@ -34,7 +34,7 @@ export const EmployeesListPage = () => {
     <EmployeesListContainer>
       <Header />
       <EmployeesListBody>
-        <LeftMenu />
+        <LeftMenu current_menu={LIST_EMP_S} />
         <MainContainer>
           <EmployeesListHeader>
             <Title>All Employees</Title>

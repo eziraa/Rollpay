@@ -22,6 +22,7 @@ import { Header } from "../../sections/header/header";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
+import { SEE_EMPLOYEE } from "../../../constants/tasks";
 
 export const SeeEmployee = () => {
   const { display, setDisplay } = useContext(DisplayContext);
@@ -34,7 +35,7 @@ export const SeeEmployee = () => {
     <SeeEmployeeContainer>
       <Header />
       <SeeEmployeeBody>
-        <LeftMenu />
+        <LeftMenu current_menu={SEE_EMPLOYEE} />
         <MainContainer>
           <SeeEmployeeHeader>
             <TitleContainer>

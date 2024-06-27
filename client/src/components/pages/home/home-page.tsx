@@ -9,7 +9,7 @@ export const HomePage = () => {
     <HomeContainer>
       <Header />
       <HomeBody>
-        <LeftMenu />
+        <LeftMenu current_menu={""} />
         <CheckFlashMessage />
       </HomeBody>
     </HomeContainer>

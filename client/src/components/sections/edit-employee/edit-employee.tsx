@@ -38,11 +38,13 @@ import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
+import { LIST_EMP_S } from "../../../constants/tasks";
 
-export const EditEmployee = () => {
-  const { curr_emp: current_employee, editing } = useAppSelector(
-    (state) => state.employee
+export const EditEmployeePage = () => {
+  const current_employee = useAppSelector(
+    (state) => state.salary?.curr_emp?.employee
   );
+  const { editing } = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
   useEffect(() => {
     const curr_emp_id = localStorage.getItem("curr_emp_id");
@@ -99,7 +101,7 @@ export const EditEmployee = () => {
     <SeeEmployeeContainer>
       <Header />
       <SeeEmployeeBody>
-        <LeftMenu />
+        <LeftMenu current_menu={LIST_EMP_S} />
         <MainContainer>
           <SeeEmployeeHeader>
             <TitleContainer>

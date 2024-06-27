@@ -21,6 +21,7 @@ import {
   Title,
   TitleContainer,
 } from "../see-employee/see-employee.style";
+import { SEE_EMP_DEDUCTION } from "../../../constants/tasks";
 
 export const EmployeeDeductionPage = () => {
   const dispatcher = useAppDispatch();
@@ -32,7 +33,7 @@ export const EmployeeDeductionPage = () => {
     <SeeEmployeeContainer>
       <Header />
       <SeeEmployeeBody>
-        <LeftMenu />
+        <LeftMenu current_menu={SEE_EMP_DEDUCTION} />
         <MainContainer>
           <SeeEmployeeHeader>
             <TitleContainer>

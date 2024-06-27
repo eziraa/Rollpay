@@ -35,6 +35,7 @@ import * as XLSX from "xlsx";
 import LeftMenu from "../../sections/left-menu/left-menu";
 import { usePagination } from "../../../hooks/use-pagination";
 import { Header } from "../../sections/header/header";
+import { SEE_EMP_SALARY } from "../../../constants/tasks";
 export const EmployeesSalaryPage = () => {
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
@@ -122,7 +123,7 @@ export const EmployeesSalaryPage = () => {
     <EmployeesSalaryContainer>
       <Header />
       <EmployeesSalarytBody>
-        <LeftMenu />
+        <LeftMenu current_menu={SEE_EMP_SALARY} />
         <SalaryContainer>
           <EmpsDisplayerHeader>
             <Title>Employees Payroll</Title>
