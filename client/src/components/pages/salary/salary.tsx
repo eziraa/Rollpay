@@ -39,7 +39,7 @@ export const EmployeesSalaryPage = () => {
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
   const [searchBy, setSearchBy] = useState("first_name");
-  const { setPagination } = usePagination();
+  const { pagination, setPagination } = usePagination();
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
@@ -245,7 +245,7 @@ export const EmployeesSalaryPage = () => {
                 ))}
             </SalaryTable>
           )}
-          <Pagination />
+          <Pagination pagination={pagination} />
         </SalaryContainer>
       </EmployeesSalarytBody>
     </EmployeesSalaryContainer>

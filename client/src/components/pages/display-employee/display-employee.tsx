@@ -23,10 +23,10 @@ export const EmployeesListPage = () => {
   const { openModal } = useModal();
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { setPagination } = useContext(PaginationContext);
+  const { pagination, setPagination } = useContext(PaginationContext);
   useEffect(() => {
     dispatcher(listEmpRequested());
-  }, [dispatcher]);
+  }, []);
   useEffect(() => {
     employee.pagination && setPagination(employee.pagination);
   }, [employee.pagination]);
@@ -52,7 +52,7 @@ export const EmployeesListPage = () => {
           </EmployeesListHeader>
           <Body>
             <EmployeeListDisplayer />
-            <Pagination />
+            <Pagination pagination={pagination} />
           </Body>
         </MainContainer>
       </EmployeesListBody>
