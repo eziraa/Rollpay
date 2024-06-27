@@ -9,11 +9,13 @@ import {
   UsersIcon,
 } from "./left-menu.style";
 import { DisplayContext } from "../../../contexts/display-context";
+import { useNavigate } from "react-router";
 
 function LeftMenu() {
   const { loading } = useAppSelector((state) => state.employee);
   // const { long_task } = useAppSelector((state) => state.user);
-  const { display, setDisplay } = useContext(DisplayContext);
+  const { display } = useContext(DisplayContext);
+  const navigate = useNavigate();
   return (
     <LeftMenuContainer>
       <MenuItem
@@ -30,12 +32,8 @@ function LeftMenu() {
           if (loading) return;
           e.preventDefault();
           e.stopPropagation();
-          setDisplay({
-            ...display,
-            list_employees: true,
-            see_employee_salary: false,
-            see_employee: false,
-          });
+          navigate("/employees");
+
         }}
       >
         <UsersIcon />
@@ -45,13 +43,8 @@ function LeftMenu() {
         active={display.see_employee_salary}
         onClick={() => {
           if (loading) return;
-          setDisplay({
-            ...display,
-            list_employees: false,
-            see_employee_salary: true,
-            search_employee: false,
-            see_employee: false,
-          });
+
+          navigate("/employees-salary");
         }}
       >
         <SalaryIcon />

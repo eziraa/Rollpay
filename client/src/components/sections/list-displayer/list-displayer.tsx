@@ -20,6 +20,7 @@ import { NoResult } from "../../utils/no-result/no-result";
 import { Employee } from "../../../typo/employee/response";
 import { DisplayContext } from "../../../contexts/display-context";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
+import { useNavigate } from "react-router";
 
 interface EmployeeOrderType {
   name: string;
@@ -62,11 +63,12 @@ const initialOrder: EmployeeOrderType[] = [
 
 function EmployeeListDisplayer() {
   const employee = useAppSelector((state) => state.employee);
+  const navigate = useNavigate();
   const dispatcher = useAppDispatch();
   const [order, setOrder] = useState(initialOrder);
   const emplist = [...employee.employees];
   const [emp_list, setEmpList] = useState(emplist);
-  const { display, setDisplay } = useContext(DisplayContext);
+  const { display } = useContext(DisplayContext);
   useEffect(() => {
     if (display.list_employees) setEmpList(emplist);
     else if (display.search_employee) {
@@ -235,14 +237,16 @@ function EmployeeListDisplayer() {
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setDisplay({
-                        ...display,
-                        see_employee: true,
-                        list_employees: false,
-                        see_employee_allowance: true,
-                        see_employee_deduction: false,
-                        see_employee_overtime: false,
-                      });
+                      // setDisplay({
+                      //   ...display,
+                      //   see_employee: true,
+                      //   list_employees: false,
+                      //   see_employee_allowance: true,
+                      //   see_employee_deduction: false,
+                      //   see_employee_overtime: false,
+                      // });
+                      navigate("/employees/single-employee");
+
                       // dispatcher(setLongTask(SEE_EMPLOYEE));
                       dispatcher(getCurrEmpPaymentInfo(emp.id));
                       dispatcher(setCurrentEmployee(emp));
