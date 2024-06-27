@@ -20,9 +20,10 @@ import { useEffect } from "react";
 import { useModal } from "../../../hooks/modal-hook";
 import { useDeduction } from "../../../hooks/deduction-hook";
 import { AddDeductionSchema } from "../../../schema/add-deduction-schema";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 export const AddDeduction = () => {
   const dispatcher = useAppDispatch();
-  const { curr_deduction, adding_deduction_error } = useDeduction();
+  const { curr_deduction, adding_deduction_error, adding } = useDeduction();
   const { closeModal } = useModal();
   const { values, handleChange, handleSubmit, errors, touched } = useFormik({
     initialValues: {
@@ -73,11 +74,12 @@ export const AddDeduction = () => {
                   fontSize: "1.5rem",
                 }}
               >
-                {" "}
                 {adding_deduction_error}
               </FormError>
             )}
-            <AddBtn type="submit">Add</AddBtn>
+            <AddBtn type="submit">
+              {adding && !adding_deduction_error ? <SmallSpinner /> : "Add"}
+            </AddBtn>
           </DeductionForm>
         </DeductionBody>
       </DeductionContainer>
