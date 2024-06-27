@@ -1,14 +1,12 @@
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
+  UpdateProfileParams,
 } from "../typo/employee/params";
 import api from "../config/api";
-import {
-  AddEmpResponse,
-  PaginatedEmpBackEndResponse,
-} from "../typo/employee/response";
+import { AddEmpResponse, Employee, Profile } from "../typo/employee/response";
 import { BaseResponse } from "../typo/utils/response";
 
 const addEmp = async (values: AddEmpParams) => {
@@ -29,12 +27,34 @@ const addEmp = async (values: AddEmpParams) => {
     });
   return response;
 };
+export interface Pagination {
+  next: string | undefined;
+  previous: string | undefined;
+  count: number;
+  page_size: number;
+  current_page: number;
+  number_of_pages: number;
+}
+
+export interface PaginatedEmpResponse extends BaseResponse {
+  count: number;
+  results: Employee[];
+  pagination: Pagination;
+}
+
+export interface PaginatedBackEndResponse {
+  count: number;
+  results: Employee[];
+  next: string | null;
+  previous: string | null;
+  status: number;
+}
 
 const listEmployee = async (pageUrl?: string) => {
   const endpoint = pageUrl || "/employee/list";
 
   const employees = await api
-    .get<PaginatedEmpBackEndResponse>(endpoint)
+    .get<PaginatedBackEndResponse>(endpoint)
     .then((res) => {
       return {
         results: res.data.results,
@@ -148,6 +168,54 @@ const editEmployee = async (
   return response;
 };
 
+const updatProfilePicture = async (values: UpdateProfileParams) => {
+  console.log("from api", values.profile_url);
+  const response = await axios
+    .put<Profile>("/user/profile/" + values.employee_id, values.profile_url, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      return {
+        success: "Profile picture updated successfully",
+        code: res.status,
+        profile: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
+  return response;
+};
+
+const getProfilePicture = async (employee_id: string) => {
+  const response = await api
+    .get<Profile>("/user/profile" + employee_id)
+    .then((res) => {
+      return {
+        profile: res.data,
+        code: res.status,
+        success: "Successfully returned profile picture",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return response;
+};
+
 const deleteEmployee = async (empployee_id: string) => {
   const response = await api
     .delete<BaseResponse>("/employee/delete/" + empployee_id)
@@ -175,6 +243,8 @@ const EmployeeAPI = {
   deleteEmployee,
   addAllowance,
   addDeduction,
+  updatProfilePicture,
+  getProfilePicture,
 };
 
 export default EmployeeAPI;
