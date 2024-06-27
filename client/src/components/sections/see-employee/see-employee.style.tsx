@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import Profile from "../../../assets/profile.png";
+import ProfileI from "../../../assets/images.jpg";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { IconContainer } from "../profile/profile.style";
+
 export const SeeEmployeeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -58,12 +60,74 @@ export const EmployeeeProfileContainer = styled.div`
   gap: 2rem;
 `;
 
+export const Button = styled.button`
+  font-size: 1.2rem;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: ${({ theme }) => theme.buttons.primary};
+  border-radius: 5px;
+  width: 10rem;
+  display: flex;
+  gap: 1rem;
+  font-size: medium;
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.75, theme.buttons.primary)};
+  }
+`;
+interface Props {
+  profile: string;
+}
+export const ProfileContainer = styled.div<Props>`
+  display: inline-block;
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  border: 0.1rem solid green;
+  border-radius: 50%;
+  padding: 0rem;
+  background-image: url(${(props) => props.profile});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  padding: 4rem 0 0 3rem;
+`;
+
+export const InputButton = styled.button`
+  font-size: 1.2rem;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  gap: 1rem;
+  font-size: medium;
+  width: 5rem;
+  height: 2.5rem;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+`;
+
+export const Icon = styled(IconContainer)`
+  margin: 0;
+  padding: 0;
+  color: ${({ theme }) => theme.backgrounds.primary};
+`;
+
+export const FileInput = styled.input`
+  display: none;
+`;
+
 export const ProfileImage = styled.img`
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
   padding: 0rem;
-  background: url(${Profile}), linear-gradient(90deg, #60565596, #6866619d);
+  background: url(${ProfileI}), linear-gradient(90deg, #60565596, #6866619d);
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
@@ -113,24 +177,6 @@ export const EditButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-export const Button = styled.button`
-  font-size: 1.2rem;
-  color: #ffffff;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: ${({ theme }) => theme.buttons.primary};
-  border-radius: 5px;
-  width: 10rem;
-  display: flex;
-  gap: 1rem;
-  font-size: medium;
-  &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.buttons.primary)};
-  }
 `;
 
 export const BackButton = styled.div`
