@@ -9,8 +9,12 @@ export interface Employee {
   date_of_birth: string;
   date_of_hire: string;
   salary: number;
+  profile_picture: string | undefined;
 }
 
+export interface Profile {
+  profile_picture: string;
+}
 export interface AddEmpResponse {
   success: string;
   error: string;
@@ -23,4 +27,3 @@ export interface EmpResponse {
   code: number;
   success: string;
 }
-
