@@ -20,7 +20,7 @@ import { SEE_EMP_DEDUCTION, SEE_EMP_OVERTIME } from "../../../constants/tasks";
 import { EmployeeOvertime } from "../../sections/employee-overtime/overtime";
 import { useNavigate } from "react-router";
 
-export const EmployeeDeductionPage = () => {
+export const EmployeeOvertimePage = () => {
   const navigate = useNavigate();
   return (
     <SeeEmployeeContainer>
