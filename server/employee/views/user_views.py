@@ -57,6 +57,15 @@ class ProfilePicture(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, employee_id, format=None):
+        try:
+            employee = Employee.objects.get(pk=employee_id)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ProfilePicSerializer(employee)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
             
 class AccountView(APIView):
