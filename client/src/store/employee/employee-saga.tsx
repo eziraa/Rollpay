@@ -12,6 +12,7 @@ import {
   unfinishedAdd,
   unfinishedDelete,
   unfinishedEdit,
+  updateProfileDone,
 } from "./employee-slice";
 import EmployeeAPI, {
   EditEmployeeParams,
@@ -21,8 +22,11 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
+  UpdateProfileParams,
 } from "../../typo/employee/params";
-import { AddEmpResponse } from "../../typo/employee/response";
+import {
+  AddEmpResponse,
+} from "../../typo/employee/response";
 import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
 import { currentEmpPaymentInfoDone } from "../salary/salary-slice";
 // import { closeModal } from "../../providers/actions";
@@ -403,7 +407,28 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
   }
 }
 
+function* updateProfile(action: PayloadAction<UpdateProfileParams>) {
+  try {
+    const response: string = yield call(
+      EmployeeAPI.updatProfilePicture,
+      action.payload
+    );
+    yield put(updateProfileDone(response));
+  } catch (e) {
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Edit Employee",
+        desc: "Cannot edit employee please try again",
+        duration: 3,
+      })
+    );
+  }
+}
+
 export function* watchEditEmployee() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
+  yield takeEvery("employee/updateProfileRequest", updateProfile);
   // yield takeEvery("employee/addPositionRequested", addPosition);
 }
