@@ -15,6 +15,8 @@ export const EmployeeeProfileContainer = styled.div`
   height: auto;
   padding: 1rem;
   gap: 2rem;
+  position: relative;
+  min-height: 75vh;
 `;
 
 export const Button = styled.button`
@@ -155,6 +157,8 @@ export const ActionBtnsContainer = styled.div`
   gap: 1rem;
   width: 100%;
   padding: 2rem 0;
+  position: absolute;
+  bottom: 0.5rem;
 `;
 
 export const ActionBtn = styled.div`
