@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
-import { ThemeProps } from "../../../typo/theme/theme";
 
-export const container = css<ThemeProps>`
+export const container = css`
   width: 100vw;
   height: 100vh;
   background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -12,7 +11,7 @@ export const container = css<ThemeProps>`
   border-radius: 0.5rem;
 `;
 
-export const body = css<ThemeProps>`
+export const body = css`
   width: 100vw;
   height: 90vh;
   display: flex;

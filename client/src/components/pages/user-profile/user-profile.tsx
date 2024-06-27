@@ -16,7 +16,7 @@ import {
   SeeEmployeeHeader,
   Title,
   TitleContainer,
-} from "../../sections/see-employee/see-employee.style";
+} from "../see-employee/see-employee.style";
 import { Item, UserProfileContainer } from "./user-profile.style";
 
 // import { useAppDispatch } from "../../../utils/custom-hook";

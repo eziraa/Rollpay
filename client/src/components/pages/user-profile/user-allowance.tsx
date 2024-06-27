@@ -5,7 +5,7 @@ import {
   AllowanceHeader,
   AllowanceTitle,
 } from "../../sections/employee-allowance/allowance.style";
-import { getFormattedMonth } from "../../sections/salary/utils";
+import { getFormattedMonth } from "../salary/utils";
 import {
   CustomTable,
   HeaderTitle,
