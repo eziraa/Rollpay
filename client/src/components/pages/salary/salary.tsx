@@ -18,11 +18,14 @@ import {
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
 import {
-  EmpsDisplayerHeader as Header,
+  EmpsDisplayerHeader,
   Title,
 } from "../display-employee/display-employee.style";
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
-import { searchPaymentRequested } from "../../../store/salary/salary-slice";
+import {
+  getSalariesRequested,
+  searchPaymentRequested,
+} from "../../../store/salary/salary-slice";
 import Pagination from "../../sections/pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
 import { getFormattedMonth } from "./utils";
@@ -30,16 +33,23 @@ import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
 import * as XLSX from "xlsx";
 import LeftMenu from "../../sections/left-menu/left-menu";
+import { usePagination } from "../../../hooks/use-pagination";
+import { Header } from "../../sections/header/header";
 export const EmployeesSalaryPage = () => {
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
   const [searchBy, setSearchBy] = useState("first_name");
-
+  const { setPagination } = usePagination();
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
-
+  useEffect(() => {
+    dispatcher(getSalariesRequested());
+  }, []);
+  useEffect(() => {
+    salary.pagination && setPagination(salary.pagination);
+  }, [salary.pagination]);
   useEffect(() => {
     const loadEmployee = setTimeout(() => {
       dispatcher(
@@ -110,10 +120,11 @@ export const EmployeesSalaryPage = () => {
 
   return (
     <EmployeesSalaryContainer>
+      <Header />
       <EmployeesSalarytBody>
         <LeftMenu />
         <SalaryContainer>
-          <Header>
+          <EmpsDisplayerHeader>
             <Title>Employees Payroll</Title>
             <SearchContainer>
               <SearchIcon />
@@ -150,7 +161,7 @@ export const EmployeesSalaryPage = () => {
                 )}
             </Label>
             <ExportButton onClick={handleExport}>Export </ExportButton>
-          </Header>
+          </EmpsDisplayerHeader>
           {salary.loading ? (
             <LoadingSpinner />
           ) : (

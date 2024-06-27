@@ -17,7 +17,6 @@ export const HomePage = () => {
         <LeftMenu />
         <CheckFlashMessage />
         {employee.loading ? <LoadingSpinner /> : <Main />}
-        <ModalStore />
       </HomeBody>
     </HomeContainer>
   );
