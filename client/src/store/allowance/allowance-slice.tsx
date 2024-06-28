@@ -73,7 +73,7 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.allowances.splice(state.allowances.indexOf(action.payload), 1);
     },
-    unfinishedDelete: (state) => {
+    unfinishedDelete: (_) => {
       // state.task_finished = true;
     },
     listAllowanceDone: (
@@ -127,7 +127,7 @@ const EmployeeSlice = createSlice({
       state.curr_allowance = undefined;
       state.task_finished = true;
     },
-    unfinishedEdit: (state) => {
+    unfinishedEdit: (_) => {
       // state.task_finished = true
     },
   },

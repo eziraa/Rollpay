@@ -12,97 +12,21 @@ import {
 } from "../../typo/deduction/params";
 
 const InitialEmpState: DeductionState = {
-  adding: false,
   deductions: [],
-  loading: false,
   curr_deduction: undefined,
-  editing: false,
-  deleting: false,
   query_set: [],
   searching: false,
   pagination: undefined,
   adding_deduction_error: undefined,
+  task_finished: true,
 };
-const DeductionSlice = createSlice({
+const EmployeeSlice = createSlice({
   name: "deduction",
   initialState: InitialEmpState,
   reducers: {
     addDeductionRequested: (state, _: PayloadAction<AddDeductionParams>) => {
-      state.adding = true;
+      state.task_finished = false;
     },
-    addDeductionDone: (state, action: PayloadAction<Deduction>) => {
-      state.adding = false;
-      state.adding_deduction_error = undefined;
-      state.deductions.push(action.payload);
-      state.curr_deduction = action.payload;
-    },
-    listDeductionDone: (
-      state,
-      payload: PayloadAction<PaginatedDeductionResponse>
-    ) => {
-      state.deductions = payload.payload.results;
-      state.adding = false;
-      state.loading = false;
-      state.pagination = {
-        ...payload.payload.pagination,
-        page_size: state.pagination?.page_size ?? 10,
-      };
-    },
-    listDeductionsRequested: (state) => {
-      state.loading = true;
-    },
-    unfinishedList: (state) => {
-      state.loading = false;
-      state.adding = false;
-      state.deductions = [];
-    },
-    unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.adding = false;
-      state.adding_deduction_error = action.payload;
-    },
-
-    tryingToDelete: (state) => {
-      state.deleting = true;
-    },
-    deleteDeductionRequested: (__, _: PayloadAction<string>) => {},
-    addSearched: (state, action: PayloadAction<Deduction[]>) => {
-      state.query_set = action.payload;
-    },
-    deleteDeductionDone: (state, action: PayloadAction<Deduction>) => {
-      state.deleting = false;
-      state.deductions.splice(state.deductions.indexOf(action.payload), 1);
-    },
-    unfinishedDelete: (state) => {
-      state.deleting = false;
-    },
-    editDeductionDone: (state, action: PayloadAction<Deduction>) => {
-      state.editing = false;
-      state.curr_deduction = action.payload;
-    },
-    resetCurrDeduction: (state) => {
-      state.curr_deduction = undefined;
-      state.editing = false;
-    },
-    unfinishedEdit: (state) => {
-      state.editing = false;
-    },
-    searching: (state, payload: PayloadAction<Deduction[]>) => {
-      state.query_set = payload.payload;
-      state.searching = true;
-    },
-    noSearchResult: (state) => {
-      state.searching = false;
-    },
-    setCurrentDeduction: (
-      state,
-      payload: PayloadAction<Deduction | undefined>
-    ) => {
-      state.curr_deduction = payload.payload;
-    },
-    editDeductionRequested: (state, _: PayloadAction<EditDeductionParams>) => {
-      state.editing = true;
-    },
-
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
       let number_of_pages = 1;
@@ -125,15 +49,86 @@ const DeductionSlice = createSlice({
       };
     },
 
+    addDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.task_finished = true;
+      state.adding_deduction_error = undefined;
+      state.deductions.push(action.payload);
+      state.curr_deduction = action.payload;
+    },
+    unfinishedAdd: (state, action: PayloadAction<string>) => {
+      state.task_finished = true;
+      state.adding_deduction_error = action.payload;
+    },
+    listDeductionsRequested: (state) => {
+      state.task_finished = false;
+    },
+    tryingToDelete: (state) => {
+      state.task_finished = false;
+    },
+    deleteDeductionRequested: (__, _: PayloadAction<string>) => {},
+    addSearched: (state, action: PayloadAction<Deduction[]>) => {
+      state.query_set = action.payload;
+    },
+    deleteDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.task_finished = true;
+      state.deductions.splice(state.deductions.indexOf(action.payload), 1);
+    },
+    unfinishedDelete: (_) => {
+      // state.task_finished = true;
+    },
+    listDeductionDone: (
+      state,
+      payload: PayloadAction<PaginatedDeductionResponse>
+    ) => {
+      state.deductions = payload.payload.results;
+      state.task_finished = true;
+      state.task_finished = true;
+      state.pagination = {
+        ...payload.payload.pagination,
+        page_size: state.pagination?.page_size ?? 10,
+      };
+    },
+    unfinishedList: (state) => {
+      state.task_finished = true;
+      state.task_finished = true;
+      state.deductions = [];
+    },
     loadNextPageRequested: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page++;
       else if (state.pagination) state.pagination.current_page = 1;
     },
     loadPrevPageRequested: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
+    },
+    searching: (state, payload: PayloadAction<Deduction[]>) => {
+      state.query_set = payload.payload;
+      state.searching = true;
+    },
+    noSearchResult: (state) => {
+      state.searching = false;
+    },
+    setCurrentDeduction: (
+      state,
+      payload: PayloadAction<Deduction | undefined>
+    ) => {
+      state.curr_deduction = payload.payload;
+    },
+    editDeductionRequested: (state, _: PayloadAction<EditDeductionParams>) => {
+      state.task_finished = false;
+    },
+    editDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.task_finished = true;
+      state.curr_deduction = action.payload;
+    },
+    resetCurrEmployee: (state) => {
+      state.curr_deduction = undefined;
+      state.task_finished = true;
+    },
+    unfinishedEdit: (_) => {
+      // state.task_finished = true
     },
   },
 });
@@ -152,12 +147,12 @@ export const {
   editDeductionRequested,
   editDeductionDone,
   unfinishedEdit,
-  resetCurrDeduction,
+  resetCurrEmployee,
   searching,
   noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
-} = DeductionSlice.actions;
+} = EmployeeSlice.actions;
 
-export default DeductionSlice.reducer;
+export default EmployeeSlice.reducer;
