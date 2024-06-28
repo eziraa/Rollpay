@@ -3,6 +3,7 @@ import { useEmployee } from "../../../hooks/employee-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   FormError,
+  Input,
   InputContainer,
   Label,
   Select,
@@ -29,12 +30,15 @@ export const AddOvertimeToEmp = () => {
   useEffect(() => {
     if (curr_overtime) {
       dispatcher(listOvertimesRequested());
+      console.log(overtimes);
     }
   }, [curr_overtime, dispatcher]);
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      overtime_name: "",
+      overtime_type: "",
       employee_id: employee.curr_emp?.id,
+      start_time: "",
+      end_time: "",
     },
     onSubmit: (values) => {
       console.log(values);
@@ -71,14 +75,15 @@ export const AddOvertimeToEmp = () => {
                       overtime && (
                         <SelectOption
                           selected={overtime.id === curr_overtime?.id}
-                          value={overtime.overtime_name}
+                          value={overtime.overtime_type}
                           onChange={handleChange}
                         >
-                          {overtime.overtime_name}
+                          {overtime.overtime_type}
                         </SelectOption>
                       )
                   )}
                 </Select>
+
                 <AddBtn
                   onClick={(e) => {
                     e.preventDefault();
@@ -90,9 +95,27 @@ export const AddOvertimeToEmp = () => {
                   {"Add New"}
                 </AddBtn>
               </div>
+              <InputContainer>
+                <Label htmlFor="start_time">Start Time</Label>
+                <Input
+                  type="datetime-local"
+                  name="start_time"
+                  value={employee.curr_emp?.id}
+                  style={{ flex: 2 }}
+                />
+              </InputContainer>
+              <InputContainer>
+                <Label htmlFor="start_time">End Time</Label>
+                <Input
+                  type="datetime-local"
+                  name="end_time"
+                  value={employee.curr_emp?.id}
+                  style={{ flex: 2 }}
+                />
+              </InputContainer>
               <FormError>
-                {touched.overtime_name && errors.overtime_name ? (
-                  <div>{errors.overtime_name}</div>
+                {touched.overtime_type && errors.overtime_type ? (
+                  <div>{errors.overtime_type}</div>
                 ) : null}
               </FormError>
             </InputContainer>
