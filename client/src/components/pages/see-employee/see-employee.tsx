@@ -8,6 +8,7 @@ import {
   TitleContainer,
   SeeEmployeeBody,
   SeeEmployeeContainer,
+  Container,
 } from "./see-employee.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
@@ -20,6 +21,7 @@ import { Header } from "../../sections/header/header";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
 import { SEE_EMPLOYEE, SEE_EMP_ALLOWANCE } from "../../../constants/tasks";
+import UpdateEmployee from "./update-employee";
 
 export const SeeEmployee = () => {
   const dispatcher = useAppDispatch();
@@ -43,7 +45,11 @@ export const SeeEmployee = () => {
             <NavigationBar current_nav={SEE_EMP_ALLOWANCE} />
           </SeeEmployeeHeader>
           <EditEmployeeContent>
-            <EmployeeProfile />
+            <Container>
+              <EmployeeProfile />
+              <UpdateEmployee />
+            </Container>
+
             <EmployeeAllowance />
           </EditEmployeeContent>
         </MainContainer>
