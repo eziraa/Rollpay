@@ -8,7 +8,7 @@ from employee.serializers.position import PositionSerializer
 from employee.permissions.clerk_permission import IsUserInGroupWithClerk
 from employee.serializers.payment import MonthlyPaymentSerializer, PaymentSerializer
 from employee.serializers.salary import SalarySerializer
-from ..models import Employee, Payment, Salary, Position, Allowance, Deduction
+from ..models import Employee, Payment, Salary, Position, Allowance, Deduction, OvertimeItem, Overtime
 from django.http import JsonResponse
 import json
 import datetime
@@ -88,6 +88,19 @@ class EmployeeView (APIView):
             else:
                 employe.salary.deductions.add(
                     Deduction.objects.get(deduction_type=deduction_type))
+                employe.save()
+                if not Payment.objects.filter(employee_id=employee_id, salary_id=employe.salary.id).exists():
+                    payment = Payment.objects.create(employee=employe, month=Month(datetime.datetime.now(
+                    ).year, datetime.datetime.now().month), salary=employe.salary)
+                    payment.save()
+        elif overtime_type:
+            overtime = Overtime.objects.get(overtime_type=overtime_type)
+            if employe.salary.overtimes.filter(overtime=overtime).exists():
+                return JsonResponse({'error': 'This overtime already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                employe.salary.overtimes.add(OvertimeItem.objects.create(
+                    overtime=overtime, start_time=request.data["start_time"], end_time=request.data["end_time"]))
+
                 employe.save()
                 if not Payment.objects.filter(employee_id=employee_id, salary_id=employe.salary.id).exists():
                     payment = Payment.objects.create(employee=employe, month=Month(datetime.datetime.now(
