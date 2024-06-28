@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
 import ProfileI from "../../../assets/profile.png";
+import Placeholder from "../../../assets/placeholde.jpg";
+
 import { ThemeProps } from "../../../typo/theme/theme";
+import { IconContainer } from "../../sections/profile/profile.style";
 
 export const EmployeeeProfileContainer = styled.div`
   display: flex;
@@ -41,15 +44,17 @@ export const ProfileContainer = styled.div<Props>`
   position: relative;
   width: 10rem;
   height: 10rem;
-  border: 0.1rem solid green;
   border-radius: 50%;
   padding: 0rem;
-  background-image: url(${(props) => props.profile});
+  background-image: ${(props) =>
+    props.profile ? `url(${props.profile})` : `url(${Placeholder})`};
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
   padding: 4rem 0 0 3rem;
+  cursor: pointer;
 `;
 
 export const InputButton = styled.button`
@@ -69,9 +74,14 @@ export const InputButton = styled.button`
 `;
 
 export const Icon = styled(IconContainer)`
-  margin: 0;
-  padding: 0;
+  margin-top: 4.7rem;
+  padding-top: 0.4rem;
+  width: 2.7rem;
+  height: 2.7rem;
   color: ${({ theme }) => theme.backgrounds.primary};
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.5, theme.colors.primary)};
+  border-radius: 2.7rem;
 `;
 
 export const FileInput = styled.input`
