@@ -44,7 +44,7 @@ export const EditEmployeePage = () => {
   const current_employee = useAppSelector(
     (state) => state.salary?.curr_emp?.employee
   );
-  const { editing } = useAppSelector((state) => state.employee);
+  const { task_finished } = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
   useEffect(() => {
     const curr_emp_id = localStorage.getItem("curr_emp_id");
@@ -119,7 +119,7 @@ export const EditEmployeePage = () => {
               </BackButton>
               <Title>Edit Employee</Title>
             </TitleContainer>
-            <NavigationBar />
+            <NavigationBar current_nav="" />
           </SeeEmployeeHeader>
           <EditEmployeeContent>
             <EmployeeProfile />
@@ -354,7 +354,7 @@ export const EditEmployeePage = () => {
                       handleSubmit();
                     }}
                   >
-                    {editing ? <SmallSpinner /> : "Save"}
+                    {!task_finished ? <SmallSpinner /> : "Save"}
                   </SaveBtn>
                 </ButtonContainer>
               </EditEmployeeBody>
