@@ -8,28 +8,105 @@ import {
   EmployeeData,
   EmployeeInfoContainer,
   EmployeeeProfileContainer,
-  ProfileImage,
+  FileInput,
+  Icon,
+  InputButton,
+  ProfileContainer,
 } from "./employee-profile.style";
 import { MdModeEditOutline } from "react-icons/md";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { RiDeleteBin6Line, RiPencilLine } from "react-icons/ri";
 import { tryingToDelete } from "../../../store/employee/employee-slice";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { ThreeDots } from "../loading/dots";
+import { Profile } from "../../../typo/employee/response";
+
+// import Placeholder from "../../../assets/placeholde.jpg";
+import axios from "axios";
+import { Label } from "../form-elements/form.style";
 
 export const EmployeeProfile = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [data, setData] = useState<Profile>({ profile_picture: "" });
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setProfilePicture(event.target.files[0]);
+    }
+  };
+
+  const handleClick = () => {
+    if (hiddenFileInput.current) {
+      hiddenFileInput.current.click();
+    }
+  };
+  useEffect(() => {
+    const curr_emp_id = localStorage.getItem("curr_emp_id");
+    if (curr_emp_id) {
+      const url = `http://127.0.0.1:8000/user/profile/${curr_emp_id}`;
+      axios
+        .get<Profile>(url)
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [profilePicture]);
 
   useEffect(() => {
     const curr_emp_id = localStorage.getItem("curr_emp_id");
+    if (profilePicture && curr_emp_id) {
+      const url = `http://127.0.0.1:8000/user/profile/${curr_emp_id}`;
+      const formData = new FormData();
+      formData.append("profile_picture", profilePicture);
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      axios
+        .put(url, formData, config)
+        .then((response) => {
+          setData({ ...data, profile_picture: response.data.profile_picture });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [profilePicture]);
+  useEffect(() => {
+    const curr_emp_id = localStorage.getItem("curr_emp_id");
     curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
-  }, []);
+  }, [dispatcher]);
   return (
     <EmployeeeProfileContainer>
-      <ProfileImage />
+      <ProfileContainer
+        profile={"http://127.0.0.1:8000/" + data.profile_picture}
+      >
+        <Label>
+          <InputButton type="submit" onClick={handleClick}>
+            <Icon>
+              <RiPencilLine />
+            </Icon>
+          </InputButton>
+        </Label>
+
+        <FileInput
+          accept="image/*"
+          type="file"
+          ref={hiddenFileInput}
+          onChange={handleChange}
+        />
+      </ProfileContainer>
       {loading ? (
         <ThreeDots size={1} />
       ) : (
@@ -90,7 +167,7 @@ export const EmployeeProfile = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate("/employees/edit-employee");
+            navigate("/employees");
           }}
         >
           <MdModeEditOutline /> Edit
