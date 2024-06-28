@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useAllowance } from "../../../hooks/allowance-hook";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   FormError,
   InputContainer,
@@ -22,10 +22,13 @@ import { ADD_ALLOWANCE, ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
 import { addEmpAllowanceRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useModal } from "../../../hooks/modal-hook";
+import { useSalary } from "../../../hooks/salary-hook";
+import { useEmployee } from "../../../hooks/employee-hook";
 export const AddAllowanceToEmp = () => {
   const { allowances, curr_allowance } = useAllowance();
   const dispatcher = useAppDispatch();
-  const employee = useAppSelector((state) => state.employee);
+  const { curr_emp } = useSalary();
+  const { adding_emp_error, editing } = useEmployee();
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_allowance) {
@@ -35,7 +38,7 @@ export const AddAllowanceToEmp = () => {
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       allowance_type: "",
-      employee_id: employee.curr_emp?.id || "",
+      employee_id: curr_emp?.employee?.id || "",
     },
     onSubmit: (values) => {
       dispatcher(addEmpAllowanceRequested(values));
@@ -46,7 +49,7 @@ export const AddAllowanceToEmp = () => {
     <Modal content={ADD_ALLOWANCE_TO_EMP}>
       <AllowanceContainer>
         <AllowanceBody>
-          <Title>Adding Allowance to {employee.curr_emp?.first_name}</Title>
+          <Title>Adding Allowance to {curr_emp?.employee?.first_name}</Title>
           <AllowanceForm
             onSubmit={(e) => {
               e.preventDefault();
@@ -79,6 +82,7 @@ export const AddAllowanceToEmp = () => {
                         <SelectOption
                           selected={allowance.id === curr_allowance?.id}
                           value={allowance.allowance_type}
+                          key={allowance.id}
                         >
                           {allowance.allowance_type}
                         </SelectOption>
@@ -102,23 +106,18 @@ export const AddAllowanceToEmp = () => {
                 ) : null}
               </FormError>
             </InputContainer>
-            {employee.adding_emp_error && (
+            {adding_emp_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
                 {" "}
-                {employee.adding_emp_error}
+                {adding_emp_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {" "}
-              {employee.editing && !employee.adding_emp_error ? (
-                <SmallSpinner />
-              ) : (
-                "Add"
-              )}{" "}
+              {editing && !adding_emp_error ? <SmallSpinner /> : "Add"}
             </AddBtn>
           </AllowanceForm>
         </AllowanceBody>
