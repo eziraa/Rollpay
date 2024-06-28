@@ -2,6 +2,7 @@ from typing import Any
 from django.db import models
 from django.contrib.auth.models import User as BaseUser
 from month.models import MonthField
+import datetime
 
 def upload_to(instance, filename):
     return 'photos/{filename}'.format(filename = filename)
@@ -38,15 +39,17 @@ class Deduction(models.Model):
     deduction_rate = models.DecimalField(
         max_digits=7, decimal_places=2, null=False)
     date_of_start = models.DateField(auto_now=True)
-    date_of_end = models.DateField(auto_now=True)
+    date_of_end = models.DateField(blank=True, null=True)
     def __str__(self):
         return self.deduction_type
 
 
 class OvertimeItem (models.Model):
     overtime = models.ForeignKey(Overtime, on_delete=models.CASCADE)
-    date_of_overtime = models.DateField(auto_now=True)
-    length_of_overtime = models.IntegerField(null=False)
+    start_time = models.DateTimeField(
+        null=False, blank=False, default=datetime.datetime.now())
+    end_time = models.DateTimeField(
+        null=False, blank=False, default=datetime.datetime.now())
 
 
 class Salary(models.Model):
