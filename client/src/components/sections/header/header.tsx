@@ -8,13 +8,16 @@ import {
 } from "./header.style";
 import { useContext, useEffect, useState } from "react";
 import { DisplayContext } from "../../../contexts/display-context";
-import axios from "axios";
+// import axios from "axios";
 import { Profile as ProfileParams } from "../../../typo/employee/response";
 import Profile from "../profile/profile";
-
+import { useProfileContext } from "../../../contexts/profile-context";
+import axios from "axios";
 
 export const Header = () => {
   const { display, setDisplay } = useContext(DisplayContext);
+  const { profilePictureUrl } = useProfileContext();
+
   const [data, setData] = useState<ProfileParams>({ profile_picture: "" });
 
   const employee_id = localStorage.getItem("curr_emp_id");
@@ -41,7 +44,11 @@ export const Header = () => {
           {display.see_profile && <Profile />}
 
           <ProfileImage
-            profile={"http://127.0.0.1:8000/" + data.profile_picture}
+            // profile={}
+            profile={
+              profilePictureUrl ||
+              "http://127.0.0.1:8000/" + data.profile_picture
+            }
             onClick={() => {
               setDisplay({ ...display, see_profile: !display.see_profile });
             }}
