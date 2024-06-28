@@ -65,6 +65,7 @@ export const FilterButton = styled.button`
   color: #ffffff;
   border-radius: 0.5rem;
   border: none;
+  cursor: pointer;
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};

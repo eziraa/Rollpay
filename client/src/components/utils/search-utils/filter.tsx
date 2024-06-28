@@ -242,74 +242,9 @@ export const Filter = () => {
         />
       </FilterRow>
       <FilterRow>
-        <FilterLabel>Date of Birth</FilterLabel>
-        <FilterLabel>From</FilterLabel>
-        <FilterInput
-          type="date"
-          onChange={(e) => {
-            if (e.target.value) {
-              if (
-                filter.date_of_birth_range?.to &&
-                new Date(filter.date_of_birth_range.to) <=
-                  new Date(e.currentTarget.value)
-              ) {
-                dispatcher(
-                  setFlashMessage({
-                    desc: "Start date of date  of birth  should be less than end date",
-                    type: "error",
-                    title: "Invalid start date range",
-                    status: true,
-                    duration: 10,
-                  })
-                );
-                e.currentTarget.value = "";
-              } else
-                setFilter({
-                  ...filter,
-                  date_of_birth_range: {
-                    from: e.target.value,
-                    to: filter.date_of_birth_range?.to || "",
-                  },
-                });
-            }
-          }}
-        />
-        <FilterLabel>To</FilterLabel>
-        <FilterInput
-          type="date"
-          onChange={(e) => {
-            if (e.target.value) {
-              if (
-                filter.date_of_birth_range?.from &&
-                new Date(filter.date_of_birth_range.from) >=
-                  new Date(e.currentTarget.value)
-              ) {
-                dispatcher(
-                  setFlashMessage({
-                    desc: "End of date of birth  should be greater than start date",
-                    type: "error",
-                    title: "Invalid end date range",
-                    status: true,
-                    duration: 10,
-                  })
-                );
-                e.currentTarget.value = "Please select a valid date range";
-              } else
-                setFilter({
-                  ...filter,
-                  date_of_birth_range: {
-                    from: filter.date_of_birth_range?.from || "",
-                    to: e.target.value,
-                  },
-                });
-            }
-          }}
-        />
-      </FilterRow>
-      <FilterRow>
         <ButtonContainer>
           <ClearButton>Cancel</ClearButton>
-          <ClearButton>Start search</ClearButton>
+          <FilterButton>Start search</FilterButton>
           <FilterButton
             onClick={() => {
               console.log(filter);
