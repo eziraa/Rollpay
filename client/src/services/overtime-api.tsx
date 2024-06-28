@@ -35,9 +35,8 @@ const listOvertimes = async (pageUrl?: string) => {
   const overtimes = await api
     .get<PaginatedBackEndResponse>(endpoint)
     .then((res) => {
-      console.log(res);
       return {
-        results: res.data,
+        results: res.data.results,
         pagination: {
           next: res.data.next,
           previous: res.data.previous,
