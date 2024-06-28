@@ -14,16 +14,18 @@ import {
   OvertimeHeader,
   OvertimeTitle,
 } from "./overtime.style";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
 import { ThreeDots } from "../../utils/loading/dots";
+import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
 
 export const EmployeeOvertime = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const { openModal } = useModal();
+  const dispatcher = useAppDispatch();
   return (
     <OvertimeContainer>
       <OvertimeHeader>
@@ -31,6 +33,7 @@ export const EmployeeOvertime = () => {
         <AddButton
           onClick={(e) => {
             e.stopPropagation();
+            dispatcher(listOvertimesRequested());
             openModal(ADD_OVERTIME_TO_EMP);
           }}
         >
