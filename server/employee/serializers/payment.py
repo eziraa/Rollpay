@@ -4,7 +4,7 @@ from rest_framework import serializers
 from employee.serializers.allowance import AllowanceSerializer
 from employee.serializers.salary import SalarySerializer
 from employee.serializers.deduction import DeductionSerializer
-from employee.serializers.overtime import OvertimeSerializer
+from employee.serializers.overtime import OvertimeItemSerializer
 from employee.utils.salary_calculator import SalaryCalculator
 from ..models import Payment
 from .employee import *
@@ -56,7 +56,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         return DeductionSerializer(obj.salary.deductions, many=True).data
 
     def get_overtimes(self, obj: Payment):
-        return OvertimeSerializer(obj.salary.overtimes, many=True).data
+        return OvertimeItemSerializer(obj.salary.overtimes, many=True).data
 
     def get_net_salary(self, obj: Payment):
         calculator = SalaryCalculator(obj.salary)
