@@ -8,23 +8,20 @@ import { PaginatedPositionResponse } from "../../services/position-api";
 import { EditPositionParams } from "../../typo/position/params";
 
 const InitialEmpState: PositionState = {
-  adding: false,
   positions: [],
-  loading: false,
   curr_position: undefined,
-  editing: false,
-  deleting: false,
   query_set: [],
   searching: false,
   pagination: undefined,
   adding_position_error: undefined,
+  task_finished: true,
 };
 const EmployeeSlice = createSlice({
   name: "position",
   initialState: InitialEmpState,
   reducers: {
     addPositionRequested: (state, _: PayloadAction<AddPositionParams>) => {
-      state.adding = true;
+      state.task_finished = false;
     },
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
@@ -49,56 +46,56 @@ const EmployeeSlice = createSlice({
     },
 
     addPositionDone: (state, action: PayloadAction<Position>) => {
-      state.adding = false;
+      state.task_finished = true;
       state.adding_position_error = undefined;
       state.positions.push(action.payload);
       state.curr_position = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.adding = false;
+      state.task_finished = true;
       state.adding_position_error = action.payload;
     },
     listPositionsRequested: (state) => {
-      state.loading = true;
+      state.task_finished = false;
     },
     tryingToDelete: (state) => {
-      state.deleting = true;
+      state.task_finished = false;
     },
     deletePositionRequested: (__, _: PayloadAction<string>) => {},
     addSearched: (state, action: PayloadAction<Position[]>) => {
       state.query_set = action.payload;
     },
     deletePositionDone: (state, action: PayloadAction<Position>) => {
-      state.deleting = false;
+      state.task_finished = true;
       state.positions.splice(state.positions.indexOf(action.payload), 1);
     },
     unfinishedDelete: (state) => {
-      state.deleting = false;
+      // state.task_finished = true;
     },
     listPositionDone: (
       state,
       payload: PayloadAction<PaginatedPositionResponse>
     ) => {
       state.positions = payload.payload.results;
-      state.adding = false;
-      state.loading = false;
+      state.task_finished = true;
+      state.task_finished = true;
       state.pagination = {
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
       };
     },
     unfinishedList: (state) => {
-      state.loading = false;
-      state.adding = false;
+      state.task_finished = true;
+      state.task_finished = true;
       state.positions = [];
     },
     loadNextPageRequested: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page++;
       else if (state.pagination) state.pagination.current_page = 1;
     },
     loadPrevPageRequested: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
     },
@@ -116,18 +113,18 @@ const EmployeeSlice = createSlice({
       state.curr_position = payload.payload;
     },
     editPositionRequested: (state, _: PayloadAction<EditPositionParams>) => {
-      state.editing = true;
+      state.task_finished = false;
     },
     editPositionDone: (state, action: PayloadAction<Position>) => {
-      state.editing = false;
+      state.task_finished = true;
       state.curr_position = action.payload;
     },
     resetCurrEmployee: (state) => {
       state.curr_position = undefined;
-      state.editing = false;
+      state.task_finished = true;
     },
     unfinishedEdit: (state) => {
-      state.editing = false;
+      // state.task_finished = true
     },
   },
 });

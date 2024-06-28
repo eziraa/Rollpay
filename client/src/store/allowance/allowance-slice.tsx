@@ -12,97 +12,21 @@ import {
 } from "../../typo/allowance/params";
 
 const InitialEmpState: AllowanceState = {
-  adding: false,
   allowances: [],
-  loading: false,
   curr_allowance: undefined,
-  editing: false,
-  deleting: false,
   query_set: [],
   searching: false,
   pagination: undefined,
   adding_allowance_error: undefined,
+  task_finished: true,
 };
-const AllowanceSlice = createSlice({
+const EmployeeSlice = createSlice({
   name: "allowance",
   initialState: InitialEmpState,
   reducers: {
     addAllowanceRequested: (state, _: PayloadAction<AddAllowanceParams>) => {
-      state.adding = true;
+      state.task_finished = false;
     },
-    addAllowanceDone: (state, action: PayloadAction<Allowance>) => {
-      state.adding = false;
-      state.adding_allowance_error = undefined;
-      state.allowances.push(action.payload);
-      state.curr_allowance = action.payload;
-    },
-    listAllowanceDone: (
-      state,
-      payload: PayloadAction<PaginatedAllowanceResponse>
-    ) => {
-      state.allowances = payload.payload.results;
-      state.adding = false;
-      state.loading = false;
-      state.pagination = {
-        ...payload.payload.pagination,
-        page_size: state.pagination?.page_size ?? 10,
-      };
-    },
-    listAllowancesRequested: (state) => {
-      state.loading = true;
-    },
-    unfinishedList: (state) => {
-      state.loading = false;
-      state.adding = false;
-      state.allowances = [];
-    },
-    unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.adding = false;
-      state.adding_allowance_error = action.payload;
-    },
-
-    tryingToDelete: (state) => {
-      state.deleting = true;
-    },
-    deleteAllowanceRequested: (__, _: PayloadAction<string>) => {},
-    addSearched: (state, action: PayloadAction<Allowance[]>) => {
-      state.query_set = action.payload;
-    },
-    deleteAllowanceDone: (state, action: PayloadAction<Allowance>) => {
-      state.deleting = false;
-      state.allowances.splice(state.allowances.indexOf(action.payload), 1);
-    },
-    unfinishedDelete: (state) => {
-      state.deleting = false;
-    },
-    editAllowanceDone: (state, action: PayloadAction<Allowance>) => {
-      state.editing = false;
-      state.curr_allowance = action.payload;
-    },
-    resetCurrAllowance: (state) => {
-      state.curr_allowance = undefined;
-      state.editing = false;
-    },
-    unfinishedEdit: (state) => {
-      state.editing = false;
-    },
-    searching: (state, payload: PayloadAction<Allowance[]>) => {
-      state.query_set = payload.payload;
-      state.searching = true;
-    },
-    noSearchResult: (state) => {
-      state.searching = false;
-    },
-    setCurrentAllowance: (
-      state,
-      payload: PayloadAction<Allowance | undefined>
-    ) => {
-      state.curr_allowance = payload.payload;
-    },
-    editAllowanceRequested: (state, _: PayloadAction<EditAllowanceParams>) => {
-      state.editing = true;
-    },
-
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
       let number_of_pages = 1;
@@ -125,15 +49,86 @@ const AllowanceSlice = createSlice({
       };
     },
 
+    addAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.task_finished = true;
+      state.adding_allowance_error = undefined;
+      state.allowances.push(action.payload);
+      state.curr_allowance = action.payload;
+    },
+    unfinishedAdd: (state, action: PayloadAction<string>) => {
+      state.task_finished = true;
+      state.adding_allowance_error = action.payload;
+    },
+    listAllowancesRequested: (state) => {
+      state.task_finished = false;
+    },
+    tryingToDelete: (state) => {
+      state.task_finished = false;
+    },
+    deleteAllowanceRequested: (__, _: PayloadAction<string>) => {},
+    addSearched: (state, action: PayloadAction<Allowance[]>) => {
+      state.query_set = action.payload;
+    },
+    deleteAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.task_finished = true;
+      state.allowances.splice(state.allowances.indexOf(action.payload), 1);
+    },
+    unfinishedDelete: (state) => {
+      // state.task_finished = true;
+    },
+    listAllowanceDone: (
+      state,
+      payload: PayloadAction<PaginatedAllowanceResponse>
+    ) => {
+      state.allowances = payload.payload.results;
+      state.task_finished = true;
+      state.task_finished = true;
+      state.pagination = {
+        ...payload.payload.pagination,
+        page_size: state.pagination?.page_size ?? 10,
+      };
+    },
+    unfinishedList: (state) => {
+      state.task_finished = true;
+      state.task_finished = true;
+      state.allowances = [];
+    },
     loadNextPageRequested: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page++;
       else if (state.pagination) state.pagination.current_page = 1;
     },
     loadPrevPageRequested: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
+    },
+    searching: (state, payload: PayloadAction<Allowance[]>) => {
+      state.query_set = payload.payload;
+      state.searching = true;
+    },
+    noSearchResult: (state) => {
+      state.searching = false;
+    },
+    setCurrentAllowance: (
+      state,
+      payload: PayloadAction<Allowance | undefined>
+    ) => {
+      state.curr_allowance = payload.payload;
+    },
+    editAllowanceRequested: (state, _: PayloadAction<EditAllowanceParams>) => {
+      state.task_finished = false;
+    },
+    editAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.task_finished = true;
+      state.curr_allowance = action.payload;
+    },
+    resetCurrEmployee: (state) => {
+      state.curr_allowance = undefined;
+      state.task_finished = true;
+    },
+    unfinishedEdit: (state) => {
+      // state.task_finished = true
     },
   },
 });
@@ -152,12 +147,12 @@ export const {
   editAllowanceRequested,
   editAllowanceDone,
   unfinishedEdit,
-  resetCurrAllowance,
+  resetCurrEmployee,
   searching,
   noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
-} = AllowanceSlice.actions;
+} = EmployeeSlice.actions;
 
-export default AllowanceSlice.reducer;
+export default EmployeeSlice.reducer;
