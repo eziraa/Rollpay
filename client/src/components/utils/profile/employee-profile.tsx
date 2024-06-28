@@ -1,10 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
-  ActionBtnsContainer,
-  Button,
   DataLabel,
   DataValue,
-  DeleteButton,
   EmployeeData,
   EmployeeInfoContainer,
   EmployeeeProfileContainer,
@@ -13,24 +10,24 @@ import {
   InputButton,
   ProfileContainer,
 } from "./employee-profile.style";
-import { MdModeEditOutline } from "react-icons/md";
-import { RiDeleteBin6Line, RiPencilLine } from "react-icons/ri";
-import { tryingToDelete } from "../../../store/employee/employee-slice";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
 import { ThreeDots } from "../loading/dots";
 import { Profile } from "../../../typo/employee/response";
 
-// import Placeholder from "../../../assets/placeholde.jpg";
 import axios from "axios";
 import { Label } from "../form-elements/form.style";
+import { useProfileContext } from "../../../contexts/profile-context";
+import { RiPencilLine } from "react-icons/ri";
 
 export const EmployeeProfile = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
-  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("curren-user") || "[]");
+  console.log("user", user);
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const { setProfilePictureUrl } = useProfileContext();
+
   const [data, setData] = useState<Profile>({ profile_picture: "" });
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
@@ -76,6 +73,10 @@ export const EmployeeProfile = () => {
       axios
         .put(url, formData, config)
         .then((response) => {
+          setProfilePictureUrl(
+            `http://127.0.0.1:8000/${response.data.profile_picture}`
+          );
+
           setData({ ...data, profile_picture: response.data.profile_picture });
         })
         .catch((error) => {
@@ -94,9 +95,11 @@ export const EmployeeProfile = () => {
       >
         <Label>
           <InputButton type="submit" onClick={handleClick}>
-            <Icon>
-              <RiPencilLine />
-            </Icon>
+            {curr_emp?.employee.id === user.id && (
+              <Icon>
+                <RiPencilLine />
+              </Icon>
+            )}
           </InputButton>
         </Label>
 
@@ -149,30 +152,6 @@ export const EmployeeProfile = () => {
           </EmployeeData>
         </EmployeeInfoContainer>
       )}
-      <ActionBtnsContainer
-        style={{
-          gap: "2rem",
-        }}
-      >
-        <DeleteButton
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dispatcher(tryingToDelete());
-          }}
-        >
-          <RiDeleteBin6Line /> Delete
-        </DeleteButton>
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            navigate("/employees");
-          }}
-        >
-          <MdModeEditOutline /> Edit
-        </Button>
-      </ActionBtnsContainer>
     </EmployeeeProfileContainer>
   );
 };
