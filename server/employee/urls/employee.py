@@ -17,6 +17,8 @@ urlpatterns = [
          views.EmployeeView.as_view(), name='__add_allowance_to_emp__'),
     path("deduction/add/<employee_id>/<deduction_type>",
          views.EmployeeView.as_view(), name='__add_deduction_to_emp__'),
+    path("overtime/add/<employee_id>/<overtime_type>",
+         views.EmployeeView.as_view(), name='__add_overtime_to_emp__'),
     path("salary/get", salary_view.SalaryView.as_view(), name='__get_salary__'),
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
