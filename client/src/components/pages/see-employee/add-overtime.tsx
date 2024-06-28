@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useEmployee } from "../../../hooks/employee-hook";
+import { useOvertime } from "../../../hooks/overtime-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   FormError,
@@ -19,39 +19,47 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
+import {
+  ADD_OVERTIME,
+  ADD_OVERTIME_TO_EMP,
+} from "../../../constants/tasks";
+import { addEmpOvertimeRequested } from "../../../store/employee/employee-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_OVERTIME, ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
-import { useOvertime } from "../../../hooks/overtime-hook";
+import { useSalary } from "../../../hooks/salary-hook";
+import { useEmployee } from "../../../hooks/employee-hook";
 export const AddOvertimeToEmp = () => {
   const { overtimes, curr_overtime } = useOvertime();
   const dispatcher = useAppDispatch();
-  const employee = useEmployee();
+  const { curr_emp } = useSalary();
+  const { adding_emp_error, editing } = useEmployee();
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_overtime) {
       dispatcher(listOvertimesRequested());
-      console.log(overtimes);
     }
   }, [curr_overtime, dispatcher]);
-  const { errors, touched, handleChange, handleSubmit } = useFormik({
+  const { errors, touched, handleChange, handleSubmit, values } = useFormik({
     initialValues: {
       overtime_type: "",
-      employee_id: employee.curr_emp?.id,
+      employee_id: curr_emp?.employee?.id || "",
       start_time: "",
       end_time: "",
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit(values) {
+      dispatcher(addEmpOvertimeRequested(values));
     },
   });
+
   return (
     <Modal content={ADD_OVERTIME_TO_EMP}>
       <OvertimeContainer>
         <OvertimeBody>
-          <Title>Adding Overtime to {employee.curr_emp?.first_name}</Title>
+          <Title>Adding Overtime to {curr_emp?.employee?.first_name}</Title>
           <OvertimeForm
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               handleSubmit(e);
             }}
           >
@@ -66,7 +74,11 @@ export const AddOvertimeToEmp = () => {
                   gap: "1rem",
                 }}
               >
-                <Select style={{ flex: 2 }} onChange={handleChange}>
+                <Select
+                  name="overtime_type"
+                  style={{ flex: 2 }}
+                  onChange={handleChange}
+                >
                   <SelectOption value="" disabled selected={!curr_overtime}>
                     Select Overtime
                   </SelectOption>
@@ -76,14 +88,13 @@ export const AddOvertimeToEmp = () => {
                         <SelectOption
                           selected={overtime.id === curr_overtime?.id}
                           value={overtime.overtime_type}
-                          onChange={handleChange}
+                          key={overtime.id}
                         >
                           {overtime.overtime_type}
                         </SelectOption>
                       )
                   )}
                 </Select>
-
                 <AddBtn
                   onClick={(e) => {
                     e.preventDefault();
@@ -95,31 +106,55 @@ export const AddOvertimeToEmp = () => {
                   {"Add New"}
                 </AddBtn>
               </div>
-              <InputContainer>
-                <Label htmlFor="start_time">Start Time</Label>
-                <Input
-                  type="datetime-local"
-                  name="start_time"
-                  value={employee.curr_emp?.id}
-                  style={{ flex: 2 }}
-                />
-              </InputContainer>
-              <InputContainer>
-                <Label htmlFor="start_time">End Time</Label>
-                <Input
-                  type="datetime-local"
-                  name="end_time"
-                  value={employee.curr_emp?.id}
-                  style={{ flex: 2 }}
-                />
-              </InputContainer>
               <FormError>
-                {touched.overtime_type && errors.overtime_type ? (
+                {touched.overtime_type && !values.overtime_type ? (
                   <div>{errors.overtime_type}</div>
                 ) : null}
               </FormError>
             </InputContainer>
-            <AddBtn>Add</AddBtn>
+            <InputContainer>
+              <Label htmlFor="start_time">Start Time</Label>
+              <Input
+                type="datetime-local"
+                name="start_time"
+                value={values.start_time}
+                onChange={handleChange}
+                style={{ flex: 2 }}
+              />
+            </InputContainer>
+            <FormError>
+              {touched.start_time && errors.start_time ? (
+                <div>{errors.start_time}</div>
+              ) : null}
+            </FormError>
+            <InputContainer>
+              <Label htmlFor="start_time">End Time</Label>
+              <Input
+                type="datetime-local"
+                name="end_time"
+                onChange={handleChange}
+                value={values.end_time}
+                style={{ flex: 2 }}
+              />
+            </InputContainer>
+            <FormError>
+              {touched.end_time && errors.end_time ? (
+                <div>{errors.end_time}</div>
+              ) : null}
+            </FormError>
+            {adding_emp_error && (
+              <FormError
+                style={{
+                  fontSize: "1.5rem",
+                }}
+              >
+                {" "}
+                {adding_emp_error}
+              </FormError>
+            )}
+            <AddBtn type="submit">
+              {editing && !adding_emp_error ? <SmallSpinner /> : "Add"}
+            </AddBtn>
           </OvertimeForm>
         </OvertimeBody>
       </OvertimeContainer>
