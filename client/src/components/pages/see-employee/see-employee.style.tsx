@@ -33,6 +33,12 @@ export const EditEmployeeContent = styled(MainContainer)`
   padding: 2rem;
 `;
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 export const Title = styled.h1`
   font-size: 2rem;
   font-weight: 500;
@@ -110,7 +116,7 @@ export const BackButton = styled.div`
 
 export const ActionBtnsContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 1rem;
   width: 100%;
   padding: 2rem 0;
@@ -134,5 +140,3 @@ export const ActionBtn = styled.div`
     color: ${({ theme }) => theme.backgrounds.primary};
   }
 `;
-
-
