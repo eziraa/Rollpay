@@ -11,6 +11,8 @@ class OvertimeSerializer(serializers.ModelSerializer):
 class OvertimeItemSerializer(serializers.ModelSerializer):
     overtime_type = serializers.SerializerMethodField(read_only=True)
     overtime_rate = serializers.SerializerMethodField(read_only=True)
+    date_of_overtime = serializers.SerializerMethodField(read_only=True)
+    length_of_overtime = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = OvertimeItem
@@ -21,3 +23,9 @@ class OvertimeItemSerializer(serializers.ModelSerializer):
 
     def get_overtime_rate(self, obj):
         return obj.overtime.overtime_rate
+
+    def get_date_of_overtime(self, obj: OvertimeItem):
+        return obj.start_time.strftime("%Y-%m-%d")
+
+    def get_length_of_overtime(self, obj: OvertimeItem):
+        return obj.end_time - obj.start_time
