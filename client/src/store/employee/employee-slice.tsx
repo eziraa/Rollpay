@@ -11,6 +11,7 @@ import {
 } from "../../typo/employee/params";
 import { EditEmployeeParams } from "../../services/employee-api";
 import { Employee, PaginatedEmpResponse } from "../../typo/employee/response";
+import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
 
 const InitialEmpState: EmployeeState = {
   adding: false,
@@ -158,6 +159,12 @@ const EmployeeSlice = createSlice({
       state.task_finished = false;
       state.editing = true;
     },
+    addEmpOvertimeRequested: (
+      state,
+      _: PayloadAction<AddOvertimeToEmpParams>
+    ) => {
+      state.editing = true;
+    },
     addingDone: (state) => {
       state.task_finished = true;
       state.editing = false;
@@ -184,6 +191,7 @@ export const {
   addEmpAllowanceRequested,
   finishAddAllowanceDone,
   addEmpDeductionRequested,
+  addEmpOvertimeRequested,
   addingDone,
   deleteEmpDone,
   unfinishedDelete,
