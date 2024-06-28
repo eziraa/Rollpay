@@ -17,7 +17,6 @@ export interface EmployeeFilter {
   position: string;
   salary_range: SalaryRange | undefined;
   date_of_hire_range: DateRange | undefined;
-  date_of_birth_range: DateRange | undefined;
 }
 
 export interface FilterContextType {
@@ -35,10 +34,6 @@ export const FilterContext = createContext<FilterContextType>({
       max: 0,
     },
     date_of_hire_range: {
-      from: "",
-      to: "",
-    },
-    date_of_birth_range: {
       from: "",
       to: "",
     },

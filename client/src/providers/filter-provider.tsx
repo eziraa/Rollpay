@@ -9,7 +9,6 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
     position: "",
     salary_range: undefined,
     date_of_hire_range: undefined,
-    date_of_birth_range: undefined,
   });
 
   const updateFilter = (newFilter: EmployeeFilter) => {
@@ -21,8 +20,6 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
       date_of_hire_range:
         newFilter.date_of_hire_range || filter?.date_of_hire_range,
       salary_range: newFilter.salary_range || filter?.salary_range,
-      date_of_birth_range:
-        newFilter.date_of_birth_range || filter?.date_of_birth_range,
     });
   };
 
