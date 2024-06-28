@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
-import profile from "../../../assets/profile.png";
+import Placeholder from "../../../assets/placeholde.jpg";
 export const HeaderContainer = styled.div<ThemeProps>`
   width: 100vw;
   height: 10vh;
@@ -30,12 +30,16 @@ export const ProfileContainer = styled.div<ThemeProps>`
   gap: 1rem;
 `;
 
-export const ProfileImage = styled.img`
+interface Props {
+  profile: string;
+}
+export const ProfileImage = styled.img<Props>`
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
   padding: 0rem;
-  background: url(${profile}), linear-gradient(90deg, #60565596, #6866619d);
+  background: ${(props) =>
+    props.profile ? `url(${props.profile})` : `url(${Placeholder})`}, linear-gradient(90deg, #60565596, #6866619d);
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
