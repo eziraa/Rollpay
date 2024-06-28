@@ -11,8 +11,9 @@ import UserProfile from "../../components/pages/user-profile/user-profile";
 import { EmployeesListPage } from "../../components/pages/display-employee/display-employee";
 import { SeeEmployee } from "../../components/pages/see-employee/see-employee";
 import { EmployeesSalaryPage } from "../../components/pages/salary/salary";
-import { EditEmployeePage } from "../../components/sections/edit-employee/edit-employee";
+import { EditEmployeePage } from "../../components/pages/edit-employee/edit-employee";
 import { EmployeeDeductionPage } from "../../components/pages/employee-deduction/employee-deduction";
+import { EmployeeOvertimePage } from "../../components/pages/employee-overtime/employee-overtime";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -37,6 +38,10 @@ export const RouterConfig = () => (
       <Route
         path="/employees/employee-deductions"
         element={<EmployeeDeductionPage />}
+      />
+      <Route
+        path="/employees/employee-overtimes"
+        element={<EmployeeOvertimePage />}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

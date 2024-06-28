@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Profile from "../../../assets/profile.png";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import {
+  MainContainer,
   body,
   container,
   sub_header_css,
@@ -23,14 +24,13 @@ export const TitleContainer = styled.div`
   align-items: center;
   gap: 2rem;
 `;
-export const EditEmployeeContent = styled.div`
+export const EditEmployeeContent = styled(MainContainer)`
   display: flex;
   flex-direction: row;
   align-items: start;
   justify-content: start;
-  width: 100%;
-  height: 90%;
   gap: 4rem;
+  padding: 2rem;
 `;
 
 export const Title = styled.h1`

@@ -16,6 +16,7 @@ import {
 } from "./search.style";
 import { Filter } from "../search-utils/filter";
 import { DisplayContext } from "../../../contexts/display-context";
+import { listPositionsRequested } from "../../../store/position/position-slice";
 
 export const Search = () => {
   const dispatcher = useAppDispatch();
@@ -62,6 +63,7 @@ export const Search = () => {
           <FilterIcon
             onClick={() => {
               setOpenFilter(true);
+              dispatcher(listPositionsRequested());
             }}
           />
         )}

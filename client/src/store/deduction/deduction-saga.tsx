@@ -26,7 +26,6 @@ function* addDeduction(action: PayloadAction<AddDeductionParams>) {
       DeductionAPI.addDeduction,
       action.payload
     );
-
     if (response.code === 201) {
       yield put(addDeductionDone(response.deduction));
       yield put(

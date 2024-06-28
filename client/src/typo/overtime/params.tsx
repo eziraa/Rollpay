@@ -1,8 +1,13 @@
 export interface AddOvertimeParams {
-  overtime_name: string;
+  overtime_type: string;
   overtime_rate: string;
-  date_of_overtime: string;
-  length: string;
+}
+
+export interface AddOvertimeToEmpParams {
+  overtime_id: string;
+  employee_id: string;
+  start_time: string;
+  end_time: string;
 }
 export interface EditOvertimeParams extends AddOvertimeParams {
   id: string;

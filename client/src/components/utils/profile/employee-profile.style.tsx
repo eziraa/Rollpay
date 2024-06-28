@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
 import ProfileI from "../../../assets/profile.png";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { IconContainer } from "../../sections/profile/profile.style";
 
 export const EmployeeeProfileContainer = styled.div`
   display: flex;
@@ -11,9 +12,11 @@ export const EmployeeeProfileContainer = styled.div`
   min-width: 30rem;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   border-radius: 10px;
-  height: 100%;
+  height: auto;
   padding: 1rem;
   gap: 2rem;
+  position: relative;
+  min-height: 75vh;
 `;
 
 export const Button = styled.button`
@@ -154,6 +157,8 @@ export const ActionBtnsContainer = styled.div`
   gap: 1rem;
   width: 100%;
   padding: 2rem 0;
+  position: absolute;
+  bottom: 0.5rem;
 `;
 
 export const ActionBtn = styled.div`

@@ -19,9 +19,10 @@ import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
+import { ThreeDots } from "../../utils/loading/dots";
 
 export const EmployeeOvertime = () => {
-  const { curr_emp } = useAppSelector((state) => state.salary);
+  const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const { openModal } = useModal();
   return (
     <OvertimeContainer>
@@ -37,38 +38,48 @@ export const EmployeeOvertime = () => {
         </AddButton>
       </OvertimeHeader>
       <OvertimeBody>
-        {curr_emp?.employee.payments.map((payment, index) => {
-          return payment.overtimes.length > 0 ? (
-            <CustomTable key={index}>
-              <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-              <TableHeader>
-                <HeaderTitle>Overtime Name</HeaderTitle>
-                <HeaderTitle>Overtime Value</HeaderTitle>
-                <HeaderTitle>Length of Time</HeaderTitle>
-                <HeaderTitle>Date of Given</HeaderTitle>
-              </TableHeader>
-              <TableBody>
-                {payment.overtimes.map((overtime, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableData>{overtime.overtime_type}</TableData>
-                      <TableData>{overtime.overtime_rate}</TableData>
-                      <TableData>{overtime.length}</TableData>
-                      <TableData>
-                        {new Date(payment.payment_date).toLocaleDateString()}
-                      </TableData>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </CustomTable>
-          ) : (
-            <div>
-              <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-              <NoResult>No Overtime</NoResult>
-            </div>
-          );
-        })}
+        {loading ? (
+          <ThreeDots size={2} />
+        ) : curr_emp?.employee.payments.every(
+            (payment) => payment.overtimes.length === 0
+          ) ? (
+          <div>
+            <NoResult>No overtimes found for all month</NoResult>
+          </div>
+        ) : (
+          curr_emp?.employee.payments.map((payment, index) => {
+            return payment.overtimes.length > 0 ? (
+              <CustomTable key={index}>
+                <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
+                <TableHeader>
+                  <HeaderTitle>Overtime Name</HeaderTitle>
+                  <HeaderTitle>Overtime Value</HeaderTitle>
+                  <HeaderTitle>Length of Time</HeaderTitle>
+                  <HeaderTitle>Date of Given</HeaderTitle>
+                </TableHeader>
+                <TableBody>
+                  {payment.overtimes.map((overtime, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableData>{overtime.overtime_type}</TableData>
+                        <TableData>{overtime.overtime_rate}</TableData>
+                        <TableData>{overtime.length}</TableData>
+                        <TableData>
+                          {new Date(payment.payment_date).toLocaleDateString()}
+                        </TableData>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </CustomTable>
+            ) : (
+              <div>
+                <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
+                <NoResult>No Overtime</NoResult>
+              </div>
+            );
+          })
+        )}
       </OvertimeBody>
     </OvertimeContainer>
   );

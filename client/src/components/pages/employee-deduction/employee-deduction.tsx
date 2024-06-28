@@ -46,7 +46,7 @@ export const EmployeeDeductionPage = () => {
               </BackButton>
               <Title>Edit Employee</Title>
             </TitleContainer>
-            <NavigationBar />
+            <NavigationBar current_nav={SEE_EMP_DEDUCTION} />
           </SeeEmployeeHeader>
           <EditEmployeeContent>
             <EmployeeProfile />

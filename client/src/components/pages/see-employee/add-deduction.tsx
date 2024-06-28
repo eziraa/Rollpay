@@ -26,6 +26,7 @@ export const AddDeductionToEmp = () => {
   const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
   const employee = useAppSelector((state) => state.employee);
+  const { curr_emp } = useAppSelector((state) => state.salary);
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_deduction) {
@@ -35,7 +36,7 @@ export const AddDeductionToEmp = () => {
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       deduction_type: "",
-      employee_id: employee.curr_emp?.id || "",
+      employee_id: curr_emp?.employee.id || "",
     },
     onSubmit: (values) => {
       dispatcher(addEmpDeductionRequested(values));
@@ -46,7 +47,7 @@ export const AddDeductionToEmp = () => {
     <Modal content={ADD_DEDUCTION_TO_EMP}>
       <DeductionContainer>
         <DeductionBody>
-          <Title>Adding Deduction to {employee.curr_emp?.first_name}</Title>
+          <Title>Adding Deduction to {curr_emp?.employee.first_name}</Title>
           <DeductionForm
             onSubmit={(e) => {
               e.preventDefault();
@@ -108,17 +109,15 @@ export const AddDeductionToEmp = () => {
                   fontSize: "1.5rem",
                 }}
               >
-                {" "}
                 {employee.adding_emp_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {" "}
               {employee.editing && !employee.adding_emp_error ? (
                 <SmallSpinner />
               ) : (
                 "Add"
-              )}{" "}
+              )}
             </AddBtn>
           </DeductionForm>
         </DeductionBody>
