@@ -18,7 +18,7 @@ export const EmployeeeProfileContainer = styled.div`
   padding: 1rem;
   gap: 2rem;
   position: relative;
-  min-height: 75vh;
+  min-height: 60vh;
 `;
 
 export const Button = styled.button`
@@ -76,7 +76,8 @@ export const InputButton = styled.button`
 `;
 
 export const Icon = styled(IconContainer)`
-  margin-top: 4.7rem;
+  margin-top: 4.4rem;
+  margin-left: 0.5rem;
   padding-top: 0.4rem;
   width: 2.7rem;
   height: 2.7rem;
