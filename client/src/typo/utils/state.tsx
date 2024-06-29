@@ -1,7 +1,4 @@
 export interface BaseState {
-  editing: boolean;
-  deleting: boolean;
+  task_finished: boolean;
   searching: boolean;
-  adding: boolean;
-  loading: boolean;
 }

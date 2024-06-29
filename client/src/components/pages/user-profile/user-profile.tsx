@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { Header } from "../../sections/header/header";
 import {
   BackButton,
-  EditEmployeeContent,
+  CurrEmployeeContent,
   SeeEmployeeContainer,
   SeeEmployeeHeader,
   Title,
@@ -63,12 +64,12 @@ const UserProfile = () => {
             </TitleContainer>
             <NavigationBar />
           </SeeEmployeeHeader>
-          <EditEmployeeContent>
+          <CurrEmployeeContent>
             <EmployeeProfile />
             {display.see_employee_allowance && <UserAllowance />}
             {display.see_employee_overtime && <UserOvertime />}
             {display.see_employee_deduction && <UserDeductions />}
-          </EditEmployeeContent>
+          </CurrEmployeeContent>
         </SeeEmployeeContainer>
       </UserProfileContainer>
     </>

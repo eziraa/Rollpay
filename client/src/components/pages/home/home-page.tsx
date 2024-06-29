@@ -3,6 +3,7 @@ import { HomeBody, HomeContainer } from "./home-page.style";
 import LeftMenu from "../../sections/left-menu/left-menu";
 
 import { CheckFlashMessage } from "../../sections/confirm-flash-message/confirm-flash-message";
+import { Outlet } from "react-router";
 
 export const HomePage = () => {
   return (
@@ -10,6 +11,7 @@ export const HomePage = () => {
       <Header />
       <HomeBody>
         <LeftMenu current_menu={""} />
+        <Outlet />
         <CheckFlashMessage />
       </HomeBody>
     </HomeContainer>

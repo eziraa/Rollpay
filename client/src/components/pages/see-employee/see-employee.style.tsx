@@ -24,7 +24,7 @@ export const TitleContainer = styled.div`
   align-items: center;
   gap: 2rem;
 `;
-export const EditEmployeeContent = styled(MainContainer)`
+export const CurrEmployeeContent = styled(MainContainer)`
   display: flex;
   flex-direction: row;
   align-items: start;

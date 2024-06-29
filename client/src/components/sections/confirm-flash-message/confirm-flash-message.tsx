@@ -18,11 +18,11 @@ import {
 } from "../../../store/employee/employee-slice";
 
 export const CheckFlashMessage = () => {
-  const { deleting, curr_emp: current_employee } = useAppSelector(
+  const { task_finished, curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
   const dispatcher = useAppDispatch();
-  if (!deleting) return null;
+  if (task_finished) return null;
   return (
     <ModalContainer
       style={{

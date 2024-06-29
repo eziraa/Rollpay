@@ -11,38 +11,37 @@ import UserProfile from "../../components/pages/user-profile/user-profile";
 import { EmployeesListPage } from "../../components/pages/display-employee/display-employee";
 import { SeeEmployee } from "../../components/pages/see-employee/see-employee";
 import { EmployeesSalaryPage } from "../../components/pages/salary/salary";
-import { EditEmployeePage } from "../../components/pages/edit-employee/edit-employee";
-import { EmployeeDeductionPage } from "../../components/pages/employee-deduction/employee-deduction";
-import { EmployeeOvertimePage } from "../../components/pages/employee-overtime/employee-overtime";
+import { EmployeeAllowance } from "../../components/sections/employee-allowance/allowance";
+import { EmployeeOvertime } from "../../components/sections/employee-overtime/overtime";
+import { EmployeeDeduction } from "../../components/sections/employee-deduction/deduction";
+import { EditEmployee } from "../../components/pages/edit-employee/edit-employee";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route
-        path="/home-page"
+        path="/"
         element={
           <ProtectedRoute>
             <HomePage />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/employees" element={<EmployeesListPage />} />
+        <Route path="/employees-salary" element={<EmployeesSalaryPage />} />
+        <Route path="/employees/employee" element={<SeeEmployee />}>
+          <Route path="" element={<EmployeeAllowance />} />
+          <Route path="employee-overtimes" element={<EmployeeOvertime />} />
+          <Route path="employee-deductions" element={<EmployeeDeduction />} />
+          <Route path="edit-employee" element={<EditEmployee />} />
+        </Route>
+      </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/access-denied" element={<AccessDenied />} />
       <Route path="/change-password" element={<ChangePassword />} />
-      <Route path="/user-profile" element={<UserProfile />} />
-      <Route path="/employees" element={<EmployeesListPage />} />
-      <Route path="/employees-salary" element={<EmployeesSalaryPage />} />
-      <Route path="/employees/single-employee" element={<SeeEmployee />} />
-      <Route path="/employees/edit-employee" element={<EditEmployeePage />} />
-      <Route
-        path="/employees/employee-deductions"
-        element={<EmployeeDeductionPage />}
-      />
-      <Route
-        path="/employees/employee-overtimes"
-        element={<EmployeeOvertimePage />}
-      />
+
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   </Router>

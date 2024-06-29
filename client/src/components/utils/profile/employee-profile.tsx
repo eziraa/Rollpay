@@ -90,7 +90,7 @@ export const EmployeeProfile = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate("/employees/edit-employee");
+            navigate("/employees/employee/edit-employee");
           }}
         >
           <MdModeEditOutline /> Edit
