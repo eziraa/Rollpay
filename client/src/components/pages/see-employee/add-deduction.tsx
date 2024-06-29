@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
 import { useDeduction } from "../../../hooks/deduction-hook";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
@@ -43,10 +44,15 @@ export const AddDeductionToEmp = () => {
     },
   });
 
+  // Fetching list of deductions to able to add deduction to employee
+
+  useEffect(() => {
+    dispatcher(listDeductionsRequested());
+  }, []);
   return (
     <Modal content={ADD_DEDUCTION_TO_EMP}>
       <DeductionContainer>
-        <Outlet/>
+        <Outlet />
         <DeductionBody>
           <Title>Adding Deduction to {curr_emp?.employee.first_name}</Title>
           <DeductionForm

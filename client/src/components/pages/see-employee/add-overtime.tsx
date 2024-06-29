@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
 import { useOvertime } from "../../../hooks/overtime-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
@@ -48,6 +49,9 @@ export const AddOvertimeToEmp = () => {
     },
   });
 
+  useEffect(() => {
+    dispatcher(listOvertimesRequested());
+  }, []);
   return (
     <Modal content={ADD_OVERTIME_TO_EMP}>
       <Outlet />
@@ -62,7 +66,7 @@ export const AddOvertimeToEmp = () => {
             }}
           >
             <InputContainer>
-              <Label htmlFor="role">Select Overtime</Label>
+              <Label htmlFor="ovetime_type">Select Overtime</Label>
               <div
                 style={{
                   display: "flex",

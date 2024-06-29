@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
 import { useAllowance } from "../../../hooks/allowance-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
@@ -30,6 +31,12 @@ export const AddAllowanceToEmp = () => {
   const navigate = useNavigate();
   const { curr_emp } = useSalary();
   const { adding_emp_error, task_finished } = useEmployee();
+
+  //fetching allowances from backend to add to employee
+  useEffect(() => {
+    dispatcher(listAllowancesRequested());
+  }, []);
+
   useEffect(() => {
     if (curr_allowance) {
       dispatcher(listAllowancesRequested());
@@ -94,7 +101,7 @@ export const AddAllowanceToEmp = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    navigate("add-ne-allowance");
+                    navigate("add-new-allowance");
                   }}
                   style={{ flex: 1.2 }}
                 >

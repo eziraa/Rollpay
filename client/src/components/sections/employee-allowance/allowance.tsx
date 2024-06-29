@@ -14,16 +14,14 @@ import {
   AllowanceHeader,
   AllowanceTitle,
 } from "./allowance.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
-import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
 import { ThreeDots } from "../../utils/loading/dots";
 import { Outlet, useNavigate } from "react-router";
 
 export const EmployeeAllowance = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
-  const dispatcher = useAppDispatch();
   const navigate = useNavigate();
   return (
     <AllowanceContainer>
@@ -35,7 +33,6 @@ export const EmployeeAllowance = () => {
             e.preventDefault();
             e.stopPropagation();
             navigate("add-allowance");
-            dispatcher(listAllowancesRequested());
           }}
         >
           Add
