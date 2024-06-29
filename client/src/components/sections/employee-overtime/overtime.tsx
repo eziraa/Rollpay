@@ -19,7 +19,7 @@ import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { ThreeDots } from "../../utils/loading/dots";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 export const EmployeeOvertime = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
@@ -28,6 +28,7 @@ export const EmployeeOvertime = () => {
   return (
     <OvertimeContainer>
       <OvertimeHeader>
+        <Outlet />
         <OvertimeTitle>Employee Overtime</OvertimeTitle>
         <AddButton
           onClick={(e) => {

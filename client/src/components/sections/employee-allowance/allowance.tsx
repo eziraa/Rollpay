@@ -19,7 +19,7 @@ import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
 import { ThreeDots } from "../../utils/loading/dots";
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 export const EmployeeAllowance = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
@@ -28,6 +28,7 @@ export const EmployeeAllowance = () => {
   return (
     <AllowanceContainer>
       <AllowanceHeader>
+        <Outlet />
         <AllowanceTitle>Employee Allowance</AllowanceTitle>
         <AddButton
           onClick={(e) => {

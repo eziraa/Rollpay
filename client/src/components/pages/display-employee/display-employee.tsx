@@ -8,19 +8,18 @@ import {
   Title,
   EmployeesListHeader,
 } from "./display-employee.style";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_EMPLOYEE } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useContext, useEffect } from "react";
 import { listEmpRequested } from "../../../store/employee/employee-slice";
 import { PaginationContext } from "../../../contexts/pagination-context";
+import { useNavigate } from "react-router";
 export const EmployeesListPage = () => {
-  const { openModal } = useModal();
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
   const { pagination, setPagination } = useContext(PaginationContext);
+  const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listEmpRequested());
   }, []);
@@ -36,7 +35,7 @@ export const EmployeesListPage = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            openModal(ADD_EMPLOYEE);
+            navigate("add-employee");
             dispatcher(listPositionsRequested());
           }}
         >

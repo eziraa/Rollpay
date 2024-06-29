@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import SignUp from "../../components/pages/sign-up/sign-up";
 
 import { HomePage } from "../../components/pages/home/home-page";
@@ -18,6 +23,8 @@ import { EditEmployee } from "../../components/pages/edit-employee/edit-employee
 import { AddAllowanceToEmp } from "../../components/pages/see-employee/add-allowance";
 import { AddDeductionToEmp } from "../../components/pages/see-employee/add-deduction";
 import { AddOvertimeToEmp } from "../../components/pages/see-employee/add-overtime";
+import { AddEmployee } from "../../components/sections/add_employee/add-employee";
+import { CheckFlashMessage } from "../../components/sections/confirm-flash-message/confirm-flash-message";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -33,27 +40,28 @@ export const RouterConfig = () => (
       >
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/employees" element={<EmployeesListPage />} />
+        <Route path="/employees/add-employee" element={<AddEmployee />} />
         <Route
-          path="/employees/employee/:employee_id/add-allowance"
-          element={<AddAllowanceToEmp />}
+          path="/employees/employee/delete"
+          element={<CheckFlashMessage />}
         />
-        <Route
-          path="/employees/employee/:employee_id/add-deduction"
-          element={<AddDeductionToEmp />}
-        />
-        <Route
-          path="/employees/employee/:employee_id/add-overtime"
-          element={<AddOvertimeToEmp />}
-        />
+
         <Route path="/employees-salary" element={<EmployeesSalaryPage />} />
         <Route
           path="/employees/employee/:employee_id"
           element={<SeeEmployee />}
         >
-          <Route path="" element={<EmployeeAllowance />} />
-          <Route path="employee-overtimes" element={<EmployeeOvertime />} />
-          <Route path="employee-deductions" element={<EmployeeDeduction />} />
-          <Route path="edit-employee" element={<EditEmployee />} />
+          <Route path="" element={<Navigate to="allowances" replace />} />
+          <Route path="allowances" element={<EmployeeAllowance />}>
+            <Route path="add-allowance" element={<AddAllowanceToEmp />} />
+          </Route>
+          <Route path="overtimes" element={<EmployeeOvertime />}>
+            <Route path="add-overtime" element={<AddOvertimeToEmp />} />
+          </Route>
+          <Route path="deductions" element={<EmployeeDeduction />}>
+            <Route path="add-deduction" element={<AddDeductionToEmp />} />
+          </Route>
+          <Route path="edit" element={<EditEmployee />} />
         </Route>
       </Route>
       <Route path="/signup" element={<SignUp />} />

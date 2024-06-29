@@ -16,12 +16,14 @@ import {
   deleteEmpRequested,
   unfinishedDelete,
 } from "../../../store/employee/employee-slice";
+import { useNavigate } from "react-router";
 
 export const CheckFlashMessage = () => {
   const { task_finished, curr_emp: current_employee } = useAppSelector(
     (state) => state.employee
   );
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   if (task_finished) return null;
   return (
     <ModalContainer
@@ -32,6 +34,7 @@ export const CheckFlashMessage = () => {
         e.stopPropagation();
         e.preventDefault();
         dispatcher(unfinishedDelete());
+        navigate(-1);
       }}
     >
       <CheckFlashMessageContainer onClick={(e) => e.stopPropagation()}>
@@ -40,6 +43,7 @@ export const CheckFlashMessage = () => {
             e.stopPropagation();
             e.preventDefault();
             dispatcher(unfinishedDelete());
+            navigate(-1);
           }}
         >
           <MdClose />
@@ -56,6 +60,7 @@ export const CheckFlashMessage = () => {
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
+              navigate(-1);
               dispatcher(unfinishedDelete());
             }}
           >

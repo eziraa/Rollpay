@@ -19,7 +19,7 @@ import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 import { ThreeDots } from "../../utils/loading/dots";
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 export const EmployeeDeduction = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
@@ -27,6 +27,7 @@ export const EmployeeDeduction = () => {
   const navigate = useNavigate();
   return (
     <DeductionContainer>
+      <Outlet />
       <DeductionHeader>
         <DeductionTitle>Employee Deduction</DeductionTitle>
         <AddButton

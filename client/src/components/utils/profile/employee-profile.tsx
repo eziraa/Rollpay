@@ -83,6 +83,7 @@ export const EmployeeProfile = () => {
             e.preventDefault();
             e.stopPropagation();
             dispatcher(tryingToDelete());
+            navigate("/employees/employee/delete-employee");
           }}
         >
           <RiDeleteBin6Line /> Delete

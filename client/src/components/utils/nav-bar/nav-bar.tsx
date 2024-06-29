@@ -1,17 +1,16 @@
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { NavBar, NavItem } from "./nav-bar.style";
 
 export const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { employee_id } = useParams();
   return (
     <NavBar>
       <NavItem
-        active={location.pathname.endsWith(employee_id || "")}
+        active={location.pathname.endsWith("allowances")}
         onClick={(e) => {
           e.preventDefault();
-          navigate("/employees/employee/" + employee_id);
+          navigate("allowances");
         }}
       >
         Allowances
@@ -20,7 +19,7 @@ export const NavigationBar = () => {
         active={location.pathname.endsWith("overtimes")}
         onClick={(e) => {
           e.preventDefault();
-          navigate(`/employees/employee/${employee_id}/employee-overtimes`);
+          navigate(`overtimes`);
         }}
       >
         Overtimes
@@ -29,7 +28,7 @@ export const NavigationBar = () => {
         active={location.pathname.endsWith("deductions")}
         onClick={(e) => {
           e.preventDefault();
-          navigate(`/employees/employee/${employee_id}/employee-deductions`);
+          navigate(`deductions`);
         }}
       >
         Deductions
