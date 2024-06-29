@@ -24,11 +24,12 @@ import {
   closeEmployeeTask,
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate, useParams } from "react-router";
 export const AddDeductionToEmp = () => {
   const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const { employee_id } = useParams();
   const employee = useAppSelector((state) => state.employee);
   const { curr_emp } = useAppSelector((state) => state.salary);
   useEffect(() => {
@@ -39,7 +40,7 @@ export const AddDeductionToEmp = () => {
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       deduction_type: "",
-      employee_id: curr_emp?.employee.id || "",
+      employee_id: employee_id || "",
     },
     onSubmit: (values) => {
       dispatcher(addEmpDeductionRequested(values));
