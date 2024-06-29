@@ -56,7 +56,6 @@ const EmployeeSlice = createSlice({
       state.task_error = undefined;
     },
     unfinishedAdd: (state, action: PayloadAction<string | undefined>) => {
-      // state.task_finished = false;
       state.task_error = action.payload;
     },
     listEmpRequested: (state) => {
@@ -87,7 +86,6 @@ const EmployeeSlice = createSlice({
       };
     },
     unfinishedList: (state) => {
-      // state.task_finished = false;
       state.employees = [];
     },
     loadNextEmployeeListPage: (state, _: PayloadAction<string>) => {
@@ -127,13 +125,6 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.curr_emp = action.payload;
     },
-    unfinishedEdit: (state) => {
-      state.task_finished = true;
-    },
-    resetCurrEmployee: (state) => {
-      state.curr_emp = undefined;
-      state.task_finished = true;
-    },
     addEmpAllowanceRequested: (
       state,
       _: PayloadAction<AddAllowanceToEmployeesParams>
@@ -171,6 +162,11 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.task_error = undefined;
     },
+    resetEmployeeState: (state, action: PayloadAction<EmployeeState>) => {
+      state = {
+        ...action.payload,
+      };
+    },
   },
 });
 export const {
@@ -194,8 +190,6 @@ export const {
   addSalaryDone,
   editEmployeeRequested,
   editEmployeeDone,
-  unfinishedEdit,
-  resetCurrEmployee,
   searching,
   noSearchResult,
   loadNextEmployeeListPage,
@@ -204,6 +198,7 @@ export const {
   updateProfileDone,
   updateProfileRequest,
   closeEmployeeTask,
+  resetEmployeeState,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

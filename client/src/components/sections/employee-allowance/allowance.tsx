@@ -14,14 +14,14 @@ import {
   AllowanceHeader,
   AllowanceTitle,
 } from "./allowance.style";
-import { useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { ThreeDots } from "../../utils/loading/dots";
 import { Outlet, useNavigate } from "react-router";
+import { useSalary } from "../../../hooks/salary-hook";
 
 export const EmployeeAllowance = () => {
-  const { curr_emp, loading } = useAppSelector((state) => state.salary);
+  const { curr_emp, loading } = useSalary();
   const navigate = useNavigate();
   return (
     <AllowanceContainer>

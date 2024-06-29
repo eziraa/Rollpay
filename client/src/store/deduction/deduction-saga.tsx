@@ -17,8 +17,6 @@ import {
   editDeductionDone,
   listDeductionDone,
   unfinishedAdd,
-  unfinishedDelete,
-  unfinishedEdit,
 } from "./deduction-slice";
 function* addDeduction(action: PayloadAction<AddDeductionParams>) {
   try {
@@ -130,7 +128,6 @@ function* DeleteDeduction(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedDelete());
       yield put(
         setFlashMessage({
           type: "error",
@@ -141,8 +138,6 @@ function* DeleteDeduction(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedDelete());
-      // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
           type: "error",
@@ -187,7 +182,6 @@ function* editDeduction(action: PayloadAction<EditDeductionParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -209,7 +203,6 @@ function* editDeduction(action: PayloadAction<EditDeductionParams>) {
         })
       );
     } else {
-      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -224,7 +217,6 @@ function* editDeduction(action: PayloadAction<EditDeductionParams>) {
       );
     }
   } catch (e) {
-    yield put(unfinishedEdit());
     yield put(
       setFlashMessage({
         type: "error",

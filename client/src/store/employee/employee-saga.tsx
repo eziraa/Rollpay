@@ -11,7 +11,6 @@ import {
   listEmpDone,
   unfinishedAdd,
   unfinishedDelete,
-  unfinishedEdit,
   updateProfileDone,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
@@ -406,7 +405,6 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -428,7 +426,6 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         })
       );
     } else {
-      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -443,7 +440,6 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
       );
     }
   } catch (e) {
-    yield put(unfinishedEdit());
     yield put(
       setFlashMessage({
         type: "error",

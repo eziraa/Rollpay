@@ -23,15 +23,18 @@ import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   addEmpRequested,
   closeEmployeeTask,
+  resetEmployeeState,
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useEffect } from "react";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_POSITION } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
+import { useEmployee } from "../../../hooks/employee-hook";
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
+  const employee = useEmployee();
   const { task_finished, task_error } = useAppSelector(
     (state) => state.employee
   );
@@ -58,6 +61,12 @@ export const AddEmployee = () => {
     },
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
+      dispatcher(
+        resetEmployeeState({
+          ...employee,
+          task_error: undefined,
+        })
+      );
       dispatcher(addEmpRequested(values));
     },
   });

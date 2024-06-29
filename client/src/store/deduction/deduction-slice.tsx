@@ -56,7 +56,6 @@ const EmployeeSlice = createSlice({
       state.curr_deduction = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.task_finished = true;
       state.task_error = action.payload;
     },
     listDeductionsRequested: (state) => {
@@ -73,9 +72,7 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.deductions.splice(state.deductions.indexOf(action.payload), 1);
     },
-    unfinishedDelete: (_) => {
-      // state.task_finished = true;
-    },
+
     listDeductionDone: (
       state,
       payload: PayloadAction<PaginatedDeductionResponse>
@@ -89,8 +86,6 @@ const EmployeeSlice = createSlice({
       };
     },
     unfinishedList: (state) => {
-      state.task_finished = true;
-      state.task_finished = true;
       state.deductions = [];
     },
     loadNextPageRequested: (state, _: PayloadAction<string>) => {
@@ -127,12 +122,12 @@ const EmployeeSlice = createSlice({
       state.curr_deduction = undefined;
       state.task_finished = true;
     },
-    unfinishedEdit: (_) => {
-      // state.task_finished = true
-    },
     closeDeductionTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
+    },
+    resetDeductionState: (state, action: PayloadAction<DeductionState>) => {
+      state = { ...action.payload };
     },
   },
 });
@@ -144,13 +139,11 @@ export const {
   tryingToDelete,
   deleteDeductionRequested,
   deleteDeductionDone,
-  unfinishedDelete,
   setCurrentDeduction,
   addDeductionRequested,
   addDeductionDone,
   editDeductionRequested,
   editDeductionDone,
-  unfinishedEdit,
   resetCurrEmployee,
   searching,
   noSearchResult,
@@ -158,6 +151,7 @@ export const {
   loadPrevPageRequested,
   setPagesize,
   closeDeductionTask,
+  resetDeductionState,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

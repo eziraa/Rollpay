@@ -22,6 +22,7 @@ import { listAllowancesRequested } from "../../../store/allowance/allowance-slic
 import {
   addEmpAllowanceRequested,
   closeEmployeeTask,
+  resetEmployeeState,
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useSalary } from "../../../hooks/salary-hook";
@@ -35,7 +36,7 @@ export const AddAllowanceToEmp = () => {
   const navigate = useNavigate();
   const { employee_id } = useParams();
   const { curr_emp } = useSalary();
-  const { task_error, task_finished } = useEmployee();
+  const employee = useEmployee();
 
   //fetching allowances from backend to add to employee
   useEffect(() => {
@@ -56,6 +57,12 @@ export const AddAllowanceToEmp = () => {
     },
     validationSchema: AddAllowanceToEmpSchema,
     onSubmit: (values) => {
+      dispatcher(
+        resetEmployeeState({
+          ...employee,
+          task_error: undefined,
+        })
+      );
       dispatcher(addEmpAllowanceRequested(values));
     },
   });
@@ -126,18 +133,22 @@ export const AddAllowanceToEmp = () => {
                 ) : null}
               </FormError>
             </InputContainer>
-            {task_error && (
+            {employee.task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
                 {" "}
-                {task_error}
+                {employee.task_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {!task_finished && !task_error ? <SmallSpinner /> : "Add"}
+              {!employee.task_finished && !employee.task_error ? (
+                <SmallSpinner />
+              ) : (
+                "Add"
+              )}
             </AddBtn>
           </AllowanceForm>
         </AllowanceBody>

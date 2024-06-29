@@ -17,7 +17,7 @@ const InitialEmpState: AllowanceState = {
   query_set: [],
   searching: false,
   pagination: undefined,
-  adding_allowance_error: undefined,
+  task_error: undefined,
   task_finished: true,
 };
 const EmployeeSlice = createSlice({
@@ -29,7 +29,7 @@ const EmployeeSlice = createSlice({
     },
     closeAllowanceTask: (state) => {
       state.task_finished = true;
-      state.adding_allowance_error = undefined;
+      state.task_error = undefined;
     },
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
@@ -55,13 +55,12 @@ const EmployeeSlice = createSlice({
 
     addAllowanceDone: (state, action: PayloadAction<Allowance>) => {
       state.task_finished = true;
-      state.adding_allowance_error = undefined;
+      state.task_error = undefined;
       state.allowances.push(action.payload);
       state.curr_allowance = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.task_finished = true;
-      state.adding_allowance_error = action.payload;
+      state.task_error = action.payload;
     },
     listAllowancesRequested: (state) => {
       state.task_finished = false;
@@ -76,9 +75,6 @@ const EmployeeSlice = createSlice({
     deleteAllowanceDone: (state, action: PayloadAction<Allowance>) => {
       state.task_finished = true;
       state.allowances.splice(state.allowances.indexOf(action.payload), 1);
-    },
-    unfinishedDelete: (_) => {
-      // state.task_finished = true;
     },
     listAllowanceDone: (
       state,
@@ -127,12 +123,8 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.curr_allowance = action.payload;
     },
-    resetCurrEmployee: (state) => {
-      state.curr_allowance = undefined;
-      state.task_finished = true;
-    },
-    unfinishedEdit: (_) => {
-      // state.task_finished = true
+    resetAllowanceState: (state, action: PayloadAction<AllowanceState>) => {
+      state = { ...action.payload };
     },
   },
 });
@@ -144,20 +136,18 @@ export const {
   tryingToDelete,
   deleteAllowanceRequested,
   deleteAllowanceDone,
-  unfinishedDelete,
   setCurrentAllowance,
   addAllowanceRequested,
   addAllowanceDone,
   editAllowanceRequested,
   editAllowanceDone,
-  unfinishedEdit,
-  resetCurrEmployee,
   searching,
   noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
   closeAllowanceTask,
+  resetAllowanceState,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

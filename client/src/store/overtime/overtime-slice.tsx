@@ -56,7 +56,6 @@ const EmployeeSlice = createSlice({
       state.curr_overtime = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.task_finished = true;
       state.task_error = action.payload;
     },
     listOvertimesRequested: (state) => {
@@ -73,15 +72,12 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.overtimes.splice(state.overtimes.indexOf(action.payload), 1);
     },
-    unfinishedDelete: (_) => {
-      // state.task_finished = true;
-    },
+
     listOvertimeDone: (
       state,
       payload: PayloadAction<PaginatedOvertimeResponse>
     ) => {
       state.overtimes = payload.payload.results;
-      state.task_finished = true;
       state.task_finished = true;
       state.pagination = {
         ...payload.payload.pagination,
@@ -89,7 +85,6 @@ const EmployeeSlice = createSlice({
       };
     },
     unfinishedList: (state) => {
-      state.task_finished = true;
       state.task_finished = true;
       state.overtimes = [];
     },
@@ -127,13 +122,15 @@ const EmployeeSlice = createSlice({
       state.curr_overtime = undefined;
       state.task_finished = true;
     },
-    unfinishedEdit: (_) => {
-      // state.task_finished = true
-    },
 
     closeOvertimeTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
+    },
+    resetOvertimeState: (state, action: PayloadAction<OvertimeState>) => {
+      state = {
+        ...action.payload,
+      };
     },
   },
 });
@@ -145,13 +142,11 @@ export const {
   tryingToDelete,
   deleteOvertimeRequested,
   deleteOvertimeDone,
-  unfinishedDelete,
   setCurrentOvertime,
   addOvertimeRequested,
   addOvertimeDone,
   editOvertimeRequested,
   editOvertimeDone,
-  unfinishedEdit,
   resetCurrEmployee,
   searching,
   noSearchResult,
@@ -159,6 +154,7 @@ export const {
   loadPrevPageRequested,
   setPagesize,
   closeOvertimeTask,
+  resetOvertimeState,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

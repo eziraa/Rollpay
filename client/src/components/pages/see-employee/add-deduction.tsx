@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
 import { useDeduction } from "../../../hooks/deduction-hook";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   FormError,
   InputContainer,
@@ -22,16 +22,19 @@ import { listDeductionsRequested } from "../../../store/deduction/deduction-slic
 import {
   addEmpDeductionRequested,
   closeEmployeeTask,
+  resetEmployeeState,
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { Outlet, useNavigate, useParams } from "react-router";
+import { useEmployee } from "../../../hooks/employee-hook";
+import { useSalary } from "../../../hooks/salary-hook";
 export const AddDeductionToEmp = () => {
   const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
   const { employee_id } = useParams();
-  const employee = useAppSelector((state) => state.employee);
-  const { curr_emp } = useAppSelector((state) => state.salary);
+  const employee = useEmployee();
+  const { curr_emp } = useSalary();
   useEffect(() => {
     if (curr_deduction) {
       dispatcher(listDeductionsRequested());
@@ -43,6 +46,12 @@ export const AddDeductionToEmp = () => {
       employee_id: employee_id || "",
     },
     onSubmit: (values) => {
+      dispatcher(
+        resetEmployeeState({
+          ...employee,
+          task_error: undefined,
+        })
+      );
       dispatcher(addEmpDeductionRequested(values));
     },
   });

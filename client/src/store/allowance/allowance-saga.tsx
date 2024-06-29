@@ -17,8 +17,6 @@ import {
   editAllowanceDone,
   listAllowanceDone,
   unfinishedAdd,
-  unfinishedDelete,
-  unfinishedEdit,
 } from "./allowance-slice";
 function* addAllowance(action: PayloadAction<AddAllowanceParams>) {
   try {
@@ -131,7 +129,6 @@ function* DeleteAllowance(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedDelete());
       yield put(
         setFlashMessage({
           type: "error",
@@ -142,8 +139,6 @@ function* DeleteAllowance(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedDelete());
-      // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
           type: "error",
@@ -188,7 +183,7 @@ function* editAllowance(action: PayloadAction<EditAllowanceParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedEdit());
+      // yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -210,7 +205,6 @@ function* editAllowance(action: PayloadAction<EditAllowanceParams>) {
         })
       );
     } else {
-      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -225,7 +219,6 @@ function* editAllowance(action: PayloadAction<EditAllowanceParams>) {
       );
     }
   } catch (e) {
-    yield put(unfinishedEdit());
     yield put(
       setFlashMessage({
         type: "error",
