@@ -28,7 +28,7 @@ export const AddAllowanceToEmp = () => {
   const { allowances, curr_allowance } = useAllowance();
   const dispatcher = useAppDispatch();
   const { curr_emp } = useSalary();
-  const { adding_emp_error, editing } = useEmployee();
+  const { adding_emp_error, task_finished } = useEmployee();
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_allowance) {
@@ -117,7 +117,7 @@ export const AddAllowanceToEmp = () => {
               </FormError>
             )}
             <AddBtn type="submit">
-              {editing && !adding_emp_error ? <SmallSpinner /> : "Add"}
+              {!task_finished && !adding_emp_error ? <SmallSpinner /> : "Add"}
             </AddBtn>
           </AllowanceForm>
         </AllowanceBody>

@@ -15,17 +15,17 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { tryingToDelete } from "../../../store/employee/employee-slice";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { ThreeDots } from "../loading/dots";
 
 export const EmployeeProfile = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const { employee_id } = useParams();
 
   useEffect(() => {
-    const curr_emp_id = localStorage.getItem("curr_emp_id");
-    curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
+    employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
   }, []);
   return (
     <EmployeeeProfileContainer>

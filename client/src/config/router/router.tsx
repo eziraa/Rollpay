@@ -15,6 +15,9 @@ import { EmployeeAllowance } from "../../components/sections/employee-allowance/
 import { EmployeeOvertime } from "../../components/sections/employee-overtime/overtime";
 import { EmployeeDeduction } from "../../components/sections/employee-deduction/deduction";
 import { EditEmployee } from "../../components/pages/edit-employee/edit-employee";
+import { AddAllowanceToEmp } from "../../components/pages/see-employee/add-allowance";
+import { AddDeductionToEmp } from "../../components/pages/see-employee/add-deduction";
+import { AddOvertimeToEmp } from "../../components/pages/see-employee/add-overtime";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -30,8 +33,23 @@ export const RouterConfig = () => (
       >
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/employees" element={<EmployeesListPage />} />
+        <Route
+          path="/employees/employee/add-allowance-to-emp/:employee_id"
+          element={<AddAllowanceToEmp />}
+        />
+        <Route
+          path="/employees/employee/add-deduction-to-emp"
+          element={<AddDeductionToEmp />}
+        />
+        <Route
+          path="/employees/employee/add-overtime-to-emp"
+          element={<AddOvertimeToEmp />}
+        />
         <Route path="/employees-salary" element={<EmployeesSalaryPage />} />
-        <Route path="/employees/employee" element={<SeeEmployee />}>
+        <Route
+          path="/employees/employee/:employee_id"
+          element={<SeeEmployee />}
+        >
           <Route path="" element={<EmployeeAllowance />} />
           <Route path="employee-overtimes" element={<EmployeeOvertime />} />
           <Route path="employee-deductions" element={<EmployeeDeduction />} />

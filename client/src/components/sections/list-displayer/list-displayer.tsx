@@ -234,7 +234,7 @@ function EmployeeListDisplayer() {
                     onClick={(e) => {
                       e.stopPropagation();
                       localStorage.setItem("curr_emp_id", emp.id);
-                      navigate("/employees/employee/");
+                      navigate("/employees/employee/" + emp.id);
                     }}
                   >
                     View

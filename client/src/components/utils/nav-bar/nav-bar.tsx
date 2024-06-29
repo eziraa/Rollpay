@@ -1,16 +1,17 @@
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { NavBar, NavItem } from "./nav-bar.style";
 
 export const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { employee_id } = useParams();
   return (
     <NavBar>
       <NavItem
-        active={location.pathname.endsWith("/employees/employee")}
+        active={location.pathname.endsWith(employee_id || "")}
         onClick={(e) => {
           e.preventDefault();
-          navigate("/employees/employee");
+          navigate("/employees/employee/" + employee_id);
         }}
       >
         Allowances
@@ -19,7 +20,7 @@ export const NavigationBar = () => {
         active={location.pathname.endsWith("overtimes")}
         onClick={(e) => {
           e.preventDefault();
-          navigate("/employees/employee/employee-overtimes");
+          navigate(`/employees/employee/${employee_id}/employee-overtimes`);
         }}
       >
         Overtimes
@@ -28,7 +29,7 @@ export const NavigationBar = () => {
         active={location.pathname.endsWith("deductions")}
         onClick={(e) => {
           e.preventDefault();
-          navigate("/employees/employee/employee-deductions");
+          navigate(`/employees/employee/${employee_id}/employee-deductions`);
         }}
       >
         Deductions

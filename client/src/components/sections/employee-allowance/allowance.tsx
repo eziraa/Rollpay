@@ -17,15 +17,14 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
 import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
 import { ThreeDots } from "../../utils/loading/dots";
+import { useNavigate } from "react-router";
 
 export const EmployeeAllowance = () => {
-  const { openModal } = useModal();
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <AllowanceContainer>
       <AllowanceHeader>
@@ -34,7 +33,11 @@ export const EmployeeAllowance = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            openModal(ADD_ALLOWANCE_TO_EMP);
+            // openModal(ADD_ALLOWANCE_TO_EMP);
+            navigate(
+              "/employees/employee/add-allowance-to-emp/" +
+                curr_emp?.employee.id
+            );
             dispatcher(listAllowancesRequested());
           }}
         >
