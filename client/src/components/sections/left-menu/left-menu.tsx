@@ -7,12 +7,12 @@ import {
   MenuItemText,
   UsersIcon,
 } from "./left-menu.style";
-import { useNavigate } from "react-router";
-import { LIST_EMP_S, SEE_EMP_SALARY } from "../../../constants/tasks";
+import { useLocation, useNavigate } from "react-router";
 
-function LeftMenu({ current_menu }: { current_menu: string }) {
-  const { loading } = useAppSelector((state) => state.employee);
+function LeftMenu() {
+  const { task_finished } = useAppSelector((state) => state.employee);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
     <LeftMenuContainer>
       <MenuItem active={false}>
@@ -20,9 +20,9 @@ function LeftMenu({ current_menu }: { current_menu: string }) {
         <MenuItemText>Home</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={current_menu === LIST_EMP_S}
+        active={pathname.endsWith("/employees")}
         onClick={(e) => {
-          if (loading) return;
+          if (!task_finished) return;
           e.preventDefault();
           e.stopPropagation();
           navigate("/employees");
@@ -32,9 +32,9 @@ function LeftMenu({ current_menu }: { current_menu: string }) {
         <MenuItemText>All Employees</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={current_menu === SEE_EMP_SALARY}
+        active={pathname.endsWith("/employees-salary")}
         onClick={() => {
-          if (loading) return;
+          if (!task_finished) return;
 
           navigate("/employees-salary");
         }}

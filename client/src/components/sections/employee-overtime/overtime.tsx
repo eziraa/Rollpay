@@ -17,15 +17,14 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
 import { ThreeDots } from "../../utils/loading/dots";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
+import { useNavigate } from "react-router";
 
 export const EmployeeOvertime = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
-  const { openModal } = useModal();
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <OvertimeContainer>
       <OvertimeHeader>
@@ -34,7 +33,7 @@ export const EmployeeOvertime = () => {
           onClick={(e) => {
             e.stopPropagation();
             dispatcher(listOvertimesRequested());
-            openModal(ADD_OVERTIME_TO_EMP);
+            navigate("add-overtime");
           }}
         >
           Add

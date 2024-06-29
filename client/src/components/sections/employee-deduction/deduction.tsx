@@ -17,15 +17,14 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 import { ThreeDots } from "../../utils/loading/dots";
+import { useNavigate } from "react-router";
 
 export const EmployeeDeduction = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
-  const { openModal } = useModal();
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <DeductionContainer>
       <DeductionHeader>
@@ -34,7 +33,7 @@ export const EmployeeDeduction = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            openModal(ADD_DEDUCTION_TO_EMP);
+            navigate("add-deduction");
             dispatcher(listDeductionsRequested());
           }}
         >

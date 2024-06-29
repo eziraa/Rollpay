@@ -34,15 +34,15 @@ export const RouterConfig = () => (
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/employees" element={<EmployeesListPage />} />
         <Route
-          path="/employees/employee/add-allowance-to-emp/:employee_id"
+          path="/employees/employee/:employee_id/add-allowance"
           element={<AddAllowanceToEmp />}
         />
         <Route
-          path="/employees/employee/add-deduction-to-emp"
+          path="/employees/employee/:employee_id/add-deduction"
           element={<AddDeductionToEmp />}
         />
         <Route
-          path="/employees/employee/add-overtime-to-emp"
+          path="/employees/employee/:employee_id/add-overtime"
           element={<AddOvertimeToEmp />}
         />
         <Route path="/employees-salary" element={<EmployeesSalaryPage />} />

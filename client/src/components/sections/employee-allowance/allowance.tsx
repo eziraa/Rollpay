@@ -33,11 +33,7 @@ export const EmployeeAllowance = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            // openModal(ADD_ALLOWANCE_TO_EMP);
-            navigate(
-              "/employees/employee/add-allowance-to-emp/" +
-                curr_emp?.employee.id
-            );
+            navigate("add-allowance");
             dispatcher(listAllowancesRequested());
           }}
         >

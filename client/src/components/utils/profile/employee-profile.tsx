@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   ActionBtnsContainer,
@@ -26,7 +27,7 @@ export const EmployeeProfile = () => {
 
   useEffect(() => {
     employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
-  }, []);
+  }, [employee_id]);
   return (
     <EmployeeeProfileContainer>
       <ProfileImage />
