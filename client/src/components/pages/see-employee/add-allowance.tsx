@@ -27,6 +27,7 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { Outlet, useNavigate, useParams } from "react-router";
+import { AddAllowanceToEmpSchema } from "../../../schema/add-allowance-schema";
 export const AddAllowanceToEmp = () => {
   //geting necessary data form the context , routers and the redux store
   const { allowances, curr_allowance } = useAllowance();
@@ -48,11 +49,12 @@ export const AddAllowanceToEmp = () => {
   }, [curr_allowance, dispatcher]);
 
   // initialize the formik instance
-  const { errors, touched, handleChange, handleSubmit } = useFormik({
+  const { errors, touched, handleChange, handleSubmit, values } = useFormik({
     initialValues: {
-      allowance_type: "",
+      allowance_type: curr_allowance?.allowance_type || "",
       employee_id: employee_id || "",
     },
+    validationSchema: AddAllowanceToEmpSchema,
     onSubmit: (values) => {
       dispatcher(addEmpAllowanceRequested(values));
     },
@@ -90,15 +92,15 @@ export const AddAllowanceToEmp = () => {
                   name="allowance_type"
                   style={{ flex: 2 }}
                   onChange={handleChange}
+                  value={values.allowance_type}
                 >
-                  <SelectOption value="" disabled selected={!curr_allowance}>
+                  <SelectOption value="" disabled>
                     Select Allowance
                   </SelectOption>
                   {allowances.map(
                     (allowance) =>
                       allowance && (
                         <SelectOption
-                          selected={allowance.id === curr_allowance?.id}
                           value={allowance.allowance_type}
                           key={allowance.id}
                         >
