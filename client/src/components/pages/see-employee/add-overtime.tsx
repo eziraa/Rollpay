@@ -19,21 +19,18 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
-import {
-  ADD_OVERTIME,
-  ADD_OVERTIME_TO_EMP,
-} from "../../../constants/tasks";
+import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
 import { addEmpOvertimeRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { useModal } from "../../../hooks/modal-hook";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
+import { Outlet, useNavigate } from "react-router";
 export const AddOvertimeToEmp = () => {
   const { overtimes, curr_overtime } = useOvertime();
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   const { curr_emp } = useSalary();
-  const { adding_emp_error, editing } = useEmployee();
-  const { openModal } = useModal();
+  const { adding_emp_error, task_finished } = useEmployee();
   useEffect(() => {
     if (curr_overtime) {
       dispatcher(listOvertimesRequested());
@@ -53,6 +50,7 @@ export const AddOvertimeToEmp = () => {
 
   return (
     <Modal content={ADD_OVERTIME_TO_EMP}>
+      <Outlet />
       <OvertimeContainer>
         <OvertimeBody>
           <Title>Adding Overtime to {curr_emp?.employee?.first_name}</Title>
@@ -99,7 +97,7 @@ export const AddOvertimeToEmp = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openModal(ADD_OVERTIME);
+                    navigate("add-new-overtime");
                   }}
                   style={{ flex: 1.2 }}
                 >
@@ -153,7 +151,7 @@ export const AddOvertimeToEmp = () => {
               </FormError>
             )}
             <AddBtn type="submit">
-              {editing && !adding_emp_error ? <SmallSpinner /> : "Add"}
+              {!task_finished && !adding_emp_error ? <SmallSpinner /> : "Add"}
             </AddBtn>
           </OvertimeForm>
         </OvertimeBody>

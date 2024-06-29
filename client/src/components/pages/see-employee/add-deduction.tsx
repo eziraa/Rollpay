@@ -18,16 +18,16 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
-import { ADD_DEDUCTION, ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
+import { ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
 import { addEmpDeductionRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { useModal } from "../../../hooks/modal-hook";
+import { Outlet, useNavigate } from "react-router";
 export const AddDeductionToEmp = () => {
   const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   const employee = useAppSelector((state) => state.employee);
   const { curr_emp } = useAppSelector((state) => state.salary);
-  const { openModal } = useModal();
   useEffect(() => {
     if (curr_deduction) {
       dispatcher(listDeductionsRequested());
@@ -46,6 +46,7 @@ export const AddDeductionToEmp = () => {
   return (
     <Modal content={ADD_DEDUCTION_TO_EMP}>
       <DeductionContainer>
+        <Outlet/>
         <DeductionBody>
           <Title>Adding Deduction to {curr_emp?.employee.first_name}</Title>
           <DeductionForm
@@ -90,7 +91,7 @@ export const AddDeductionToEmp = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openModal(ADD_DEDUCTION);
+                    navigate("add-new-deduction");
                   }}
                   style={{ flex: 1.2 }}
                 >
@@ -113,7 +114,7 @@ export const AddDeductionToEmp = () => {
               </FormError>
             )}
             <AddBtn type="submit">
-              {employee.editing && !employee.adding_emp_error ? (
+              {!employee.task_finished && !employee.adding_emp_error ? (
                 <SmallSpinner />
               ) : (
                 "Add"

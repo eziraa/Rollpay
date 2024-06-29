@@ -25,6 +25,9 @@ import { AddDeductionToEmp } from "../../components/pages/see-employee/add-deduc
 import { AddOvertimeToEmp } from "../../components/pages/see-employee/add-overtime";
 import { AddEmployee } from "../../components/sections/add_employee/add-employee";
 import { CheckFlashMessage } from "../../components/sections/confirm-flash-message/confirm-flash-message";
+import { AddAllowance } from "../../components/sections/add-allowance/add-allowance";
+import { AddOvertime } from "../../components/sections/add-overtime/add-overtime";
+import { AddDeduction } from "../../components/sections/add-deduction/add-deduction";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -53,13 +56,19 @@ export const RouterConfig = () => (
         >
           <Route path="" element={<Navigate to="allowances" replace />} />
           <Route path="allowances" element={<EmployeeAllowance />}>
-            <Route path="add-allowance" element={<AddAllowanceToEmp />} />
+            <Route path="add-allowance" element={<AddAllowanceToEmp />}>
+              <Route path="add-new-allowance" element={<AddAllowance />} />
+            </Route>
           </Route>
           <Route path="overtimes" element={<EmployeeOvertime />}>
-            <Route path="add-overtime" element={<AddOvertimeToEmp />} />
+            <Route path="add-overtime" element={<AddOvertimeToEmp />}>
+              <Route path="add-new-overtime" element={<AddOvertime />} />
+            </Route>
           </Route>
           <Route path="deductions" element={<EmployeeDeduction />}>
-            <Route path="add-deduction" element={<AddDeductionToEmp />} />
+            <Route path="add-deduction" element={<AddDeductionToEmp />}>
+              <Route path="add-new-deduction" element={<AddDeduction />} />
+            </Route>
           </Route>
           <Route path="edit" element={<EditEmployee />} />
         </Route>

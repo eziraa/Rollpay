@@ -18,18 +18,18 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
-import { ADD_ALLOWANCE, ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
+import { ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
 import { addEmpAllowanceRequested } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { useModal } from "../../../hooks/modal-hook";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
+import { Outlet, useNavigate } from "react-router";
 export const AddAllowanceToEmp = () => {
   const { allowances, curr_allowance } = useAllowance();
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   const { curr_emp } = useSalary();
   const { adding_emp_error, task_finished } = useEmployee();
-  const { openModal } = useModal();
   useEffect(() => {
     if (curr_allowance) {
       dispatcher(listAllowancesRequested());
@@ -48,6 +48,7 @@ export const AddAllowanceToEmp = () => {
   return (
     <Modal content={ADD_ALLOWANCE_TO_EMP}>
       <AllowanceContainer>
+        <Outlet />
         <AllowanceBody>
           <Title>Adding Allowance to {curr_emp?.employee?.first_name}</Title>
           <AllowanceForm
@@ -93,7 +94,7 @@ export const AddAllowanceToEmp = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openModal(ADD_ALLOWANCE);
+                    navigate("add-ne-allowance");
                   }}
                   style={{ flex: 1.2 }}
                 >
