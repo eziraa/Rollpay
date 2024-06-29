@@ -27,6 +27,10 @@ const EmployeeSlice = createSlice({
     addAllowanceRequested: (state, _: PayloadAction<AddAllowanceParams>) => {
       state.task_finished = false;
     },
+    closeAllowanceTask: (state) => {
+      state.task_finished = true;
+      state.adding_allowance_error = undefined;
+    },
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
       let number_of_pages = 1;
@@ -153,6 +157,7 @@ export const {
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
+  closeAllowanceTask,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

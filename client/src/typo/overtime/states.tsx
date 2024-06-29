@@ -5,7 +5,7 @@ import { Overtime } from "./response";
 export interface OvertimeState extends BaseState {
   curr_overtime: Overtime | undefined;
   overtimes: Overtime[];
-  adding_overtime_error: string | undefined;
+  task_error: string | undefined;
   query_set: Overtime[];
   pagination: Pagination | undefined;
 }

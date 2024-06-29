@@ -17,7 +17,7 @@ const InitialEmpState: DeductionState = {
   query_set: [],
   searching: false,
   pagination: undefined,
-  adding_deduction_error: undefined,
+  task_error: undefined,
   task_finished: true,
 };
 const EmployeeSlice = createSlice({
@@ -51,13 +51,13 @@ const EmployeeSlice = createSlice({
 
     addDeductionDone: (state, action: PayloadAction<Deduction>) => {
       state.task_finished = true;
-      state.adding_deduction_error = undefined;
+      state.task_error = undefined;
       state.deductions.push(action.payload);
       state.curr_deduction = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
       state.task_finished = true;
-      state.adding_deduction_error = action.payload;
+      state.task_error = action.payload;
     },
     listDeductionsRequested: (state) => {
       state.task_finished = false;
@@ -130,6 +130,10 @@ const EmployeeSlice = createSlice({
     unfinishedEdit: (_) => {
       // state.task_finished = true
     },
+    closeDeductionTask: (state) => {
+      state.task_finished = true;
+      state.task_error = undefined;
+    },
   },
 });
 export const {
@@ -153,6 +157,7 @@ export const {
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
+  closeDeductionTask,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

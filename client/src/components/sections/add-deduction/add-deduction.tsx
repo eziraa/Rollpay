@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
-import { ADD_DEDUCTION } from "../../../constants/tasks";
 import {
   FormError,
   Input,
@@ -15,16 +15,19 @@ import {
   DeductionForm,
 } from "./add-deduction.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { addDeductionRequested } from "../../../store/deduction/deduction-slice";
+import {
+  addDeductionRequested,
+  closeDeductionTask,
+} from "../../../store/deduction/deduction-slice";
 import { useEffect } from "react";
-import { useModal } from "../../../hooks/modal-hook";
 import { useDeduction } from "../../../hooks/deduction-hook";
 import { AddDeductionSchema } from "../../../schema/add-deduction-schema";
 import { SmallSpinner } from "../../utils/spinner/spinner";
+import { useNavigate } from "react-router";
 export const AddDeduction = () => {
   const dispatcher = useAppDispatch();
-  const { curr_deduction, adding_deduction_error, adding } = useDeduction();
-  const { closeModal } = useModal();
+  const { curr_deduction, task_error, task_finished } = useDeduction();
+  const navigate = useNavigate();
   const { values, handleChange, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       deduction_type: "",
@@ -36,10 +39,18 @@ export const AddDeduction = () => {
     },
   });
   useEffect(() => {
-    curr_deduction && closeModal(ADD_DEDUCTION);
-  }, [curr_deduction, closeModal]);
+    if (curr_deduction) {
+      navigate(-1);
+      clearAction();
+    }
+  }, [curr_deduction]);
+
+  const clearAction = () => {
+    dispatcher(closeDeductionTask());
+  };
+
   return (
-    <Modal content={ADD_DEDUCTION}>
+    <Modal closeAction={clearAction}>
       <DeductionContainer>
         <DeductionBody>
           <Title>Add Deduction</Title>
@@ -68,17 +79,17 @@ export const AddDeduction = () => {
                 <FormError> {errors.deduction_rate} </FormError>
               )}
             </InputContainer>
-            {adding_deduction_error && (
+            {task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
-                {adding_deduction_error}
+                {task_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {adding && !adding_deduction_error ? <SmallSpinner /> : "Add"}
+              {!task_finished && !task_error ? <SmallSpinner /> : "Add"}
             </AddBtn>
           </DeductionForm>
         </DeductionBody>

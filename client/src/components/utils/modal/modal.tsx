@@ -4,17 +4,18 @@ import { ModalContainer, ModalContent } from "./modal.style";
 
 export const Modal = ({
   children,
-  content,
+  closeAction,
 }: {
   children: React.ReactNode;
-  content: string;
+  closeAction: () => void;
 }) => {
   const navigate = useNavigate();
-  console.log(content);
+
   return (
     <ModalContainer
       onClick={(e) => {
         e.stopPropagation();
+        closeAction();
         navigate(-1);
       }}
     >
@@ -22,6 +23,7 @@ export const Modal = ({
         <CloseIcon
           onClick={() => {
             navigate(-1);
+            closeAction();
           }}
         />
         {children}

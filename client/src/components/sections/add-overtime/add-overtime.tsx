@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
-import { ADD_OVERTIME } from "../../../constants/tasks";
 import {
   FormError,
   Input,
@@ -15,15 +15,18 @@ import {
   OvertimeForm,
 } from "./add-overtime.style";
 import { AddOvertimeSchema } from "../../../schema/add-overtime-schema";
-import { addOvertimeRequested } from "../../../store/overtime/overtime-slice";
+import {
+  addOvertimeRequested,
+  closeOvertimeTask,
+} from "../../../store/overtime/overtime-slice";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { useOvertime } from "../../../hooks/overtime-hook";
 import { useEffect } from "react";
-import { useModal } from "../../../hooks/modal-hook";
+import { useNavigate } from "react-router";
 export const AddOvertime = () => {
   const dispatcher = useAppDispatch();
-  const {  closeModal } = useModal();
-  const { adding_overtime_error, adding, curr_overtime } = useOvertime();
+  const navigate = useNavigate();
+  const { task_error, task_finished, curr_overtime } = useOvertime();
   const { values, handleChange, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       overtime_type: "",
@@ -36,10 +39,17 @@ export const AddOvertime = () => {
   });
 
   useEffect(() => {
-    curr_overtime && !adding && closeModal(ADD_OVERTIME);
+    if (curr_overtime && task_finished) {
+      navigate(-1);
+      clearAction();
+    }
   }, [curr_overtime]);
+
+  const clearAction = () => {
+    dispatcher(closeOvertimeTask());
+  };
   return (
-    <Modal content={ADD_OVERTIME}>
+    <Modal closeAction={clearAction}>
       <OvertimeContainer>
         <OvertimeBody>
           <Title>Add Overtime</Title>
@@ -78,9 +88,7 @@ export const AddOvertime = () => {
                 <div>{errors.overtime_type}</div>
               )}
             </FormError>
-            <FormError>
-              {adding_overtime_error && <div>{adding_overtime_error}</div>}
-            </FormError>
+            <FormError>{task_error && <div>{task_error}</div>}</FormError>
             <AddBtn type="submit">Add</AddBtn>
           </OvertimeForm>
         </OvertimeBody>

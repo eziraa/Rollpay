@@ -17,7 +17,7 @@ const InitialEmpState: OvertimeState = {
   query_set: [],
   searching: false,
   pagination: undefined,
-  adding_overtime_error: undefined,
+  task_error: undefined,
   task_finished: true,
 };
 const EmployeeSlice = createSlice({
@@ -51,13 +51,13 @@ const EmployeeSlice = createSlice({
 
     addOvertimeDone: (state, action: PayloadAction<Overtime>) => {
       state.task_finished = true;
-      state.adding_overtime_error = undefined;
+      state.task_error = undefined;
       state.overtimes.push(action.payload);
       state.curr_overtime = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
       state.task_finished = true;
-      state.adding_overtime_error = action.payload;
+      state.task_error = action.payload;
     },
     listOvertimesRequested: (state) => {
       state.task_finished = false;
@@ -130,6 +130,11 @@ const EmployeeSlice = createSlice({
     unfinishedEdit: (_) => {
       // state.task_finished = true
     },
+
+    closeOvertimeTask: (state) => {
+      state.task_finished = true;
+      state.task_error = undefined;
+    },
   },
 });
 export const {
@@ -153,6 +158,7 @@ export const {
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
+  closeOvertimeTask,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

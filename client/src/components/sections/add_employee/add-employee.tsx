@@ -20,16 +20,19 @@ import {
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { addEmpRequested } from "../../../store/employee/employee-slice";
+import {
+  addEmpRequested,
+  closeEmployeeTask,
+} from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useEffect } from "react";
 import { useModal } from "../../../hooks/modal-hook";
-import { ADD_EMPLOYEE, ADD_POSITION, CLOSE_MODAL } from "../../../constants/tasks";
+import { ADD_POSITION } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
-  const { adding, adding_emp_error } = useAppSelector(
+  const { task_finished, task_error } = useAppSelector(
     (state) => state.employee
   );
 
@@ -56,11 +59,14 @@ export const AddEmployee = () => {
     validationSchema: AddEmployeeSchema,
     onSubmit: (values, _) => {
       dispatcher(addEmpRequested(values));
-      if (!adding) openModal(CLOSE_MODAL);
     },
   });
+
+  const clearTask = () => {
+    dispatcher(closeEmployeeTask());
+  };
   return (
-    <Modal content={ADD_EMPLOYEE}>
+    <Modal closeAction={clearTask}>
       <AddEmployeeContainer>
         <Title>Add Employee</Title>
         <AddEmployeeForm
@@ -246,18 +252,18 @@ export const AddEmployee = () => {
                 ) : null}
               </FormError>{" "}
             </InputContainer>
-            {adding_emp_error && (
+            {task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
-                {adding_emp_error}
+                {task_error}
               </FormError>
             )}
           </Column>
           <AddButton type="submit">
-            {adding ? <SmallSpinner /> : "Add"}
+            {!task_finished && task_error ? <SmallSpinner /> : "Add"}
           </AddButton>
         </AddEmployeeForm>
       </AddEmployeeContainer>

@@ -19,8 +19,10 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
-import { ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
-import { addEmpDeductionRequested } from "../../../store/employee/employee-slice";
+import {
+  addEmpDeductionRequested,
+  closeEmployeeTask,
+} from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { Outlet, useNavigate } from "react-router";
 export const AddDeductionToEmp = () => {
@@ -49,8 +51,13 @@ export const AddDeductionToEmp = () => {
   useEffect(() => {
     dispatcher(listDeductionsRequested());
   }, []);
+
+  //Adding a method to close modal  properly
+  const clearTask = () => {
+    dispatcher(closeEmployeeTask());
+  };
   return (
-    <Modal content={ADD_DEDUCTION_TO_EMP}>
+    <Modal closeAction={clearTask}>
       <DeductionContainer>
         <Outlet />
         <DeductionBody>
@@ -110,17 +117,17 @@ export const AddDeductionToEmp = () => {
                 ) : null}
               </FormError>
             </InputContainer>
-            {employee.adding_emp_error && (
+            {employee.task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
-                {employee.adding_emp_error}
+                {employee.task_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {!employee.task_finished && !employee.adding_emp_error ? (
+              {!employee.task_finished && !employee.task_error ? (
                 <SmallSpinner />
               ) : (
                 "Add"

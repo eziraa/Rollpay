@@ -16,7 +16,10 @@ import {
 } from "./add-allowance.style";
 import { AddAllowanceSchema } from "../../../schema/add-allowance-schema";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { addAllowanceRequested } from "../../../store/allowance/allowance-slice";
+import {
+  addAllowanceRequested,
+  closeAllowanceTask,
+} from "../../../store/allowance/allowance-slice";
 import { useEffect } from "react";
 import { useModal } from "../../../hooks/modal-hook";
 import { useAllowance } from "../../../hooks/allowance-hook";
@@ -37,8 +40,12 @@ export const AddAllowance = () => {
   useEffect(() => {
     curr_allowance && closeModal(ADD_ALLOWANCE);
   }, [curr_allowance, closeModal]);
+
+  const clearTask = () => {
+    dispatcher(closeAllowanceTask());
+  };
   return (
-    <Modal content={ADD_ALLOWANCE}>
+    <Modal closeAction={clearTask}>
       <AllowanceContainer>
         <AllowanceBody>
           <Title>Add Allowance</Title>

@@ -19,7 +19,7 @@ const InitialEmpState: EmployeeState = {
   query_set: [],
   searching: false,
   pagination: undefined,
-  adding_emp_error: undefined,
+  task_error: undefined,
   task_finished: true,
 };
 const EmployeeSlice = createSlice({
@@ -53,11 +53,11 @@ const EmployeeSlice = createSlice({
     },
     addEmpDone: (state) => {
       state.task_finished = true;
-      state.adding_emp_error = undefined;
+      state.task_error = undefined;
     },
     unfinishedAdd: (state, action: PayloadAction<string | undefined>) => {
       // state.task_finished = false;
-      state.adding_emp_error = action.payload;
+      state.task_error = action.payload;
     },
     listEmpRequested: (state) => {
       state.task_finished = false;
@@ -142,7 +142,7 @@ const EmployeeSlice = createSlice({
     },
     finishAddAllowanceDone: (state) => {
       state.task_finished = true;
-      state.adding_emp_error = undefined;
+      state.task_error = undefined;
     },
     addEmpDeductionRequested: (
       state,
@@ -158,7 +158,7 @@ const EmployeeSlice = createSlice({
     },
     addingDone: (state) => {
       state.task_finished = true;
-      state.adding_emp_error = undefined;
+      state.task_error = undefined;
     },
     updateProfileRequest: (state, _: PayloadAction<UpdateProfileParams>) => {
       state.task_finished = false;
@@ -166,6 +166,10 @@ const EmployeeSlice = createSlice({
     updateProfileDone: (state, action: PayloadAction<string>) => {
       state.task_finished = true;
       if (state.curr_emp) state.curr_emp.profile_picture = action.payload;
+    },
+    closeEmployeeTask: (state) => {
+      state.task_finished = true;
+      state.task_error = undefined;
     },
   },
 });
@@ -199,6 +203,7 @@ export const {
   setPagesize,
   updateProfileDone,
   updateProfileRequest,
+  closeEmployeeTask,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

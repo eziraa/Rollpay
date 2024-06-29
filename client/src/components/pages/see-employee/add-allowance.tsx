@@ -19,18 +19,22 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
-import { ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
-import { addEmpAllowanceRequested } from "../../../store/employee/employee-slice";
+import {
+  addEmpAllowanceRequested,
+  closeEmployeeTask,
+} from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate, useParams } from "react-router";
 export const AddAllowanceToEmp = () => {
+  //geting necessary data form the context , routers and the redux store
   const { allowances, curr_allowance } = useAllowance();
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const { employee_id } = useParams();
   const { curr_emp } = useSalary();
-  const { adding_emp_error, task_finished } = useEmployee();
+  const { task_error, task_finished } = useEmployee();
 
   //fetching allowances from backend to add to employee
   useEffect(() => {
@@ -42,18 +46,24 @@ export const AddAllowanceToEmp = () => {
       dispatcher(listAllowancesRequested());
     }
   }, [curr_allowance, dispatcher]);
+
+  // initialize the formik instance
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       allowance_type: "",
-      employee_id: curr_emp?.employee?.id || "",
+      employee_id: employee_id || "",
     },
     onSubmit: (values) => {
       dispatcher(addEmpAllowanceRequested(values));
     },
   });
 
+  //Adding a method to close modal  properly
+  const clearTask = () => {
+    dispatcher(closeEmployeeTask());
+  };
   return (
-    <Modal content={ADD_ALLOWANCE_TO_EMP}>
+    <Modal closeAction={clearTask}>
       <AllowanceContainer>
         <Outlet />
         <AllowanceBody>
@@ -114,18 +124,18 @@ export const AddAllowanceToEmp = () => {
                 ) : null}
               </FormError>
             </InputContainer>
-            {adding_emp_error && (
+            {task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
                 {" "}
-                {adding_emp_error}
+                {task_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {!task_finished && !adding_emp_error ? <SmallSpinner /> : "Add"}
+              {!task_finished && !task_error ? <SmallSpinner /> : "Add"}
             </AddBtn>
           </AllowanceForm>
         </AllowanceBody>
