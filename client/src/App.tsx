@@ -14,6 +14,7 @@ import { DisplayProvider } from "./providers/display-provider";
 import { ModalProvider } from "./providers/modal-provider";
 import { ModalStore } from "./components/utils/modal-store/modal-store";
 import { FilterProvider } from "./providers/filter-provider";
+import { ProfileProvider } from "./contexts/profile-context";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
@@ -38,15 +39,17 @@ function App() {
         >
           <FilterProvider>
             <DisplayProvider>
-              <ModalProvider>
-                <AuthProvider>
-                  <ThemeProvider theme={theme}>
-                    <FlashMessage />
-                    <RouterConfig />
-                    <ModalStore />
-                  </ThemeProvider>
-                </AuthProvider>
-              </ModalProvider>
+              <ProfileProvider>
+                <ModalProvider>
+                  <AuthProvider>
+                    <ThemeProvider theme={theme}>
+                      <FlashMessage />
+                      <RouterConfig />
+                      <ModalStore />
+                    </ThemeProvider>
+                  </AuthProvider>
+                </ModalProvider>
+              </ProfileProvider>
             </DisplayProvider>
           </FilterProvider>
         </PaginationContext.Provider>

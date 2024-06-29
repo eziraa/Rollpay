@@ -24,6 +24,7 @@ import { useAppDispatch } from "../../../utils/custom-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
+import { SEE_EMP_ALLOWANCE } from "../../../constants/tasks";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const UserProfile = () => {
                 <Title>My Profile</Title>
               </Item>
             </TitleContainer>
-            <NavigationBar />
+            <NavigationBar current_nav={SEE_EMP_ALLOWANCE}/>
           </SeeEmployeeHeader>
           <CurrEmployeeContent>
             <EmployeeProfile />
