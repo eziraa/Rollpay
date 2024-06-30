@@ -22,6 +22,7 @@ import {
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
 import {
   getSalariesRequested,
+  loadNextPaymentListPage,
   searchPaymentRequested,
 } from "../../../store/salary/salary-slice";
 import Pagination from "../../sections/pagination/pagination";
@@ -31,7 +32,10 @@ import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
 import * as XLSX from "xlsx";
 import { usePagination } from "../../../hooks/use-pagination";
+import { useNavigate, useParams } from "react-router";
+
 export const EmployeesSalaryPage = () => {
+  // Getting necessary information
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
   const [searchBy, setSearchBy] = useState("first_name");
@@ -40,9 +44,15 @@ export const EmployeesSalaryPage = () => {
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
+  const navigate = useNavigate();
+  const { year, month } = useParams();
   useEffect(() => {
-    dispatcher(getSalariesRequested());
-  }, []);
+    if (year && month) {
+      dispatcher(
+        loadNextPaymentListPage(`employee/salary/get/${year}/${month}`)
+      );
+    } else dispatcher(getSalariesRequested());
+  }, [year, month]);
   useEffect(() => {
     salary.pagination && setPagination(salary.pagination);
   }, [salary.pagination]);
@@ -113,6 +123,19 @@ export const EmployeesSalaryPage = () => {
       setEmployeeSalary(salary.search_response || []);
     else setEmployeeSalary(salary.employees || []);
   }, [salary.employees, salary.search_response]);
+  const start = 2022;
+  const end = 2025;
+  const years = Array.from(
+    { length: end - start + 1 },
+    (_, index) => start + index
+  );
+
+  const month_start = 1;
+  const month_end = 12;
+  const months = Array.from(
+    { length: month_end - month_start + 1 },
+    (_, index) => month_start + index
+  );
 
   return (
     <SalaryContainer>
@@ -122,7 +145,6 @@ export const EmployeesSalaryPage = () => {
           <SearchIcon />
           <SearchInput
             onChange={(e) => {
-              // dispatcher(setLongTask(SEARCH_EMPLOYEE_SALARY));
               setSearchVal(e.currentTarget.value);
             }}
           />
@@ -147,10 +169,20 @@ export const EmployeesSalaryPage = () => {
             fontSize: "1.5rem",
           }}
         >
-          {!salary.loading &&
-            getFormattedMonth(
-              new Date(employeeSalary.at(0)?.month || "2024-04-04")
+          <Select
+            value={`${year}/${month}`}
+            onChange={(e) => {
+              navigate("/employees-salary/" + e.target.value);
+            }}
+          >
+            {years.map((year) =>
+              months.map((month) => (
+                <SelectOption key={year + month} value={`${year}/${month}`}>
+                  {getFormattedMonth(new Date(`${year}-${month}-01`))}
+                </SelectOption>
+              ))
             )}
+          </Select>
         </Label>
         <ExportButton onClick={handleExport}>Export </ExportButton>
       </EmpsDisplayerHeader>
@@ -181,6 +213,7 @@ export const EmployeesSalaryPage = () => {
             </HeaderTitle>
             <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
             <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
+            <HeaderTitle rowSpan={2}>Month</HeaderTitle>
             <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
             <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
           </TableHeader>
@@ -229,9 +262,9 @@ export const EmployeesSalaryPage = () => {
                 <TableData>{employee.total_deduction}</TableData>
                 <TableData>{employee.net_salary}</TableData>
                 <TableData>
-                  {" "}
-                  {!employee.payment_status && "Not"} Paid{" "}
+                  {getFormattedMonth(new Date(employee.month)).split("-")[0]}
                 </TableData>
+                <TableData>{!employee.payment_status && "Not"} Paid </TableData>
                 <TableData> {employee.payment_date} </TableData>
               </TableRow>
             ))}

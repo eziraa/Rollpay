@@ -20,6 +20,8 @@ urlpatterns = [
     path("overtime/add/<employee_id>/<overtime_type>",
          views.EmployeeView.as_view(), name='__add_overtime_to_emp__'),
     path("salary/get", salary_view.SalaryView.as_view(), name='__get_salary__'),
+    path("salary/get/<int:year>/<int:curr_month>",
+         salary_view.SalaryView.as_view(), name='__get_salary_by_month__'),
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
          name='__update_emoployee__'),

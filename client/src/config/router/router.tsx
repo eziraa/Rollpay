@@ -51,6 +51,10 @@ export const RouterConfig = () => (
 
         <Route path="/employees-salary" element={<EmployeesSalaryPage />} />
         <Route
+          path="/employees-salary/:year/:month"
+          element={<EmployeesSalaryPage />}
+        />
+        <Route
           path="/employees/employee/:employee_id"
           element={<SeeEmployee />}
         >

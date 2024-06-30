@@ -16,7 +16,7 @@ class SalaryView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
 
-    def get(self, request: Request, employee_id=None):
+    def get(self, request: Request, employee_id=None, year=None, curr_month=None):
         if employee_id:
             payments = Payment.objects.filter(employee_id=employee_id)
             if payments.exists():
@@ -46,11 +46,35 @@ class SalaryView(APIView):
                     return Response(data)
                 else:
                     return JsonResponse({"error": "No payments found for the given employee ID"}, status=404)
+        elif curr_month and year:
+            try:
+                queryset = Payment.objects.filter(
+                    month=month.Month((year), month=curr_month))
+                paginator = StandardResultsSetPagination()
+                paginator.page_size = request.query_params.get(
+                    "page_size", 20)
+                page = paginator.paginate_queryset(queryset, request)
+                if page is not None:
+                    serializer = PaymentSerializer(page, many=True)
+                    return paginator.get_paginated_response(serializer.data)
+                serializer = PaymentSerializer(queryset, many=True)
+                return JsonResponse(data=serializer.data, safe=False)
+
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=400)
         else:
             try:
+                # employees = Employee.objects.all()
+                # for employee in employees:
+                #     for year in range(2022, 2025):
+                #         for curent_month in range(1, 13):
+                #             curr_month = month.Month(year, curent_month)
+                #             payment = Payment.objects.create(
+                #                 employee=employee, month=curr_month, salary=employee.salary)
+                #             payment.save()
                 queryset = Payment.objects.all().order_by("month")
-                my_month = month.Month(2024, 4)
-                queryset = queryset.filter(month__lt=my_month)
+                # my_month = month.Month(2024, 4)
+                # queryset = queryset.filter(month__lt=my_month)
                 paginator = StandardResultsSetPagination()
                 paginator.page_size = request.query_params.get(
                     "page_size", 10)
