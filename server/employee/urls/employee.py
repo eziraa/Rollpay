@@ -1,6 +1,7 @@
 from django.urls import path
 
 from employee.views import views, salary_view
+from employee.views.user_views import ProfilePicture
 
 # Defining  url patterns to use it as end point
 urlpatterns = [
@@ -25,4 +26,7 @@ urlpatterns = [
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
          name='__update_emoployee__'),
+    path("profile/<str:employee_id>",
+         ProfilePicture.as_view(), name='__update_emp_profile_picture__'),
+
 ] 
