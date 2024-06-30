@@ -58,7 +58,7 @@ class Salary(models.Model):
     allowances = models.ManyToManyField(
         Allowance, blank=True)
     overtimes = models.ManyToManyField(
-        OvertimeItem,  blank=True, null=True)
+        OvertimeItem,  blank=True)
     deductions = models.ManyToManyField(
         Deduction, blank=True)
 
@@ -124,3 +124,11 @@ class Position(models.Model):
 
     def __str__(self):
         return self.position_name
+
+
+class Asset(models.Model):
+    id = models.AutoField(primary_key=True)
+    employee = models.ForeignKey(
+        Employee, blank=True, on_delete=models.PROTECT)
+    asset_name = models.CharField(max_length=255, null=False)
+    asset_value = models.FileField(upload_to="assets")
