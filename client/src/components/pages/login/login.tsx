@@ -19,7 +19,7 @@ import {
   ActionsContainer,
   LoginSection,
 } from "./login.style";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
@@ -33,6 +33,7 @@ import { EmpsDisplayerHeader as Header } from "../display-employee/display-emplo
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   const { is_login, login_error, logging_in } = useAppSelector(
     (state) => state.user
   );
@@ -43,7 +44,7 @@ export const LoginPage = () => {
 
   useEffect(() => {
     if (is_login) {
-      window.location.href = "/home-page";
+      navigate("/");
     }
   }, [is_login]);
   const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
