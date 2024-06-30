@@ -63,7 +63,7 @@ class Salary(models.Model):
         Deduction, blank=True)
 
     def __str__(self):
-        return self.basic_salary
+        return str(self.basic_salary)
 
 
 class Employee(models.Model):
