@@ -110,7 +110,6 @@ export const EmployeesSalaryPage = () => {
 
   const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
   const handleExport = () => {
-    console.log(employeeSalary);
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(employeeSalary);
 
@@ -124,7 +123,7 @@ export const EmployeesSalaryPage = () => {
     else setEmployeeSalary(salary.employees || []);
   }, [salary.employees, salary.search_response]);
   const start = 2022;
-  const end = 2025;
+  const end = 2024;
   const years = Array.from(
     { length: end - start + 1 },
     (_, index) => start + index
