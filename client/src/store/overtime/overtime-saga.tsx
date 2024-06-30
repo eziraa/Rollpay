@@ -91,7 +91,7 @@ function* GetOvertimes() {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view employees",
+          desc: "You are not allowed to view overtimess",
           duration: 3,
         })
       );

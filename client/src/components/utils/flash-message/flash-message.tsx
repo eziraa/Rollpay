@@ -28,7 +28,7 @@ export const FlashMessage = () => {
               flashMessage.type === "success" ? "#04b97f" : "#f9ba46",
             backgroundColor:
               flashMessage.type === "success"
-                ? addOpacityToColor(0.1, "#04b97f")
+                ? addOpacityToColor(1, "#a2d9c8")
                 : addOpacityToColor(0.2, "#a55e25"),
           }}
         >
