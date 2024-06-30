@@ -18,21 +18,22 @@ import { Profile } from "../../../typo/employee/response";
 
 import axios from "axios";
 import { Label } from "../form-elements/form.style";
-import { useProfileContext } from "../../../contexts/profile-context";
+// import { useProfileContext } from "../../../contexts/profile-context";
 import { RiPencilLine } from "react-icons/ri";
+import { ImageCard } from "./profile-card";
 
 export const EmployeeProfile = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
-  const user = JSON.parse(localStorage.getItem("curren-user") || "[]");
-  console.log("user", user);
+  // const user = JSON.parse(localStorage.getItem("curren-user") || "[]");
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
-  const { setProfilePictureUrl } = useProfileContext();
+  // const { setProfilePictureUrl } = useProfileContext();
 
   const [data, setData] = useState<Profile>({ profile_picture: "" });
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     if (event.target.files) {
       setProfilePicture(event.target.files[0]);
     }
@@ -56,60 +57,49 @@ export const EmployeeProfile = () => {
           console.log(error);
         });
     }
-  }, [profilePicture]);
-
-  useEffect(() => {
-    const curr_emp_id = localStorage.getItem("curr_emp_id");
-    if (profilePicture && curr_emp_id) {
-      const url = `http://127.0.0.1:8000/user/profile/${curr_emp_id}`;
-      const formData = new FormData();
-      formData.append("profile_picture", profilePicture);
-
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      axios
-        .put(url, formData, config)
-        .then((response) => {
-          setProfilePictureUrl(
-            `http://127.0.0.1:8000/${response.data.profile_picture}`
-          );
-
-          setData({ ...data, profile_picture: response.data.profile_picture });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [profilePicture]);
+  }, []);
   useEffect(() => {
     const curr_emp_id = localStorage.getItem("curr_emp_id");
     curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
   }, [dispatcher]);
+ 
+  const closeImageCard = () => {
+    setProfilePicture(null);
+  };
   return (
     <EmployeeeProfileContainer>
       <ProfileContainer
         profile={"http://127.0.0.1:8000/" + data.profile_picture}
       >
-        <Label>
-          <InputButton type="submit" onClick={handleClick}>
-            {curr_emp?.employee.id === user.id && (
-              <Icon>
-                <RiPencilLine />
-              </Icon>
-            )}
-          </InputButton>
-        </Label>
-
-        <FileInput
-          accept="image/*"
-          type="file"
-          ref={hiddenFileInput}
-          onChange={handleChange}
-        />
+        <form onSubmit={() => {}}>
+          <Label>
+            <InputButton
+              type="submit"
+              onClick={(e) => {
+                e.preventDefault();
+                handleClick();
+              }}
+            >
+              {
+                <Icon>
+                  <RiPencilLine />
+                </Icon>
+              }
+            </InputButton>
+          </Label>
+          <FileInput
+            accept="image/*"
+            type="file"
+            ref={hiddenFileInput}
+            onChange={handleChange}
+          />
+          {profilePicture && (
+            <ImageCard
+              picture={profilePicture }
+              action={closeImageCard}
+            />
+          )}
+        </form>
       </ProfileContainer>
       {loading ? (
         <ThreeDots size={1} />
