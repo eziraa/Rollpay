@@ -6,8 +6,12 @@ import {
   MenuItem,
   MenuItemText,
   UsersIcon,
+  LogoContainer,
+  LogoImage,
 } from "./left-menu.style";
 import { useLocation, useNavigate } from "react-router";
+import Image from "../../../assets/logo.jpg";
+import { Title } from "../add_employee/add-employee.style";
 
 function LeftMenu() {
   const { task_finished } = useAppSelector((state) => state.employee);
@@ -15,6 +19,19 @@ function LeftMenu() {
   const { pathname } = useLocation();
   return (
     <LeftMenuContainer>
+      <LogoContainer>
+        <LogoImage src={Image} />
+        <Title>
+          Ethio
+          <span
+            style={{
+              color: "red",
+            }}
+          >
+            Den
+          </span>
+        </Title>
+      </LogoContainer>
       <MenuItem active={false}>
         <HomeIcon />
         <MenuItemText>Home</MenuItemText>
