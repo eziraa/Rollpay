@@ -19,7 +19,7 @@ export const HeaderTitle = styled.h1<ThemeProps>`
 `;
 
 export const ProfileContainer = styled.div<ThemeProps>`
-  width: 10%;
+  width: fit-content;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -62,6 +62,7 @@ export const WelcomeMessageContainer = styled.div`
 export const WelcomeMessageName = styled.h1<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
 `;
+
 
 
 
