@@ -63,11 +63,6 @@ export const WelcomeMessageName = styled.h1<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const WelcomeMessageJobTitle = styled.h2<ThemeProps>`
-  color: ${({ theme }) => theme.colors.secondary};
-`;
-export const WelcomeMessage = styled.h2<ThemeProps>`
-  color: ${({ theme }) => theme.colors.primary};
-`;
+
 
 
