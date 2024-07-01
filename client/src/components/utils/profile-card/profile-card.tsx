@@ -7,6 +7,8 @@ import {
   CardImage,
   SaveButton,
 } from "./profile-card.style";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { setProfilePicture } from "../../../store/salary/salary-slice";
 
 export const ImageCard = ({
   picture,
@@ -16,14 +18,13 @@ export const ImageCard = ({
   action: () => void;
 }) => {
   // Getting necessary data
-
+  const dispatcher = useAppDispatch();
   const { employee_id } = useParams();
   const saveProfileImage = () => {
     if (employee_id) {
       const url = `http://127.0.0.1:8000/user/profile/${employee_id}`;
       const formData = new FormData();
       formData.append("profile_picture", picture);
-
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -33,11 +34,8 @@ export const ImageCard = ({
       api
         .put(url, formData, config)
         .then((response) => {
-          console.log(response);
-          // setProfilePictureUrl(
-          //   `http://127.0.0.1:8000/${response.data.profile_picture}`
-          // );
-          // setData({ ...data, profile_picture: response.data.profile_picture });
+          dispatcher(setProfilePicture(response.data.profile_picture));
+          action();
         })
         .catch((error) => {
           console.log(error);
@@ -57,7 +55,14 @@ export const ImageCard = ({
         >
           Cancel
         </CancelButton>
-        <SaveButton onClick={saveProfileImage}>Save</SaveButton>
+        <SaveButton
+          onClick={(e) => {
+            e.preventDefault();
+            saveProfileImage();
+          }}
+        >
+          Save
+        </SaveButton>
       </ActionContainer>
     </CardContainer>
   );
