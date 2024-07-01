@@ -28,6 +28,9 @@ import { CheckFlashMessage } from "../../components/sections/confirm-flash-messa
 import { AddAllowance } from "../../components/sections/add-allowance/add-allowance";
 import { AddOvertime } from "../../components/sections/add-overtime/add-overtime";
 import { AddDeduction } from "../../components/sections/add-deduction/add-deduction";
+import UserOvertime from "../../components/pages/user-profile/user-overtime";
+import UserDeductions from "../../components/pages/user-profile/user-deductions";
+import UserAllowance from "../../components/pages/user-profile/user-allowance";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -41,7 +44,6 @@ export const RouterConfig = () => (
           </ProtectedRoute>
         }
       >
-        <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/employees" element={<EmployeesListPage />} />
         <Route path="/employees/add-employee" element={<AddEmployee />} />
         <Route
@@ -76,6 +78,12 @@ export const RouterConfig = () => (
           </Route>
           <Route path="edit" element={<EditEmployee />} />
         </Route>
+      </Route>
+      <Route path="/user-profile/:employee_id" element={<UserProfile />}>
+        <Route path="allowances" element={<UserAllowance />} />
+        <Route path="" element={<Navigate to="allowances" replace />} />
+        <Route path="overtimes" element={<UserOvertime />} />
+        <Route path="deductions" element={<UserDeductions />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/access-denied" element={<AccessDenied />} />
