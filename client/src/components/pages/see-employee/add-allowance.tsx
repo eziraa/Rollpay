@@ -29,6 +29,11 @@ import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { Outlet, useNavigate, useParams } from "react-router";
 import { AddAllowanceToEmpSchema } from "../../../schema/add-allowance-schema";
+/**
+ * Renders a modal for adding an allowance to an employee.
+ *
+ * @returns JSX element representing the modal for adding an allowance to an employee.
+ */
 export const AddAllowanceToEmp = () => {
   //geting necessary data form the context , routers and the redux store
   const { allowances, curr_allowance } = useAllowance();
@@ -38,39 +43,70 @@ export const AddAllowanceToEmp = () => {
   const { curr_emp } = useSalary();
   const employee = useEmployee();
 
-  //fetching allowances from backend to add to employee
-  useEffect(() => {
+ /**
+ * This effect hook listens for changes in the `curr_allowance` state.
+ * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
+ *
+ * @param {AllowanceState} curr_allowance - The current allowance state.
+ * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
+ *
+ * @returns {void}
+ */
+useEffect(() => {
+  if (curr_allowance) {
     dispatcher(listAllowancesRequested());
-  }, []);
+  }
+}, [curr_allowance, dispatcher]);
 
-  useEffect(() => {
+ /**
+ * This effect hook listens for changes in the `curr_allowance` state.
+ * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
+ *
+ * @param {AllowanceState} curr_allowance - The current allowance state.
+ * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
+ *
+ * @returns {void}
+ */
+useEffect(() => {
     if (curr_allowance) {
       dispatcher(listAllowancesRequested());
     }
   }, [curr_allowance, dispatcher]);
 
-  // initialize the formik instance
-  const { errors, touched, handleChange, handleSubmit, values } = useFormik({
-    initialValues: {
-      allowance_type: curr_allowance?.allowance_type || "",
-      employee_id: employee_id || "",
-    },
-    validationSchema: AddAllowanceToEmpSchema,
-    onSubmit: (values) => {
-      dispatcher(
-        resetEmployeeState({
-          ...employee,
-          task_error: undefined,
-        })
-      );
-      dispatcher(addEmpAllowanceRequested(values));
-    },
-  });
+/**
+ * Initializes the Formik instance for the AddAllowanceToEmp component.
+ *
+ * @returns An object containing the Formik instance properties: errors, touched, handleChange, handleSubmit, and values.
+ */
+const { errors, touched, handleChange, handleSubmit, values } = useFormik({
+  initialValues: {
+    allowance_type: curr_allowance?.allowance_type || "",
+    employee_id: employee_id || "",
+  },
+  validationSchema: AddAllowanceToEmpSchema,
+  onSubmit: (values) => {
+    dispatcher(
+      resetEmployeeState({
+        ...employee,
+        task_error: undefined,
+      })
+    );
+    dispatcher(addEmpAllowanceRequested(values));
+  },
+});
 
   //Adding a method to close modal  properly
-  const clearTask = () => {
-    dispatcher(closeEmployeeTask());
+ /**
+ * This function is used to clear the task and close the modal.
+ * It dispatches an action to close the employee task.
+ *
+ *
+ * @returns {void} - This function does not return any value.
+ */
+const clearTask = () => {
+  dispatcher(closeEmployeeTask());
   };
+  
   return (
     <Modal closeAction={clearTask}>
       <AllowanceContainer>
