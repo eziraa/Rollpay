@@ -11,7 +11,6 @@ export const LeftMenuContainer = styled.div<ThemeProps>`
   height: 100%;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.07, theme.buttons.secondary)};
-  padding-top: 3vh;
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -21,9 +20,29 @@ export const LeftMenuContainer = styled.div<ThemeProps>`
   border-right: 0.3rem solid ${({ theme }) => theme.colors.secondary};
 `;
 
+export const LogoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 3.5rem;
+  font-weight: 700;
+  width: 100%;
+  height: 25%;
+  letter-spacing: 1px;
+`;
+
+export const LogoImage = styled.img`
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+`;
+
 interface MenuItemProps extends ThemeProps {
   active: boolean;
 }
+
 export const MenuItem = styled.div<MenuItemProps>`
   display: flex;
   align-items: center;
