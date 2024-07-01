@@ -84,10 +84,31 @@ const logout = async () => {
   return response;
 };
 
+const getCurrentUser = async (employee_id: string) => {
+  const response = api
+    .get("/user/current-user/" + employee_id)
+    .then((res) => {
+      return {
+        employee: { ...res.data },
+        success: " success",
+        code: res.status,
+      };
+    })
+    .catch((err) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const UserAPI = {
   signUp,
   login,
   logout,
+  getCurrentUser,
 };
 
 export default UserAPI;
