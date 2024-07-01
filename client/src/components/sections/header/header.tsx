@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Toggle } from "../../utils/buttons/toggle";
 // import { Button } from "../../utils/form_elements/form.style";
-import Logo from "../../utils/logo/logo";
 import {
   HeaderContainer,
   ProfileContainer,
   ProfileImage,
+  WelcomeMessageContainer,
 } from "./header.style";
 import { useEffect, useState } from "react";
 
@@ -16,6 +16,8 @@ import { useAppDispatch } from "../../../utils/custom-hook";
 import { baseURL } from "../../../config/api";
 import { getCurrentUserRequest } from "../../../store/user/user-slice";
 import { useUser } from "../../../hooks/user-hook";
+import { BlurredText, MidBlurredText } from "../../utils/titles/titles";
+import { stringDay } from "../../utils/day/string-day";
 
 export const Header = () => {
   const curr_user = localStorage.getItem(CURRENT_USER);
@@ -34,7 +36,12 @@ export const Header = () => {
   return (
     <>
       <HeaderContainer>
-        <Logo />
+        <WelcomeMessageContainer>
+          <BlurredText>Welcome, Mr. {user?.employee.first_name}</BlurredText>
+          <MidBlurredText>
+            Today is {stringDay(new Date(Date.now()))}
+          </MidBlurredText>
+        </WelcomeMessageContainer>
         <ProfileContainer>
           <Toggle />
           {openProfileMenu && <Profile close={closeAction} />}
