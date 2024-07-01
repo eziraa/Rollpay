@@ -10,7 +10,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ('id', 'first_name', 'last_name', 'gender', 'email',
-                  'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary')
+                  'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary', 'profile_picture')
 
     def get_salary(self, obj: Employee):
         if obj.salary:
@@ -29,7 +29,7 @@ class SalaryEmployeeSerializer(EmployeeSerializer):
 
     class Meta:
         model = Employee
-        fields = ('id', 'first_name', 'last_name', 'salary')
+        fields = ('id', 'first_name', 'last_name', 'salary', 'profile_picture')
 
     def get_salary(self, obj: Employee):
         return SalarySerializer(obj.salary).data
