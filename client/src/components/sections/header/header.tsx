@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Toggle } from "../../utils/buttons/toggle";
 // import { Button } from "../../utils/form_elements/form.style";
 import Logo from "../../utils/logo/logo";
@@ -6,51 +7,41 @@ import {
   ProfileContainer,
   ProfileImage,
 } from "./header.style";
-import { useContext, useEffect, useState } from "react";
-import { DisplayContext } from "../../../contexts/display-context";
-// import axios from "axios";
-import { Profile as ProfileParams } from "../../../typo/employee/response";
+import { useEffect, useState } from "react";
+
 import Profile from "../profile/profile";
-import { useProfileContext } from "../../../contexts/profile-context";
-import axios from "axios";
+
+import { CURRENT_USER } from "../../../constants/token-constants";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { baseURL } from "../../../config/api";
+import { getCurrentUserRequest } from "../../../store/user/user-slice";
+import { useUser } from "../../../hooks/user-hook";
 
 export const Header = () => {
-  const { display, setDisplay } = useContext(DisplayContext);
-  const { profilePictureUrl } = useProfileContext();
+  const curr_user = localStorage.getItem(CURRENT_USER);
+  const employee_id = JSON.parse(curr_user || "[]")?.id;
+  const { user } = useUser();
+  const dispatcher = useAppDispatch();
+  const [openProfileMenu, setProfileMenu] = useState<boolean>();
 
-  const [data, setData] = useState<ProfileParams>({ profile_picture: "" });
-
-  const employee_id = localStorage.getItem("curr_emp_id");
-
-  const url = `http://127.0.0.1:8000/user/profile/${employee_id}`;
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get<ProfileParams>(url);
-        setData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    employee_id && dispatcher(getCurrentUserRequest(employee_id));
+  }, []);
 
-    fetchData();
-  }, [url, employee_id]);
+  const closeAction = () => {
+    setProfileMenu(false);
+  };
   return (
     <>
       <HeaderContainer>
         <Logo />
         <ProfileContainer>
           <Toggle />
-          {display.see_profile && <Profile />}
-
+          {openProfileMenu && <Profile close={closeAction} />}
           <ProfileImage
-            // profile={}
-            profile={
-              profilePictureUrl ||
-              "http://127.0.0.1:8000/" + data.profile_picture
-            }
+            profile={baseURL + user?.employee.profile_picture}
             onClick={() => {
-              setDisplay({ ...display, see_profile: !display.see_profile });
+              setProfileMenu(!openProfileMenu);
             }}
           />
         </ProfileContainer>
