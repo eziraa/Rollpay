@@ -31,6 +31,7 @@ import { AddDeduction } from "../../components/sections/add-deduction/add-deduct
 import UserOvertime from "../../components/pages/user-profile/user-overtime";
 import UserDeductions from "../../components/pages/user-profile/user-deductions";
 import UserAllowance from "../../components/pages/user-profile/user-allowance";
+import { DashBoard } from "../../components/pages/dashboard/dashboard";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -44,6 +45,7 @@ export const RouterConfig = () => (
           </ProtectedRoute>
         }
       >
+        <Route path="/" element={<DashBoard />} />
         <Route path="/employees" element={<EmployeesListPage />} />
         <Route path="/employees/add-employee" element={<AddEmployee />} />
         <Route
