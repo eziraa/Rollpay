@@ -13,18 +13,20 @@ import {
   PositionContainer,
   PositionForm,
 } from "./add-position.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { addPositionRequested } from "../../../store/position/position-slice";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import {
+  addPositionRequested,
+  closePositionTask,
+} from "../../../store/position/position-slice";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_POSITION } from "../../../constants/tasks";
 import { AddPositionSchema } from "../../../schema/add-position-schema";
 import { useEffect } from "react";
+import { usePosition } from "../../../hooks/position-hook";
 export const AddPosition = () => {
   const dispatcher = useAppDispatch();
   const { closeModal } = useModal();
-  const { adding_position_error, curr_position } = useAppSelector(
-    (state) => state.position
-  );
+  const { task_error, curr_position } = usePosition();
   const { touched, errors, values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       position_name: "",
@@ -39,8 +41,12 @@ export const AddPosition = () => {
   useEffect(() => {
     curr_position && closeModal(ADD_POSITION);
   }, [curr_position, closeModal]);
+
+  const clearAction = () => {
+    dispatcher(closePositionTask());
+  };
   return (
-    <Modal content={ADD_POSITION}>
+    <Modal closeAction={clearAction}>
       <PositionContainer>
         <PositionBody>
           <Title>Add Position</Title>
@@ -74,14 +80,14 @@ export const AddPosition = () => {
                 <FormError> {errors.basic_salary} </FormError>
               )}
             </InputContainer>
-            {adding_position_error && (
+            {task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
                 {" "}
-                {adding_position_error}
+                {task_error}
               </FormError>
             )}
             <AddBtn type="submit">Add</AddBtn>
