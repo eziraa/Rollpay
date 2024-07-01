@@ -2,13 +2,12 @@ import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 import Placeholder from "../../../assets/placeholde.jpg";
 export const HeaderContainer = styled.div<ThemeProps>`
-  width: 100vw;
-  height: 10vh;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.backgrounds.primary};
-  padding: 0 2rem;
+  padding: 1rem;
   margin: 0;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.secondary};
 `;
@@ -20,7 +19,7 @@ export const HeaderTitle = styled.h1<ThemeProps>`
 `;
 
 export const ProfileContainer = styled.div<ThemeProps>`
-  width: 10%;
+  width: fit-content;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -39,7 +38,8 @@ export const ProfileImage = styled.img<Props>`
   border-radius: 50%;
   padding: 0rem;
   background: ${(props) =>
-    props.profile ? `url(${props.profile})` : `url(${Placeholder})`}, linear-gradient(90deg, #60565596, #6866619d);
+      props.profile ? `url(${props.profile})` : `url(${Placeholder})`},
+    linear-gradient(90deg, #60565596, #6866619d);
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
@@ -50,3 +50,20 @@ export const ProfileImage = styled.img<Props>`
     transform: scale(1.1);
   } */
 `;
+
+export const WelcomeMessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+`;
+
+export const WelcomeMessageName = styled.h1<ThemeProps>`
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+
+
+
+

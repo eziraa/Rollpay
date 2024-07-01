@@ -7,9 +7,9 @@ import { Outlet } from "react-router";
 export const HomePage = () => {
   return (
     <HomeContainer>
-      <Header />
+      <LeftMenu />
       <HomeBody>
-        <LeftMenu />
+        <Header />
         <Outlet />
       </HomeBody>
     </HomeContainer>

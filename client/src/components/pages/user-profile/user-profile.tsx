@@ -2,13 +2,16 @@
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import {
   BackButton,
-  CurrEmployeeContent,
-  SeeEmployeeContainer,
-  SeeEmployeeHeader,
   Title,
   TitleContainer,
 } from "../see-employee/see-employee.style";
-import { Item, UserProfileContainer } from "./user-profile.style";
+import {
+  Item,
+  UserProfileBody,
+  UserProfileContainer,
+  UserProfileContent,
+  UserProfileHeader,
+} from "./user-profile.style";
 
 import { FaRegUserCircle } from "react-icons/fa";
 import { IconContainer } from "../../sections/profile/profile.style";
@@ -34,12 +37,12 @@ const UserProfile = () => {
     <>
       <Header />
       <UserProfileContainer>
-        <SeeEmployeeContainer>
-          <SeeEmployeeHeader>
+        <UserProfileBody>
+          <UserProfileHeader>
             <TitleContainer>
               <BackButton
                 onClick={() => {
-                  navigate("/");
+                  navigate(-1);
                 }}
               >
                 <IoChevronBackCircleOutline />
@@ -52,12 +55,12 @@ const UserProfile = () => {
               </Item>
             </TitleContainer>
             <NavigationBar />
-          </SeeEmployeeHeader>
-          <CurrEmployeeContent>
+          </UserProfileHeader>
+          <UserProfileContent>
             {employee && <EmployeeProfile employee={employee} />}
             <Outlet />
-          </CurrEmployeeContent>
-        </SeeEmployeeContainer>
+          </UserProfileContent>
+        </UserProfileBody>
       </UserProfileContainer>
     </>
   );
