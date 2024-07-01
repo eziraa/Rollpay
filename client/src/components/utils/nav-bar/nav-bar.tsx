@@ -1,38 +1,34 @@
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { NavBar, NavItem } from "./nav-bar.style";
-import {
-  SEE_EMP_ALLOWANCE,
-  SEE_EMP_DEDUCTION,
-  SEE_EMP_OVERTIME,
-} from "../../../constants/tasks";
 
-export const NavigationBar = ({ current_nav }: { current_nav: string }) => {
+export const NavigationBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   return (
     <NavBar>
       <NavItem
-        active={current_nav === SEE_EMP_ALLOWANCE}
+        active={location.pathname.endsWith("allowances")}
         onClick={(e) => {
           e.preventDefault();
-          navigate("/employees/single-employee");
+          navigate("allowances");
         }}
       >
         Allowances
       </NavItem>
       <NavItem
-        active={current_nav === SEE_EMP_OVERTIME}
+        active={location.pathname.endsWith("overtimes")}
         onClick={(e) => {
           e.preventDefault();
-          navigate("/employees/employee-overtimes");
+          navigate(`overtimes`);
         }}
       >
         Overtimes
       </NavItem>
       <NavItem
-        active={current_nav == SEE_EMP_DEDUCTION}
+        active={location.pathname.endsWith("deductions")}
         onClick={(e) => {
           e.preventDefault();
-          navigate("/employees/employee-deductions");
+          navigate(`deductions`);
         }}
       >
         Deductions

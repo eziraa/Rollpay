@@ -70,6 +70,10 @@ const SalarySlice = createSlice({
     unfinishedList: (state) => {
       state.loading = false;
     },
+    setProfilePicture: (state, action: PayloadAction<string>) => {
+      if (state.curr_emp)
+        state.curr_emp.employee.profile_picture = action.payload;
+    },
   },
 });
 export const {
@@ -83,6 +87,7 @@ export const {
   searchPaymentRequested,
   loadNextPaymentListPage,
   loadPrevPaymentListPage,
+  setProfilePicture,
 } = SalarySlice.actions;
 
 export default SalarySlice.reducer;

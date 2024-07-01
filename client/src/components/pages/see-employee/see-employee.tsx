@@ -1,59 +1,44 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import {
-  BackButton,
-  EditEmployeeContent,
+  CurrEmployeeContent,
   Title,
   SeeEmployeeHeader,
   TitleContainer,
-  SeeEmployeeBody,
-  SeeEmployeeContainer,
-  Container,
 } from "./see-employee.style";
-import { useAppDispatch } from "../../../utils/custom-hook";
-import { IoChevronBackCircleOutline } from "react-icons/io5";
 
-import { EmployeeAllowance } from "../../sections/employee-allowance/allowance";
-import { resetCurrEmployee } from "../../../store/employee/employee-slice";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
-import LeftMenu from "../../sections/left-menu/left-menu";
-import { Header } from "../../sections/header/header";
+
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
-import { SEE_EMPLOYEE, SEE_EMP_ALLOWANCE } from "../../../constants/tasks";
-import UpdateEmployee from "./update-employee";
+import { Outlet, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useSalary } from "../../../hooks/salary-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 export const SeeEmployee = () => {
+  //Calling hooks and getting necessary information
+  const { employee_id } = useParams();
+  const employee = useSalary().curr_emp?.employee;
   const dispatcher = useAppDispatch();
-  return (
-    <SeeEmployeeContainer>
-      <Header />
-      <SeeEmployeeBody>
-        <LeftMenu current_menu={SEE_EMPLOYEE} />
-        <MainContainer>
-          <SeeEmployeeHeader>
-            <TitleContainer>
-              <BackButton
-                onClick={() => {
-                  dispatcher(resetCurrEmployee());
-                }}
-              >
-                <IoChevronBackCircleOutline />
-              </BackButton>
-              <Title>Edit Employee</Title>
-            </TitleContainer>
-            <NavigationBar current_nav={SEE_EMP_ALLOWANCE} />
-          </SeeEmployeeHeader>
-          <EditEmployeeContent>
-            <Container>
-              <EmployeeProfile />
-              <UpdateEmployee />
-            </Container>
 
-            <EmployeeAllowance />
-          </EditEmployeeContent>
-        </MainContainer>
-      </SeeEmployeeBody>
-    </SeeEmployeeContainer>
+  // Mock data for employee profile
+  useEffect(() => {
+    employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
+  }, []);
+  return (
+    <MainContainer>
+      <SeeEmployeeHeader>
+        <TitleContainer>
+          <Title>Current Employee</Title>
+        </TitleContainer>
+        <NavigationBar />
+      </SeeEmployeeHeader>
+      <CurrEmployeeContent>
+        {employee && <EmployeeProfile employee={employee} />}
+        <Outlet />
+      </CurrEmployeeContent>
+    </MainContainer>
   );
 };

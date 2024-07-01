@@ -3,6 +3,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { UserState } from "../../typo/user/states";
 import { LoginParams, SignUpParams } from "../../typo/user/params";
+import { UserResponse } from "../../typo/user/response";
 
 const InitialEmpState: UserState = {
   creating: false,
@@ -24,10 +25,8 @@ const UserSlice = createSlice({
       state.signup_error = undefined;
       state.acc_created = false;
     },
-
     signUpFinished: (state) => {
       state.creating = false;
-      // state.short_task = undefined;
       state.signup_error = undefined;
       state.acc_created = true;
     },
@@ -46,7 +45,6 @@ const UserSlice = createSlice({
     },
     loginFinished: (state) => {
       state.logging_in = false;
-      // state.long_task = undefined;
       state.is_login = true;
       state.login_error = undefined;
     },
@@ -58,16 +56,17 @@ const UserSlice = createSlice({
       state.is_login = false;
       state.creating = false;
       state.user = undefined;
-      // state.short_task = undefined;
-      // state.long_task = undefined;
       state.logging_in = false;
     },
-    // setShortTask: (state, actions: PayloadAction<string | undefined>) => {
-    //   state.short_task = actions.payload;
-    // },
-    // setLongTask: (state, actions: PayloadAction<string | undefined>) => {
-    //   state.long_task = actions.payload;
-    // },
+
+    getCurrentUserRequest: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+    },
+    getCurrentUserDone: (state, action: PayloadAction<UserResponse>) => {
+      state.loading = false;
+      state.user = action.payload;
+      console.log(state.user);
+    },
   },
 });
 
@@ -80,7 +79,7 @@ export const {
   logout,
   wrongLogin,
   wrongSignup,
-  // setShortTask,
-  // setLongTask,
+  getCurrentUserRequest,
+  getCurrentUserDone,
 } = UserSlice.actions;
 export default UserSlice.reducer;

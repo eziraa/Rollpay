@@ -8,6 +8,7 @@ import {
 import api from "../config/api";
 import { AddEmpResponse, Employee, Profile } from "../typo/employee/response";
 import { BaseResponse } from "../typo/utils/response";
+import { AddOvertimeToEmpParams } from "../typo/overtime/params";
 
 const addEmp = async (values: AddEmpParams) => {
   const response = await api
@@ -78,15 +79,6 @@ const listEmployee = async (pageUrl?: string) => {
   return employees;
 };
 
-// const addSalary = async (values: AddSalaryParams) => {
-//   const employees = await api
-//     .post<EmpResponse>("/employee/salary/add/" + values.empID, values)
-//     .then((res) => {
-//       return res.data;
-//     });
-//   return employees;
-// };
-
 const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
   const employees = await api
     .patch<BaseResponse>(
@@ -119,6 +111,37 @@ const addDeduction = async (values: AddDeductionToEmployeesParams) => {
         values.employee_id +
         "/" +
         values.deduction_type
+    )
+    .then((res) => {
+      console.log(res);
+      return {
+        employee: res.data,
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      console.log(err);
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return employees;
+};
+
+const addOvertime = async (values: AddOvertimeToEmpParams) => {
+  const employees = await api
+    .patch<BaseResponse>(
+      "/employee/overtime/add/" +
+        values.employee_id +
+        "/" +
+        values.overtime_type,
+      {
+        start_time: values.start_time,
+        end_time: values.end_time,
+      }
     )
     .then((res) => {
       console.log(res);
@@ -243,6 +266,7 @@ const EmployeeAPI = {
   deleteEmployee,
   addAllowance,
   addDeduction,
+  addOvertime,
   updatProfilePicture,
   getProfilePicture,
 };

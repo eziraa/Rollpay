@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
-import { useEmployee } from "../../../hooks/employee-hook";
+import { useOvertime } from "../../../hooks/overtime-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   FormError,
@@ -19,44 +20,56 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_OVERTIME, ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
-import { useOvertime } from "../../../hooks/overtime-hook";
+import { addEmpOvertimeRequested, closeEmployeeTask } from "../../../store/employee/employee-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
+import { useSalary } from "../../../hooks/salary-hook";
+import { useEmployee } from "../../../hooks/employee-hook";
+import { Outlet, useNavigate, useParams } from "react-router";
 export const AddOvertimeToEmp = () => {
   const { overtimes, curr_overtime } = useOvertime();
   const dispatcher = useAppDispatch();
-  const employee = useEmployee();
-  const { openModal } = useModal();
+  const navigate = useNavigate();
+  const { curr_emp } = useSalary();
+  const { employee_id } = useParams();
+  const { task_error, task_finished } = useEmployee();
   useEffect(() => {
     if (curr_overtime) {
       dispatcher(listOvertimesRequested());
-      console.log(overtimes);
     }
   }, [curr_overtime, dispatcher]);
-  const { errors, touched, handleChange, handleSubmit } = useFormik({
+  const { errors, touched, handleChange, handleSubmit, values } = useFormik({
     initialValues: {
       overtime_type: "",
-      employee_id: employee.curr_emp?.id,
+      employee_id: employee_id || "",
       start_time: "",
       end_time: "",
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit(values) {
+      dispatcher(addEmpOvertimeRequested(values));
     },
   });
+
+  useEffect(() => {
+    dispatcher(listOvertimesRequested());
+  }, []);
+  const clearTask = () => {
+    dispatcher(closeEmployeeTask());
+  };
   return (
-    <Modal content={ADD_OVERTIME_TO_EMP}>
+    <Modal closeAction={clearTask}>
+      <Outlet />
       <OvertimeContainer>
         <OvertimeBody>
-          <Title>Adding Overtime to {employee.curr_emp?.first_name}</Title>
+          <Title>Adding Overtime to {curr_emp?.employee?.first_name}</Title>
           <OvertimeForm
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               handleSubmit(e);
             }}
           >
             <InputContainer>
-              <Label htmlFor="role">Select Overtime</Label>
+              <Label htmlFor="ovetime_type">Select Overtime</Label>
               <div
                 style={{
                   display: "flex",
@@ -66,7 +79,11 @@ export const AddOvertimeToEmp = () => {
                   gap: "1rem",
                 }}
               >
-                <Select style={{ flex: 2 }} onChange={handleChange}>
+                <Select
+                  name="overtime_type"
+                  style={{ flex: 2 }}
+                  onChange={handleChange}
+                >
                   <SelectOption value="" disabled selected={!curr_overtime}>
                     Select Overtime
                   </SelectOption>
@@ -76,50 +93,73 @@ export const AddOvertimeToEmp = () => {
                         <SelectOption
                           selected={overtime.id === curr_overtime?.id}
                           value={overtime.overtime_type}
-                          onChange={handleChange}
+                          key={overtime.id}
                         >
                           {overtime.overtime_type}
                         </SelectOption>
                       )
                   )}
                 </Select>
-
                 <AddBtn
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openModal(ADD_OVERTIME);
+                    navigate("add-new-overtime");
                   }}
                   style={{ flex: 1.2 }}
                 >
                   {"Add New"}
                 </AddBtn>
               </div>
-              <InputContainer>
-                <Label htmlFor="start_time">Start Time</Label>
-                <Input
-                  type="datetime-local"
-                  name="start_time"
-                  value={employee.curr_emp?.id}
-                  style={{ flex: 2 }}
-                />
-              </InputContainer>
-              <InputContainer>
-                <Label htmlFor="start_time">End Time</Label>
-                <Input
-                  type="datetime-local"
-                  name="end_time"
-                  value={employee.curr_emp?.id}
-                  style={{ flex: 2 }}
-                />
-              </InputContainer>
               <FormError>
-                {touched.overtime_type && errors.overtime_type ? (
+                {touched.overtime_type && !values.overtime_type ? (
                   <div>{errors.overtime_type}</div>
                 ) : null}
               </FormError>
             </InputContainer>
-            <AddBtn>Add</AddBtn>
+            <InputContainer>
+              <Label htmlFor="start_time">Start Time</Label>
+              <Input
+                type="datetime-local"
+                name="start_time"
+                value={values.start_time}
+                onChange={handleChange}
+                style={{ flex: 2 }}
+              />
+            </InputContainer>
+            <FormError>
+              {touched.start_time && errors.start_time ? (
+                <div>{errors.start_time}</div>
+              ) : null}
+            </FormError>
+            <InputContainer>
+              <Label htmlFor="start_time">End Time</Label>
+              <Input
+                type="datetime-local"
+                name="end_time"
+                onChange={handleChange}
+                value={values.end_time}
+                style={{ flex: 2 }}
+              />
+            </InputContainer>
+            <FormError>
+              {touched.end_time && errors.end_time ? (
+                <div>{errors.end_time}</div>
+              ) : null}
+            </FormError>
+            {task_error && (
+              <FormError
+                style={{
+                  fontSize: "1.5rem",
+                }}
+              >
+                {" "}
+                {task_error}
+              </FormError>
+            )}
+            <AddBtn type="submit">
+              {!task_finished && !task_error ? <SmallSpinner /> : "Add"}
+            </AddBtn>
           </OvertimeForm>
         </OvertimeBody>
       </OvertimeContainer>

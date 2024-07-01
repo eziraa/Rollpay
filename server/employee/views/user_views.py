@@ -2,10 +2,10 @@
 from django.http import JsonResponse
 from django.contrib.auth.models import User, Permission, Group
 from django.contrib.auth import logout
+from django.shortcuts import get_object_or_404
+import uuid
 import json
 
-from django.shortcuts import get_object_or_404
-from employee.models import Employee
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -13,15 +13,33 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.parsers import MultiPartParser, FormParser
+
 from employee.serializers.employee import EmployeeSerializer, ProfilePicSerializer
+from employee.models import Employee
 
 
 class UserView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, *args, **kwargs):
-        logout(request)
+    def get(self, request: Request, employee_id: None, *args, **kwargs):
+        if employee_id:
+            try:
+                user = request.user
+                employee = Employee.objects.get(pk=employee_id)
+                serializer = EmployeeSerializer(employee)
+                data = {
+                    "employee": serializer.data,
+                    "employee_id": employee_id,
+                    "username": user.username,
+                }
+                return Response(data, status=status.HTTP_200_OK)
+            except Employee.DoesNotExist:
+                return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+        user = User.objects.get(id=request.user.id)
+        return Response({"username": user.username, "email": user.email}, status=status.HTTP_200_OK)
 
+    def post(self, request, *args, **kwargs):
+        logout(request)
         return Response("Logged out", status=status.HTTP_200_OK)
 
     def put(self, request, *args, **kwargs):
@@ -45,9 +63,8 @@ class ProfilePicture(APIView):
         try:
             employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
-            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         profile_picture = request.data.get('profile_picture')
-
         if profile_picture:
             employee.profile_picture = profile_picture
 
@@ -61,7 +78,7 @@ class ProfilePicture(APIView):
         try:
             employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
-            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = ProfilePicSerializer(employee)
 

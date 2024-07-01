@@ -6,13 +6,14 @@ import { setFlashMessage } from "../notification/flash-messsage-slice";
 import { LoginParams, SignUpParams } from "../../typo/user/params";
 import UserAPI from "../../services/user-api";
 import {
+  getCurrentUserDone,
   loginFinished,
   logout,
   signUpFinished,
   wrongLogin,
   wrongSignup,
 } from "./user-slice";
-import { SignUpResponse } from "../../typo/user/response";
+import { SignUpResponse, UserResponse } from "../../typo/user/response";
 
 function* userSignUp(action: PayloadAction<SignUpParams>) {
   try {
@@ -42,14 +43,6 @@ function* userLogin(action: PayloadAction<LoginParams>) {
   }
 }
 
-export function* watchUserSignUp() {
-  yield takeEvery("user/signUpRequested", userSignUp);
-}
-
-export function* watchUserLogin() {
-  yield takeEvery("user/loginRequested", userLogin);
-}
-
 function* userLogout() {
   const response: SignUpResponse = yield call(UserAPI.logout);
 
@@ -77,6 +70,29 @@ function* userLogout() {
   }
 }
 
-export function* watchUserLogOut() {
+interface CurrentUserResponse extends SignUpResponse {
+  employee: UserResponse;
+}
+
+function* getCurrentUser(action: PayloadAction<string>) {
+  try {
+    const response: CurrentUserResponse = yield call(
+      UserAPI.getCurrentUser,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getCurrentUserDone(response.employee));
+    } else {
+      yield put(wrongLogin(response.error));
+    }
+  } catch (e) {
+    yield put(wrongLogin("Network error please check your connection"));
+  }
+}
+
+export function* watchUserSignUp() {
   yield takeEvery("user/logoutRequested", userLogout);
+  yield takeEvery("user/signUpRequested", userSignUp);
+  yield takeEvery("user/loginRequested", userLogin);
+  yield takeEvery("user/getCurrentUserRequest", getCurrentUser);
 }

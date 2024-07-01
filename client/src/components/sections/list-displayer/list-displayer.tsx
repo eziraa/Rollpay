@@ -16,7 +16,6 @@ import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 import { GoArrowDown, GoArrowUp } from "react-icons/go";
 import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
-import { Employee } from "../../../typo/employee/response";
 import { DisplayContext } from "../../../contexts/display-context";
 import { useNavigate } from "react-router";
 
@@ -75,14 +74,14 @@ function EmployeeListDisplayer() {
   const sortEmployee = (index: number) => {
     const sorted = emp_list.sort((a, b) => {
       if (
-        a[order[index].name as keyof Employee] <
-        b[order[index].name as keyof Employee]
+        a[order[index].name as keyof unknown] <
+        b[order[index].name as keyof unknown]
       ) {
         return order[index].isAscending ? 1 : -1;
       }
       if (
-        a[order[index].name as keyof Employee] >
-        b[order[index].name as keyof Employee]
+        a[order[index].name as keyof unknown] >
+        b[order[index].name as keyof unknown]
       ) {
         return order[index].isAscending ? -1 : 1;
       }
@@ -235,7 +234,7 @@ function EmployeeListDisplayer() {
                     onClick={(e) => {
                       e.stopPropagation();
                       localStorage.setItem("curr_emp_id", emp.id);
-                      navigate("/employees/single-employee/");
+                      navigate("/employees/employee/" + emp.id);
                     }}
                   >
                     View

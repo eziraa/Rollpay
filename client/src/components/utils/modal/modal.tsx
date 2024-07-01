@@ -1,26 +1,29 @@
-import { useModal } from "../../../hooks/modal-hook";
+import { useNavigate } from "react-router";
 import { CloseIcon } from "../buttons/close";
 import { ModalContainer, ModalContent } from "./modal.style";
 
 export const Modal = ({
   children,
-  content,
+  closeAction,
 }: {
   children: React.ReactNode;
-  content: string;
+  closeAction: () => void;
 }) => {
-  const { closeModal } = useModal();
+  const navigate = useNavigate();
+
   return (
     <ModalContainer
       onClick={(e) => {
         e.stopPropagation();
-        closeModal(content);
+        closeAction();
+        navigate(-1);
       }}
     >
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <CloseIcon
           onClick={() => {
-            closeModal(content);
+            navigate(-1);
+            closeAction();
           }}
         />
         {children}

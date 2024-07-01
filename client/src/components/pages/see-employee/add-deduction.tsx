@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
 import { useDeduction } from "../../../hooks/deduction-hook";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   FormError,
   InputContainer,
@@ -18,16 +19,22 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
-import { ADD_DEDUCTION, ADD_DEDUCTION_TO_EMP } from "../../../constants/tasks";
-import { addEmpDeductionRequested } from "../../../store/employee/employee-slice";
+import {
+  addEmpDeductionRequested,
+  closeEmployeeTask,
+  resetEmployeeState,
+} from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { useModal } from "../../../hooks/modal-hook";
+import { Outlet, useNavigate, useParams } from "react-router";
+import { useEmployee } from "../../../hooks/employee-hook";
+import { useSalary } from "../../../hooks/salary-hook";
 export const AddDeductionToEmp = () => {
   const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
-  const employee = useAppSelector((state) => state.employee);
-  const { curr_emp } = useAppSelector((state) => state.salary);
-  const { openModal } = useModal();
+  const navigate = useNavigate();
+  const { employee_id } = useParams();
+  const employee = useEmployee();
+  const { curr_emp } = useSalary();
   useEffect(() => {
     if (curr_deduction) {
       dispatcher(listDeductionsRequested());
@@ -36,16 +43,33 @@ export const AddDeductionToEmp = () => {
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       deduction_type: "",
-      employee_id: curr_emp?.employee.id || "",
+      employee_id: employee_id || "",
     },
     onSubmit: (values) => {
+      dispatcher(
+        resetEmployeeState({
+          ...employee,
+          task_error: undefined,
+        })
+      );
       dispatcher(addEmpDeductionRequested(values));
     },
   });
 
+  // Fetching list of deductions to able to add deduction to employee
+
+  useEffect(() => {
+    dispatcher(listDeductionsRequested());
+  }, []);
+
+  //Adding a method to close modal  properly
+  const clearTask = () => {
+    dispatcher(closeEmployeeTask());
+  };
   return (
-    <Modal content={ADD_DEDUCTION_TO_EMP}>
+    <Modal closeAction={clearTask}>
       <DeductionContainer>
+        <Outlet />
         <DeductionBody>
           <Title>Adding Deduction to {curr_emp?.employee.first_name}</Title>
           <DeductionForm
@@ -90,7 +114,7 @@ export const AddDeductionToEmp = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openModal(ADD_DEDUCTION);
+                    navigate("add-new-deduction");
                   }}
                   style={{ flex: 1.2 }}
                 >
@@ -103,17 +127,17 @@ export const AddDeductionToEmp = () => {
                 ) : null}
               </FormError>
             </InputContainer>
-            {employee.adding_emp_error && (
+            {employee.task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
-                {employee.adding_emp_error}
+                {employee.task_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {employee.editing && !employee.adding_emp_error ? (
+              {!employee.task_finished && !employee.task_error ? (
                 <SmallSpinner />
               ) : (
                 "Add"

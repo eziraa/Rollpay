@@ -17,8 +17,6 @@ import {
   editOvertimeDone,
   listOvertimeDone,
   unfinishedAdd,
-  unfinishedDelete,
-  unfinishedEdit,
 } from "./overtime-slice";
 function* addOvertime(action: PayloadAction<AddOvertimeParams>) {
   try {
@@ -93,7 +91,7 @@ function* GetOvertimes() {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view employees",
+          desc: "You are not allowed to view overtimess",
           duration: 3,
         })
       );
@@ -131,7 +129,6 @@ function* DeleteOvertime(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedDelete());
       yield put(
         setFlashMessage({
           type: "error",
@@ -142,8 +139,6 @@ function* DeleteOvertime(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedDelete());
-      // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
           type: "error",
@@ -188,7 +183,6 @@ function* editOvertime(action: PayloadAction<EditOvertimeParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -210,7 +204,6 @@ function* editOvertime(action: PayloadAction<EditOvertimeParams>) {
         })
       );
     } else {
-      yield put(unfinishedEdit());
       yield put(
         setFlashMessage({
           type: "error",
@@ -225,7 +218,6 @@ function* editOvertime(action: PayloadAction<EditOvertimeParams>) {
       );
     }
   } catch (e) {
-    yield put(unfinishedEdit());
     yield put(
       setFlashMessage({
         type: "error",

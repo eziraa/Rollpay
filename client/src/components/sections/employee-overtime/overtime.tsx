@@ -14,24 +14,27 @@ import {
   OvertimeHeader,
   OvertimeTitle,
 } from "./overtime.style";
-import { useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_OVERTIME_TO_EMP } from "../../../constants/tasks";
 import { ThreeDots } from "../../utils/loading/dots";
+import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
+import { Outlet, useNavigate } from "react-router";
 
 export const EmployeeOvertime = () => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
-  const { openModal } = useModal();
+  const dispatcher = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <OvertimeContainer>
       <OvertimeHeader>
+        <Outlet />
         <OvertimeTitle>Employee Overtime</OvertimeTitle>
         <AddButton
           onClick={(e) => {
             e.stopPropagation();
-            openModal(ADD_OVERTIME_TO_EMP);
+            dispatcher(listOvertimesRequested());
+            navigate("add-overtime");
           }}
         >
           Add

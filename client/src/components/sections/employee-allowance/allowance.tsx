@@ -14,28 +14,25 @@ import {
   AllowanceHeader,
   AllowanceTitle,
 } from "./allowance.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_ALLOWANCE_TO_EMP } from "../../../constants/tasks";
-import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
 import { ThreeDots } from "../../utils/loading/dots";
+import { Outlet, useNavigate } from "react-router";
+import { useSalary } from "../../../hooks/salary-hook";
 
 export const EmployeeAllowance = () => {
-  const { openModal } = useModal();
-  const { curr_emp, loading } = useAppSelector((state) => state.salary);
-  const dispatcher = useAppDispatch();
+  const { curr_emp, loading } = useSalary();
+  const navigate = useNavigate();
   return (
     <AllowanceContainer>
       <AllowanceHeader>
+        <Outlet />
         <AllowanceTitle>Employee Allowance</AllowanceTitle>
         <AddButton
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            openModal(ADD_ALLOWANCE_TO_EMP);
-            dispatcher(listAllowancesRequested());
+            navigate("add-allowance");
           }}
         >
           Add

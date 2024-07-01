@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
-import { ADD_ALLOWANCE } from "../../../constants/tasks";
 import {
   FormError,
   Input,
@@ -16,29 +16,53 @@ import {
 } from "./add-allowance.style";
 import { AddAllowanceSchema } from "../../../schema/add-allowance-schema";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { addAllowanceRequested } from "../../../store/allowance/allowance-slice";
+import {
+  addAllowanceRequested,
+  closeAllowanceTask,
+  resetAllowanceState,
+} from "../../../store/allowance/allowance-slice";
 import { useEffect } from "react";
-import { useModal } from "../../../hooks/modal-hook";
 import { useAllowance } from "../../../hooks/allowance-hook";
+import { SmallSpinner } from "../../utils/spinner/spinner";
+import { useNavigate } from "react-router";
 export const AddAllowance = () => {
+  // Getting necessary information
   const dispatcher = useAppDispatch();
-  const { curr_allowance, adding_allowance_error } = useAllowance();
-  const { closeModal } = useModal();
-  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
-    initialValues: {
-      allowance_type: "",
-      allowance_rate: "",
-    },
-    validationSchema: AddAllowanceSchema,
-    onSubmit(values) {
-      dispatcher(addAllowanceRequested(values));
-    },
-  });
+  const allowance = useAllowance();
+  const navigate = useNavigate();
+  // initializing formik instance
+  const { values, handleChange, handleSubmit, errors, touched, isSubmitting } =
+    useFormik({
+      initialValues: {
+        allowance_type: "",
+        allowance_rate: "",
+      },
+      validationSchema: AddAllowanceSchema,
+      onSubmit(values) {
+        dispatcher(
+          resetAllowanceState({
+            ...allowance,
+            task_error: undefined,
+          })
+        );
+        dispatcher(addAllowanceRequested(values));
+      },
+    });
+
+  // Writing use effect to close modal after succefully adding allowance
+
   useEffect(() => {
-    curr_allowance && closeModal(ADD_ALLOWANCE);
-  }, [curr_allowance, closeModal]);
+    if (isSubmitting && allowance.task_finished) {
+      dispatcher(resetAllowanceState({ ...allowance, task_error: undefined }));
+      navigate(-1);
+    }
+  }, [allowance.task_finished]);
+
+  const clearTask = () => {
+    dispatcher(closeAllowanceTask());
+  };
   return (
-    <Modal content={ADD_ALLOWANCE}>
+    <Modal closeAction={clearTask}>
       <AllowanceContainer>
         <AllowanceBody>
           <Title>Add Allowance</Title>
@@ -67,17 +91,22 @@ export const AddAllowance = () => {
                 <FormError> {errors.allowance_rate} </FormError>
               )}
             </InputContainer>
-            {adding_allowance_error && (
+            {allowance.task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
-                {" "}
-                {adding_allowance_error}
+                {allowance.task_error}
               </FormError>
             )}
-            <AddBtn type="submit">Add</AddBtn>
+            <AddBtn type="submit">
+              {!allowance.task_finished && !allowance.task_error ? (
+                <SmallSpinner />
+              ) : (
+                "Add"
+              )}
+            </AddBtn>
           </AllowanceForm>
         </AllowanceBody>
       </AllowanceContainer>
