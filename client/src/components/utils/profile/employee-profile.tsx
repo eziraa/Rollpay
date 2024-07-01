@@ -14,24 +14,26 @@ import {
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ThreeDots } from "../loading/dots";
-import { Profile } from "../../../typo/employee/response";
 
-import axios from "axios";
 import { Label } from "../form-elements/form.style";
-// import { useProfileContext } from "../../../contexts/profile-context";
 import { RiPencilLine } from "react-icons/ri";
-import { ImageCard } from "./profile-card";
+import { ImageCard } from "../profile-card/profile-card";
+import { baseURL } from "../../../config/api";
+import { CurrEmpPayments } from "../../../typo/payment/response";
+import { CURRENT_USER } from "../../../constants/token-constants";
 
-export const EmployeeProfile = () => {
+export const EmployeeProfile = ({
+  employee,
+}: {
+  employee: CurrEmpPayments;
+}) => {
   const { curr_emp, loading } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
-  // const user = JSON.parse(localStorage.getItem("curren-user") || "[]");
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
-  // const { setProfilePictureUrl } = useProfileContext();
-
-  const [data, setData] = useState<Profile>({ profile_picture: "" });
   const hiddenFileInput = useRef<HTMLInputElement>(null);
-
+  const curr_user_id = JSON.parse(
+    localStorage.getItem(CURRENT_USER) || "[]"
+  ).id;
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.target.files) {
@@ -46,60 +48,43 @@ export const EmployeeProfile = () => {
   };
   useEffect(() => {
     const curr_emp_id = localStorage.getItem("curr_emp_id");
-    if (curr_emp_id) {
-      const url = `http://127.0.0.1:8000/user/profile/${curr_emp_id}`;
-      axios
-        .get<Profile>(url)
-        .then((response) => {
-          setData(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, []);
-  useEffect(() => {
-    const curr_emp_id = localStorage.getItem("curr_emp_id");
     curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
   }, [dispatcher]);
- 
+
   const closeImageCard = () => {
     setProfilePicture(null);
   };
   return (
     <EmployeeeProfileContainer>
-      <ProfileContainer
-        profile={"http://127.0.0.1:8000/" + data.profile_picture}
-      >
-        <form onSubmit={() => {}}>
-          <Label>
-            <InputButton
-              type="submit"
-              onClick={(e) => {
-                e.preventDefault();
-                handleClick();
-              }}
-            >
-              {
-                <Icon>
-                  <RiPencilLine />
-                </Icon>
-              }
-            </InputButton>
-          </Label>
-          <FileInput
-            accept="image/*"
-            type="file"
-            ref={hiddenFileInput}
-            onChange={handleChange}
-          />
-          {profilePicture && (
-            <ImageCard
-              picture={profilePicture }
-              action={closeImageCard}
+      <ProfileContainer profile={baseURL + curr_emp?.employee.profile_picture}>
+        {curr_user_id === employee.id && (
+          <form onSubmit={() => {}}>
+            <Label>
+              <InputButton
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleClick();
+                }}
+              >
+                {
+                  <Icon>
+                    <RiPencilLine />
+                  </Icon>
+                }
+              </InputButton>
+            </Label>
+            <FileInput
+              accept="image/*"
+              type="file"
+              ref={hiddenFileInput}
+              onChange={handleChange}
             />
-          )}
-        </form>
+            {profilePicture && (
+              <ImageCard picture={profilePicture} action={closeImageCard} />
+            )}
+          </form>
+        )}
       </ProfileContainer>
       {loading ? (
         <ThreeDots size={1} />
@@ -108,38 +93,36 @@ export const EmployeeProfile = () => {
           <EmployeeData>
             <DataLabel>Full Name</DataLabel>
             <DataValue>
-              {curr_emp?.employee?.first_name +
-                " " +
-                curr_emp?.employee?.last_name}
+              {employee?.first_name + " " + employee?.last_name}
             </DataValue>
           </EmployeeData>
           <EmployeeData>
             <DataLabel>Gender</DataLabel>
-            <DataValue>{curr_emp?.employee?.gender}</DataValue>
+            <DataValue>{employee?.gender}</DataValue>
           </EmployeeData>
           <EmployeeData>
             <DataLabel>Email</DataLabel>
-            <DataValue>{curr_emp?.employee?.email}</DataValue>
+            <DataValue>{employee?.email}</DataValue>
           </EmployeeData>
           <EmployeeData>
             <DataLabel>Phone Number</DataLabel>
-            <DataValue>{curr_emp?.employee?.phone_number}</DataValue>
+            <DataValue>{employee?.phone_number}</DataValue>
           </EmployeeData>
           <EmployeeData>
             <DataLabel>Role</DataLabel>
-            <DataValue>{curr_emp?.employee?.position}</DataValue>
+            <DataValue>{employee?.position}</DataValue>
           </EmployeeData>
           <EmployeeData>
             <DataLabel>Salary</DataLabel>
-            <DataValue>{curr_emp?.employee?.salary}</DataValue>
+            <DataValue>{employee?.salary}</DataValue>
           </EmployeeData>
           <EmployeeData>
             <DataLabel>Birth Date</DataLabel>
-            <DataValue>{curr_emp?.employee?.date_of_birth}</DataValue>
+            <DataValue>{employee?.date_of_birth}</DataValue>
           </EmployeeData>
           <EmployeeData>
             <DataLabel>Date of Hire</DataLabel>
-            <DataValue>{curr_emp?.employee?.date_of_hire}</DataValue>
+            <DataValue>{employee?.date_of_hire}</DataValue>
           </EmployeeData>
         </EmployeeInfoContainer>
       )}
