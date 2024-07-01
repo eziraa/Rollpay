@@ -5,7 +5,7 @@ import { Position } from "./response";
 export interface PositionState extends BaseState {
   curr_position: Position | undefined;
   positions: Position[];
-  adding_position_error: string | undefined;
+  task_error: string | undefined;
   query_set: Position[];
   pagination: Pagination | undefined;
 }
