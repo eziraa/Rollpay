@@ -12,8 +12,8 @@ export const container = css`
 `;
 
 export const body = css`
-  width: 100vw;
-  height: 90vh;
+  width: 80vw;
+  height: 100vh;
   display: flex;
   flex-direction: row;
 `;
