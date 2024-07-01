@@ -32,7 +32,15 @@ function LeftMenu() {
           </span>
         </Title>
       </LogoContainer>
-      <MenuItem active={false}>
+      <MenuItem
+        active={pathname === "/"}
+        onClick={(e) => {
+          if (!task_finished) return;
+          e.preventDefault();
+          e.stopPropagation();
+          navigate("/");
+        }}
+      >
         <HomeIcon />
         <MenuItemText>Home</MenuItemText>
       </MenuItem>
@@ -49,7 +57,7 @@ function LeftMenu() {
         <MenuItemText>All Employees</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={pathname.endsWith("/employees-salary")}
+        active={pathname.startsWith("/employees-salary")}
         onClick={() => {
           if (!task_finished) return;
 
