@@ -5,6 +5,8 @@ urlpatterns = [
     path("logout", UserView.as_view(), name='__user_logout__'),
     # path("profile", UserView.as_view(), name='__user_profile__'),
     path("update", UserView.as_view(), name='__user_update__'),
-    path("profile/<str:employee_id>", ProfilePicture.as_view(), name='_profile_picture__'),
-
+    path("current-user/<employee_id>",
+         UserView.as_view(), name='__user_current__'),
+    path("profile/<str:employee_id>",
+         ProfilePicture.as_view(), name='_profile_picture__'),
 ]
