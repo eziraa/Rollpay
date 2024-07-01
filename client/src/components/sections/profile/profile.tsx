@@ -8,20 +8,24 @@ import {
   ItemContainer,
   HorizontalLine,
 } from "./profile.style";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { logoutRequested } from "../../../store/user/user-slice";
 import { MdLogout } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
-import { DisplayContext } from "../../../contexts/display-context";
-
-const Profile = () => {
+import { CURRENT_USER } from "../../../constants/token-constants";
+const Profile = ({ close }: { close: () => void }) => {
+  // Calling hooks anf getting necessary information
   const dispatcher = useAppDispatch();
-  const { display, setDisplay } = useContext(DisplayContext);
   const user = useAppSelector((state) => state.user);
+
+  const employee_id = JSON.parse(
+    localStorage.getItem(CURRENT_USER) || "[]"
+  )?.id;
+
   useEffect(() => {
-    if (user.is_login) window.location.href = "/";
+    if (user.is_login) window.location.href = "/login";
   }, [user]);
 
   const handleClick = () => {
@@ -31,7 +35,7 @@ const Profile = () => {
   return (
     <ModalContainer
       onClick={() => {
-        setDisplay({ ...display, see_profile: false });
+        close();
       }}
     >
       <Modal onClick={(e) => e.stopPropagation()}>
@@ -43,10 +47,10 @@ const Profile = () => {
             <Label
               onClick={(e) => {
                 e.stopPropagation();
-                setDisplay({ ...display, see_profile: false });
+                close();
               }}
             >
-              <Link to="/user-profile">Profile</Link>
+              <Link to={`/user-profile/${employee_id}`}>Profile</Link>
             </Label>
           </ResetLink>
         </ItemContainer>
