@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SelectOption } from "../form-elements/form.style";
 import { useFilter } from "../../../hooks/filter-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
@@ -27,6 +28,7 @@ export const getQueryString = (params: EmployeeFilter) => {
     .map(([key, value]) => {
       if (typeof value === "object") {
         return Object.entries(value)
+          .filter(([_, nested_value]) => nested_value)
           .map(
             ([nested_key, nested_value]) =>
               `${key}[${nested_key}]=${encodeURIComponent(
@@ -46,7 +48,6 @@ export const Filter = ({ close }: { close: () => void }) => {
   const { filter, setFilter } = useFilter();
   const { positions } = usePosition();
   const dispatcher = useAppDispatch();
-
 
   return (
     <FilterContainer>
@@ -337,6 +338,7 @@ export const Filter = ({ close }: { close: () => void }) => {
                     "employee/filter?" + getQueryString(filter)
                   )
                 );
+                close();
               } else
                 dispatcher(
                   setFlashMessage({
