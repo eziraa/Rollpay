@@ -7,6 +7,9 @@ import datetime
 def upload_to(instance, filename):
     return 'photos/{filename}'.format(filename = filename)
 
+def upload_file(instance, filename):
+    return 'contracts/{filename}'.format(filename=filename)
+
 class TaxRules(models.Model):
     salary_min = models.IntegerField(null=False)
     salary_max = models.IntegerField(null=False)
@@ -76,6 +79,7 @@ class Employee(models.Model):
     id = models.CharField(max_length=9, db_index=True,
                           primary_key=True, unique=True, null=False)
     profile_picture = models.ImageField(upload_to=upload_to, default="photos/profile.png")
+    employement_contract = models.FileField(upload_to=upload_file, default="contracts/contract.pdf")
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
     phone_number = models.CharField(max_length=15, null=False)
@@ -126,9 +130,10 @@ class Position(models.Model):
         return self.position_name
 
 
-class Asset(models.Model):
-    id = models.AutoField(primary_key=True)
-    employee = models.ForeignKey(
-        Employee, blank=True, on_delete=models.PROTECT)
-    asset_name = models.CharField(max_length=255, null=False)
-    asset_value = models.FileField(upload_to="assets")
+# class Asset(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     employee = models.ForeignKey(
+#         Employee, blank=True, on_delete=models.PROTECT)
+#     asset_name = models.CharField(max_length=255, null=False)
+#     asset_value = models.FileField(upload_to="assets")
+
