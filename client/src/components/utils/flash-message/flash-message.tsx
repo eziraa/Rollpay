@@ -29,7 +29,7 @@ export const FlashMessage = () => {
             backgroundColor:
               flashMessage.type === "success"
                 ? addOpacityToColor(1, "#a2d9c8")
-                : addOpacityToColor(0.2, "#a55e25"),
+                : addOpacityToColor(0.9, "#fcd5b5"),
           }}
         >
           <FlashMessageIcon>
