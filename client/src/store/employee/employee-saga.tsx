@@ -324,14 +324,7 @@ function* DeleteEmployee(action: PayloadAction<string>) {
   }
 }
 
-export function* watchAddEmployee() {
-  yield takeEvery("employee/addEmpRequested", AddEmployee);
-  yield takeEvery("employee/listEmpRequested", GetEmployee);
-  yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
-  yield takeEvery("employee/addEmpAllowanceRequested", addAllowance);
-  yield takeEvery("employee/addEmpDeductionRequested", addDeduction);
-  yield takeEvery("employee/addEmpOvertimeRequested", addOvertime);
-}
+
 
 function* loadNextPage(action: PayloadAction<string>) {
   try {
@@ -379,11 +372,6 @@ function* loadPrevPage(action: PayloadAction<string>) {
   } catch (e) {
     console.log(e);
   }
-}
-
-export function* watchLoadPage() {
-  yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
-  yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
 }
 
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
@@ -472,8 +460,15 @@ function* updateProfile(action: PayloadAction<UpdateProfileParams>) {
   }
 }
 
-export function* watchEditEmployee() {
+export function* watchEmployeeRequests() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/updateProfileRequest", updateProfile);
-  // yield takeEvery("employee/addPositionRequested", addPosition);
+  yield takeEvery("employee/addEmpRequested", AddEmployee);
+  yield takeEvery("employee/listEmpRequested", GetEmployee);
+  yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
+  yield takeEvery("employee/addEmpAllowanceRequested", addAllowance);
+  yield takeEvery("employee/addEmpDeductionRequested", addDeduction);
+  yield takeEvery("employee/addEmpOvertimeRequested", addOvertime);
+  yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
+  yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
 }
