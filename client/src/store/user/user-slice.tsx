@@ -66,6 +66,9 @@ const UserSlice = createSlice({
       state.task_finished = true;
       state.user = action.payload;
     },
+    changeProfileImage: (state, action: PayloadAction<string>) => {
+      if (state.user) state.user.employee.profile_picture = action.payload;
+    },
   },
 });
 
@@ -80,5 +83,6 @@ export const {
   wrongSignup,
   getCurrentUserRequest,
   getCurrentUserDone,
+  changeProfileImage,
 } = UserSlice.actions;
 export default UserSlice.reducer;
