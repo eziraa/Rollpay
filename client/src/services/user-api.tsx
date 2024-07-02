@@ -84,31 +84,51 @@ const logout = async () => {
   return response;
 };
 
-const getCurrentUser = async (employee_id: string) => {
-  const response = api
-    .get("/user/current-user/" + employee_id)
-    .then((res) => {
-      return {
-        employee: { ...res.data },
-        success: " success",
-        code: res.status,
-      };
-    })
-    .catch((err) => {
-      const { error } = err.response?.data as { error: string };
-      return {
-        error: error,
-        code: err.response?.status,
-      } as { error: string; code: number };
-    });
-  return response;
-};
+  const updateProfile = async (employee_id: string, formData: FormData) => {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
 
-const UserAPI = {
-  signUp,
-  login,
-  logout,
-  getCurrentUser,
-};
+    const response = await api
+      .put(`/user/profile/${employee_id}`, formData, config)
+      .then((response) => {
+        return response.data.profile_picture;
+      })
+      .catch((error) => {
+        return error.message;
+      });
+
+    return response;
+  };
+
+  const getCurrentUser = async (employee_id: string) => {
+    const response = api
+      .get("/user/current-user/" + employee_id)
+      .then((res) => {
+        return {
+          employee: { ...res.data },
+          success: " success",
+          code: res.status,
+        };
+      })
+      .catch((err) => {
+        const { error } = err.response?.data as { error: string };
+        return {
+          error: error,
+          code: err.response?.status,
+        } as { error: string; code: number };
+      });
+    return response;
+  };
+
+  const UserAPI = {
+    signUp,
+    login,
+    logout,
+    getCurrentUser,
+    updateProfile,
+  };
 
 export default UserAPI;
