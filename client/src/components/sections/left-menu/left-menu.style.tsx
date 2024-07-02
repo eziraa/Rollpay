@@ -1,14 +1,15 @@
 import styled, { css } from "styled-components";
 import { FcHome } from "react-icons/fc";
-import { MdAttachMoney } from "react-icons/md";
+import { HiUserCircle } from "react-icons/hi";
 
 import { PiUsersFourThin } from "react-icons/pi";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+import { MdAttachMoney } from "react-icons/md";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
   width: 14vw;
-  height: 100%;
+  height: 100vh;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.07, theme.buttons.secondary)};
   z-index: 100;
@@ -84,6 +85,11 @@ export const HomeIcon = styled(FcHome)`
 export const UsersIcon = styled(PiUsersFourThin)`
   ${Icon}
 `;
+
+export const UserIcon = styled(HiUserCircle)`
+  ${Icon}
+`;
+
 
 export const SalaryIcon = styled(MdAttachMoney)`
   ${Icon}

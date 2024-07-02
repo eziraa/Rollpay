@@ -21,6 +21,7 @@ import { ImageCard } from "../profile-card/profile-card";
 import { baseURL } from "../../../config/api";
 import { CurrEmpPayments } from "../../../typo/payment/response";
 import { CURRENT_USER } from "../../../constants/token-constants";
+import { useParams } from "react-router";
 
 export const EmployeeProfile = ({
   employee,
@@ -34,6 +35,7 @@ export const EmployeeProfile = ({
   const curr_user_id = JSON.parse(
     localStorage.getItem(CURRENT_USER) || "[]"
   ).id;
+  const { employee_id } = useParams();
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.target.files) {
@@ -47,8 +49,7 @@ export const EmployeeProfile = ({
     }
   };
   useEffect(() => {
-    const curr_emp_id = localStorage.getItem("curr_emp_id");
-    curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
+    employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
   }, [dispatcher]);
 
   const closeImageCard = () => {
@@ -57,7 +58,7 @@ export const EmployeeProfile = ({
   return (
     <EmployeeeProfileContainer>
       <ProfileContainer profile={baseURL + curr_emp?.employee.profile_picture}>
-        {curr_user_id === employee.id && (
+        {curr_user_id === employee_id && (
           <form onSubmit={() => {}}>
             <Label>
               <InputButton

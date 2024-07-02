@@ -1,11 +1,6 @@
-import { useContext, useState } from "react";
-import {
-  noSearchResult,
-  searching,
-} from "../../../store/employee/employee-slice";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { Title } from "../../pages/see-employee/see-employee.style";
-import { Select, SelectOption } from "../form-elements/form.style";
+import { useEffect, useState } from "react";
+import { filterEmployeeRequest } from "../../../store/employee/employee-slice";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   ClearIcon,
   FilterIcon,
@@ -14,43 +9,38 @@ import {
   SearchInput,
   SearchInputContainer,
 } from "./search.style";
-import { Filter } from "../search-utils/filter";
-import { DisplayContext } from "../../../contexts/display-context";
+import { Filter, getQueryString } from "../search-utils/filter";
 import { listPositionsRequested } from "../../../store/position/position-slice";
+import { useFilter } from "../../../hooks/filter-hook";
 
 export const Search = () => {
+  // Calling hooks and Getting necessary information
   const dispatcher = useAppDispatch();
-  const employee = useAppSelector((state) => state.employee);
-  const [searchBy, setSearchBy] = useState("first_name");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const { display, setDisplay } = useContext(DisplayContext);
+  const { filter } = useFilter();
+  const [search_val, setSearchVal] = useState<string>("");
+  useEffect(() => {
+    if (!search_val) return;
+    const loadEmployee = setTimeout(() => {
+      let query_string = getQueryString(filter);
+      query_string += `&search_value=${search_val}`;
+      dispatcher(
+        filterEmployeeRequest(
+          `employee/filter/${filter.filter_by || "name"}?${query_string}`
+        )
+      );
+    }, 500);
+
+    return () => clearTimeout(loadEmployee);
+  }, [search_val]);
+
   return (
     <SearchContainer>
       <SearchInputContainer>
         <SearchIcon />
         <SearchInput
           onChange={(e) => {
-            // dispatcher(setLongTask(SEARCH_EMPLOYEE));
-            setDisplay({
-              ...display,
-              search_employee: true,
-              list_employees: false,
-            });
-            const result = searching(
-              employee.employees.filter((employee) =>
-                Object.entries(employee).find(([key, value]) => {
-                  return (
-                    key === searchBy &&
-                    value
-                      .toString()
-                      .toLowerCase()
-                      .startsWith(e.target.value.toString().toLowerCase())
-                  );
-                })
-              )
-            );
-            if (result) dispatcher(searching(result.payload));
-            else dispatcher(noSearchResult());
+            if (e.target.value.trim()) setSearchVal(e.target.value);
           }}
         />
         {openFilter ? (
@@ -67,27 +57,14 @@ export const Search = () => {
             }}
           />
         )}
-        {openFilter && <Filter />}
+        {openFilter && (
+          <Filter
+            close={() => {
+              setOpenFilter(false);
+            }}
+          />
+        )}
       </SearchInputContainer>
-      <Title style={{ fontSize: "1.5rem" }}>Search By</Title>
-      <Select
-        name="search"
-        id="search"
-        style={{
-          width: "15rem",
-        }}
-        onChange={(e) => {
-          setSearchBy(e.currentTarget.value);
-        }}
-        defaultValue={"first_name"}
-      >
-        <SelectOption value="first_name">First Name</SelectOption>
-        <SelectOption value="last_name">Last Name</SelectOption>
-        <SelectOption value="email">Email</SelectOption>
-        <SelectOption value="phone_number">Phone Number</SelectOption>
-        <SelectOption value="position">Position</SelectOption>
-        <SelectOption value="gender">Gender</SelectOption>
-      </Select>
     </SearchContainer>
   );
 };

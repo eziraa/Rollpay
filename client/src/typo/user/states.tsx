@@ -2,7 +2,7 @@ import { UserResponse } from "./response";
 
 export type UserState = {
   creating: boolean;
-  loading: boolean;
+  task_finished: boolean;
   user: UserResponse | undefined;
   is_login: boolean;
   logging_in: boolean;
