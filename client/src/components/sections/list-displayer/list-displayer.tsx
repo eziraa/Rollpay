@@ -18,6 +18,7 @@ import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
 import { DisplayContext } from "../../../contexts/display-context";
 import { useNavigate } from "react-router";
+import DownloadPDF from "../../utils/download/download";
 
 interface EmployeeOrderType {
   name: string;
@@ -239,6 +240,7 @@ function EmployeeListDisplayer() {
                   >
                     View
                   </Data>
+                  <DownloadPDF />
                 </ListRow>
               );
             })}
