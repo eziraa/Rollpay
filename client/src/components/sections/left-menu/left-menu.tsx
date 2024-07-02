@@ -10,7 +10,7 @@ import {
   LogoImage,
 } from "./left-menu.style";
 import { useLocation, useNavigate } from "react-router";
-import Image from "../../../assets/logo.jpg";
+import Image from "../../../assets/logo.png";
 import { Title } from "../add_employee/add-employee.style";
 
 function LeftMenu() {
@@ -22,13 +22,13 @@ function LeftMenu() {
       <LogoContainer>
         <LogoImage src={Image} />
         <Title>
-          Ethio
+          Payroll
           <span
             style={{
-              color: "red",
+              color: "#2dc682",
             }}
           >
-            Den
+            
           </span>
         </Title>
       </LogoContainer>

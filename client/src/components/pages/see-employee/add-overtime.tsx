@@ -20,11 +20,15 @@ import {
 import { Title } from "../../sections/add_employee/add-employee.style";
 import { useEffect } from "react";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
-import { addEmpOvertimeRequested, closeEmployeeTask } from "../../../store/employee/employee-slice";
+import {
+  addEmpOvertimeRequested,
+  closeEmployeeTask,
+} from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { Outlet, useNavigate, useParams } from "react-router";
+import { AddOvertimeToEmpSchema } from "../../../schema/add-overtime-schema";
 export const AddOvertimeToEmp = () => {
   const { overtimes, curr_overtime } = useOvertime();
   const dispatcher = useAppDispatch();
@@ -47,6 +51,7 @@ export const AddOvertimeToEmp = () => {
     onSubmit(values) {
       dispatcher(addEmpOvertimeRequested(values));
     },
+    validationSchema: AddOvertimeToEmpSchema,
   });
 
   useEffect(() => {
@@ -112,9 +117,9 @@ export const AddOvertimeToEmp = () => {
                 </AddBtn>
               </div>
               <FormError>
-                {touched.overtime_type && !values.overtime_type ? (
+                {touched.overtime_type && !values.overtime_type && (
                   <div>{errors.overtime_type}</div>
-                ) : null}
+                )}
               </FormError>
             </InputContainer>
             <InputContainer>
@@ -128,9 +133,9 @@ export const AddOvertimeToEmp = () => {
               />
             </InputContainer>
             <FormError>
-              {touched.start_time && errors.start_time ? (
+              {touched.start_time && errors.start_time && (
                 <div>{errors.start_time}</div>
-              ) : null}
+              )}
             </FormError>
             <InputContainer>
               <Label htmlFor="start_time">End Time</Label>
@@ -143,9 +148,9 @@ export const AddOvertimeToEmp = () => {
               />
             </InputContainer>
             <FormError>
-              {touched.end_time && errors.end_time ? (
+              {touched.end_time && errors.end_time && (
                 <div>{errors.end_time}</div>
-              ) : null}
+              )}
             </FormError>
             {task_error && (
               <FormError

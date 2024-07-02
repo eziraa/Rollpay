@@ -3,17 +3,19 @@ from rest_framework.request import Request
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from employee.serializers.employee import EmployeeSerializer
+from employee.serializers.employee import EmployeeSerializer, EmployementContractSerializer
 from employee.serializers.position import PositionSerializer
 from employee.permissions.clerk_permission import IsUserInGroupWithClerk
 from employee.serializers.payment import MonthlyPaymentSerializer, PaymentSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework.parsers import MultiPartParser, FormParser
 from employee.serializers.salary import SalarySerializer
 from ..models import Employee, Payment, Salary, Position, Allowance, Deduction, OvertimeItem, Overtime
 from django.http import JsonResponse
+import os
 import json
 import datetime
 from month import Month
-
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10  # Define how many items per page
@@ -154,3 +156,32 @@ class PositionView(APIView):
         position_serializer = PositionSerializer(
             Position.objects.all(), many=True)
         return JsonResponse(data=position_serializer.data, safe=False)
+
+class EmployementContract(APIView):
+    permission_classes = [AllowAny]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request, employee_id, format=None):
+        try:
+            employee = Employee.objects.get(pk=employee_id)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+        employement_contract = request.data.get('employement_contract')
+        if employement_contract:
+            employee.employement_contract = employement_contract
+
+        serializer = EmployementContractSerializer(employee, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, employee_id, format=None):
+        try:
+            employee = Employee.objects.get(pk=employee_id)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = EmployeeSerializer(employee)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

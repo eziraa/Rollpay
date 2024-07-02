@@ -7,6 +7,7 @@ import {
   AddDeductionToEmployeesParams,
   AddEmpParams,
   AddSalaryParams,
+  UpdateEmployementContract,
   UpdateProfileParams,
 } from "../../typo/employee/params";
 import { EditEmployeeParams } from "../../services/employee-api";
@@ -158,6 +159,16 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       if (state.curr_emp) state.curr_emp.profile_picture = action.payload;
     },
+    updateContractRequest: (
+      state,
+      _: PayloadAction<UpdateEmployementContract>
+    ) => {
+      state.task_finished = false;
+    },
+    updateContractDone: (state, action: PayloadAction<string>) => {
+      state.task_finished = true;
+      if (state.curr_emp) state.curr_emp.employement_contract = action.payload;
+    },
     closeEmployeeTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
@@ -209,6 +220,8 @@ export const {
   resetEmployeeState,
   filterEmployeeRequest,
   filterEmployeeDone,
+  updateContractRequest,
+  updateContractDone,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

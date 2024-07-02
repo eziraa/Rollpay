@@ -11,10 +11,15 @@ export interface Employee {
   date_of_hire: string;
   salary: number;
   profile_picture: string | undefined;
+  employement_contract: string ;
 }
 
 export interface Profile {
   profile_picture: string;
+}
+
+export interface Contract {
+  employement_contract: string;
 }
 export interface AddEmpResponse {
   success: string;

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   HeaderTitle,
@@ -33,6 +33,7 @@ import { PaymentEmployee } from "../../../typo/payment/response";
 import * as XLSX from "xlsx";
 import { usePagination } from "../../../hooks/use-pagination";
 import { useNavigate, useParams } from "react-router";
+import { useReactToPrint } from "react-to-print";
 
 export const EmployeesSalaryPage = () => {
   // Getting necessary information
@@ -161,6 +162,12 @@ export const EmployeesSalaryPage = () => {
     XLSX.writeFile(wb, "MyExcel.xlsx");
   };
 
+  const exportPdf = useRef<HTMLDivElement | null>(null);
+  const generatePDF = useReactToPrint({
+    content: () => exportPdf.current,
+    documentTitle: "Employees Payroll",
+  });
+
   useEffect(() => {
     if (salary.searching && salary.search_response)
       setEmployeeSalary(salary.search_response || []);
@@ -227,91 +234,96 @@ export const EmployeesSalaryPage = () => {
             )}
           </Select>
         </Label>
-        <ExportButton onClick={handleExport}>Export </ExportButton>
+        <ExportButton onClick={handleExport}>Excel </ExportButton>
+        <ExportButton onClick={generatePDF}>PDF</ExportButton>
       </EmpsDisplayerHeader>
       {salary.loading ? (
         <LoadingSpinner />
       ) : (
-        <SalaryTable>
-          <TableHeader>
-            <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Basic Salary</HeaderTitle>
-            <HeaderTitle
-              style={{
-                textAlign: "center",
-              }}
-              colSpan={allowanceTypes.length}
-            >
-              Allowance
-            </HeaderTitle>
-            <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
-            <HeaderTitle
-              style={{
-                textAlign: "center",
-              }}
-              colSpan={deductionTypes.length + 1}
-            >
-              Deduction
-            </HeaderTitle>
-            <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Month</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
-            <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
-          </TableHeader>
-          <TableHeader>
-            {allowanceTypes.map((allowanceType) => {
-              return <HeaderTitle> {allowanceType} </HeaderTitle>;
-            })}
-            <HeaderTitle>Income Tax</HeaderTitle>
-            {deductionTypes.map((deductionType) => {
-              return <HeaderTitle> {deductionType} </HeaderTitle>;
-            })}
-          </TableHeader>
-          {employeeSalary
-            .filter((employee) => employee)
-            .map((employee) => (
-              <TableRow key={employee.employee_id}>
-                <TableData>{employee.employee_id}</TableData>
-                <TableData>{employee.employee_name}</TableData>
-                <TableData>{employee.basic_salary}</TableData>
-                {allowanceTypes.map((allowanceType) => {
-                  return (
-                    <TableData>
-                      {getRate(
-                        employee.allowances.find(
-                          (alowance) =>
-                            alowance.allowance_type === allowanceType
-                        )?.allowance_rate
-                      )}
-                    </TableData>
-                  );
-                })}
-                <TableData>{getSalary(employee.gross_salary)}</TableData>
-                <TableData>{getSalary(employee.income_tax)}</TableData>
-                {deductionTypes.map((deductionType) => {
-                  return (
-                    <TableData>
-                      {getRate(
-                        employee.deductions.find(
-                          (deduction) =>
-                            deduction.deduction_type === deductionType
-                        )?.deduction_rate
-                      )}
-                    </TableData>
-                  );
-                })}
-                <TableData>{employee.total_deduction}</TableData>
-                <TableData>{employee.net_salary}</TableData>
-                <TableData>
-                  {getFormattedMonth(new Date(employee.month)).split("-")[0]}
-                </TableData>
-                <TableData>{!employee.payment_status && "Not"} Paid </TableData>
-                <TableData> {employee.payment_date} </TableData>
-              </TableRow>
-            ))}
-        </SalaryTable>
+        <div ref={exportPdf}>
+          <SalaryTable>
+            <TableHeader>
+              <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Basic Salary</HeaderTitle>
+              <HeaderTitle
+                style={{
+                  textAlign: "center",
+                }}
+                colSpan={allowanceTypes.length}
+              >
+                Allowance
+              </HeaderTitle>
+              <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
+              <HeaderTitle
+                style={{
+                  textAlign: "center",
+                }}
+                colSpan={deductionTypes.length + 1}
+              >
+                Deduction
+              </HeaderTitle>
+              <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Month</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
+              <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
+            </TableHeader>
+            <TableHeader>
+              {allowanceTypes.map((allowanceType) => {
+                return <HeaderTitle> {allowanceType} </HeaderTitle>;
+              })}
+              <HeaderTitle>Income Tax</HeaderTitle>
+              {deductionTypes.map((deductionType) => {
+                return <HeaderTitle> {deductionType} </HeaderTitle>;
+              })}
+            </TableHeader>
+            {employeeSalary
+              .filter((employee) => employee)
+              .map((employee) => (
+                <TableRow key={employee.employee_id}>
+                  <TableData>{employee.employee_id}</TableData>
+                  <TableData>{employee.employee_name}</TableData>
+                  <TableData>{employee.basic_salary}</TableData>
+                  {allowanceTypes.map((allowanceType) => {
+                    return (
+                      <TableData>
+                        {getRate(
+                          employee.allowances.find(
+                            (alowance) =>
+                              alowance.allowance_type === allowanceType
+                          )?.allowance_rate
+                        )}
+                      </TableData>
+                    );
+                  })}
+                  <TableData>{getSalary(employee.gross_salary)}</TableData>
+                  <TableData>{getSalary(employee.income_tax)}</TableData>
+                  {deductionTypes.map((deductionType) => {
+                    return (
+                      <TableData>
+                        {getRate(
+                          employee.deductions.find(
+                            (deduction) =>
+                              deduction.deduction_type === deductionType
+                          )?.deduction_rate
+                        )}
+                      </TableData>
+                    );
+                  })}
+                  <TableData>{employee.total_deduction}</TableData>
+                  <TableData>{employee.net_salary}</TableData>
+                  <TableData>
+                    {getFormattedMonth(new Date(employee.month)).split("-")[0]}
+                  </TableData>
+                  <TableData>
+                    {!employee.payment_status && "Not"} Paid{" "}
+                  </TableData>
+                  <TableData> {employee.payment_date} </TableData>
+                </TableRow>
+              ))}
+          </SalaryTable>
+        </div>
       )}
       <Pagination pagination={pagination} />
     </SalaryContainer>

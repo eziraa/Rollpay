@@ -3,6 +3,7 @@ import { useAppSelector } from "../../../utils/custom-hook";
 import { useContext, useEffect, useState } from "react";
 import {
   Data,
+  DownloadButton,
   HeaderItem,
   ListBody,
   ListContainer,
@@ -18,7 +19,9 @@ import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
 import { DisplayContext } from "../../../contexts/display-context";
 import { useNavigate } from "react-router";
+
 import DownloadPDF from "../../utils/download/download";
+import axios, { AxiosResponse } from "axios";
 
 interface EmployeeOrderType {
   name: string;
@@ -66,6 +69,29 @@ function EmployeeListDisplayer() {
   const emplist = [...employee.employees];
   const [emp_list, setEmpList] = useState(emplist);
   const { display } = useContext(DisplayContext);
+  const forceDownload = (response: AxiosResponse, title: string) => {
+    console.log("aa", response);
+    console.log(title);
+    // const url = window.URL.createObjectURL(new Blob([response.data]));
+    // const link = document.createElement("a");
+    // link.href = url;
+    // link.setAttribute("download", title + ".pdf");
+    // document.body.appendChild(link);
+    // link.click()
+  };
+  const downloadWithAxios = (url: string, title: string) => {
+    axios({
+      method: "get",
+      url,
+      responseType: "arraybuffer",
+    })
+      .then((response) => {
+        forceDownload(response, title);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     if (display.list_employees) setEmpList(emplist);
     else if (display.search_employee) {
@@ -169,7 +195,7 @@ function EmployeeListDisplayer() {
               {order[4].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
-          <HeaderItem>
+          {/* <HeaderItem>
             <ListTitle>Birth Date</ListTitle>
             <SortBtn
               onClick={(e) => {
@@ -178,8 +204,8 @@ function EmployeeListDisplayer() {
               }}
             >
               {order[5].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
+            </SortBtn> */}
+          {/* </HeaderItem> */}
           <HeaderItem>
             <ListTitle>Position</ListTitle>
             <SortBtn
@@ -202,8 +228,15 @@ function EmployeeListDisplayer() {
               {order[7].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
+
           <HeaderItem>
             <ListTitle>Actions</ListTitle>
+          </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Employement Contract</ListTitle>
+          </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Contract</ListTitle>
           </HeaderItem>
         </ListHeader>
         <ListBody>
@@ -222,7 +255,7 @@ function EmployeeListDisplayer() {
                   <Data> {emp.email} </Data>
                   <Data> {emp.phone_number} </Data>
                   <Data> {emp.date_of_hire} </Data>
-                  <Data> {emp.date_of_birth} </Data>
+                  {/* <Data> {emp.date_of_birth} </Data> */}
                   <Data> {emp.position} </Data>
                   <Data>{emp.salary}</Data>
                   <Data
@@ -241,6 +274,7 @@ function EmployeeListDisplayer() {
                     View
                   </Data>
                   <DownloadPDF />
+                 
                 </ListRow>
               );
             })}
