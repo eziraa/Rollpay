@@ -47,7 +47,6 @@ export const Filter = ({ close }: { close: () => void }) => {
   const { positions } = usePosition();
   const dispatcher = useAppDispatch();
 
-  // Function to convert the filter object to a query string
 
   return (
     <FilterContainer>
@@ -283,7 +282,8 @@ export const Filter = ({ close }: { close: () => void }) => {
       <FilterRow>
         <ButtonContainer>
           <ClearButton
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               setFilter({
                 filter_by: "",
                 order_by: "",
@@ -293,12 +293,13 @@ export const Filter = ({ close }: { close: () => void }) => {
                   min: 0,
                   max: 0,
                 },
+
                 date_of_hire_range: {
                   from: "",
                   to: "",
                 },
               });
-              console.log(filter);
+              // close();
             }}
           >
             Clear
