@@ -10,7 +10,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ('id', 'first_name', 'last_name', 'gender', 'email',
-                  'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary', 'profile_picture')
+                  'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary', 'profile_picture', 'employement_contract')
 
     def get_salary(self, obj: Employee):
         if obj.salary:
@@ -23,6 +23,10 @@ class ProfilePicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ('profile_picture',)  
+class EmployementContractSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = ('employement_contract',)  
 
 class SalaryEmployeeSerializer(EmployeeSerializer):
     salary = serializers.SerializerMethodField(read_only=True)

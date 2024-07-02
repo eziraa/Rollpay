@@ -15,7 +15,7 @@ export const LeftMenuContainer = styled.div<ThemeProps>`
   z-index: 100;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  /* gap: 1rem; */
 
   color: ${({ theme }) => theme.colors.secondary};
   border-right: 0.3rem solid ${({ theme }) => theme.colors.secondary};
@@ -26,12 +26,14 @@ export const LogoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  /* gap: 1rem; */
   font-size: 3.5rem;
   font-weight: 700;
   width: 100%;
   height: 25%;
   letter-spacing: 1px;
+  margin: 0;
+  padding: 0;
 `;
 
 export const LogoImage = styled.img`
@@ -49,7 +51,7 @@ export const MenuItem = styled.div<MenuItemProps>`
   align-items: center;
   justify-content: flex-start;
   width: 90%;
-  padding: 1rem;
+  padding: 1rem 1rem;
   margin: 0 1rem;
   text-align: left;
   font-size: 2rem;

@@ -4,11 +4,20 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import "react-phone-input-2/lib/style.css";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
+
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 15px;
 `;
+
+export const SignUpPage= styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 export const SignUpContainer = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};

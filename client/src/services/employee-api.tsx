@@ -3,10 +3,11 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
+  UpdateEmployementContract,
   UpdateProfileParams,
 } from "../typo/employee/params";
 import api from "../config/api";
-import { AddEmpResponse, Employee, Profile } from "../typo/employee/response";
+import { AddEmpResponse, Contract, Employee, Profile } from "../typo/employee/response";
 import { BaseResponse } from "../typo/utils/response";
 import { AddOvertimeToEmpParams } from "../typo/overtime/params";
 
@@ -218,6 +219,7 @@ const updatProfilePicture = async (values: UpdateProfileParams) => {
   return response;
 };
 
+
 const getProfilePicture = async (employee_id: string) => {
   const response = await api
     .get<Profile>("/user/profile" + employee_id)
@@ -236,6 +238,33 @@ const getProfilePicture = async (employee_id: string) => {
       } as { error: string; code: number };
     });
 
+  return response;
+};
+
+const updatEmployementAgreement = async (values: UpdateEmployementContract) => {
+  console.log("from api", values.file_url);
+  const response = await axios
+    .put<Contract>("/user/profile/" + values.employee_id, values.file_url, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      return {
+        success: "Employement contract updated successfully",
+        code: res.status,
+        profile: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
   return response;
 };
 
@@ -269,6 +298,7 @@ const EmployeeAPI = {
   addOvertime,
   updatProfilePicture,
   getProfilePicture,
+  updatEmployementAgreement
 };
 
 export default EmployeeAPI;

@@ -36,3 +36,8 @@ export interface UpdateProfileParams {
   employee_id: string;
   profile_url: File;
 }
+
+export interface UpdateEmployementContract {
+  employee_id: string;
+  file_url: File;
+}
