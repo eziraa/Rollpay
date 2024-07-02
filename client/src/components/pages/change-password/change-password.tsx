@@ -41,7 +41,7 @@ export const ChangePassword = () => {
   return (
     <ForgotPasswordBody>
       <ForgotPasswordContainer>
-        <Title>Forgot Your Password</Title>
+        <Title>Change Your Password</Title>
         <Form onSubmit={sendEmail}>
           <InputContainer>
             <Label>Enter your email</Label>

@@ -11,6 +11,7 @@ import {
   listEmpDone,
   unfinishedAdd,
   unfinishedDelete,
+  updateContractDone,
   updateProfileDone,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
@@ -18,6 +19,7 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
+  UpdateEmployementContract,
   UpdateProfileParams,
 } from "../../typo/employee/params";
 import {
@@ -472,8 +474,29 @@ function* updateProfile(action: PayloadAction<UpdateProfileParams>) {
   }
 }
 
+function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
+  try {
+    const response: string = yield call(
+      EmployeeAPI.updatEmployementAgreement,
+      action.payload
+    );
+    yield put(updateContractDone(response));
+  } catch (e) {
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Update Employement Contract",
+        desc: "Cannot upload employement conatract. Please try again",
+        duration: 3,
+      })
+    );
+  }
+}
 export function* watchEditEmployee() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/updateProfileRequest", updateProfile);
+  yield takeEvery("employee/updateContractRequest", updateContract);
+
   // yield takeEvery("employee/addPositionRequested", addPosition);
 }

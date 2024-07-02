@@ -13,7 +13,7 @@ const InitialEmpState: PositionState = {
   query_set: [],
   searching: false,
   pagination: undefined,
-  adding_position_error: undefined,
+  task_error: undefined,
   task_finished: true,
 };
 const EmployeeSlice = createSlice({
@@ -47,13 +47,13 @@ const EmployeeSlice = createSlice({
 
     addPositionDone: (state, action: PayloadAction<Position>) => {
       state.task_finished = true;
-      state.adding_position_error = undefined;
+      state.task_error = undefined;
       state.positions.push(action.payload);
       state.curr_position = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string>) => {
       state.task_finished = true;
-      state.adding_position_error = action.payload;
+      state.task_error = action.payload;
     },
     listPositionsRequested: (state) => {
       state.task_finished = false;
@@ -126,6 +126,10 @@ const EmployeeSlice = createSlice({
     unfinishedEdit: (_) => {
       // state.task_finished = true
     },
+    closePositionTask: (state) => {
+      state.task_finished = true;
+      state.task_error = undefined;
+    },
   },
 });
 export const {
@@ -149,6 +153,7 @@ export const {
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
+  closePositionTask,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

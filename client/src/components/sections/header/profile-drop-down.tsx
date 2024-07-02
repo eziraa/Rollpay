@@ -39,6 +39,7 @@ export const DropDown = () => {
   return (
     <DropDownContainer
       onClick={(e) => {
+        e.stopPropagation();
         e.preventDefault();
         setProfileMenu(!openProfileMenu);
       }}

@@ -26,7 +26,7 @@ export const ListHeader = styled.div<ThemeProps>`
   font-weight: 600;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr;
+  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
   padding: 0.4rem 0.5rem;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
@@ -52,7 +52,7 @@ export const ListRow = styled.div<ThemeProps>`
   font-size: larger;
   padding: 0.4rem 0.5rem;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr;
+  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.4, theme.table.tableRow)};
   &:nth-child(even) {
@@ -73,6 +73,21 @@ export const Data = styled.div<ThemeProps>`
   text-align: left;
   flex: 15rem;
   /* width: auto; */
+`;
+
+export const DownloadButton = styled.button<ThemeProps>`
+  font-size: 1%.5;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem 0.5rem;
+  margin: 0 0 0 0.5rem;
+  border-radius: 0.5rem;
+  background-color: ${({ theme }) => theme.buttons.primary};
+  border: none;
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.75, theme.buttons.primary)};
+  }
 `;
 
 export const SortBtn = styled.div`

@@ -4,7 +4,7 @@ import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
-import { HomeContainer } from "../home/home-page.style";
+import { SignUpPage } from "./sign-up.style";
 import {
   Button,
   Form,
@@ -51,7 +51,7 @@ const SignUp = () => {
   };
 
   return (
-    <HomeContainer>
+    <SignUpPage>
       <SignUpContainer className="container">
         <Title>Sign up</Title>
         <Form onSubmit={handleSubmit}>
@@ -145,7 +145,7 @@ const SignUp = () => {
           </CustomLink>
         </LinkContainer>
       </SignUpContainer>
-    </HomeContainer>
+    </SignUpPage>
   );
 };
 

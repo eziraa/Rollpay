@@ -22,5 +22,9 @@ export const SmallBlurredText = styled.h1`
   color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
   letter-spacing: 0.3px;
 `;
+
+export const LargeText = styled(BlurredText)`
+  color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};
+`;
   
 

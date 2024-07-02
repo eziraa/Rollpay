@@ -10,7 +10,7 @@ import {
   LogoImage,
 } from "./left-menu.style";
 import { useLocation, useNavigate } from "react-router";
-import Image from "../../../assets/logo.jpg";
+import Image from "../../../assets/logo.png";
 import { Title } from "../add_employee/add-employee.style";
 
 function LeftMenu() {
@@ -22,17 +22,25 @@ function LeftMenu() {
       <LogoContainer>
         <LogoImage src={Image} />
         <Title>
-          Ethio
+          Payroll
           <span
             style={{
-              color: "red",
+              color: "#2dc682",
             }}
           >
-            Den
+            
           </span>
         </Title>
       </LogoContainer>
-      <MenuItem active={false}>
+      <MenuItem
+        active={pathname === "/"}
+        onClick={(e) => {
+          if (!task_finished) return;
+          e.preventDefault();
+          e.stopPropagation();
+          navigate("/");
+        }}
+      >
         <HomeIcon />
         <MenuItemText>Home</MenuItemText>
       </MenuItem>
@@ -49,7 +57,7 @@ function LeftMenu() {
         <MenuItemText>All Employees</MenuItemText>
       </MenuItem>
       <MenuItem
-        active={pathname.endsWith("/employees-salary")}
+        active={pathname.startsWith("/employees-salary")}
         onClick={() => {
           if (!task_finished) return;
 
