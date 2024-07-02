@@ -3,7 +3,6 @@ import { useAppSelector } from "../../../utils/custom-hook";
 import { useContext, useEffect, useState } from "react";
 import {
   Data,
-  DownloadButton,
   HeaderItem,
   ListBody,
   ListContainer,
@@ -21,7 +20,6 @@ import { DisplayContext } from "../../../contexts/display-context";
 import { useNavigate } from "react-router";
 
 import DownloadPDF from "../../utils/download/download";
-import axios, { AxiosResponse } from "axios";
 import { ThreeDots } from "../../utils/loading/dots";
 
 interface EmployeeOrderType {
@@ -70,23 +68,7 @@ function EmployeeListDisplayer() {
   const emplist = [...employee.employees];
   const [emp_list, setEmpList] = useState(emplist);
   const { display } = useContext(DisplayContext);
-  const forceDownload = (response: AxiosResponse, title: string) => {
-    console.log("aa", response);
-    console.log(title);
-  };
-  const downloadWithAxios = (url: string, title: string) => {
-    axios({
-      method: "get",
-      url,
-      responseType: "arraybuffer",
-    })
-      .then((response) => {
-        forceDownload(response, title);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
   useEffect(() => {
     if (display.list_employees) setEmpList(emplist);
     else if (display.search_employee) {
@@ -257,7 +239,6 @@ function EmployeeListDisplayer() {
                     View
                   </Data>
                   <DownloadPDF />
-                 
                 </ListRow>
               );
             })}
