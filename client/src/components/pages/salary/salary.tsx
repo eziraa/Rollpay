@@ -240,7 +240,13 @@ export const EmployeesSalaryPage = () => {
       {salary.loading ? (
         <LoadingSpinner />
       ) : (
-        <div ref={exportPdf}>
+        <div
+          style={{
+            padding: "1rem 2rem",
+            width: "100%",
+          }}
+          ref={exportPdf}
+        >
           <SalaryTable>
             <TableHeader>
               <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
