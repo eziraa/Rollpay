@@ -167,6 +167,14 @@ const EmployeeSlice = createSlice({
         ...action.payload,
       };
     },
+    filterEmployeeRequest: (state, action: PayloadAction<string>) => {
+      state.task_finished = false;
+      state.task_error = undefined;
+    },
+    filterEmployeeDone: (state, action: PayloadAction<Employee[]>) => {
+      state.employees = action.payload;
+      state.task_finished = true;
+    },
   },
 });
 export const {
@@ -199,6 +207,8 @@ export const {
   updateProfileRequest,
   closeEmployeeTask,
   resetEmployeeState,
+  filterEmployeeRequest,
+  filterEmployeeDone,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
