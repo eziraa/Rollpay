@@ -227,7 +227,6 @@ function* GetEmployee() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
-      console.log(response);
       yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
@@ -323,8 +322,6 @@ function* DeleteEmployee(action: PayloadAction<string>) {
     console.log(e);
   }
 }
-
-
 
 function* loadNextPage(action: PayloadAction<string>) {
   try {
@@ -460,6 +457,48 @@ function* updateProfile(action: PayloadAction<UpdateProfileParams>) {
   }
 }
 
+function* filterEmployees(action: PayloadAction<string>) {
+  const response: PaginatedEmpResponse = yield call(
+    EmployeeAPI.listEmployee,
+    action.payload
+  );
+  if (response.code === 200) {
+    yield put(listEmpDone(response));
+  } else if (response.code === 401) {
+    window.location.href = "/access-denied";
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Unauthorized",
+        desc: "Please check your credentials",
+        duration: 3,
+      })
+    );
+  } else if (response.code === 403) {
+    window.location.href = "/access-denied";
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Access Denied",
+        desc: "You are not allowed to view employees",
+        duration: 3,
+      })
+    );
+  } else {
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "List Employee",
+        desc: response.error,
+        duration: 3,
+      })
+    );
+  }
+}
+
 export function* watchEmployeeRequests() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/updateProfileRequest", updateProfile);
@@ -471,4 +510,5 @@ export function* watchEmployeeRequests() {
   yield takeEvery("employee/addEmpOvertimeRequested", addOvertime);
   yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
   yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
+  yield takeEvery("employee/filterEmployeeRequest", filterEmployees);
 }
