@@ -1,6 +1,6 @@
 import { SelectOption } from "../form-elements/form.style";
 import { useFilter } from "../../../hooks/filter-hook";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import {
   ButtonContainer,
@@ -12,12 +12,39 @@ import {
   FilterRow,
   FilterSelect,
 } from "./filter.style";
+import { usePosition } from "../../../hooks/position-hook";
+import { EmployeeFilter } from "../../../contexts/filter-context";
+import { filterEmployeeRequest } from "../../../store/employee/employee-slice";
 
 export const Filter = () => {
+  // Get the current filter and position state from the Redux store
   const { filter, setFilter } = useFilter();
-  const { positions } = useAppSelector((state) => state.position);
+  const { positions } = usePosition();
   const dispatcher = useAppDispatch();
 
+  // Function to convert the filter object to a query string
+  const getQueryString = (params: EmployeeFilter) => {
+    const queryString = Object.entries(params)
+      .filter(
+        ([_, value]) => value !== null && value !== undefined && value !== ""
+      )
+      .map(([key, value]) => {
+        if (typeof value === "object") {
+          return Object.entries(value)
+            .map(
+              ([nested_key, nested_value]) =>
+                `${key}[${nested_key}]=${encodeURIComponent(
+                  nested_value as string
+                )}`
+            )
+            .join("&");
+        }
+        return `${key}=${encodeURIComponent(value)}`;
+      })
+      .join("&");
+
+    return "employee/filter?" + queryString;
+  };
   return (
     <FilterContainer>
       <FilterRow>
@@ -248,6 +275,9 @@ export const Filter = () => {
           <FilterButton
             onClick={() => {
               console.log(filter);
+              // const querystring = JSON.stringify(filter);
+              console.log(getQueryString(filter));
+              dispatcher(filterEmployeeRequest(getQueryString(filter)));
             }}
           >
             Filter
