@@ -187,28 +187,3 @@ class EmployementContract(APIView):
         serializer = EmployeeSerializer(employee)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-class DocumentView(APIView):
-    permission_classes = [AllowAny]
-    parser_classes = [MultiPartParser, FormParser]
-
-    def post(self, request, employee_id, format=None):
-        try:
-            employee = Employee.objects.get(pk=employee_id)
-        except Employee.DoesNotExist:
-            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        document = request.data.get('document')
-        if document:
-            if employee.document:
-                if default_storage.exists(employee.document.name):
-                    default_storage.delete(employee.document.name)
-
-            employee.document = document
-            employee.save()
-
-        # serializer = EmployeeSerializer(employee, data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-            return Response({"message": "Document uploaded successfully"}, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Error occurred"}, status=status.HTTP_400_BAD_REQUEST)
