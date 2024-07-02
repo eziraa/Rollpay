@@ -19,6 +19,8 @@ import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
 import { DisplayContext } from "../../../contexts/display-context";
 import { useNavigate } from "react-router";
+
+import DownloadPDF from "../../utils/download/download";
 import axios, { AxiosResponse } from "axios";
 import { ThreeDots } from "../../utils/loading/dots";
 
@@ -254,22 +256,8 @@ function EmployeeListDisplayer() {
                   >
                     View
                   </Data>
-                  <Data>
-                    {emp.employement_contract?.split("/")[3].substring(0, 9) +
-                      "..."}
-                  </Data>
-                  <Data>
-                    <DownloadButton
-                      onClick={() =>
-                        downloadWithAxios(
-                          emp.employement_contract,
-                          emp.first_name + " " + emp.last_name + " contract"
-                        )
-                      }
-                    >
-                      Download
-                    </DownloadButton>
-                  </Data>
+                  <DownloadPDF />
+                 
                 </ListRow>
               );
             })}
