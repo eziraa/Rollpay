@@ -21,13 +21,13 @@ export const DownloadButton = styled.button<ThemeProps>`
   }
 `;
 
-const DownloadPDF = () => {
+const DownloadPDF = ({ url }: { url: string }) => {
   const [buttonText, setButtonText] = useState("Download");
   const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
     setDownloading(true);
-    const response = await fetch(baseURL + "/media/VS Code Cheatsheet.pdf");
+    const response = await fetch(baseURL + url);
     if (response) {
       const reader = response.body?.getReader();
       const contentLength = +(response.headers?.get("Content-Length") || 0);
@@ -51,7 +51,7 @@ const DownloadPDF = () => {
         );
       }
 
-      setButtonText("Download PDF");
+      setButtonText("Download");
       setDownloading(false);
 
       // Concatenate chunks into single Uint8Array
