@@ -1,5 +1,4 @@
 import { useParams } from "react-router";
-import api from "../../../config/api";
 import {
   ActionContainer,
   CancelButton,
@@ -8,7 +7,8 @@ import {
   SaveButton,
 } from "./profile-card.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { setProfilePicture } from "../../../store/salary/salary-slice";
+import UserAPI from "../../../services/user-api";
+import { changeProfileImage } from "../../../store/user/user-slice";
 
 export const ImageCard = ({
   picture,
@@ -20,26 +20,16 @@ export const ImageCard = ({
   // Getting necessary data
   const dispatcher = useAppDispatch();
   const { employee_id } = useParams();
-  const saveProfileImage = () => {
+  const saveProfileImage = async () => {
     if (employee_id) {
-      const url = `http://127.0.0.1:8000/user/profile/${employee_id}`;
       const formData = new FormData();
       formData.append("profile_picture", picture);
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      api
-        .put(url, formData, config)
-        .then((response) => {
-          dispatcher(setProfilePicture(response.data.profile_picture));
-          action();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const response: string = await UserAPI.updateProfile(
+        employee_id,
+        formData
+      );
+      dispatcher(changeProfileImage(response));
+      action();
     }
   };
 
