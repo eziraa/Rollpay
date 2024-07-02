@@ -20,6 +20,7 @@ import { NoResult } from "../../utils/no-result/no-result";
 import { DisplayContext } from "../../../contexts/display-context";
 import { useNavigate } from "react-router";
 import axios, { AxiosResponse } from "axios";
+import { ThreeDots } from "../../utils/loading/dots";
 
 interface EmployeeOrderType {
   name: string;
@@ -70,12 +71,6 @@ function EmployeeListDisplayer() {
   const forceDownload = (response: AxiosResponse, title: string) => {
     console.log("aa", response);
     console.log(title);
-    // const url = window.URL.createObjectURL(new Blob([response.data]));
-    // const link = document.createElement("a");
-    // link.href = url;
-    // link.setAttribute("download", title + ".pdf");
-    // document.body.appendChild(link);
-    // link.click()
   };
   const downloadWithAxios = (url: string, title: string) => {
     axios({
@@ -117,6 +112,8 @@ function EmployeeListDisplayer() {
     setEmpList([...sorted]);
   };
 
+  if (!employee.task_finished) return <ThreeDots size={4} />;
+
   if (display.search_employee && employee.query_set.length < 1)
     return <NoResult text=" No Serch Results" />;
   return (
@@ -132,7 +129,7 @@ function EmployeeListDisplayer() {
             gridTemplateColumns:
               emp_list.length > 0
                 ? getTableElements(emp_list)
-                : "2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 1.7fr 2.5fr 1.5fr 0.5fr",
+                : "2fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr  ",
           }}
         >
           <HeaderItem>
@@ -193,17 +190,6 @@ function EmployeeListDisplayer() {
               {order[4].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
-          {/* <HeaderItem>
-            <ListTitle>Birth Date</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(5);
-              }}
-            >
-              {order[5].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn> */}
-          {/* </HeaderItem> */}
           <HeaderItem>
             <ListTitle>Position</ListTitle>
             <SortBtn
@@ -233,18 +219,15 @@ function EmployeeListDisplayer() {
           <HeaderItem>
             <ListTitle>Employement Contract</ListTitle>
           </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Contract</ListTitle>
-          </HeaderItem>
         </ListHeader>
         <ListBody>
           <ScrollBar>
-            {emp_list.map((emp, index) => {
+            {emp_list.map((emp, index, emplists) => {
               return (
                 <ListRow
                   key={index}
                   style={{
-                    gridTemplateColumns: getTableElements(emp_list),
+                    gridTemplateColumns: getTableElements(emplists),
                   }}
                 >
                   <Data> {emp.first_name + " " + emp.last_name} </Data>
