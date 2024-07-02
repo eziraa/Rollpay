@@ -52,9 +52,10 @@ const EmployeeSlice = createSlice({
         type: state.pagination?.type,
       };
     },
-    addEmpDone: (state) => {
+    addEmpDone: (state, action: PayloadAction<Employee>) => {
       state.task_finished = true;
       state.task_error = undefined;
+      state.curr_emp = action.payload;
     },
     unfinishedAdd: (state, action: PayloadAction<string | undefined>) => {
       state.task_error = action.payload;
@@ -178,7 +179,7 @@ const EmployeeSlice = createSlice({
         ...action.payload,
       };
     },
-    filterEmployeeRequest: (state, action: PayloadAction<string>) => {
+    filterEmployeeRequest: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
       state.task_error = undefined;
     },
