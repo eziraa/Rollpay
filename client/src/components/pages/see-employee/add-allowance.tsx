@@ -43,70 +43,68 @@ export const AddAllowanceToEmp = () => {
   const { curr_emp } = useSalary();
   const employee = useEmployee();
 
- /**
- * This effect hook listens for changes in the `curr_allowance` state.
- * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
- *
- * @param {AllowanceState} curr_allowance - The current allowance state.
- * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
- *
- * @returns {void}
- */
-useEffect(() => {
-  if (curr_allowance) {
-    dispatcher(listAllowancesRequested());
-  }
-}, [curr_allowance, dispatcher]);
-
- /**
- * This effect hook listens for changes in the `curr_allowance` state.
- * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
- *
- * @param {AllowanceState} curr_allowance - The current allowance state.
- * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
- *
- * @returns {void}
- */
-useEffect(() => {
+  /**
+   * This effect hook listens for changes in the `curr_allowance` state.
+   * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
+   *
+   * @param {AllowanceState} curr_allowance - The current allowance state.
+   * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
+   *
+   * @returns {void}
+   */
+  useEffect(() => {
     if (curr_allowance) {
       dispatcher(listAllowancesRequested());
     }
   }, [curr_allowance, dispatcher]);
 
-/**
- * Initializes the Formik instance for the AddAllowanceToEmp component.
- *
- * @returns An object containing the Formik instance properties: errors, touched, handleChange, handleSubmit, and values.
- */
-const { errors, touched, handleChange, handleSubmit, values } = useFormik({
-  initialValues: {
-    allowance_type: curr_allowance?.allowance_type || "",
-    employee_id: employee_id || "",
-  },
-  validationSchema: AddAllowanceToEmpSchema,
-  onSubmit: (values) => {
-    dispatcher(
-      resetEmployeeState({
-        ...employee,
-        task_error: undefined,
-      })
-    );
-    dispatcher(addEmpAllowanceRequested(values));
-  },
-});
+  /**
+   * This effect hook listens for changes in the `curr_allowance` state.
+   * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
+   *
+   * @param {AllowanceState} curr_allowance - The current allowance state.
+   * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
+   *
+   * @returns {void}
+   */
+  useEffect(() => {
+    dispatcher(listAllowancesRequested());
+  }, []);
+
+  /**
+   * Initializes the Formik instance for the AddAllowanceToEmp component.
+   *
+   * @returns An object containing the Formik instance properties: errors, touched, handleChange, handleSubmit, and values.
+   */
+  const { errors, touched, handleChange, handleSubmit, values } = useFormik({
+    initialValues: {
+      allowance_type: curr_allowance?.allowance_type || "",
+      employee_id: employee_id || "",
+    },
+    validationSchema: AddAllowanceToEmpSchema,
+    onSubmit: (values) => {
+      dispatcher(
+        resetEmployeeState({
+          ...employee,
+          task_error: undefined,
+        })
+      );
+      dispatcher(addEmpAllowanceRequested(values));
+    },
+  });
 
   //Adding a method to close modal  properly
- /**
- * This function is used to clear the task and close the modal.
- * It dispatches an action to close the employee task.
- *
- *
- * @returns {void} - This function does not return any value.
- */
-const clearTask = () => {
-  dispatcher(closeEmployeeTask());
+  /**
+   * This function is used to clear the task and close the modal.
+   * It dispatches an action to close the employee task.
+   *
+   *
+   * @returns {void} - This function does not return any value.
+   */
+  const clearTask = () => {
+    dispatcher(closeEmployeeTask());
   };
-  
+
   return (
     <Modal closeAction={clearTask}>
       <AllowanceContainer>
