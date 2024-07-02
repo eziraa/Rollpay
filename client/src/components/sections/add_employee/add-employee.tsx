@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   FormError,
@@ -16,32 +17,111 @@ import {
   Column,
   GenderContainer,
   Title,
+  UploadBtn,
 } from "./add-employee.style";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   addEmpRequested,
   closeEmployeeTask,
   resetEmployeeState,
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_POSITION } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useEmployee } from "../../../hooks/employee-hook";
+import { usePosition } from "../../../hooks/position-hook";
+import { FileInput } from "../../utils/profile/employee-profile.style";
+import { RiPencilLine } from "react-icons/ri";
+import EmployeeAPI from "../../../services/employee-api";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
   const employee = useEmployee();
-  const { task_finished, task_error } = useAppSelector(
-    (state) => state.employee
-  );
+  const { task_finished, task_error } = useEmployee();
+  const { positions, curr_position } = usePosition();
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState("");
 
-  const { positions, curr_position } = useAppSelector(
-    (state) => state.position
-  );
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      selectedFile && setPreviewUrl(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  useEffect(() => {
+    dispatcher(listPositionsRequested());
+    dispatcher(
+      resetEmployeeState({
+        ...employee,
+        curr_emp: undefined,
+        task_error: undefined,
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    if (employee.curr_emp) {
+      if (!selectedFile) {
+        dispatcher(
+          setFlashMessage({
+            type: "error",
+            title: "Uploading document failed",
+            status: true,
+            duration: 5,
+            desc: "Please upload document",
+          })
+        );
+        return;
+      }
+      const formData = new FormData();
+      formData.append("employement_contract", selectedFile);
+
+      EmployeeAPI.uploadDocument(employee.curr_emp?.id || "", formData)
+        .then(() => {
+          dispatcher(
+            resetEmployeeState({
+              ...employee,
+              curr_emp: undefined,
+            })
+          );
+          dispatcher(
+            setFlashMessage({
+              type: "success",
+              title: "Adding Employee",
+              status: true,
+              duration: 5,
+              desc: "Employee added successfully",
+            })
+          );
+        })
+        .catch(() => {
+          dispatcher(
+            setFlashMessage({
+              type: "error",
+              title: "Failed to upload document",
+              status: true,
+              duration: 5,
+              desc: "Please try again later",
+            })
+          );
+        });
+    }
+  }, [employee.curr_emp, selectedFile]);
+
+  const handleClick = () => {
+    if (hiddenFileInput.current) {
+      hiddenFileInput.current.click();
+    }
+  };
+
   const { openModal } = useModal();
   useEffect(() => {
     if (curr_position) {
@@ -260,6 +340,51 @@ export const AddEmployee = () => {
                   <div>{formHandler.errors.date_of_hire}</div>
                 ) : null}
               </FormError>{" "}
+            </InputContainer>
+            <InputContainer>
+              <Label htmlFor="pdf">Upload agreement Doc</Label>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                  gap: "1rem",
+                }}
+              >
+                <div>
+                  <FileInput
+                    ref={hiddenFileInput}
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                  />
+                  {previewUrl && (
+                    <div>
+                      <object
+                        data={previewUrl}
+                        type="application/pdf"
+                        width="100rem"
+                        height="60rem"
+                        style={{ marginBottom: "1rem", overflow: "hidden" }}
+                      >
+                        <p>
+                          Your browser does not support PDFs
+                          <a href={previewUrl}>Download the PDF</a>.
+                        </p>
+                      </object>
+                    </div>
+                  )}
+                </div>
+                <UploadBtn
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClick();
+                  }}
+                >
+                  <RiPencilLine /> Upload
+                </UploadBtn>
+              </div>
             </InputContainer>
             {task_error && (
               <FormError
