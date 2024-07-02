@@ -35,9 +35,9 @@ import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { usePosition } from "../../../hooks/position-hook";
 import { FileInput } from "../../utils/profile/employee-profile.style";
-import { RiPencilLine } from "react-icons/ri";
 import EmployeeAPI from "../../../services/employee-api";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
+import { MdFileUpload } from "react-icons/md";
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
@@ -49,10 +49,10 @@ export const AddEmployee = () => {
   const [previewUrl, setPreviewUrl] = useState("");
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      selectedFile && setPreviewUrl(URL.createObjectURL(selectedFile));
+    event.preventDefault();
+    if (event.target.files) {
+      setPreviewUrl(URL.createObjectURL(event.target.files[0]));
+      setSelectedFile(event.target.files[0]);
     }
   };
 
@@ -377,12 +377,13 @@ export const AddEmployee = () => {
                   )}
                 </div>
                 <UploadBtn
+                  type="submit"
                   onClick={(e) => {
                     e.preventDefault();
                     handleClick();
                   }}
                 >
-                  <RiPencilLine /> Upload
+                  <MdFileUpload /> Upload
                 </UploadBtn>
               </div>
             </InputContainer>
