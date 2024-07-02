@@ -111,7 +111,53 @@ export const EmployeesSalaryPage = () => {
   const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
   const handleExport = () => {
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(employeeSalary);
+    const emplist = employeeSalary.map((employee) => {
+      let local_employee = {
+        ["Employee Id"]: employee.employee_id,
+        ["Employee Name"]: employee.employee_name,
+        ["Salary"]: employee.basic_salary,
+      };
+      allowanceTypes.forEach((type) => {
+        local_employee = {
+          ...local_employee,
+          [type]: employee.allowances.find(
+            (allowance) => allowance.allowance_type === type
+          )?.allowance_rate,
+        };
+      });
+      deductionTypes.forEach((type) => {
+        local_employee = {
+          ...local_employee,
+          [type]: employee.deductions.find(
+            (deduction) => deduction.deduction_type === type
+          )?.deduction_rate,
+        };
+      });
+
+      if (local_employee) {
+        delete local_employee["deductions"];
+        delete local_employee["allowances"];
+        delete local_employee["overtimes"];
+      }
+
+      local_employee = {
+        ...local_employee,
+        ["Gross Salary"]: employee.gross_salary,
+        ["Income Tax"]: employee.income_tax,
+        ["Total Deduction"]: employee.total_deduction,
+        ["Net Salary"]: employee.net_salary,
+        ["Month"]: employee.month,
+        ["Payment Date"]: employee.payment_date,
+        ["Payment Status"]: employee.payment_status,
+      };
+      return {
+        ...local_employee,
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(emplist);
+
+    // console.log(salary);
+    // const ws = XLSX.utils.json_to_sheet(employeeSalary);
 
     XLSX.utils.book_append_sheet(wb, ws, "SalarySheet1");
     XLSX.writeFile(wb, "MyExcel.xlsx");
