@@ -134,21 +134,19 @@ export const EmployeesSalaryPage = () => {
         };
       });
 
-      if (local_employee) {
-        delete local_employee["deductions"];
-        delete local_employee["allowances"];
-        delete local_employee["overtimes"];
-      }
+
 
       local_employee = {
         ...local_employee,
-        ["Gross Salary"]: employee.gross_salary,
-        ["Income Tax"]: employee.income_tax,
-        ["Total Deduction"]: employee.total_deduction,
-        ["Net Salary"]: employee.net_salary,
-        ["Month"]: employee.month,
-        ["Payment Date"]: employee.payment_date,
-        ["Payment Status"]: employee.payment_status,
+        ["Gross Salary" as string]: employee.gross_salary,
+        ["Income Tax" as string]: employee.income_tax,
+        ["Total Deduction" as string]: employee.total_deduction,
+        ["Net Salary" as string]: employee.net_salary,
+        ["Month" as string]: getFormattedMonth(new Date(employee.month)).split(
+          "-"
+        )[0],
+        ["Payment Date" as string]: employee.payment_date,
+        ["Payment Status" as string]: employee.payment_status,
       };
       return {
         ...local_employee,
