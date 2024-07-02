@@ -8,7 +8,7 @@ import { UserResponse } from "../../typo/user/response";
 const InitialEmpState: UserState = {
   creating: false,
   user: undefined,
-  loading: false,
+  task_finished: false,
   is_login: false,
   logging_in: false,
   logging_out: false,
@@ -60,12 +60,11 @@ const UserSlice = createSlice({
     },
 
     getCurrentUserRequest: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
     },
     getCurrentUserDone: (state, action: PayloadAction<UserResponse>) => {
-      state.loading = false;
+      state.task_finished = true;
       state.user = action.payload;
-      console.log(state.user);
     },
   },
 });
