@@ -15,42 +15,46 @@ import {
 import { usePosition } from "../../../hooks/position-hook";
 import { EmployeeFilter } from "../../../contexts/filter-context";
 import { filterEmployeeRequest } from "../../../store/employee/employee-slice";
+export const getQueryString = (params: EmployeeFilter) => {
+  const queryString = Object.entries(params)
+    .filter(
+      ([key, value]) =>
+        value !== null &&
+        value !== undefined &&
+        value !== "" &&
+        key !== "filter_by"
+    )
+    .map(([key, value]) => {
+      if (typeof value === "object") {
+        return Object.entries(value)
+          .map(
+            ([nested_key, nested_value]) =>
+              `${key}[${nested_key}]=${encodeURIComponent(
+                nested_value as string
+              )}`
+          )
+          .join("&");
+      }
+      return `${key}=${encodeURIComponent(value)}`;
+    })
+    .join("&");
 
-export const Filter = () => {
+  return queryString;
+};
+export const Filter = ({ close }: { close: () => void }) => {
   // Get the current filter and position state from the Redux store
   const { filter, setFilter } = useFilter();
   const { positions } = usePosition();
   const dispatcher = useAppDispatch();
 
   // Function to convert the filter object to a query string
-  const getQueryString = (params: EmployeeFilter) => {
-    const queryString = Object.entries(params)
-      .filter(
-        ([_, value]) => value !== null && value !== undefined && value !== ""
-      )
-      .map(([key, value]) => {
-        if (typeof value === "object") {
-          return Object.entries(value)
-            .map(
-              ([nested_key, nested_value]) =>
-                `${key}[${nested_key}]=${encodeURIComponent(
-                  nested_value as string
-                )}`
-            )
-            .join("&");
-        }
-        return `${key}=${encodeURIComponent(value)}`;
-      })
-      .join("&");
 
-    return "employee/filter?" + queryString;
-  };
   return (
     <FilterContainer>
       <FilterRow>
         <FilterLabel>Search By</FilterLabel>
         <FilterSelect
-          defaultValue={"name"}
+          defaultValue={filter.filter_by || "name"}
           onChange={(e) => {
             if (e.currentTarget.value) {
               setFilter({
@@ -61,7 +65,7 @@ export const Filter = () => {
           }}
         >
           <SelectOption value={"name"}>Name</SelectOption>
-          <SelectOption value={"position"}>Position</SelectOption>
+          <SelectOption value={"id"}>Employee ID</SelectOption>
           <SelectOption value={"gender"}>Gender</SelectOption>
           <SelectOption value={"email"}>email</SelectOption>
           <SelectOption value={"phone_number"}>Phone number</SelectOption>
@@ -70,7 +74,7 @@ export const Filter = () => {
       <FilterRow>
         <FilterLabel>Sort By</FilterLabel>
         <FilterSelect
-          defaultValue={"date_of_hire"}
+          defaultValue={filter.order_by || "name"}
           onChange={(e) => {
             if (e.currentTarget.value) {
               setFilter({
@@ -93,6 +97,7 @@ export const Filter = () => {
       <FilterRow>
         <FilterLabel>Order</FilterLabel>
         <FilterSelect
+          value={filter.order || "asc"}
           onChange={(e) => {
             if (e.currentTarget.value) {
               setFilter({
@@ -109,6 +114,7 @@ export const Filter = () => {
       <FilterRow>
         <FilterLabel>Select Position</FilterLabel>
         <FilterSelect
+          defaultValue={filter.position || "default"}
           onChange={(e) => {
             if (e.currentTarget.value) {
               setFilter({
@@ -118,6 +124,7 @@ export const Filter = () => {
             }
           }}
         >
+          <SelectOption value={"default"}>Select Position</SelectOption>
           {positions.map((position) => {
             return (
               <SelectOption key={position.id} value={position.position_name}>
@@ -132,6 +139,7 @@ export const Filter = () => {
         <FilterLabel>From</FilterLabel>
         <FilterSelect
           name="salary_from"
+          value={filter.salary_range?.min || "default"}
           onChange={(e) => {
             if (e.currentTarget.value) {
               if (
@@ -159,7 +167,7 @@ export const Filter = () => {
             }
           }}
         >
-          <SelectOption value={3000}>3000</SelectOption>
+          <SelectOption value={"default"}>min</SelectOption>
           <SelectOption value={6000}>6000</SelectOption>
           <SelectOption value={10000}>10000</SelectOption>
           <SelectOption value={15000}>15000</SelectOption>
@@ -168,6 +176,7 @@ export const Filter = () => {
         </FilterSelect>
         <FilterLabel>To</FilterLabel>
         <FilterSelect
+          value={filter.salary_range?.max || "default"}
           onChange={(e) => {
             if (e.currentTarget.value) {
               if (
@@ -195,6 +204,7 @@ export const Filter = () => {
             }
           }}
         >
+          <SelectOption value={"default"}>10000</SelectOption>
           <SelectOption value={10000}>10000</SelectOption>
           <SelectOption value={15000}>15000</SelectOption>
           <SelectOption value={25000}>25000</SelectOption>
@@ -207,6 +217,7 @@ export const Filter = () => {
         <FilterLabel>Date of hire</FilterLabel>
         <FilterLabel>From</FilterLabel>
         <FilterInput
+          value={filter.date_of_hire_range?.from || "select"}
           onChange={(e) => {
             if (e.target.value) {
               if (
@@ -238,6 +249,7 @@ export const Filter = () => {
         />
         <FilterLabel>To</FilterLabel>
         <FilterInput
+          value={filter.date_of_hire_range?.to || "select"}
           type="date"
           onChange={(e) => {
             if (e.target.value) {
@@ -270,14 +282,70 @@ export const Filter = () => {
       </FilterRow>
       <FilterRow>
         <ButtonContainer>
-          <ClearButton>Cancel</ClearButton>
-          <FilterButton>Start search</FilterButton>
-          <FilterButton
+          <ClearButton
             onClick={() => {
+              setFilter({
+                filter_by: "",
+                order_by: "",
+                order: "",
+                position: "",
+                salary_range: {
+                  min: 0,
+                  max: 0,
+                },
+                date_of_hire_range: {
+                  from: "",
+                  to: "",
+                },
+              });
               console.log(filter);
-              // const querystring = JSON.stringify(filter);
-              console.log(getQueryString(filter));
-              dispatcher(filterEmployeeRequest(getQueryString(filter)));
+            }}
+          >
+            Clear
+          </ClearButton>
+          <FilterButton
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (filter.filter_by) close();
+              else
+                dispatcher(
+                  setFlashMessage({
+                    desc: "Please select filter by option to start search",
+                    type: "error",
+                    title: "Filter by not selected",
+                    status: true,
+                    duration: 5,
+                  })
+                );
+            }}
+          >
+            Start search
+          </FilterButton>
+          <FilterButton
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (
+                Object.entries(filter).some(
+                  ([key, value]) => value && key !== "filter_by"
+                )
+              ) {
+                dispatcher(
+                  filterEmployeeRequest(
+                    "employee/filter?" + getQueryString(filter)
+                  )
+                );
+              } else
+                dispatcher(
+                  setFlashMessage({
+                    desc: "Please select filter by option to filter",
+                    type: "error",
+                    title: "Filter by not selected",
+                    status: true,
+                    duration: 5,
+                  })
+                );
             }}
           >
             Filter
