@@ -238,7 +238,8 @@ function EmployeeListDisplayer() {
                   >
                     View
                   </Data>
-                  <DownloadPDF />
+                  <Data>{"..." + emp.employement_contract.slice(-8)}</Data>
+                  <DownloadPDF url={emp.employement_contract} />
                 </ListRow>
               );
             })}
