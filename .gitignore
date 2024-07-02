@@ -38,4 +38,5 @@ client/src/components/pages/salary/scroll.css
 client/src/components/pages/salary/scr.tsx
 client/src/components/pages/salary/scroll.tsx
 client/src/components/pages/salary/table.tsx
-server/media/photos/
+server/media/
+
