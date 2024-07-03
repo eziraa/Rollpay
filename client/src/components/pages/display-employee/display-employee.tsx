@@ -30,6 +30,8 @@ export const EmployeesListPage = () => {
     <MainContainer>
       <EmployeesListHeader>
         <Title>All Employees</Title>
+      </EmployeesListHeader>
+      <EmployeesListHeader>
         <Search />
         <AddButton
           onClick={(e) => {
