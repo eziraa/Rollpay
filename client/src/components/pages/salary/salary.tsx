@@ -30,9 +30,7 @@ import {
 import Pagination from "../../sections/pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
 import { getFormattedMonth } from "./utils";
-import {
-  Label,
-} from "../../sections/profile/profile.style";
+import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
 import * as XLSX from "xlsx";
 import { usePagination } from "../../../hooks/use-pagination";
@@ -166,8 +164,13 @@ export const EmployeesSalaryPage = () => {
   };
 
   const pdfExport = () => {
-    const pdf = new jsPDF();
-    autoTable(pdf, { html: "table" });
+    const pdf = new jsPDF("landscape");
+    autoTable(pdf, {
+      html: "table",
+      styles: {
+        fontSize: 8,
+      },
+    });
     pdf.save("Employee payroll.pdf");
   };
 
@@ -208,7 +211,7 @@ export const EmployeesSalaryPage = () => {
             }}
           />
         </SearchContainer>
-       
+
         {/* <ExportLabel>Export to:</ExportLabel> */}
         {/* <Select
           style={{
@@ -222,7 +225,7 @@ export const EmployeesSalaryPage = () => {
           <SelectOption value="excel">Excel</SelectOption>
           <SelectOption value="pdf">PDF</SelectOption>
         </Select> */}
-         <ExportButton onClick={handleExport}>
+        <ExportButton onClick={handleExport}>
           <ExportIcon>
             <RiFileExcel2Line />
           </ExportIcon>
@@ -233,7 +236,7 @@ export const EmployeesSalaryPage = () => {
             <TbFileTypePdf />
           </ExportIcon>
           PDF
-         </ExportButton> 
+        </ExportButton>
 
         <Label
           style={{
