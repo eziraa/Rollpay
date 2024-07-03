@@ -9,6 +9,7 @@ export const CustomTable = styled.table`
   border-collapse: collapse;
   border: none;
   width: 100%;
+  margin:0;
 `;
 
 export const Caption = styled.h4`
