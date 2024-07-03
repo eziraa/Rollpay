@@ -462,9 +462,7 @@ function* filterEmployees(action: PayloadAction<string>) {
         duration: 3,
       })
     );
-  } else {
-    console.log("");
-  }
+  } 
 }
 function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
   try {

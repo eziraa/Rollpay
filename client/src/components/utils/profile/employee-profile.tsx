@@ -24,6 +24,8 @@ import { CURRENT_USER } from "../../../constants/token-constants";
 import { useParams } from "react-router";
 import { useUser } from "../../../hooks/user-hook";
 import { setProfilePicture as changeProfile } from "../../../store/salary/salary-slice";
+import UpdateEmployee from "../../pages/see-employee/update-employee";
+
 export const EmployeeProfile = ({
   employee,
 }: {
@@ -136,6 +138,7 @@ export const EmployeeProfile = ({
           </EmployeeData>
         </EmployeeInfoContainer>
       )}
+      {employee.position === "clerk" && <UpdateEmployee />}
     </EmployeeeProfileContainer>
   );
 };
