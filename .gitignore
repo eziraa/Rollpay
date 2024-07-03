@@ -42,3 +42,4 @@ server/media/
 .gitignore
 client/src/components/pages/dashboard/stat.tsx
 client/src/components/utils/payment-card/payment.tsx
+node_modules/

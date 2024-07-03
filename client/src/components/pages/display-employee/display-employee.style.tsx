@@ -27,7 +27,8 @@ export const EmployeeDisplayerContainer = styled.div`
 export const Title = styled.h1<ThemeProps>`
   font-size: 2rem;
   font-weight: 500;
-  margin-bottom: 1rem;
+  margin: 0rem;
+  align-items: flex-end;
   color: ${({ theme }) => theme.colors.primary};
 `;
 
@@ -48,5 +49,5 @@ export const AddButton = styled(Button)`
   justify-self: end;
   display: block;
   position: absolute;
-  right: 2rem;
+  right: 3rem;
 `;
