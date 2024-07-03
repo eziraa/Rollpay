@@ -12,6 +12,7 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import Image from "../../../assets/logo.png";
 import { Title } from "../add_employee/add-employee.style";
+import { MdExpandMore } from "react-icons/md";
 
 function LeftMenu() {
   const { task_finished } = useAppSelector((state) => state.employee);
@@ -27,9 +28,7 @@ function LeftMenu() {
             style={{
               color: "#2dc682",
             }}
-          >
-            
-          </span>
+          ></span>
         </Title>
       </LogoContainer>
       <MenuItem
@@ -55,6 +54,7 @@ function LeftMenu() {
       >
         <UsersIcon />
         <MenuItemText>All Employees</MenuItemText>
+        <MdExpandMore />
       </MenuItem>
       <MenuItem
         active={pathname.startsWith("/employees-salary")}
