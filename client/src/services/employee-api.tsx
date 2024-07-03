@@ -4,10 +4,14 @@ import {
   AddDeductionToEmployeesParams,
   AddEmpParams,
   UpdateEmployementContract,
-  UpdateProfileParams,
 } from "../typo/employee/params";
 import api from "../config/api";
-import { AddEmpResponse, Contract, Employee, Profile } from "../typo/employee/response";
+import {
+  AddEmpResponse,
+  Contract,
+  Employee,
+  Profile,
+} from "../typo/employee/response";
 import { BaseResponse } from "../typo/utils/response";
 import { AddOvertimeToEmpParams } from "../typo/overtime/params";
 
@@ -18,6 +22,7 @@ const addEmp = async (values: AddEmpParams) => {
       return {
         success: "Employee added successfully",
         code: res.status,
+        employee: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -163,6 +168,25 @@ const addOvertime = async (values: AddOvertimeToEmpParams) => {
   return employees;
 };
 
+const uploadDocument = async (employee_id: string, formData: FormData) => {
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
+  const response = await api
+    .post(`/employee/contract/${employee_id}`, formData, config)
+    .then((response) => {
+      return response.data.profile_picture;
+    })
+    .catch((error) => {
+      return error.message;
+    });
+
+  return response;
+};
+
 export interface EditEmployeeParams extends AddEmpParams {
   id: string | undefined;
 }
@@ -191,34 +215,6 @@ const editEmployee = async (
     });
   return response;
 };
-
-const updatProfilePicture = async (values: UpdateProfileParams) => {
-  console.log("from api", values.profile_url);
-  const response = await axios
-    .put<Profile>("/user/profile/" + values.employee_id, values.profile_url, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((res) => {
-      return {
-        success: "Profile picture updated successfully",
-        code: res.status,
-        profile: res.data,
-      };
-    })
-    .catch((err: AxiosError) => {
-      for (const value of Object.values(
-        (err.response?.data as { [key: string]: unknown }) || {}
-      ))
-        return {
-          error: value,
-          code: err.response?.status,
-        } as { error: string; code: number };
-    });
-  return response;
-};
-
 
 const getProfilePicture = async (employee_id: string) => {
   const response = await api
@@ -296,9 +292,9 @@ const EmployeeAPI = {
   addAllowance,
   addDeduction,
   addOvertime,
-  updatProfilePicture,
   getProfilePicture,
-  updatEmployementAgreement
+  updatEmployementAgreement,
+  uploadDocument,
 };
 
 export default EmployeeAPI;

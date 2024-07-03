@@ -22,6 +22,8 @@ import { baseURL } from "../../../config/api";
 import { CurrEmpPayments } from "../../../typo/payment/response";
 import { CURRENT_USER } from "../../../constants/token-constants";
 import { useParams } from "react-router";
+import { useUser } from "../../../hooks/user-hook";
+import { setProfilePicture as changeProfile } from "../../../store/salary/salary-slice";
 import UpdateEmployee from "../../pages/see-employee/update-employee";
 
 export const EmployeeProfile = ({
@@ -37,6 +39,14 @@ export const EmployeeProfile = ({
     localStorage.getItem(CURRENT_USER) || "[]"
   ).id;
   const { employee_id } = useParams();
+  const changedPic = useUser().user?.employee.profile_picture;
+
+  useEffect(() => {
+    if (changedPic) {
+      dispatcher(changeProfile(changedPic));
+    }
+  }, [changedPic]);
+
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.target.files) {

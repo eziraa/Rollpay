@@ -25,34 +25,41 @@ class FilterEmployeeView(APIView):
         # Apply filters
         # Assuming there's no queryset defined in your view
         queryset = Employee.objects.all()
-
-
         if position:
             queryset = queryset.filter(position=position)
-        if date_from and date_to:
+        if date_from:
             queryset = queryset.filter(
-                date_of_hire__range=[date_from, date_to])
-        if salary_min and salary_max:
+                date_of_hire__gte=date_from)
+        if date_to:
             queryset = queryset.filter(
-                salary__basic_salary__gte=salary_min, salary__basic_salary__lte=salary_max)
-        if filter_by == 'name':
-            name = self.request.GET.get('search_value')
-            queryset = queryset.filter(first_name__icontains=name)
-        elif filter_by == 'email':
-            email = self.request.GET.get('search_value')
-            queryset = queryset.filter(email__icontains=email)
-        elif filter_by == 'gender':
-            gender = self.request.GET.get('search_value')
-            queryset = queryset.filter(gender__icontains=gender)
-        elif filter_by == 'phone_number':
-            phone = self.request.GET.get('search_value')
-            queryset = queryset.filter(phone_number__icontains=phone)
-        elif filter_by == 'id':
-            id = self.request.GET.get('search_value')
-            queryset = queryset.filter(id__istartswith=id)
-        else:
-            name = self.request.GET.get('search_value')
-            queryset = queryset.filter(first_name__icontains=name)
+                date_of_hire__lte=date_to)
+        if salary_min:
+            queryset = queryset.filter(
+                salary__basic_salary__gte=salary_min)
+        if salary_max:
+            queryset = queryset.filter(
+                salary__basic_salary__lte=salary_max)
+
+        # Apply search
+        if filter_by:
+            if filter_by == 'name':
+                name = self.request.GET.get('search_value')
+                queryset = queryset.filter(first_name__icontains=name)
+            elif filter_by == 'email':
+                email = self.request.GET.get('search_value')
+                queryset = queryset.filter(email__icontains=email)
+            elif filter_by == 'gender':
+                gender = self.request.GET.get('search_value')
+                queryset = queryset.filter(gender__icontains=gender)
+            elif filter_by == 'phone_number':
+                phone = self.request.GET.get('search_value')
+                queryset = queryset.filter(phone_number__icontains=phone)
+            elif filter_by == 'id':
+                id = self.request.GET.get('search_value')
+                queryset = queryset.filter(id__istartswith=id)
+            else:
+                name = self.request.GET.get('search_value')
+                queryset = queryset.filter(first_name__icontains=name)
         # Apply ordering
         queryset = queryset.order_by(f'{order}{order_by}')
         paginator = StandardResultsSetPagination()

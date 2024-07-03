@@ -32,6 +32,6 @@ urlpatterns = [
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
          name='__update_emoployee__'),
-     path("contract/<str:employee_id>/",
+    path("contract/<str:employee_id>",
          EmployementContract.as_view(), name='_employement_contract__'),
 ] 

@@ -1,23 +1,33 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { baseURL } from "../../../config/api";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
+import { ThemeProps } from "../../../typo/theme/theme";
+import { MdFileDownload } from "react-icons/md";
 
-const DownloadButton = styled.button`
-  background-color: #4caf50; // Green background
-  color: white; // White text
-  padding: 10px 20px; // Padding around the text
-  border: none; // No border
-  cursor: pointer; // Cursor changes to pointer on hover
-  // Add more styles as needed
+export const DownloadButton = styled.button<ThemeProps>`
+  font-size: 1.5rem;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem 0.5rem;
+  width: max-content;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: ${({ theme }) => theme.buttons.primary};
+  border: none;
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.75, theme.buttons.primary)};
+  }
 `;
 
-const DownloadPDF = () => {
-  const [buttonText, setButtonText] = useState("Download PDF");
+const DownloadPDF = ({ url }: { url: string }) => {
+  const [buttonText, setButtonText] = useState("Download");
   const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
     setDownloading(true);
-    const response = await fetch(baseURL + "/media/VS Code Cheatsheet.pdf");
+    const response = await fetch(baseURL + url);
     if (response) {
       const reader = response.body?.getReader();
       const contentLength = +(response.headers?.get("Content-Length") || 0);
@@ -41,7 +51,7 @@ const DownloadPDF = () => {
         );
       }
 
-      setButtonText("Download PDF");
+      setButtonText("Download");
       setDownloading(false);
 
       // Concatenate chunks into single Uint8Array
@@ -69,7 +79,7 @@ const DownloadPDF = () => {
 
   return (
     <DownloadButton onClick={handleDownload} disabled={downloading}>
-      {buttonText}
+      <MdFileDownload /> {buttonText}
     </DownloadButton>
   );
 };

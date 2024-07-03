@@ -12,7 +12,6 @@ import {
   unfinishedAdd,
   unfinishedDelete,
   updateContractDone,
-  updateProfileDone,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
 import {
@@ -20,10 +19,10 @@ import {
   AddDeductionToEmployeesParams,
   AddEmpParams,
   UpdateEmployementContract,
-  UpdateProfileParams,
 } from "../../typo/employee/params";
 import {
   AddEmpResponse,
+  Employee,
   PaginatedEmpResponse,
 } from "../../typo/employee/response";
 import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
@@ -32,23 +31,18 @@ import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
 // import { closeModal } from "../../providers/actions";
 // import { ADD_ALLOWANCE_TO_EMP } from "../../constants/tasks";
 
+interface AddEmployeeResponse extends AddEmpResponse {
+  employee: Employee;
+}
+
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
-    const response: AddEmpResponse = yield call(
+    const response: AddEmployeeResponse = yield call(
       EmployeeAPI.addEmp,
       action.payload
     );
     if (response.code === 201) {
-      yield put(addEmpDone());
-      yield put(
-        setFlashMessage({
-          type: "success",
-          status: true,
-          title: "Add Employee",
-          desc: response.success,
-          duration: 3,
-        })
-      );
+      yield put(addEmpDone(response.employee));
     } else if (response.code === 401) {
       yield put(unfinishedAdd(response.error));
     } else if (response.code === 403) {
@@ -439,26 +433,6 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
   }
 }
 
-function* updateProfile(action: PayloadAction<UpdateProfileParams>) {
-  try {
-    const response: string = yield call(
-      EmployeeAPI.updatProfilePicture,
-      action.payload
-    );
-    yield put(updateProfileDone(response));
-  } catch (e) {
-    yield put(
-      setFlashMessage({
-        type: "error",
-        status: true,
-        title: "Edit Employee",
-        desc: "Cannot edit employee please try again",
-        duration: 3,
-      })
-    );
-  }
-}
-
 function* filterEmployees(action: PayloadAction<string>) {
   const response: PaginatedEmpResponse = yield call(
     EmployeeAPI.listEmployee,
@@ -512,7 +486,6 @@ function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
 
 export function* watchEmployeeRequests() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
-  yield takeEvery("employee/updateProfileRequest", updateProfile);
   yield takeEvery("employee/addEmpRequested", AddEmployee);
   yield takeEvery("employee/listEmpRequested", GetEmployee);
   yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
@@ -525,7 +498,6 @@ export function* watchEmployeeRequests() {
 }
 export function* watchEditEmployee() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
-  yield takeEvery("employee/updateProfileRequest", updateProfile);
   yield takeEvery("employee/updateContractRequest", updateContract);
 
   // yield takeEvery("employee/addPositionRequested", addPosition);

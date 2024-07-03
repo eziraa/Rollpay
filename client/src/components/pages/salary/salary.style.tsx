@@ -75,7 +75,7 @@ export const SearchIcon = styled(GoSearch)`
 export const SalaryTable = styled(CustomTable)`
   ${custom_scroll_bar};
   width: 100%;
-  height: 78%;
+  height: 65vh;
   display: block;
 `;
 
