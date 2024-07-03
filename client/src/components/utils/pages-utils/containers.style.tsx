@@ -26,6 +26,7 @@ export const sub_header_css = css`
   width: 100%;
   padding: 1rem;
   position: relative;
+  margin: 0rem 2rem 0rem 1rem;
 `;
 
 export const MainContainer = styled.div`
