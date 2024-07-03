@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   HeaderTitle,
@@ -13,6 +13,8 @@ import {
   SearchContainer,
   SearchInput,
   ExportButton,
+  ExportIcon,
+  // ExportLabel,
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
 import {
@@ -28,12 +30,17 @@ import {
 import Pagination from "../../sections/pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
 import { getFormattedMonth } from "./utils";
-import { Label } from "../../sections/profile/profile.style";
+import {
+  Label,
+} from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
 import * as XLSX from "xlsx";
 import { usePagination } from "../../../hooks/use-pagination";
 import { useNavigate, useParams } from "react-router";
-import { useReactToPrint } from "react-to-print";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { TbFileTypePdf } from "react-icons/tb";
+import { RiFileExcel2Line } from "react-icons/ri";
 
 export const EmployeesSalaryPage = () => {
   // Getting necessary information
@@ -45,6 +52,7 @@ export const EmployeesSalaryPage = () => {
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
+  // const [exportTo, setExportTo] = useState<string>("excel");
   const navigate = useNavigate();
   const { year, month } = useParams();
   useEffect(() => {
@@ -135,8 +143,6 @@ export const EmployeesSalaryPage = () => {
         };
       });
 
-
-
       local_employee = {
         ...local_employee,
         ["Gross Salary" as string]: employee.gross_salary,
@@ -155,18 +161,18 @@ export const EmployeesSalaryPage = () => {
     });
     const ws = XLSX.utils.json_to_sheet(emplist);
 
-    // console.log(salary);
-    // const ws = XLSX.utils.json_to_sheet(employeeSalary);
-
     XLSX.utils.book_append_sheet(wb, ws, "SalarySheet1");
     XLSX.writeFile(wb, "MyExcel.xlsx");
   };
 
-  const exportPdf = useRef<HTMLDivElement | null>(null);
-  const generatePDF = useReactToPrint({
-    content: () => exportPdf.current,
-    documentTitle: "Employees Payroll",
-  });
+  const pdfExport = () => {
+    const pdf = new jsPDF();
+    autoTable(pdf, { html: "table" });
+    pdf.save("Employee payroll.pdf");
+  };
+
+  // if (exportTo === "excel") handleExport();
+  // else if (exportTo === "pdf") pdfExport();
 
   useEffect(() => {
     if (salary.searching && salary.search_response)
@@ -191,6 +197,9 @@ export const EmployeesSalaryPage = () => {
     <SalaryContainer>
       <EmpsDisplayerHeader>
         <Title>Employees Payroll</Title>
+      </EmpsDisplayerHeader>
+
+      <EmpsDisplayerHeader>
         <SearchContainer>
           <SearchIcon />
           <SearchInput
@@ -199,18 +208,33 @@ export const EmployeesSalaryPage = () => {
             }}
           />
         </SearchContainer>
-        <Select
+       
+        {/* <ExportLabel>Export to:</ExportLabel> */}
+        {/* <Select
           style={{
             width: "15rem",
           }}
-          name="search-by"
+          name="export-to"
           onChange={(e) => {
-            setSearchBy(e.currentTarget.value);
+            setExportTo(e.currentTarget.value);
           }}
         >
-          <SelectOption value="name">Name</SelectOption>
-          <SelectOption value="id">ID</SelectOption>
-        </Select>
+          <SelectOption value="excel">Excel</SelectOption>
+          <SelectOption value="pdf">PDF</SelectOption>
+        </Select> */}
+         <ExportButton onClick={handleExport}>
+          <ExportIcon>
+            <RiFileExcel2Line />
+          </ExportIcon>
+          Excel
+        </ExportButton>
+        <ExportButton onClick={pdfExport}>
+          <ExportIcon>
+            <TbFileTypePdf />
+          </ExportIcon>
+          PDF
+         </ExportButton> 
+
         <Label
           style={{
             position: "absolute",
@@ -234,8 +258,6 @@ export const EmployeesSalaryPage = () => {
             )}
           </Select>
         </Label>
-        <ExportButton onClick={handleExport}>Excel </ExportButton>
-        <ExportButton onClick={generatePDF}>PDF</ExportButton>
       </EmpsDisplayerHeader>
       {salary.loading ? (
         <LoadingSpinner />
@@ -245,9 +267,8 @@ export const EmployeesSalaryPage = () => {
             padding: "1rem 2rem",
             width: "100%",
           }}
-          ref={exportPdf}
         >
-          <SalaryTable>
+          <SalaryTable id="table">
             <TableHeader>
               <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
               <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>

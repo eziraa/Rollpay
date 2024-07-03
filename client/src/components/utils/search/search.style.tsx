@@ -11,9 +11,9 @@ export const SearchContainer = styled.div`
   justify-content: flex-start;
   border-radius: 3rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
-  margin: 1rem;
+  margin-right: 0rem;
   padding: 1rem;
-  gap: 1rem;
+  /* gap: 1rem; */
 `;
 
 export const SearchInputContainer = styled.div<ThemeProps>`
