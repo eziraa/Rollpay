@@ -7,8 +7,9 @@ import {
 } from "../see-employee/see-employee.style";
 import {
   Item,
+  UserHome,
+  UserHomeBody,
   UserProfileBody,
-  UserProfileContainer,
   UserProfileContent,
   UserProfileHeader,
 } from "./user-profile.style";
@@ -23,6 +24,7 @@ import { NavigationBar } from "../../utils/nav-bar/nav-bar";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { useSalary } from "../../../hooks/salary-hook";
 import { Header } from "../../sections/header/header";
+import UserMenu from "../../sections/user-menu/user-menu";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -34,9 +36,10 @@ const UserProfile = () => {
     employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
   }, [employee_id]);
   return (
-    <>
-      <Header />
-      <UserProfileContainer>
+    <UserHome>
+      <UserMenu />
+      <UserHomeBody>
+        <Header />
         <UserProfileBody>
           <UserProfileHeader>
             <TitleContainer>
@@ -61,8 +64,8 @@ const UserProfile = () => {
             <Outlet />
           </UserProfileContent>
         </UserProfileBody>
-      </UserProfileContainer>
-    </>
+      </UserHomeBody>
+    </UserHome>
   );
 };
 

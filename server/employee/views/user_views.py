@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User, Permission, Group
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
+from django.core.files.storage import default_storage
+
 import uuid
 import json
 
@@ -66,6 +68,10 @@ class ProfilePicture(APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         profile_picture = request.data.get('profile_picture')
         if profile_picture:
+            if employee.profile_picture:
+                if default_storage.exists(employee.profile_picture.name):
+                    default_storage.delete(employee.profile_picture.name)
+
             employee.profile_picture = profile_picture
 
         serializer = ProfilePicSerializer(employee, data=request.data)

@@ -14,7 +14,7 @@ import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useContext, useEffect } from "react";
 import { listEmpRequested } from "../../../store/employee/employee-slice";
 import { PaginationContext } from "../../../contexts/pagination-context";
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 export const EmployeesListPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
@@ -43,6 +43,7 @@ export const EmployeesListPage = () => {
         </AddButton>
       </EmployeesListHeader>
       <Body>
+        <Outlet />
         <EmployeeListDisplayer />
         <Pagination pagination={pagination} />
       </Body>

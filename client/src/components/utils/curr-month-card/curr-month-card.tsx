@@ -1,7 +1,8 @@
 import { BoldText } from "../titles/text";
 import { LargeText } from "../titles/titles";
+import Piechart from "./bar";
 import {
-  CircularBar,
+  //   CircularBar,
   GreenBar,
   MonthCardBody,
   MonthCardContainer,
@@ -40,7 +41,7 @@ export const MonthCard = () => {
             </p>
           </MonthRowTemplate>
         </MonthColumnTemplate>
-        <CircularBar />
+        <Piechart />
       </MonthCardBody>
     </MonthCardContainer>
   );

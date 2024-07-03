@@ -57,3 +57,11 @@ export const AddBtn = styled(Button)<ThemeProps>`
   padding: 0.7rem 1rem;
 `;
 
+export const UploadBtn = styled(Button)<ThemeProps>`
+  margin-top: 1rem;
+  padding: 0.7rem 1rem;
+`;
+
+
+
+

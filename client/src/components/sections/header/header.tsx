@@ -27,6 +27,7 @@ export const Header = () => {
     employee_id && dispatcher(getCurrentUserRequest(employee_id));
   }, []);
 
+
   return (
     <>
       <HeaderContainer>

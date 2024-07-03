@@ -75,20 +75,7 @@ export const Data = styled.div<ThemeProps>`
   /* width: auto; */
 `;
 
-export const DownloadButton = styled.button<ThemeProps>`
-  font-size: 1%.5;
-  color: #ffffff;
-  cursor: pointer;
-  padding: 0.5rem 0.5rem;
-  margin: 0 0 0 0.5rem;
-  border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.buttons.primary};
-  border: none;
-  &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.buttons.primary)};
-  }
-`;
+
 
 export const SortBtn = styled.div`
   width: 2rem;

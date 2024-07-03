@@ -46,8 +46,9 @@ export const RouterConfig = () => (
         }
       >
         <Route path="/" element={<DashBoard />} />
-        <Route path="/employees" element={<EmployeesListPage />} />
-        <Route path="/employees/add-employee" element={<AddEmployee />} />
+        <Route path="/employees" element={<EmployeesListPage />}>
+          <Route path="add-employee" element={<AddEmployee />} />
+        </Route>
         <Route
           path="/employees/employee/delete"
           element={<CheckFlashMessage />}

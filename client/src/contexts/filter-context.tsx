@@ -23,20 +23,22 @@ export interface FilterContextType {
   filter: EmployeeFilter;
   setFilter: (filter: EmployeeFilter) => void;
 }
-export const FilterContext = createContext<FilterContextType>({
-  filter: {
-    filter_by: "",
-    order_by: "",
-    order: "",
-    position: "",
-    salary_range: {
-      min: 0,
-      max: 0,
-    },
-    date_of_hire_range: {
-      from: "",
-      to: "",
-    },
+
+export const initialFilter: EmployeeFilter = {
+  filter_by: "",
+  order_by: "",
+  order: "",
+  position: "",
+  salary_range: {
+    min: 0,
+    max: 0,
   },
+  date_of_hire_range: {
+    from: "",
+    to: "",
+  },
+};
+export const FilterContext = createContext<FilterContextType>({
+  filter: initialFilter,
   setFilter: () => {},
 });

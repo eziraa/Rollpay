@@ -12,7 +12,6 @@ import {
   unfinishedAdd,
   unfinishedDelete,
   updateContractDone,
-  updateProfileDone,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
 import {
@@ -20,10 +19,10 @@ import {
   AddDeductionToEmployeesParams,
   AddEmpParams,
   UpdateEmployementContract,
-  UpdateProfileParams,
 } from "../../typo/employee/params";
 import {
   AddEmpResponse,
+  Employee,
   PaginatedEmpResponse,
 } from "../../typo/employee/response";
 import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
@@ -32,23 +31,18 @@ import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
 // import { closeModal } from "../../providers/actions";
 // import { ADD_ALLOWANCE_TO_EMP } from "../../constants/tasks";
 
+interface AddEmployeeResponse extends AddEmpResponse {
+  employee: Employee;
+}
+
 function* AddEmployee(action: PayloadAction<AddEmpParams>) {
   try {
-    const response: AddEmpResponse = yield call(
+    const response: AddEmployeeResponse = yield call(
       EmployeeAPI.addEmp,
       action.payload
     );
     if (response.code === 201) {
-      yield put(addEmpDone());
-      yield put(
-        setFlashMessage({
-          type: "success",
-          status: true,
-          title: "Add Employee",
-          desc: response.success,
-          duration: 3,
-        })
-      );
+      yield put(addEmpDone(response.employee));
     } else if (response.code === 401) {
       yield put(unfinishedAdd(response.error));
     } else if (response.code === 403) {
@@ -229,7 +223,6 @@ function* GetEmployee() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
-      console.log(response);
       yield put(listEmpDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
@@ -326,15 +319,6 @@ function* DeleteEmployee(action: PayloadAction<string>) {
   }
 }
 
-export function* watchAddEmployee() {
-  yield takeEvery("employee/addEmpRequested", AddEmployee);
-  yield takeEvery("employee/listEmpRequested", GetEmployee);
-  yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
-  yield takeEvery("employee/addEmpAllowanceRequested", addAllowance);
-  yield takeEvery("employee/addEmpDeductionRequested", addDeduction);
-  yield takeEvery("employee/addEmpOvertimeRequested", addOvertime);
-}
-
 function* loadNextPage(action: PayloadAction<string>) {
   try {
     const response: PaginatedEmpResponse = yield call(
@@ -381,11 +365,6 @@ function* loadPrevPage(action: PayloadAction<string>) {
   } catch (e) {
     console.log(e);
   }
-}
-
-export function* watchLoadPage() {
-  yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
-  yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
 }
 
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
@@ -454,26 +433,37 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
   }
 }
 
-function* updateProfile(action: PayloadAction<UpdateProfileParams>) {
-  try {
-    const response: string = yield call(
-      EmployeeAPI.updatProfilePicture,
-      action.payload
-    );
-    yield put(updateProfileDone(response));
-  } catch (e) {
+function* filterEmployees(action: PayloadAction<string>) {
+  const response: PaginatedEmpResponse = yield call(
+    EmployeeAPI.listEmployee,
+    action.payload
+  );
+  if (response.code === 200) {
+    yield put(listEmpDone(response));
+  } else if (response.code === 401) {
+    window.location.href = "/access-denied";
     yield put(
       setFlashMessage({
         type: "error",
         status: true,
-        title: "Edit Employee",
-        desc: "Cannot edit employee please try again",
+        title: "Unauthorized",
+        desc: "Please check your credentials",
         duration: 3,
       })
     );
-  }
+  } else if (response.code === 403) {
+    window.location.href = "/access-denied";
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Access Denied",
+        desc: "You are not allowed to view employees",
+        duration: 3,
+      })
+    );
+  } 
 }
-
 function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
   try {
     const response: string = yield call(
@@ -493,9 +483,21 @@ function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
     );
   }
 }
+
+export function* watchEmployeeRequests() {
+  yield takeEvery("employee/editEmployeeRequested", editEmployee);
+  yield takeEvery("employee/addEmpRequested", AddEmployee);
+  yield takeEvery("employee/listEmpRequested", GetEmployee);
+  yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
+  yield takeEvery("employee/addEmpAllowanceRequested", addAllowance);
+  yield takeEvery("employee/addEmpDeductionRequested", addDeduction);
+  yield takeEvery("employee/addEmpOvertimeRequested", addOvertime);
+  yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
+  yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
+  yield takeEvery("employee/filterEmployeeRequest", filterEmployees);
+}
 export function* watchEditEmployee() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
-  yield takeEvery("employee/updateProfileRequest", updateProfile);
   yield takeEvery("employee/updateContractRequest", updateContract);
 
   // yield takeEvery("employee/addPositionRequested", addPosition);

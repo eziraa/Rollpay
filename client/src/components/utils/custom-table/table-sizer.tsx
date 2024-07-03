@@ -61,5 +61,7 @@ export const getTableElements = (data: Employee[]) => {
   tableElements.forEach((element) => {
     gridTamplates += element.max_length + "fr ";
   });
-  return gridTamplates + " 6fr";
+
+  console.log(gridTamplates);
+  return gridTamplates + " 6fr 6fr";
 };
