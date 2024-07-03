@@ -57,7 +57,7 @@ export const Label = styled.p<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.5rem;
   padding: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0rem;
   cursor: pointer;
   p:hover {
     color: ${({ theme }) => theme.colors.secondary};
