@@ -39,3 +39,8 @@ client/src/components/pages/salary/scr.tsx
 client/src/components/pages/salary/scroll.tsx
 client/src/components/pages/salary/table.tsx
 server/media/photos/
+client/src/components/pages/dashboard/stat.ts
+client/src/components/utils/payment-card/payment.ts
+server/media/Game Developer.pdf
+server/media/pdf.pdf
+server/media/VS Code Cheatsheet.pdf

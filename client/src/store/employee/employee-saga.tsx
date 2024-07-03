@@ -498,7 +498,6 @@ function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
     );
     yield put(updateContractDone(response));
   } catch (e) {
-
     yield put(
       setFlashMessage({
         type: "error",
