@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import styled from "styled-components";
 import { baseURL } from "../../../config/api";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
@@ -7,12 +7,13 @@ import { MdFileDownload } from "react-icons/md";
 
 export const DownloadButton = styled.button<ThemeProps>`
   font-size: 1.5rem;
-  color: #ffffff;
+  color: #fff;
   cursor: pointer;
-  padding: 0.5rem 0.5rem;
+  padding: 0rem 0.5rem;
   width: max-content;
   margin: 0.5rem;
   border-radius: 0.5rem;
+
   background-color: ${({ theme }) => theme.buttons.primary};
   border: none;
   &:hover {
@@ -22,15 +23,15 @@ export const DownloadButton = styled.button<ThemeProps>`
 `;
 
 const DownloadPDF = ({ url }: { url: string }) => {
-  const [buttonText, setButtonText] = useState("Download");
-  const [downloading, setDownloading] = useState(false);
+  // const [buttonText, setButtonText] = useState("Download");
+  // const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
-    setDownloading(true);
+    // setDownloading(true);
     const response = await fetch(baseURL + url);
     if (response) {
       const reader = response.body?.getReader();
-      const contentLength = +(response.headers?.get("Content-Length") || 0);
+      // const contentLength = +(response.headers?.get("Content-Length") || 0);
 
       let receivedLength = 0; // received that many bytes at the moment
       const chunks = []; // array of received binary chunks (comprises the body)
@@ -44,15 +45,15 @@ const DownloadPDF = ({ url }: { url: string }) => {
         chunks.push(value);
         receivedLength += value.length;
 
-        setButtonText(
-          `Downloading... ${((receivedLength / contentLength) * 100).toFixed(
-            0
-          )}%`
-        );
+        // setButtonText(
+        //   `Downloading... ${((receivedLength / contentLength) * 100).toFixed(
+        //     0
+        //   )}%`
+        // );
       }
 
-      setButtonText("Download");
-      setDownloading(false);
+      // setButtonText("Download");
+      // setDownloading(false);
 
       // Concatenate chunks into single Uint8Array
       const chunksAll = new Uint8Array(receivedLength);
@@ -78,8 +79,12 @@ const DownloadPDF = ({ url }: { url: string }) => {
   };
 
   return (
-    <DownloadButton onClick={handleDownload} disabled={downloading}>
-      <MdFileDownload /> {buttonText}
+    <DownloadButton
+      onClick={handleDownload}
+      // disabled={downloading}
+    >
+      <MdFileDownload />
+      {/* {buttonText} */}
     </DownloadButton>
   );
 };

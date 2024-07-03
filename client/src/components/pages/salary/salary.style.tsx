@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { GoSearch } from "react-icons/go";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { Input } from "../../utils/form-elements/form.style";
+import { Input} from "../../utils/form-elements/form.style";
 import { CustomTable } from "../../utils/custom-table/custom-table";
 import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 import { Button } from "../see-employee/see-employee.style";
@@ -11,6 +11,8 @@ import {
   body,
   container,
 } from "../../utils/pages-utils/containers.style";
+import { Label } from "../../sections/profile/profile.style";
+import { Icon } from "../../utils/profile/employee-profile.style";
 
 export const EmployeesSalaryContainer = styled.div<ThemeProps>`
   ${container}
@@ -48,7 +50,7 @@ export const SearchContainer = styled.div<ThemeProps>`
   width: 40rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   padding: 0rem;
-  margin: 1rem;
+  margin: 0rem 2rem 0rem 1rem;
   padding: 0 1rem;
 `;
 
@@ -80,6 +82,22 @@ export const SalaryTable = styled(CustomTable)`
 `;
 
 export const ExportButton = styled(Button)`
-  width: 7rem;
+  width: 9rem;
+  padding-right: 1rem;
   margin-left: 1rem;
 `;
+export const ExportLabel = styled(Label)`
+  font-size: 1.5rem;
+  margin-left: 1rem;
+`;
+
+export const ExportIcon = styled(Icon)`
+  margin: 0rem;
+  padding: 0rem;
+  width: max-content;
+  height: 2rem;
+  color: ${({ theme }) => theme.backgrounds.primary};
+  background-color: transparent;
+  border-radius: 0rem;
+`;
+

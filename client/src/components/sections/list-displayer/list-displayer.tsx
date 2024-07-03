@@ -238,7 +238,7 @@ function EmployeeListDisplayer() {
                   >
                     View
                   </Data>
-                  <Data>{"..." + emp.employement_contract.slice(-8)}</Data>
+                  {/* <Data>{emp.employement_contract.split('/')[3].substring(0,4) + "..."}</Data> */}
                   <DownloadPDF url={emp.employement_contract} />
                 </ListRow>
               );
