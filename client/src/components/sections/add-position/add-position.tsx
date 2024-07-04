@@ -17,30 +17,72 @@ import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   addPositionRequested,
   closePositionTask,
+  editPositionRequested,
+  getPositionRequested,
+  resetPositionState,
 } from "../../../store/position/position-slice";
 import { useModal } from "../../../hooks/modal-hook";
 import { ADD_POSITION } from "../../../constants/tasks";
 import { AddPositionSchema } from "../../../schema/add-position-schema";
 import { useEffect } from "react";
 import { usePosition } from "../../../hooks/position-hook";
+import { useNavigate, useParams } from "react-router-dom";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 export const AddPosition = () => {
   const dispatcher = useAppDispatch();
-  const { closeModal } = useModal();
-  const { task_error, curr_position } = usePosition();
-  const { touched, errors, values, handleChange, handleSubmit } = useFormik({
+  const { task_error } = usePosition();
+  const navigate = useNavigate();
+  const position = usePosition();
+  const { position_id } = useParams();
+
+  useEffect(() => {
+    position_id && dispatcher(getPositionRequested(position_id));
+  }, [position_id]);
+  useEffect(() => {
+    if (position.curr_position && position_id) {
+      setFieldValue("position_name", position.curr_position.position_name);
+      setFieldValue("basic_salary", position.curr_position.basic_salary);
+    }
+  }, [position.curr_position]);
+  const {
+    values,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    setFieldValue,
+    dirty,
+  } = useFormik({
     initialValues: {
       position_name: "",
       basic_salary: "",
     },
     validationSchema: AddPositionSchema,
-    onSubmit: async (values) => {
-      await dispatcher(addPositionRequested(values));
+    onSubmit(values) {
+      if (dirty) {
+        if (position_id) {
+          dispatcher(editPositionRequested({ ...values, id: position_id }));
+        } else dispatcher(addPositionRequested(values));
+      } else {
+        dispatcher(
+          setFlashMessage({
+            desc: "No changes to save",
+            title: "No changes made",
+            status: true,
+            duration: 3,
+            type: "error",
+          })
+        );
+      }
     },
   });
-
   useEffect(() => {
-    curr_position && closeModal(ADD_POSITION);
-  }, [curr_position, closeModal]);
+    if (isSubmitting && position.task_finished) {
+      dispatcher(resetPositionState({ ...position, task_error: undefined }));
+      navigate(-1);
+    }
+  }, [position.task_finished]);
 
   const clearAction = () => {
     dispatcher(closePositionTask());
@@ -49,7 +91,7 @@ export const AddPosition = () => {
     <Modal closeAction={clearAction}>
       <PositionContainer>
         <PositionBody>
-          <Title>Add Position</Title>
+          <Title>{position_id ? "Edit" : "Add"} Position</Title>
           <PositionForm
             onSubmit={(e) => {
               e.preventDefault();
@@ -72,7 +114,7 @@ export const AddPosition = () => {
               <Label>Base Salary</Label>
               <Input
                 type="number"
-                value={values.basic_salary}
+                value={values.basic_salary.toString()}
                 name="basic_salary"
                 onChange={handleChange}
               />
@@ -90,7 +132,7 @@ export const AddPosition = () => {
                 {task_error}
               </FormError>
             )}
-            <AddBtn type="submit">Add</AddBtn>
+            <AddBtn type="submit">{position_id ? "Edit" : "Add"}</AddBtn>
           </PositionForm>
         </PositionBody>
       </PositionContainer>
