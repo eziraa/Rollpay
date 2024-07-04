@@ -42,6 +42,7 @@ export const EmployeesListHeader = styled.div`
 
 export const Body = styled.div<ThemeProps>`
   padding: 0rem;
+  margin-right: 2rem;
 `;
 
 export const AddButton = styled(Button)`
@@ -49,5 +50,6 @@ export const AddButton = styled(Button)`
   justify-self: end;
   display: block;
   position: absolute;
-  right: 3rem;
+  right: 4rem;
+
 `;

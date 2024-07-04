@@ -10,6 +10,7 @@ import {
   LogoImage,
   SubMenuContainer,
   SubMenuItem,
+  ColapseExpand,
 } from "./left-menu.style";
 import { useLocation, useNavigate } from "react-router";
 import Image from "../../../assets/logo.png";
@@ -25,23 +26,23 @@ function LeftMenu() {
 
   const salarySubMenuItems = [
     {
-      title: "Salary Reports",
+      title: "Employees Payroll",
       path: "/employees-salary",
       icon: <SalaryIcon />,
     },
     {
       title: "Deductions",
-      path: "/payroll-deductions",
+      path: "/deductions",
       icon: <SalaryIcon />,
     },
     {
       title: "Allowances",
-      path: "/payroll-allowances",
+      path: "/allowances",
       icon: <SalaryIcon />,
     },
     {
       title: "Overtimes",
-      path: "/payroll-overtimes",
+      path: "/overtimes",
       icon: <SalaryIcon />,
     },
     // Add more submenu items here...
@@ -94,7 +95,9 @@ function LeftMenu() {
       >
         <UsersIcon />
         <MenuItemText>All Employees</MenuItemText>
-        {colapseEmployees ? <MdExpandMore /> : <MdExpandLess />}
+        <ColapseExpand>
+          {colapseEmployees ? <MdExpandMore /> : <MdExpandLess />}
+        </ColapseExpand>
       </MenuItem>
       {!colapseEmployees && (
         <SubMenuContainer>
@@ -120,8 +123,10 @@ function LeftMenu() {
         }}
       >
         <SalaryIcon />
-        <MenuItemText>Salary</MenuItemText>
-        {colapseSalary ? <MdExpandMore /> : <MdExpandLess />}
+        <MenuItemText>Payroll</MenuItemText>
+        <ColapseExpand>
+          {colapseSalary ? <MdExpandMore /> : <MdExpandLess />}
+        </ColapseExpand>
       </MenuItem>
       {!colapseSalary && (
         <SubMenuContainer>
