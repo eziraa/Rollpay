@@ -34,6 +34,9 @@ import UserAllowance from "../../components/pages/user-profile/user-allowance";
 import { DashBoard } from "../../components/pages/dashboard/dashboard";
 import { AddPosition } from "../../components/sections/add-position/add-position";
 import { PositionPage } from "../../components/pages/positions/position";
+import { AllowancePage } from "../../components/pages/allowances/allowances";
+import { DeductionPage } from "../../components/pages/deductions/deductions";
+import { OvertimePage } from "../../components/pages/overtimes/overtime";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const RouterConfig = () => (
   <Router>
@@ -53,6 +56,15 @@ export const RouterConfig = () => (
         </Route>
         <Route path="/positions" element={<PositionPage />}>
           <Route path="add-position" element={<AddPosition />} />
+        </Route>
+        <Route path="/allowances" element={<AllowancePage />}>
+          <Route path="add-allowance" element={<AddAllowance />} />
+        </Route>
+        <Route path="/deductions" element={<DeductionPage />}>
+          <Route path="add-deduction" element={<AddDeduction />} />
+        </Route>
+        <Route path="/overtimes" element={<OvertimePage />}>
+          <Route path="add-overtime" element={<AddOvertime />} />
         </Route>
         <Route
           path="/employees/employee/delete"
