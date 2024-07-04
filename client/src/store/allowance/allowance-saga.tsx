@@ -15,6 +15,7 @@ import {
   addAllowanceDone,
   deleteAllowanceDone,
   editAllowanceDone,
+  getAllowanceDone,
   listAllowanceDone,
   unfinishedAdd,
 } from "./allowance-slice";
@@ -91,7 +92,7 @@ function* GetAllowances() {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view employees",
+          desc: "You are not allowed to view allowances",
           duration: 3,
         })
       );
@@ -100,7 +101,52 @@ function* GetAllowances() {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "List Employee",
+          title: "List Allowance",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* GetAllowance(action: PayloadAction<string>) {
+  try {
+    const response: AddAllowanceResponse = yield call(
+      AllowanceAPI.getAllowance,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getAllowanceDone(response.allowance));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view allowance",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Get allowance",
           desc: response.error,
           duration: 3,
         })
@@ -231,7 +277,6 @@ function* editAllowance(action: PayloadAction<EditAllowanceParams>) {
   }
 }
 
-
 function* loadNextPage(action: PayloadAction<string>) {
   try {
     const response: PaginatedAllowanceResponse = yield call(
@@ -280,7 +325,6 @@ function* loadPrevPage(action: PayloadAction<string>) {
   }
 }
 
-
 export function* watchAllowanceRequest() {
   yield takeEvery("allowance/editAllowanceRequested", editAllowance);
   yield takeEvery("allowance/loadNextPageRequested", loadNextPage);
@@ -288,4 +332,5 @@ export function* watchAllowanceRequest() {
   yield takeEvery("allowance/addAllowanceRequested", addAllowance);
   yield takeEvery("allowance/listAllowancesRequested", GetAllowances);
   yield takeEvery("allowance/deleteAllowanceRequested", DeleteAllowance);
+  yield takeEvery("allowance/getAllowanceRequested", GetAllowance);
 }
