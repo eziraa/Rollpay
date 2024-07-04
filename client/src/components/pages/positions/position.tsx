@@ -79,7 +79,7 @@ export const PositionPage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          navigate(`/edit-position/${position.id}`);
+                          navigate(`edit-position/${position.id}`);
                           dispatcher(listPositionsRequested());
                         }}
                       >
