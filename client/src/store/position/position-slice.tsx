@@ -136,12 +136,10 @@ const PositionSlice = createSlice({
       state.task_finished = true;
       state.curr_position = action.payload;
     },
-    resetCurrEmployee: (state) => {
-      state.curr_position = undefined;
-      state.task_finished = true;
-    },
-    unfinishedEdit: (_) => {
-      // state.task_finished = true
+    resetPositionState: (state, action: PayloadAction<PositionState>) => {
+      state = {
+        ...action.payload,
+      };
     },
     closePositionTask: (state) => {
       state.task_finished = true;
@@ -163,8 +161,7 @@ export const {
   addPositionDone,
   editPositionRequested,
   editPositionDone,
-  unfinishedEdit,
-  resetCurrEmployee,
+  resetPositionState,
   searching,
   noSearchResult,
   loadNextPageRequested,
