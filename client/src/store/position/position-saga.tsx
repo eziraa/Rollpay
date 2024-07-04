@@ -12,8 +12,9 @@ import {
   editPositionDone,
   listPositionDone,
   unfinishedAdd,
-  unfinishedDelete,
+  taskUnfinished,
   unfinishedEdit,
+  closePositionDone,
 } from "./position-slice";
 import {
   AddPositionParams,
@@ -130,7 +131,7 @@ function* DeletePosition(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedDelete());
+      yield put(taskUnfinished(response.error || "Cann't delete position"));
       yield put(
         setFlashMessage({
           type: "error",
@@ -141,7 +142,63 @@ function* DeletePosition(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedDelete());
+      yield put(taskUnfinished(response.error || "Cann't delete position"));
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to delete positions",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Delete Position",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* CLosePosition(action: PayloadAction<string>) {
+  try {
+    const response: AddPositionResponse = yield call(
+      PositionAPI.closePosition,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(closePositionDone(response.position));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Closing Position",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(taskUnfinished(response.error || "Cann't delete position"));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(taskUnfinished(response.error || "Cann't delete position"));
       // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
@@ -292,4 +349,5 @@ export function* watchPositionRequest() {
   yield takeEvery("position/addPositionRequested", addPosition);
   yield takeEvery("position/listPositionsRequested", GetPositions);
   yield takeEvery("position/deletePositionRequested", DeletePosition);
+  yield takeEvery("position/closePositionRequested", CLosePosition);
 }
