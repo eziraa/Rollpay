@@ -23,6 +23,10 @@ const EmployeeSlice = createSlice({
     addPositionRequested: (state, _: PayloadAction<AddPositionParams>) => {
       state.task_finished = false;
     },
+    getPositionRequested: (__, _: PayloadAction<string>) => {},
+    getPositionDone: (state, action: PayloadAction<Position>) => {
+      state.curr_position = action.payload;
+    },
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
       let number_of_pages = 1;
@@ -117,7 +121,9 @@ const EmployeeSlice = createSlice({
     },
     editPositionDone: (state, action: PayloadAction<Position>) => {
       state.task_finished = true;
-      state.curr_position = action.payload;
+      state.positions = state.positions.map((position) =>
+        position.id === action.payload.id ? action.payload : position
+      );
     },
     resetCurrEmployee: (state) => {
       state.curr_position = undefined;
@@ -129,6 +135,9 @@ const EmployeeSlice = createSlice({
     closePositionTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
+    },
+    resetPositionState: (state, action: PayloadAction<PositionState>) => {
+      state = { ...action.payload };
     },
   },
 });
@@ -154,6 +163,9 @@ export const {
   loadPrevPageRequested,
   setPagesize,
   closePositionTask,
+  getPositionDone,
+  getPositionRequested,
+  resetPositionState,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
