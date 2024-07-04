@@ -12,8 +12,12 @@ from employee.views.utils.pagination import StandardResultsSetPagination
 
 class OvertimeView (APIView):
 
-    def get(self, request: Request, format=None):
+    def get(self, request: Request,overtime_id=None, format=None):
         try:
+            if overtime_id:
+                overtime  = Overtime.objects.get(id=overtime_id)
+                serializer = OvertimeSerializer(overtime)
+                return Response(serializer.data)
             queryset = Overtime.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)
