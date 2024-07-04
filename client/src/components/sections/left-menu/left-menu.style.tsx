@@ -50,9 +50,8 @@ export const MenuItem = styled.div<MenuItemProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 90%;
-  padding: 1rem 1rem;
-  margin: 0 1rem;
+  width: 100%;
+  padding: 1rem 2rem;
   text-align: left;
   font-size: 2rem;
   color: ${({ theme }) => theme.colors.primary};
@@ -67,6 +66,45 @@ export const MenuItem = styled.div<MenuItemProps>`
   border-bottom-color: ${({ active }) => (active ? "#10e4c5 " : "transparent")};
 `;
 
+export const SubMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
+`;
+
+interface SubMenuItemProps extends ThemeProps {
+  active: boolean;
+}
+
+export const SubMenuItem = styled.div<SubMenuItemProps>`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  margin: 0 1rem;
+  padding-left: 3rem;
+  text-align: left;
+  font-size: 1.6rem;
+  border-left: 0.5rem solid #3bf4adf8;
+  border-bottom: 0.1rem solid #bfbfbff8;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  transition: all 0.5s ease;
+  background-color: ${({ active }) => (active ? "#3BF4ADF8 " : "transparent")};
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.secondary};
+    border-left-color: #bfbfbff8;
+  }
+`;
 export const MenuItemText = styled.h1`
   font-size: 1.6rem;
   font-weight: 400;
