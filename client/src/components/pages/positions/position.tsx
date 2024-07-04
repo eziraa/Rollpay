@@ -8,7 +8,10 @@ import {
   PositionListHeader,
   Title,
 } from "./position.style";
-import { listPositionsRequested } from "../../../store/position/position-slice";
+import {
+  deletePositionRequested,
+  listPositionsRequested,
+} from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useEffect } from "react";
@@ -27,10 +30,11 @@ import {
 } from "../../utils/custom-table/custom-table";
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 export const PositionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const position = usePosition();
+  const { task_error, task_finished, positions } = usePosition();
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listPositionsRequested());
@@ -54,7 +58,7 @@ export const PositionPage = () => {
         <Outlet />
         {!employee.task_finished ? (
           <ThreeDots size={2} />
-        ) : position.positions.length === 0 ? (
+        ) : positions.length === 0 ? (
           <div>
             <NoResult text="Not Positions found" />
           </div>
@@ -68,7 +72,7 @@ export const PositionPage = () => {
               <HeaderTitle>Actions</HeaderTitle>
             </TableHeader>
             <TableBody>
-              {position.positions.map((position, index) => {
+              {positions.map((position, index) => {
                 return (
                   <TableRow key={index}>
                     <TableData>{position.position_name}</TableData>
@@ -90,12 +94,17 @@ export const PositionPage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          // position.deletePosition(position.id);
-                          dispatcher(listPositionsRequested());
+                          dispatcher(deletePositionRequested(position.id));
                         }}
                       >
-                        <RiDeleteBin6Line />
-                        Delete
+                        {!task_error && !task_finished ? (
+                          <SmallSpinner />
+                        ) : (
+                          <>
+                            <RiDeleteBin6Line />
+                            Delete
+                          </>
+                        )}
                       </DeleteButton>
                     </ActionBtnsContainer>
                   </TableRow>
