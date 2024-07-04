@@ -139,12 +139,33 @@ const closePosition = async (position_id: string) => {
   return response;
 };
 
+const openPosition = async (position_id: string) => {
+  const response = await api
+    .patch("/position/open/" + position_id)
+    .then((res) => {
+      return {
+        success: "Position opened successfully",
+        code: res.status,
+        position: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const PositionAPI = {
   listPositions,
   editPosition,
   deletePosition,
   addPosition,
   closePosition,
+  openPosition,
 };
 
 export default PositionAPI;
