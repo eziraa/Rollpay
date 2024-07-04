@@ -77,6 +77,15 @@ const PositionSlice = createSlice({
         position.id === action.payload.id ? action.payload : position
       );
     },
+    openPositionRequested: (__, _: PayloadAction<string>) => {},
+    openPositionDone: (state, action: PayloadAction<Position>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.positions = state.positions.map((position) =>
+        position.id === action.payload.id ? action.payload : position
+      );
+    },
+
     taskUnfinished: (state, action: PayloadAction<string>) => {
       state.task_error = action.payload;
     },
@@ -164,6 +173,8 @@ export const {
   closePositionTask,
   closePositionRequested,
   closePositionDone,
+  openPositionRequested,
+  openPositionDone,
 } = PositionSlice.actions;
 
 export default PositionSlice.reducer;
