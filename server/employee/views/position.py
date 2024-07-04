@@ -63,3 +63,14 @@ class PositionView (APIView):
         serializer = PositionSerializer(position)
 
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+    def patch(self, request, position_id):
+        try:
+            position = Position.objects.get(pk=position_id)
+        except Position.DoesNotExist:
+            return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
+        position.end_date = None
+        position.save()
+        serializer = PositionSerializer(position)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
