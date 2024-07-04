@@ -13,6 +13,7 @@ import {
   closePositionRequested,
   deletePositionRequested,
   listPositionsRequested,
+  openPositionRequested,
 } from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
@@ -131,7 +132,9 @@ export const PositionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(CLOSE);
-                          dispatcher(closePositionRequested(position.id));
+                          position.end_date
+                            ? dispatcher(openPositionRequested(position.id))
+                            : dispatcher(closePositionRequested(position.id));
                         }}
                       >
                         {action === CLOSE && !task_error && !task_finished ? (
