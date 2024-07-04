@@ -8,7 +8,7 @@ import { LuCircleDollarSign } from "react-icons/lu";
 import { PiUsersThree } from "react-icons/pi";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
-  width: 14vw;
+  width: 16vw;
   height: 100vh;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.07, theme.buttons.secondary)};
@@ -50,10 +50,12 @@ export const MenuItem = styled.div<MenuItemProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
-  padding: 1rem 2rem;
+  width: 90%;
+  padding: 0.5rem 2rem;
   text-align: left;
   font-size: 2rem;
+  margin: 0.3rem 1rem;
+  border-radius: 1rem;
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   &:hover {
@@ -61,9 +63,8 @@ export const MenuItem = styled.div<MenuItemProps>`
     background-color: ${({ theme }) => theme.colors.secondary};
   }
   border-bottom: 0.4rem solid transparent;
-  background-color: ${({ active }) => (active ? "#98aaa3f8 " : "transparent")};
-  border-bottom: 1px solid
-    ${({ active }) => (active ? "#10e4c5 " : "transparent")};
+  background-color: ${({ active }) => (active ? "#8b8b8b78 " : "transparent")};
+  position: relative;
 `;
 
 export const SubMenuContainer = styled.div`
@@ -79,7 +80,7 @@ export const SubMenuContainer = styled.div`
 
   /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
   transition: all 0.5s ease;
-  border-left: ${({ theme }) => ` 0.5rem solid ${theme.buttons.primary}`};
+  border-left: 0.3rem solid #23232378;
 `;
 
 interface SubMenuItemProps extends ThemeProps {
@@ -94,17 +95,12 @@ export const SubMenuItem = styled.div<SubMenuItemProps>`
   padding: 0.5rem 1rem;
   text-align: left;
   font-size: 1.6rem;
-  /* border-bottom: 0.1rem solid #34343483; */
-  /* border-left: ${({ theme, active }) =>
-    active ? ` 0.5rem solid ${theme.buttons.primary}` : "transparent"}; */
-
-  background-color: ${({ theme, active }) =>
-    active ? theme.buttons.primary : "transparent"};
-  color: ${({ theme, active }) =>
-    !active ? theme.colors.primary : theme.backgrounds.primary};
+  color: #0f0f0f;
+  background-color: ${({ active }) => (active ? "#d9e3dff8" : "transparent")};
   cursor: pointer;
   transition: all 0.5s ease;
   &:hover {
+    background-color: #0f0f0f0d;
     color: ${({ theme }) => theme.colors.primary};
   }
 `;
@@ -141,4 +137,6 @@ export const SalaryIcon = styled(LuCircleDollarSign)`
 export const ColapseExpand = styled.div`
   display: flex;
   justify-self: flex-end;
+  position: absolute;
+  right: 0.5rem;
 `;
