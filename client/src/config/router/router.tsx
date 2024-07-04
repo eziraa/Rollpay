@@ -56,6 +56,7 @@ export const RouterConfig = () => (
         </Route>
         <Route path="/positions" element={<PositionPage />}>
           <Route path="add-position" element={<AddPosition />} />
+          <Route path="edit-position/:position_id" element={<AddPosition />} />
         </Route>
         <Route path="/allowances" element={<AllowancePage />}>
           <Route path="add-allowance" element={<AddAllowance />} />
