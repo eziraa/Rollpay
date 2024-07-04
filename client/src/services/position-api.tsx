@@ -1,8 +1,8 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
 import { AddPositionParams, EditPositionParams } from "../typo/position/params";
-import { CustomResponse } from "../typo/utils/response";
 import { AddPositionResponse, Position } from "../typo/position/response";
+import { BaseResponse } from "../typo/utils/response";
 
 const addPosition = async (values: AddPositionParams) => {
   const response = await api
@@ -32,7 +32,7 @@ export interface Pagination {
   number_of_pages: number;
 }
 
-export interface PaginatedPositionResponse extends CustomResponse {
+export interface  PaginatedPositionResponse extends BaseResponse {
   count: number;
   results: Position[];
   pagination: Pagination;
@@ -74,6 +74,29 @@ const listPositions = async (pageUrl?: string) => {
   return positions;
 };
 
+const getPosition = async (position_id: string) => {
+  const endpoint = "/position/get/" + position_id;
+
+  const position = await api
+    .get(endpoint)
+    .then((res) => {
+      return {
+        position: res.data,
+        code: res.status,
+        success: "Successfully returned position",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return position;
+};
+
 const editPosition = async (
   position_id: string,
   values: EditPositionParams
@@ -84,7 +107,7 @@ const editPosition = async (
       return {
         success: "Position updated successfully",
         code: res.status,
-        employee: res.data,
+        position: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -124,6 +147,7 @@ const PositionAPI = {
   editPosition,
   deletePosition,
   addPosition,
+  getPosition
 };
 
 export default PositionAPI;
