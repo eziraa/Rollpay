@@ -96,7 +96,7 @@ function EmployeeListDisplayer() {
     setEmpList([...sorted]);
   };
 
-  if (!employee.task_finished) return <ThreeDots size={4} />;
+  if (!employee.task_finished) return <ThreeDots size={1} />;
 
   if (display.search_employee && employee.query_set.length < 1)
     return <NoResult text=" No Serch Results" />;
