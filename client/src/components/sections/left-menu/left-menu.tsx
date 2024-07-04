@@ -26,23 +26,23 @@ function LeftMenu() {
 
   const salarySubMenuItems = [
     {
-      title: "Salary Reports",
+      title: "Employees Payroll",
       path: "/employees-salary",
       icon: <SalaryIcon />,
     },
     {
       title: "Deductions",
-      path: "/payroll-deductions",
+      path: "/deductions",
       icon: <SalaryIcon />,
     },
     {
       title: "Allowances",
-      path: "/payroll-allowances",
+      path: "/allowances",
       icon: <SalaryIcon />,
     },
     {
       title: "Overtimes",
-      path: "/payroll-overtimes",
+      path: "/overtimes",
       icon: <SalaryIcon />,
     },
     // Add more submenu items here...
@@ -123,7 +123,7 @@ function LeftMenu() {
         }}
       >
         <SalaryIcon />
-        <MenuItemText>Salary</MenuItemText>
+        <MenuItemText>Payroll</MenuItemText>
         <ColapseExpand>
           {colapseSalary ? <MdExpandMore /> : <MdExpandLess />}
         </ColapseExpand>
