@@ -18,32 +18,77 @@ import { AddOvertimeSchema } from "../../../schema/add-overtime-schema";
 import {
   addOvertimeRequested,
   closeOvertimeTask,
+  editOvertimeRequested,
+  getOvertimeRequested,
+  resetOvertimeState,
 } from "../../../store/overtime/overtime-slice";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { useOvertime } from "../../../hooks/overtime-hook";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 export const AddOvertime = () => {
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
-  const { task_error, task_finished, curr_overtime } = useOvertime();
-  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+  const { task_error } = useOvertime();
+  const overtime = useOvertime();
+  const { overtime_id } = useParams();
+
+  useEffect(() => {
+    overtime_id && dispatcher(getOvertimeRequested(overtime_id));
+  }, [overtime_id]);
+  useEffect(() => {
+    if (overtime.curr_overtime && overtime_id) {
+      setFieldValue("overtime_type", overtime.curr_overtime.overtime_type);
+      setFieldValue("overtime_rate", overtime.curr_overtime.overtime_rate);
+    }
+  }, [overtime.curr_overtime]);
+  const {
+    values,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    setFieldValue,
+    dirty,
+  } = useFormik({
     initialValues: {
       overtime_type: "",
       overtime_rate: "",
     },
     validationSchema: AddOvertimeSchema,
     onSubmit(values) {
-      dispatcher(addOvertimeRequested(values));
+      dispatcher(
+        resetOvertimeState({
+          ...overtime,
+          task_error: undefined,
+        })
+      );
+      if (dirty) {
+        if (overtime_id) {
+          dispatcher(editOvertimeRequested({ ...values, id: overtime_id }));
+        } else dispatcher(addOvertimeRequested(values));
+      } else {
+        dispatcher(
+          setFlashMessage({
+            desc: "No changes to save",
+            title: "No changes made",
+            status: true,
+            duration: 3,
+            type: "error",
+          })
+        );
+      }
     },
   });
-
   useEffect(() => {
-    if (curr_overtime && task_finished) {
+    if (isSubmitting && overtime.task_finished) {
+      dispatcher(resetOvertimeState({ ...overtime, task_error: undefined }));
       navigate(-1);
-      clearAction();
     }
-  }, [curr_overtime]);
+  }, [overtime.task_finished]);
 
   const clearAction = () => {
     dispatcher(closeOvertimeTask());
@@ -52,7 +97,7 @@ export const AddOvertime = () => {
     <Modal closeAction={clearAction}>
       <OvertimeContainer>
         <OvertimeBody>
-          <Title>Add Overtime</Title>
+          <Title>{overtime_id ? 'Edit' : 'Add'} Overtime</Title>
           <OvertimeForm
             onSubmit={(e) => {
               e.preventDefault();
@@ -89,7 +134,7 @@ export const AddOvertime = () => {
               )}
             </FormError>
             <FormError>{task_error && <div>{task_error}</div>}</FormError>
-            <AddBtn type="submit">Add</AddBtn>
+            <AddBtn type="submit">{overtime_id ? 'Save':'Add'}</AddBtn>
           </OvertimeForm>
         </OvertimeBody>
       </OvertimeContainer>
