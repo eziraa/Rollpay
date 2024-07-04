@@ -10,6 +10,6 @@ urlpatterns = [
          name='__edit_overtime__'),
     path('delete/<overtime_id>', overtime.OvertimeView.as_view(),
          name='__delete_overtime__'),
-    path('get/<str:id>', overtime.OvertimeView.as_view(),
+    path('get/<overtime_id>', overtime.OvertimeView.as_view(),
          name='__get_overtime__'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
