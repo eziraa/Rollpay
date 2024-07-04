@@ -13,7 +13,6 @@ import {
   listPositionDone,
   unfinishedAdd,
   taskUnfinished,
-  unfinishedEdit,
   closePositionDone,
 } from "./position-slice";
 import {
@@ -348,7 +347,7 @@ function* editPosition(action: PayloadAction<EditPositionParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedEdit());
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -370,7 +369,7 @@ function* editPosition(action: PayloadAction<EditPositionParams>) {
         })
       );
     } else {
-      yield put(unfinishedEdit());
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -385,7 +384,7 @@ function* editPosition(action: PayloadAction<EditPositionParams>) {
       );
     }
   } catch (e) {
-    yield put(unfinishedEdit());
+    yield put(taskUnfinished("Cannot edit positions please try again"));
     yield put(
       setFlashMessage({
         type: "error",
