@@ -7,6 +7,7 @@ from employee.serializers.position import PositionSerializer
 from django.http import JsonResponse
 import json
 from employee.views.utils.pagination import StandardResultsSetPagination
+import datetime
 
 
 class PositionView (APIView):
@@ -61,10 +62,8 @@ class PositionView (APIView):
             position = Position.objects.get(pk=position_id)
         except Position.DoesNotExist:
             return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
-        data = json.loads(request.body)
-        serializer = PositionSerializer(position, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        position.end_date = (datetime.datetime.now().date())
+        position.save()
+        serializer = PositionSerializer(position)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)

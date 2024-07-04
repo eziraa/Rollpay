@@ -56,6 +56,8 @@ export const ActionBtnsContainer = styled.div`
   align-items: center;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
+  justify-content: flex-end;
+  width: 80%;
 `;
 export const ActionButton = styled.button`
   display: flex;
@@ -69,6 +71,7 @@ export const ActionButton = styled.button`
   font-size: 1.6rem;
   padding: 0.5rem 1rem;
   gap: 0.3rem;
+  flex: 1;
   &:hover {
     background-color: #2f8236;
     color: #ffffff;
@@ -77,8 +80,17 @@ export const ActionButton = styled.button`
 
 export const EditButton = styled(ActionButton)`
   border: 1px solid #369143;
+  flex: 0.6;
   &:hover {
     background-color: #369143;
+    color: #ffffff;
+  }
+`;
+export const SuspendButton = styled(ActionButton)`
+  color: #ad6e01;
+  border: 1px solid #ad6e01;
+  &:hover {
+    background-color: #ad6e01;
     color: #ffffff;
   }
 `;

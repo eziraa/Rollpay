@@ -6,12 +6,17 @@ import {
   EditButton,
   PositionListBody,
   PositionListHeader,
+  SuspendButton,
   Title,
 } from "./position.style";
-import { listPositionsRequested } from "../../../store/position/position-slice";
+import {
+  closePositionRequested,
+  deletePositionRequested,
+  listPositionsRequested,
+} from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { usePosition } from "../../../hooks/position-hook";
@@ -25,12 +30,17 @@ import {
   TableHeader,
   TableRow,
 } from "../../utils/custom-table/custom-table";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { SmallSpinner } from "../../utils/spinner/spinner";
+import { IoOpenOutline } from "react-icons/io5";
 export const PositionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const position = usePosition();
+  const { task_error, task_finished, positions } = usePosition();
+  const DELETE = "delete";
+  const CLOSE = "close";
+  const [action, setAction] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listPositionsRequested());
@@ -54,7 +64,7 @@ export const PositionPage = () => {
         <Outlet />
         {!employee.task_finished ? (
           <ThreeDots size={2} />
-        ) : position.positions.length === 0 ? (
+        ) : positions.length === 0 ? (
           <div>
             <NoResult text="Not Positions found" />
           </div>
@@ -65,15 +75,45 @@ export const PositionPage = () => {
               <HeaderTitle>Position Name</HeaderTitle>
               <HeaderTitle>Initial Salary</HeaderTitle>
               <HeaderTitle>Date of Start</HeaderTitle>
+              <HeaderTitle>Status</HeaderTitle>
+              <HeaderTitle>Date of End</HeaderTitle>
               <HeaderTitle>Actions</HeaderTitle>
             </TableHeader>
             <TableBody>
-              {position.positions.map((position, index) => {
+              {positions.map((position, index) => {
                 return (
                   <TableRow key={index}>
                     <TableData>{position.position_name}</TableData>
                     <TableData>{position.basic_salary}</TableData>
-                    <TableData>No Date</TableData>
+                    <TableData> {position.start_date} </TableData>
+                    <TableData>
+                      {position.end_date ? (
+                        <span
+                          style={{
+                            color: "#f45",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Closed
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            color: "#04d574",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Active
+                        </span>
+                      )}{" "}
+                    </TableData>
+                    <TableData>
+                      {position.end_date ? (
+                        position.end_date
+                      ) : (
+                        <i>Not Endded</i>
+                      )}
+                    </TableData>
                     <ActionBtnsContainer>
                       <EditButton
                         onClick={(e) => {
@@ -86,16 +126,44 @@ export const PositionPage = () => {
                         <MdOutlineEdit />
                         Edit
                       </EditButton>
+                      <SuspendButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setAction(CLOSE);
+                          dispatcher(closePositionRequested(position.id));
+                        }}
+                      >
+                        {action === CLOSE && !task_error && !task_finished ? (
+                          <SmallSpinner />
+                        ) : position.end_date ? (
+                          <>
+                            <IoOpenOutline />
+                            Resume
+                          </>
+                        ) : (
+                          <>
+                            <MdOutlineClose />
+                            Close
+                          </>
+                        )}
+                      </SuspendButton>
                       <DeleteButton
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          // position.deletePosition(position.id);
-                          dispatcher(listPositionsRequested());
+                          setAction(DELETE);
+                          dispatcher(deletePositionRequested(position.id));
                         }}
                       >
-                        <RiDeleteBin6Line />
-                        Delete
+                        {action === DELETE && !task_error && !task_finished ? (
+                          <SmallSpinner />
+                        ) : (
+                          <>
+                            <RiDeleteBin6Line />
+                            Delete
+                          </>
+                        )}
                       </DeleteButton>
                     </ActionBtnsContainer>
                   </TableRow>
