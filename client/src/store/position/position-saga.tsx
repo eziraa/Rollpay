@@ -93,7 +93,7 @@ function* GetPositions() {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view employees",
+          desc: "You are not allowed to view positions",
           duration: 3,
         })
       );
@@ -102,7 +102,7 @@ function* GetPositions() {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "List Employee",
+          title: "List Position",
           desc: response.error,
           duration: 3,
         })
@@ -187,7 +187,7 @@ function* CLosePosition(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(taskUnfinished(response.error || "Cann't delete position"));
+      yield put(taskUnfinished(response.error || "Cann't close position"));
       yield put(
         setFlashMessage({
           type: "error",
@@ -198,14 +198,14 @@ function* CLosePosition(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(taskUnfinished(response.error || "Cann't delete position"));
+      yield put(taskUnfinished(response.error || "Cann't close position"));
       // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to delete positions",
+          desc: "You are not allowed to close positions",
           duration: 3,
         })
       );
@@ -214,7 +214,63 @@ function* CLosePosition(action: PayloadAction<string>) {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "Delete Position",
+          title: "Closing Position",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* OpenPosition(action: PayloadAction<string>) {
+  try {
+    const response: AddPositionResponse = yield call(
+      PositionAPI.openPosition,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(closePositionDone(response.position));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Opening Position",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(taskUnfinished(response.error || "Cann't open position"));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(taskUnfinished(response.error || "Cann't open position"));
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to open positions",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Open Position",
           desc: response.error,
           duration: 3,
         })
@@ -319,7 +375,7 @@ function* editPosition(action: PayloadAction<EditPositionParams>) {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "Edit Employee",
+          title: "Edit Position",
           desc:
             response.error.length < 3
               ? "Cannot edit positions please try again"
@@ -334,7 +390,7 @@ function* editPosition(action: PayloadAction<EditPositionParams>) {
       setFlashMessage({
         type: "error",
         status: true,
-        title: "Edit Employee",
+        title: "Edit Position",
         desc: "Cannot edit positions please try again",
         duration: 3,
       })
@@ -350,4 +406,5 @@ export function* watchPositionRequest() {
   yield takeEvery("position/listPositionsRequested", GetPositions);
   yield takeEvery("position/deletePositionRequested", DeletePosition);
   yield takeEvery("position/closePositionRequested", CLosePosition);
+  yield takeEvery("position/openPositionRequested", OpenPosition);
 }
