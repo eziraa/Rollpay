@@ -2,10 +2,10 @@ import styled, { css } from "styled-components";
 import { FcHome } from "react-icons/fc";
 import { HiUserCircle } from "react-icons/hi";
 
-import { PiUsersFourThin } from "react-icons/pi";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
-import { MdAttachMoney } from "react-icons/md";
+import { LuCircleDollarSign } from "react-icons/lu";
+import { PiUsersThree } from "react-icons/pi";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
   width: 14vw;
@@ -56,14 +56,14 @@ export const MenuItem = styled.div<MenuItemProps>`
   font-size: 2rem;
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
-  transition: all 0.5s ease;
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
     background-color: ${({ theme }) => theme.colors.secondary};
   }
   border-bottom: 0.4rem solid transparent;
   background-color: ${({ active }) => (active ? "#98aaa3f8 " : "transparent")};
-  border-bottom-color: ${({ active }) => (active ? "#10e4c5 " : "transparent")};
+  border-bottom: 1px solid
+    ${({ active }) => (active ? "#10e4c5 " : "transparent")};
 `;
 
 export const SubMenuContainer = styled.div`
@@ -71,12 +71,15 @@ export const SubMenuContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   justify-content: flex-start;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.5rem 1rem;
+  gap: 1rem;
+  width: 90%;
+  margin: 1rem;
+  margin-left: 4rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
   transition: all 0.5s ease;
+  border-left: ${({ theme }) => ` 0.5rem solid ${theme.buttons.primary}`};
 `;
 
 interface SubMenuItemProps extends ThemeProps {
@@ -87,27 +90,30 @@ export const SubMenuItem = styled.div<SubMenuItemProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  width: 80%;
   padding: 0.5rem 1rem;
-  margin: 0 1rem;
-  padding-left: 3rem;
   text-align: left;
   font-size: 1.6rem;
-  border-left: 0.5rem solid #3bf4adf8;
-  border-bottom: 0.1rem solid #bfbfbff8;
-  color: ${({ theme }) => theme.colors.primary};
+  /* border-bottom: 0.1rem solid #34343483; */
+  /* border-left: ${({ theme, active }) =>
+    active ? ` 0.5rem solid ${theme.buttons.primary}` : "transparent"}; */
+
+  background-color: ${({ theme, active }) =>
+    active ? theme.buttons.primary : "transparent"};
+  color: ${({ theme, active }) =>
+    !active ? theme.colors.primary : theme.backgrounds.primary};
   cursor: pointer;
   transition: all 0.5s ease;
-  background-color: ${({ active }) => (active ? "#3BF4ADF8 " : "transparent")};
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    background-color: ${({ theme }) => theme.colors.secondary};
-    border-left-color: #bfbfbff8;
   }
 `;
 export const MenuItemText = styled.h1`
   font-size: 1.6rem;
-  font-weight: 400;
+  font-weight: 500;
+  line-height: 0.8;
+  padding: 0.5rem 0;
+  letter-spacing: 1px;
 `;
 
 export const Icon = css`
@@ -120,7 +126,7 @@ export const HomeIcon = styled(FcHome)`
   ${Icon}
 `;
 
-export const UsersIcon = styled(PiUsersFourThin)`
+export const UsersIcon = styled(PiUsersThree)`
   ${Icon}
 `;
 
@@ -128,7 +134,11 @@ export const UserIcon = styled(HiUserCircle)`
   ${Icon}
 `;
 
-
-export const SalaryIcon = styled(MdAttachMoney)`
+export const SalaryIcon = styled(LuCircleDollarSign)`
   ${Icon}
+`;
+
+export const ColapseExpand = styled.div`
+  display: flex;
+  justify-self: flex-end;
 `;

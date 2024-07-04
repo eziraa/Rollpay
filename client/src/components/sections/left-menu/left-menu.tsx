@@ -10,6 +10,7 @@ import {
   LogoImage,
   SubMenuContainer,
   SubMenuItem,
+  ColapseExpand,
 } from "./left-menu.style";
 import { useLocation, useNavigate } from "react-router";
 import Image from "../../../assets/logo.png";
@@ -94,7 +95,9 @@ function LeftMenu() {
       >
         <UsersIcon />
         <MenuItemText>All Employees</MenuItemText>
-        {colapseEmployees ? <MdExpandMore /> : <MdExpandLess />}
+        <ColapseExpand>
+          {colapseEmployees ? <MdExpandMore /> : <MdExpandLess />}
+        </ColapseExpand>
       </MenuItem>
       {!colapseEmployees && (
         <SubMenuContainer>
@@ -121,7 +124,9 @@ function LeftMenu() {
       >
         <SalaryIcon />
         <MenuItemText>Salary</MenuItemText>
-        {colapseSalary ? <MdExpandMore /> : <MdExpandLess />}
+        <ColapseExpand>
+          {colapseSalary ? <MdExpandMore /> : <MdExpandLess />}
+        </ColapseExpand>
       </MenuItem>
       {!colapseSalary && (
         <SubMenuContainer>
