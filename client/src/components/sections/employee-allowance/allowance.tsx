@@ -31,17 +31,19 @@ export const EmployeeAllowance = () => {
   const navigate = useNavigate();
   const dispatcher = useAppDispatch();
   const { pathname } = useLocation();
+
   const { year, month, changeYear, changeMonth } = useYearMonthPagination();
+
+  const { year: curr_year, month: curr_month, employee_id } = useParams();
+  const baseUrl = curr_year
+    ? pathname.slice(0, pathname.indexOf(curr_year + "/"))
+    : pathname;
   useEffect(() => {
     if (!year && !month) return;
     !year && changeYear(2022);
     !month && changeMonth(1);
-    year &&
-      month &&
-      navigate(pathname.split("allowances")[0] + `allowances/${year}/${month}`);
+    year && month && navigate(`${baseUrl}${year}/${month}`);
   }, [year, month]);
-
-  const { year: curr_year, month: curr_month, employee_id } = useParams();
 
   useEffect(() => {
     if (curr_year && curr_month) {
@@ -66,7 +68,7 @@ export const EmployeeAllowance = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate("add-allowance");
+            navigate(baseUrl + "add-allowance");
           }}
         >
           Add

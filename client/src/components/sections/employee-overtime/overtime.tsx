@@ -32,16 +32,21 @@ export const EmployeeOvertime = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { year, month, changeYear, changeMonth } = useYearMonthPagination();
+  const { year: curr_year, month: curr_month, employee_id } = useParams();
+
+  // Getting the base URL
+  const baseUrl = curr_year
+    ? pathname.slice(0, pathname.indexOf(curr_year + "/"))
+    : pathname;
+  // Defining a ue effect to naviagate when there is a month or year change
   useEffect(() => {
     if (!year && !month) return;
     !year && changeYear(2022);
     !month && changeMonth(1);
-    year &&
-      month &&
-      navigate(pathname.split("overtimes")[0] + `overtimes/${year}/${month}`);
+    year && month && navigate(`${baseUrl}/${year}/${month}`);
   }, [year, month]);
-  const { year: curr_year, month: curr_month, employee_id } = useParams();
 
+  //Defining a use effect to fetch an employee information based on the year and month
   useEffect(() => {
     if (curr_year && curr_month) {
       dispatcher(
@@ -65,7 +70,7 @@ export const EmployeeOvertime = () => {
           onClick={(e) => {
             e.stopPropagation();
             dispatcher(listOvertimesRequested());
-            navigate("add-overtime");
+            navigate(baseUrl + "add-overtime");
           }}
         >
           Add
