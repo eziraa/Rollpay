@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from django.http.response import JsonResponse
 from employee.utils.search import Search
+from employee.utils.salary_calculator import SalaryCalculator
 from employee.serializers.employee import EmployeeSerializer
 from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerializer
 from employee.views.views import StandardResultsSetPagination
@@ -87,3 +88,16 @@ class SalaryView(APIView):
 
             except Exception as e:
                 return JsonResponse({"error": str(e)}, status=400)
+
+class TotalIncomeTax(APIView):
+    def get(self, request: Request):
+        calculator = SalaryCalculator()
+
+        current_month_total_income_tax = calculator.calc_income_tax_current_month()
+
+        data = {
+            'total_income_tax': current_month_total_income_tax
+        }
+
+        return JsonResponse(data)
+
