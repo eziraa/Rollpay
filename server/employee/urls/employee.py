@@ -34,4 +34,6 @@ urlpatterns = [
          name='__update_emoployee__'),
     path("contract/<str:employee_id>",
          EmployementContract.as_view(), name='_employement_contract__'),
+    path("total-income-tax",
+         salary_view.TotalIncomeTax.as_view(), name='_total_income_tax__'),
 ] 
