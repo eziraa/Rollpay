@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Caption,
   CustomTable,
@@ -17,12 +18,45 @@ import {
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { ThreeDots } from "../../utils/loading/dots";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { useSalary } from "../../../hooks/salary-hook";
+import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
+import { useEffect } from "react";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 export const EmployeeAllowance = () => {
-  const { curr_emp, loading } = useSalary();
+  //--- Calling hooks and getting necessary information ---
+  const { curr_emp, task_finished } = useSalary();
   const navigate = useNavigate();
+  const dispatcher = useAppDispatch();
+  const { pathname } = useLocation();
+  const { year, month, changeYear, changeMonth } = useYearMonthPagination();
+  useEffect(() => {
+    if (!year && !month) return;
+    !year && changeYear(2022);
+    !month && changeMonth(1);
+    year &&
+      month &&
+      navigate(pathname.split("allowances")[0] + `allowances/${year}/${month}`);
+  }, [year, month]);
+
+  const { year: curr_year, month: curr_month, employee_id } = useParams();
+
+  useEffect(() => {
+    if (curr_year && curr_month) {
+      dispatcher(
+        getCurrEmpPaymentInfo(`${employee_id}/${curr_year}/${curr_month}`)
+      );
+    } else {
+      employee_id &&
+        dispatcher(
+          getCurrEmpPaymentInfo(
+            `${employee_id}/${2024}/${new Date(Date.now()).getMonth()}`
+          )
+        );
+    }
+  }, [curr_year, curr_month]);
   return (
     <AllowanceContainer>
       <AllowanceHeader>
@@ -39,7 +73,7 @@ export const EmployeeAllowance = () => {
         </AddButton>
       </AllowanceHeader>
       <AllowanceBody>
-        {loading ? (
+        {!task_finished ? (
           <ThreeDots size={2} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.allowances.length === 0
