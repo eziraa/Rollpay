@@ -12,7 +12,7 @@ export const CustomTable = styled.table`
   margin: 0;
 `;
 
-export const Caption = styled.h4`
+export const Caption = styled.th`
   font-size: 1.4rem;
   font-weight: bold;
   color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};

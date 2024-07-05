@@ -71,15 +71,19 @@ export const PositionPage = () => {
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Positions</Caption>
-            <TableHeader>
-              <HeaderTitle>Position Name</HeaderTitle>
-              <HeaderTitle>Initial Salary</HeaderTitle>
-              <HeaderTitle>Date of Start</HeaderTitle>
-              <HeaderTitle>Status</HeaderTitle>
-              <HeaderTitle>Date of End</HeaderTitle>
-              <HeaderTitle>Actions</HeaderTitle>
-            </TableHeader>
+            <thead>
+              <tr>
+                <Caption>List of Positions</Caption>
+              </tr>
+              <TableHeader>
+                <HeaderTitle>Position Name</HeaderTitle>
+                <HeaderTitle>Initial Salary</HeaderTitle>
+                <HeaderTitle>Date of Start</HeaderTitle>
+                <HeaderTitle>Status</HeaderTitle>
+                <HeaderTitle>Date of End</HeaderTitle>
+                <HeaderTitle>Actions</HeaderTitle>
+              </TableHeader>
+            </thead>
             <TableBody>
               {positions.map((position, index) => {
                 return (
@@ -120,7 +124,7 @@ export const PositionPage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          navigate(`/edit-position/${position.id}`);
+                          navigate(`edit-position/${position.id}`);
                           dispatcher(listPositionsRequested());
                         }}
                       >

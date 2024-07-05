@@ -60,12 +60,15 @@ import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
             </div>
           ) : (
             <CustomTable>
-              <Caption>List of Overtimes</Caption>
+              <thead>
+                <tr>
+                  <Caption>List of Overtimes</Caption>
+                </tr>
+              </thead>
               <TableHeader>
-
                 <HeaderTitle>Overtime Name</HeaderTitle>
                 <HeaderTitle>Overtime Rate</HeaderTitle>
-            
+
                 <HeaderTitle>Actions</HeaderTitle>
               </TableHeader>
               <TableBody>
@@ -74,8 +77,7 @@ import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
                     <TableRow key={index}>
                       <TableData>{overtime.overtime_type}</TableData>
                       <TableData>{overtime.overtime_rate}</TableData>
-                
-  
+
                       <ActionBtnsContainer>
                         <EditButton
                           onClick={(e) => {
