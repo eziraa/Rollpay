@@ -15,6 +15,7 @@ import { ModalProvider } from "./providers/modal-provider";
 import { ModalStore } from "./components/utils/modal-store/modal-store";
 import { FilterProvider } from "./providers/filter-provider";
 import { ProfileProvider } from "./contexts/profile-context";
+import { YearMonthPaginationProvider } from "./providers/year-month-pagination-provider";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
@@ -42,11 +43,13 @@ function App() {
               <ProfileProvider>
                 <ModalProvider>
                   <AuthProvider>
-                    <ThemeProvider theme={theme}>
-                      <FlashMessage />
-                      <RouterConfig />
-                      <ModalStore />
-                    </ThemeProvider>
+                    <YearMonthPaginationProvider>
+                      <ThemeProvider theme={theme}>
+                        <FlashMessage />
+                        <RouterConfig />
+                        <ModalStore />
+                      </ThemeProvider>
+                    </YearMonthPaginationProvider>
                   </AuthProvider>
                 </ModalProvider>
               </ProfileProvider>
