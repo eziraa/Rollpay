@@ -30,6 +30,7 @@ export const SalaryContainer = styled(MainContainer)`
   position: relative;
   overflow-x: hidden;
   padding: 2rem;
+  width: fit-content;
 `;
 
 export const SalaryTitle = styled.h1`
