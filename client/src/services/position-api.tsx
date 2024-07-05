@@ -102,7 +102,7 @@ const editPosition = async (
   values: EditPositionParams
 ) => {
   const response = await api
-    .put<AddPositionResponse[]>("/edit/" + position_id, values)
+    .put<AddPositionResponse[]>("/position/edit/" + position_id, values)
     .then((res) => {
       return {
         success: "Position updated successfully",
@@ -168,7 +168,7 @@ const PositionAPI = {
   deletePosition,
   addPosition,
   getPosition,
-  closePosition
+  closePosition,
 };
 
 export default PositionAPI;
