@@ -12,8 +12,14 @@ import datetime
 
 class PositionView (APIView):
 
-    def get(self, request: Request, format=None):
+    def get(self, request: Request, position_id=None, format=None):
         try:
+
+            if position_id:
+                position = Position.objects.get(id=position_id)
+                serializer = PositionSerializer(position)
+                return Response(serializer.data, status=200)
+
             queryset = Position.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)
