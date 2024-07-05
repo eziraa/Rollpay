@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { YearMonthPaginationContext } from "../contexts/month-year-pagination";
 
-export const YearMonthPaginationProvider = () => {
-  const [year, setYear] = useState(1);
-  const [month, setMonth] = useState(1);
+export const YearMonthPaginationProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [year, setYear] = useState<number | undefined>(undefined);
+  const [month, setMonth] = useState<number | undefined>(undefined);
   return (
     <YearMonthPaginationContext.Provider
       value={{
@@ -12,6 +16,8 @@ export const YearMonthPaginationProvider = () => {
         changeYear: setYear,
         changeMonth: setMonth,
       }}
-    ></YearMonthPaginationContext.Provider>
+    >
+      {children}
+    </YearMonthPaginationContext.Provider>
   );
 };
