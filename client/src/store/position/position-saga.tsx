@@ -113,7 +113,6 @@ function* GetPositions() {
   }
 }
 
-
 function* DeletePosition(action: PayloadAction<string>) {
   try {
     const response: AddPositionResponse = yield call(

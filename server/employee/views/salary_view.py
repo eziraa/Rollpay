@@ -10,8 +10,10 @@ from employee.utils.salary_calculator import SalaryCalculator
 from employee.serializers.employee import EmployeeSerializer
 from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerializer
 from employee.views.views import StandardResultsSetPagination
-from ..models import Employee, Payment
+from ..models import Employee, Payment, Salary
 import month
+from django.db.models import Avg
+
 
 class SalaryView(APIView):
     authentication_classes = []
@@ -21,13 +23,38 @@ class SalaryView(APIView):
         if employee_id:
             payments = Payment.objects.filter(employee_id=employee_id)
             if payments.exists():
-                serializer = MonthlyPaymentSerializer(payments, many=True)
-                data = {
-                    **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
-                    'payments': serializer.data,
+                if curr_month and year:
+                    try:
+                        queryset = payments.filter(
+                            month=month.Month((year), month=curr_month))
+                        paginator = StandardResultsSetPagination()
+                        paginator.page_size = request.query_params.get(
+                            "page_size", 20)
+                        page = paginator.paginate_queryset(
+                            queryset, request)
+                        if page is not None:
+                            serializer = PaymentSerializer(page, many=True)
+                            return paginator.get_paginated_response(serializer.data)
+                        serializer = MonthlyPaymentSerializer(
+                            payments, many=True)
+                        data = {
+                            **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+                            'payments': serializer.data,
 
-                }
-                return Response(data)
+                        }
+                        return Response(data)
+
+                    except Exception as e:
+                        return JsonResponse({"error": str(e)}, status=400)
+                else:
+                    serializer = MonthlyPaymentSerializer(
+                        payments, many=True)
+                    data = {
+                        **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+                        'payments': serializer.data,
+
+                    }
+                    return Response(data)
             else:
                 employee = Employee.objects.get(pk=employee_id)
                 for year in range(2022, 2025):
@@ -38,7 +65,8 @@ class SalaryView(APIView):
                         payment.save()
                 payments = Payment.objects.filter(employee_id=employee_id)
                 if payments.exists():
-                    serializer = MonthlyPaymentSerializer(payments, many=True)
+                    serializer = MonthlyPaymentSerializer(
+                        payments, many=True)
                     data = {
                         **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
                         'payments': serializer.data,
@@ -89,6 +117,14 @@ class SalaryView(APIView):
             except Exception as e:
                 return JsonResponse({"error": str(e)}, status=400)
 
+class BasicSalaryAverage(APIView):
+     def get(self, request: Request,format=None):
+        try:
+            average_basic_salary = Salary.objects.aggregate(avg_basic_salary=Avg('basic_salary'))['avg_basic_salary']
+
+            return Response({"avg_basic_salary": '{:.2f}'.format(average_basic_salary)})
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
 class TotalIncomeTax(APIView):
     def get(self, request: Request):
         calculator = SalaryCalculator()
