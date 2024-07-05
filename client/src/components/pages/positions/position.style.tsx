@@ -50,7 +50,7 @@ export const AddButton = styled(Button)`
   right: 3rem;
 `;
 
-export const ActionBtnsContainer = styled.div`
+export const ActionBtnsContainer = styled.td`
   display: flex;
   gap: 1rem;
   align-items: center;

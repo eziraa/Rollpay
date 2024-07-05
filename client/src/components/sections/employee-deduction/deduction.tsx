@@ -54,13 +54,18 @@ export const EmployeeDeduction = () => {
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.deductions.length > 0 ? (
               <CustomTable key={index}>
-                <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-                <TableHeader>
-                  <HeaderTitle>Deduction Name</HeaderTitle>
-                  <HeaderTitle>Deduction Value</HeaderTitle>
-                  <HeaderTitle>Date of Given</HeaderTitle>
-                </TableHeader>
-
+                <thead>
+                  <tr>
+                    <Caption>
+                      {getFormattedMonth(new Date(payment.month))}
+                    </Caption>
+                  </tr>
+                  <TableHeader>
+                    <HeaderTitle>Deduction Name</HeaderTitle>
+                    <HeaderTitle>Deduction Value</HeaderTitle>
+                    <HeaderTitle>Date of Given</HeaderTitle>
+                  </TableHeader>
+                </thead>
                 <TableBody>
                   {payment.deductions.map((deduction, index) => {
                     return (

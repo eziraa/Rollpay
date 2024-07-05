@@ -12,8 +12,14 @@ import datetime
 
 class PositionView (APIView):
 
-    def get(self, request: Request, format=None):
+    def get(self, request: Request, position_id=None, format=None):
         try:
+
+            if position_id:
+                position = Position.objects.get(id=position_id)
+                serializer = PositionSerializer(position)
+                return Response(serializer.data, status=200)
+
             queryset = Position.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)
@@ -59,6 +65,17 @@ class PositionView (APIView):
         except Position.DoesNotExist:
             return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
         position.end_date = (datetime.datetime.now().date())
+        position.save()
+        serializer = PositionSerializer(position)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+    def patch(self, request, position_id):
+        try:
+            position = Position.objects.get(pk=position_id)
+        except Position.DoesNotExist:
+            return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
+        position.end_date = None
         position.save()
         serializer = PositionSerializer(position)
 

@@ -51,12 +51,18 @@ export const EmployeeAllowance = () => {
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.allowances.length > 0 ? (
               <CustomTable key={index}>
-                <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-                <TableHeader>
-                  <HeaderTitle>Allowance Name</HeaderTitle>
-                  <HeaderTitle>Allowance Value</HeaderTitle>
-                  <HeaderTitle>Date of Given</HeaderTitle>
-                </TableHeader>
+                <thead>
+                  <tr>
+                    <Caption>
+                      {getFormattedMonth(new Date(payment.month))}
+                    </Caption>
+                  </tr>
+                  <TableHeader>
+                    <HeaderTitle>Allowance Name</HeaderTitle>
+                    <HeaderTitle>Allowance Value</HeaderTitle>
+                    <HeaderTitle>Date of Given</HeaderTitle>
+                  </TableHeader>
+                </thead>
                 <TableBody>
                   {payment.allowances.map((allowance, index) => {
                     return (

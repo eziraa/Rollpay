@@ -77,6 +77,15 @@ const PositionSlice = createSlice({
         position.id === action.payload.id ? action.payload : position
       );
     },
+    openPositionRequested: (__, _: PayloadAction<string>) => {},
+    openPositionDone: (state, action: PayloadAction<Position>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.positions = state.positions.map((position) =>
+        position.id === action.payload.id ? action.payload : position
+      );
+    },
+
     taskUnfinished: (state, action: PayloadAction<string>) => {
       state.task_error = action.payload;
     },
@@ -127,16 +136,18 @@ const PositionSlice = createSlice({
       state.task_finished = true;
       state.curr_position = action.payload;
     },
-    resetCurrEmployee: (state) => {
-      state.curr_position = undefined;
-      state.task_finished = true;
-    },
-    unfinishedEdit: (_) => {
-      // state.task_finished = true
+    resetPositionState: (state, action: PayloadAction<PositionState>) => {
+      state = {
+        ...action.payload,
+      };
     },
     closePositionTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
+    },
+    getPositionRequest: (__, _: PayloadAction<string>) => {},
+    getPositionDone: (state, action: PayloadAction<Position>) => {
+      state.curr_position = action.payload;
     },
   },
 });
@@ -154,8 +165,7 @@ export const {
   addPositionDone,
   editPositionRequested,
   editPositionDone,
-  unfinishedEdit,
-  resetCurrEmployee,
+  resetPositionState,
   searching,
   noSearchResult,
   loadNextPageRequested,
@@ -164,6 +174,10 @@ export const {
   closePositionTask,
   closePositionRequested,
   closePositionDone,
+  openPositionRequested,
+  openPositionDone,
+  getPositionRequest,
+  getPositionDone,
 } = PositionSlice.actions;
 
 export default PositionSlice.reducer;
