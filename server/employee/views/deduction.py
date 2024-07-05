@@ -11,8 +11,13 @@ from employee.views.utils.pagination import StandardResultsSetPagination
 
 class DeductionView (APIView):
 
-    def get(self, request: Request, format=None):
+    def get(self, request: Request, deduction_id=None, format=None):
         try:
+            if deduction_id:
+                deduction  = Deduction.objects.get(id=deduction_id)
+                serializer = DeductionSerializer(deduction)
+                return Response(serializer.data)
+
             queryset = Deduction.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)

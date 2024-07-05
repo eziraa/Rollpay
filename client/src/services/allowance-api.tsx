@@ -60,17 +60,40 @@ const listAllowances = async (pageUrl?: string) => {
   return allowances;
 };
 
+const getAllowance = async (allowance_id: string) => {
+  const endpoint = "/allowance/get/" + allowance_id;
+
+  const allowance = await api
+    .get(endpoint)
+    .then((res) => {
+      return {
+        allowance: res.data,
+        code: res.status,
+        success: "Success returned allowances",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return allowance;
+};
+
 const editAllowance = async (
   allowance_id: string,
   values: EditAllowanceParams
 ) => {
   const response = await api
-    .put<AddAllowanceResponse[]>("/edit/" + allowance_id, values)
+    .put<AddAllowanceResponse[]>("/allowance/edit/" + allowance_id, values)
     .then((res) => {
       return {
         success: "Allowance updated successfully",
         code: res.status,
-        employee: res.data,
+        allowance: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -110,6 +133,7 @@ const AllowanceAPI = {
   editAllowance,
   deleteAllowance,
   addAllowance,
+  getAllowance,
 };
 
 export default AllowanceAPI;

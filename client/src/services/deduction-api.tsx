@@ -19,7 +19,7 @@ const addDeduction = async (values: AddDeductionParams) => {
       return {
         success: "Deduction added successfully",
         code: res.status,
-        ded: res.data,
+        deduction: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -46,7 +46,7 @@ const listDeductions = async (pageUrl?: string) => {
           count: res.data.count,
         },
         code: res.status,
-        success: "Success returned deductions",
+        success: "Successfully returned deductions",
       };
     })
     .catch((err: AxiosError) => {
@@ -60,14 +60,40 @@ const listDeductions = async (pageUrl?: string) => {
   return deds;
 };
 
-const editDeduction = async (ded_id: string, values: EditDeductionParams) => {
+const getDeduction = async (deduction_id: string) => {
+  const endpoint = "/deduction/get/" + deduction_id;
+
+  const deduction = await api
+    .get(endpoint)
+    .then((res) => {
+      return {
+        deduction: res.data,
+        code: res.status,
+        success: "Successfully returned deductions",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return deduction;
+};
+
+const editDeduction = async (
+  deduction_id: string,
+  values: EditDeductionParams
+) => {
   const response = await api
-    .put<AddDeductionResponse[]>("/deduction/edit/" + ded_id, values)
+    .put<AddDeductionResponse[]>("/deduction/edit/" + deduction_id, values)
     .then((res) => {
       return {
         success: "Deduction updated successfully",
         code: res.status,
-        employee: res.data,
+        deduction: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -107,6 +133,7 @@ const DeductionAPI = {
   editDeduction,
   deleteDeduction,
   addDeduction,
+  getDeduction,
 };
 
 export default DeductionAPI;

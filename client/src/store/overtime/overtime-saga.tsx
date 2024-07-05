@@ -15,6 +15,7 @@ import {
   addOvertimeDone,
   deleteOvertimeDone,
   editOvertimeDone,
+  getOvertimeDone,
   listOvertimeDone,
   unfinishedAdd,
 } from "./overtime-slice";
@@ -101,6 +102,52 @@ function* GetOvertimes() {
           type: "error",
           status: true,
           title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* GetOvertime(action: PayloadAction<string>) {
+  try {
+    const response: AddOvertimeResponse = yield call(
+      OvertimeAPI.getOvertime,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getOvertimeDone(response.overtime));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view overtime",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Get overtime",
           desc: response.error,
           duration: 3,
         })
@@ -285,4 +332,6 @@ export function* watchOvertimeRequest() {
   yield takeEvery("overtime/addOvertimeRequested", addOvertime);
   yield takeEvery("overtime/listOvertimesRequested", GetOvertimes);
   yield takeEvery("overtime/deleteOvertimeRequested", DeleteOvertime);
+  yield takeEvery("overtime/getOvertimeRequested", GetOvertime);
+
 }

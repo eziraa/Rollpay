@@ -10,6 +10,6 @@ urlpatterns = [
          name='__edit_allowance__'),
     path('delete/<allowance_id>', allowance.AllowanceView.as_view(),
          name='__delete_allowance__'),
-    path('get/<str:id>', allowance.AllowanceView.as_view(),
+    path('get/<allowance_id>', allowance.AllowanceView.as_view(),
          name='__get_allowance__'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

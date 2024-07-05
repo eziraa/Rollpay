@@ -83,7 +83,7 @@ import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            navigate(`/edit-overtime/${overtime.id}`);
+                            navigate(`edit-overtime/${overtime.id}`);
                             dispatcher(listOvertimesRequested());
                           }}
                         >

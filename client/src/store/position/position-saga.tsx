@@ -10,6 +10,7 @@ import {
   addPositionDone,
   deletePositionDone,
   editPositionDone,
+  getPositionDone,
   listPositionDone,
   unfinishedAdd,
   taskUnfinished,
@@ -103,6 +104,52 @@ function* GetPositions() {
           type: "error",
           status: true,
           title: "List Position",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* GetPosition(action: PayloadAction<string>) {
+  try {
+    const response: AddPositionResponse = yield call(
+      PositionAPI.getPosition,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getPositionDone(response.position));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view position",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Get position",
           desc: response.error,
           duration: 3,
         })
@@ -461,6 +508,7 @@ export function* watchPositionRequest() {
   yield takeEvery("position/addPositionRequested", addPosition);
   yield takeEvery("position/listPositionsRequested", GetPositions);
   yield takeEvery("position/deletePositionRequested", DeletePosition);
+  yield takeEvery("position/getPositionRequested", GetPosition);
   yield takeEvery("position/closePositionRequested", CLosePosition);
   yield takeEvery("position/openPositionRequested", OpenPosition);
   yield takeEvery("position/getPositionRequest", GetPosition);
