@@ -145,6 +145,10 @@ const PositionSlice = createSlice({
       state.task_finished = true;
       state.task_error = undefined;
     },
+    getPositionRequest: (__, _: PayloadAction<string>) => {},
+    getPositionDone: (state, action: PayloadAction<Position>) => {
+      state.curr_position = action.payload;
+    },
   },
 });
 export const {
@@ -172,6 +176,8 @@ export const {
   closePositionDone,
   openPositionRequested,
   openPositionDone,
+  getPositionRequest,
+  getPositionDone,
 } = PositionSlice.actions;
 
 export default PositionSlice.reducer;
