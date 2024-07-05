@@ -12,6 +12,7 @@ from employee.views.views import StandardResultsSetPagination
 from ..models import Employee, Payment
 import month
 
+
 class SalaryView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]

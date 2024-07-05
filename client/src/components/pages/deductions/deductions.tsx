@@ -10,7 +10,7 @@ import {
 } from "../positions/position.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { NoResult } from "../../utils/no-result/no-result";
@@ -26,15 +26,17 @@ import {
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDeduction } from "../../../hooks/deduction-hook";
-import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
+import { deleteDeductionRequested, listDeductionsRequested } from "../../../store/deduction/deduction-slice";
+import { SmallSpinner } from "../../utils/spinner/spinner";
 export const DeductionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const deduction = useDeduction();
-  const navigate = useNavigate();
+  const { task_error, task_finished, deductions,curr_deduction} = useDeduction();
+  const DELETE = "delete";
+  const [action, setAction] = useState("");  const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listDeductionsRequested());
-  }, [deduction.curr_deduction]);
+  }, [curr_deduction]);
   return (
     <MainContainer>
       <PositionListHeader>
@@ -54,7 +56,7 @@ export const DeductionPage = () => {
         <Outlet />
         {!employee.task_finished ? (
           <ThreeDots size={2} />
-        ) : deduction.deductions.length === 0 ? (
+        ) : deductions.length === 0 ? (
           <div>
             <NoResult text="No deductions found" />
           </div>
@@ -69,7 +71,7 @@ export const DeductionPage = () => {
               <HeaderTitle>Actions</HeaderTitle>
             </TableHeader>
             <TableBody>
-              {deduction.deductions.map((deduction, index) => {
+              {deductions.map((deduction, index) => {
                 return (
                   <TableRow key={index}>
                     <TableData>{deduction.deduction_type}</TableData>
@@ -99,12 +101,18 @@ export const DeductionPage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          // position.deletePosition(position.id);
-                        //   dispatcher(listDeductionsRequested());
+                          setAction(DELETE);
+                          dispatcher(deleteDeductionRequested(deduction.id));
                         }}
                       >
-                        <RiDeleteBin6Line />
-                        Delete
+                        {action === DELETE && !task_error && !task_finished ? (
+                          <SmallSpinner />
+                        ) : (
+                          <>
+                            <RiDeleteBin6Line />
+                            Delete
+                          </>
+                        )}
                       </DeleteButton>
                     </ActionBtnsContainer>
                   </TableRow>
