@@ -26,13 +26,16 @@ import {
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useOvertime } from "../../../hooks/overtime-hook";
-import { deleteOvertimeRequested, listOvertimesRequested } from "../../../store/overtime/overtime-slice";
+import {
+  deleteOvertimeRequested,
+  listOvertimesRequested,
+} from "../../../store/overtime/overtime-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 export const OvertimePage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
-  const { task_error, task_finished, overtimes} = useOvertime();
+  const { task_error, task_finished, overtimes } = useOvertime();
   const DELETE = "delete";
   const [action, setAction] = useState("");
   useEffect(() => {

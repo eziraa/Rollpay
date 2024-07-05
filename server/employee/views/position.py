@@ -12,10 +12,10 @@ import datetime
 
 class PositionView (APIView):
 
-    def get(self, request: Request, position_id=None,format=None):
+    def get(self, request: Request, position_id=None, format=None):
         try:
             if position_id:
-                position  = Position.objects.get(id=position_id)
+                position = Position.objects.get(id=position_id)
                 serializer = PositionSerializer(position)
                 return Response(serializer.data)
             queryset = Position.objects.all().order_by("pk")
@@ -67,6 +67,17 @@ class PositionView (APIView):
         serializer = PositionSerializer(position)
 
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+    def patch(self, request, position_id):
+        try:
+            position = Position.objects.get(pk=position_id)
+        except Position.DoesNotExist:
+            return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
+        position.end_date = None
+        position.save()
+        serializer = PositionSerializer(position)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
     
 class PositionNumber(APIView):
      def get(self, request: Request,format=None):
@@ -75,3 +86,5 @@ class PositionNumber(APIView):
             return Response({"position_number": queryset})
         except Exception as e:
             return Response({"error": str(e)}, status=400)
+
+    

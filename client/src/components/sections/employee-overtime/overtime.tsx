@@ -53,13 +53,19 @@ export const EmployeeOvertime = () => {
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.overtimes.length > 0 ? (
               <CustomTable key={index}>
-                <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-                <TableHeader>
-                  <HeaderTitle>Overtime Name</HeaderTitle>
-                  <HeaderTitle>Overtime Value</HeaderTitle>
-                  <HeaderTitle>Length of Time</HeaderTitle>
-                  <HeaderTitle>Date of Given</HeaderTitle>
-                </TableHeader>
+                <thead>
+                  <tr>
+                    <Caption>
+                      {getFormattedMonth(new Date(payment.month))}
+                    </Caption>
+                  </tr>
+                  <TableHeader>
+                    <HeaderTitle>Overtime Name</HeaderTitle>
+                    <HeaderTitle>Overtime Value</HeaderTitle>
+                    <HeaderTitle>Length of Time</HeaderTitle>
+                    <HeaderTitle>Date of Given</HeaderTitle>
+                  </TableHeader>
+                </thead>
                 <TableBody>
                   {payment.overtimes.map((overtime, index) => {
                     return (

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
 import {
   FormError,
@@ -17,72 +19,62 @@ import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   addPositionRequested,
   closePositionTask,
-  editPositionRequested,
-  getPositionRequested,
+  getPositionRequest,
   resetPositionState,
 } from "../../../store/position/position-slice";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_POSITION } from "../../../constants/tasks";
 import { AddPositionSchema } from "../../../schema/add-position-schema";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePosition } from "../../../hooks/position-hook";
 import { useNavigate, useParams } from "react-router-dom";
-import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 export const AddPosition = () => {
+  // Calling hooks and getting necessary information
   const dispatcher = useAppDispatch();
-  const { task_error } = usePosition();
-  const navigate = useNavigate();
+  const { task_error, task_finished } = usePosition();
   const position = usePosition();
+  const navigate = useNavigate();
   const { position_id } = useParams();
 
+  const [initial, _] = useState({
+    position_name: position.curr_position?.position_name as string,
+    basic_salary: (position.curr_position?.basic_salary || "") as string,
+  });
+
+  //Getting current position
+
   useEffect(() => {
-    position_id && dispatcher(getPositionRequested(position_id));
+    position_id && dispatcher(getPositionRequest(position_id));
   }, [position_id]);
-  useEffect(() => {
-    if (position.curr_position && position_id) {
-      setFieldValue("position_name", position.curr_position.position_name);
-      setFieldValue("basic_salary", position.curr_position.basic_salary);
-    }
-  }, [position.curr_position]);
-  const {
-    values,
-    isSubmitting,
-    handleChange,
-    handleSubmit,
-    errors,
-    touched,
-    setFieldValue,
-    dirty,
-  } = useFormik({
-    initialValues: {
-      position_name: "",
-      basic_salary: "",
-    },
-    validationSchema: AddPositionSchema,
-    onSubmit(values) {
-      if (dirty) {
-        if (position_id) {
-          dispatcher(editPositionRequested({ ...values, id: position_id }));
-        } else dispatcher(addPositionRequested(values));
-      } else {
+
+  // Creating formik instance
+  const { touched, errors, values, handleChange, handleSubmit, isSubmitting } =
+    useFormik({
+      initialValues: initial,
+      validationSchema: AddPositionSchema,
+      onSubmit: (values) => {
         dispatcher(
-          setFlashMessage({
-            desc: "No changes to save",
-            title: "No changes made",
-            status: true,
-            duration: 3,
-            type: "error",
+          resetPositionState({
+            ...position,
+            task_error: undefined,
+            task_finished: false,
           })
         );
-      }
-    },
-  });
+        dispatcher(addPositionRequested(values));
+      },
+    });
+
+  //Defining hook to close the modal
   useEffect(() => {
-    if (isSubmitting && position.task_finished) {
-      dispatcher(resetPositionState({ ...position, task_error: undefined }));
+    if (isSubmitting && task_finished) {
+      dispatcher(
+        resetPositionState({
+          ...position,
+          task_error: undefined,
+          task_finished: true,
+        })
+      );
       navigate(-1);
     }
-  }, [position.task_finished]);
+  }, [task_finished]);
 
   const clearAction = () => {
     dispatcher(closePositionTask());
@@ -104,7 +96,7 @@ export const AddPosition = () => {
                 type="text"
                 onChange={handleChange}
                 name="position_name"
-                value={values.position_name}
+                value={initial.position_name || values.position_name}
               />
               {touched.position_name && errors.position_name && (
                 <FormError> {errors.position_name} </FormError>
@@ -114,7 +106,7 @@ export const AddPosition = () => {
               <Label>Base Salary</Label>
               <Input
                 type="number"
-                value={values.basic_salary.toString()}
+                value={initial.basic_salary || values.basic_salary}
                 name="basic_salary"
                 onChange={handleChange}
               />
@@ -128,7 +120,6 @@ export const AddPosition = () => {
                   fontSize: "1.5rem",
                 }}
               >
-                {" "}
                 {task_error}
               </FormError>
             )}

@@ -81,6 +81,15 @@ const PositionSlice = createSlice({
         position.id === action.payload.id ? action.payload : position
       );
     },
+    openPositionRequested: (__, _: PayloadAction<string>) => {},
+    openPositionDone: (state, action: PayloadAction<Position>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.positions = state.positions.map((position) =>
+        position.id === action.payload.id ? action.payload : position
+      );
+    },
+
     taskUnfinished: (state, action: PayloadAction<string>) => {
       state.task_error = action.payload;
     },
@@ -133,20 +142,16 @@ const PositionSlice = createSlice({
         position.id === action.payload.id ? action.payload : position
       );
     },
-    resetCurrEmployee: (state) => {
-      state.curr_position = undefined;
-      state.task_finished = true;
-    },
-    unfinishedEdit: (_) => {
-      // state.task_finished = true
+    resetPositionState: (state, action: PayloadAction<PositionState>) => {
+      state = {
+        ...action.payload,
+      };
     },
     closePositionTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
     },
-    resetPositionState: (state, action: PayloadAction<PositionState>) => {
-      state = { ...action.payload };
-    },
+    getPositionRequest: (__, _: PayloadAction<string>) => {},
   },
 });
 export const {
@@ -163,19 +168,20 @@ export const {
   addPositionDone,
   editPositionRequested,
   editPositionDone,
-  unfinishedEdit,
-  resetCurrEmployee,
   searching,
   noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
   closePositionTask,
-  getPositionDone,
   getPositionRequested,
   resetPositionState,
   closePositionRequested,
   closePositionDone,
+  openPositionRequested,
+  openPositionDone,
+  getPositionRequest,
+  getPositionDone,
 } = PositionSlice.actions;
 
 export default PositionSlice.reducer;

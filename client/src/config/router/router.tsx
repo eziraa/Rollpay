@@ -57,7 +57,6 @@ export const RouterConfig = () => (
         <Route path="/positions" element={<PositionPage />}>
           <Route path="add-position" element={<AddPosition />} />
           <Route path="edit-position/:position_id" element={<AddPosition />} />
-
         </Route>
         <Route path="/allowances" element={<AllowancePage />}>
           <Route path="add-allowance" element={<AddAllowance />} />
@@ -68,13 +67,14 @@ export const RouterConfig = () => (
         </Route>
         <Route path="/deductions" element={<DeductionPage />}>
           <Route path="add-deduction" element={<AddDeduction />} />
-          <Route path="edit-deduction/:deduction_id" element={<AddDeduction />} />
-
+          <Route
+            path="edit-deduction/:deduction_id"
+            element={<AddDeduction />}
+          />
         </Route>
         <Route path="/overtimes" element={<OvertimePage />}>
           <Route path="add-overtime" element={<AddOvertime />} />
           <Route path="edit-overtime/:overtime_id" element={<AddOvertime />} />
-
         </Route>
         <Route
           path="/employees/employee/delete"
