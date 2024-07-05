@@ -55,9 +55,9 @@ const searchEmployeeSalary = async (search_parms: SearchParams) => {
   return employees;
 };
 
-const getEmployeeSalary = async (employee_id: string) => {
+const getEmployeeSalary = async (pageUrl: string) => {
   const response = await api
-    .get(`/employee/salary/get/${employee_id}`)
+    .get(`/employee/salary/get/${pageUrl}`)
     .then((res) => {
       return {
         employee: res.data,
