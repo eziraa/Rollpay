@@ -1,15 +1,15 @@
 import { createContext } from "react";
 
 export interface YearMonthPagination {
-  month: number;
-  year: number;
-  changeYear: (year: number) => void;
-  changeMonth: (month: number) => void;
+  month: number | undefined;
+  year: number | undefined;
+  changeYear: (year: number | undefined) => void;
+  changeMonth: (month: number | undefined) => void;
 }
 
 export const YearMonthPaginationContext = createContext<YearMonthPagination>({
-  month: 1,
-  year: 1,
+  month: undefined,
+  year: undefined,
   changeYear: () => {},
   changeMonth: () => {},
 });
