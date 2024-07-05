@@ -29,6 +29,8 @@ urlpatterns = [
     path("salary/get", salary_view.SalaryView.as_view(), name='__get_salary__'),
     path("salary/get/<int:year>/<int:curr_month>",
          salary_view.SalaryView.as_view(), name='__get_salary_by_month__'),
+    path('salary/get/<str:employee_id>/<int:year>/<int:curr_month>',
+         salary_view.SalaryView.as_view(), name='__get_emoployee_payment_by_month__'),
     path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
          name='__update_emoployee__'),
