@@ -11,8 +11,13 @@ from employee.views.utils.pagination import StandardResultsSetPagination
 
 class AllowanceView (APIView):
 
-    def get(self, request: Request, format=None):
+    def get(self, request: Request, allowance_id=None,format=None):
         try:
+            if allowance_id:
+                allowance = Allowance.objects.get(id=allowance_id)
+                serializer = AllowanceSerializer(allowance)
+                return Response(serializer.data)
+
             queryset = Allowance.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)

@@ -10,6 +10,7 @@ urlpatterns = [
          name='__edit_position__'),
     path('delete/<position_id>', position.PositionView.as_view(),
          name='__delete_position__'),
+    path('get/<position_id>', position.PositionView.as_view(), name='__get_position__'),
     path('close/<position_id>', position.PositionView.as_view(),
          name='__close_position__'),
     path('open/<position_id>', position.PositionView.as_view(),

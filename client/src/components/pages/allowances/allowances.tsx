@@ -34,7 +34,7 @@ export const AllowancePage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listAllowancesRequested());
-  }, []);
+  }, [allowance.curr_allowance]);
   return (
     <MainContainer>
       <PositionListHeader>
@@ -74,7 +74,9 @@ export const AllowancePage = () => {
                   <TableRow key={index}>
                     <TableData>{allowance.allowance_type}</TableData>
                     <TableData>{allowance.allowance_rate}</TableData>
-                    <TableData>{allowance.date_of_start?.split('T')[0]}</TableData>
+                    <TableData>
+                      {allowance.date_of_start?.split("T")[0]}
+                    </TableData>
                     {allowance.date_of_end ? (
                       <TableData>{allowance.date_of_end}</TableData>
                     ) : (
@@ -86,7 +88,7 @@ export const AllowancePage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          navigate(`/edit-allowance/${allowance.id}`);
+                          navigate(`edit-allowance/${allowance.id}`);
                           dispatcher(listAllowancesRequested());
                         }}
                       >

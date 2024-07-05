@@ -27,6 +27,10 @@ const EmployeeSlice = createSlice({
     addDeductionRequested: (state, _: PayloadAction<AddDeductionParams>) => {
       state.task_finished = false;
     },
+    getDeductionRequested: (__, _: PayloadAction<string>) => {},
+    getDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.curr_deduction = action.payload;
+    },
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
       let number_of_pages = 1;
@@ -116,7 +120,9 @@ const EmployeeSlice = createSlice({
     },
     editDeductionDone: (state, action: PayloadAction<Deduction>) => {
       state.task_finished = true;
-      state.curr_deduction = action.payload;
+      state.deductions = state.deductions.map((deduction) =>
+        deduction.id === action.payload.id ? action.payload : deduction
+      );
     },
     resetCurrEmployee: (state) => {
       state.curr_deduction = undefined;
@@ -152,6 +158,8 @@ export const {
   setPagesize,
   closeDeductionTask,
   resetDeductionState,
+  getDeductionDone,
+  getDeductionRequested
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

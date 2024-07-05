@@ -46,28 +46,21 @@ export const AddPosition = () => {
   }, [position_id]);
 
   // Creating formik instance
-  const {
-    touched,
-    errors,
-    values,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    initialValues,
-  } = useFormik({
-    initialValues: initial,
-    validationSchema: AddPositionSchema,
-    onSubmit: (values) => {
-      dispatcher(
-        resetPositionState({
-          ...position,
-          task_error: undefined,
-          task_finished: false,
-        })
-      );
-      dispatcher(addPositionRequested(values));
-    },
-  });
+  const { touched, errors, values, handleChange, handleSubmit, isSubmitting } =
+    useFormik({
+      initialValues: initial,
+      validationSchema: AddPositionSchema,
+      onSubmit: (values) => {
+        dispatcher(
+          resetPositionState({
+            ...position,
+            task_error: undefined,
+            task_finished: false,
+          })
+        );
+        dispatcher(addPositionRequested(values));
+      },
+    });
 
   //Defining hook to close the modal
   useEffect(() => {
@@ -90,7 +83,7 @@ export const AddPosition = () => {
     <Modal closeAction={clearAction}>
       <PositionContainer>
         <PositionBody>
-          <Title>Add Position</Title>
+          <Title>{position_id ? "Edit" : "Add"} Position</Title>
           <PositionForm
             onSubmit={(e) => {
               e.preventDefault();
@@ -130,7 +123,7 @@ export const AddPosition = () => {
                 {task_error}
               </FormError>
             )}
-            <AddBtn type="submit">Add</AddBtn>
+            <AddBtn type="submit">{position_id ? "Edit" : "Add"}</AddBtn>
           </PositionForm>
         </PositionBody>
       </PositionContainer>

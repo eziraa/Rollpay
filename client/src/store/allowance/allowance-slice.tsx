@@ -24,6 +24,10 @@ const EmployeeSlice = createSlice({
   name: "allowance",
   initialState: InitialEmpState,
   reducers: {
+    getAllowanceRequested: (__, _: PayloadAction<string>) => {},
+    getAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.curr_allowance = action.payload;
+    },
     addAllowanceRequested: (state, _: PayloadAction<AddAllowanceParams>) => {
       state.task_finished = false;
     },
@@ -121,7 +125,9 @@ const EmployeeSlice = createSlice({
     },
     editAllowanceDone: (state, action: PayloadAction<Allowance>) => {
       state.task_finished = true;
-      state.curr_allowance = action.payload;
+      state.allowances = state.allowances.map((allowance) =>
+        allowance.id === action.payload.id ? action.payload : allowance
+      );
     },
     resetAllowanceState: (state, action: PayloadAction<AllowanceState>) => {
       state = { ...action.payload };
@@ -148,6 +154,8 @@ export const {
   setPagesize,
   closeAllowanceTask,
   resetAllowanceState,
+  getAllowanceRequested,
+  getAllowanceDone,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

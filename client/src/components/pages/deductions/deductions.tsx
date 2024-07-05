@@ -34,7 +34,7 @@ export const DeductionPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listDeductionsRequested());
-  }, []);
+  }, [deduction.curr_deduction]);
   return (
     <MainContainer>
       <PositionListHeader>
@@ -88,7 +88,7 @@ export const DeductionPage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          navigate(`/edit-deduction/${deduction.id}`);
+                          navigate(`edit-deduction/${deduction.id}`);
                           dispatcher(listDeductionsRequested());
                         }}
                       >
@@ -100,7 +100,7 @@ export const DeductionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           // position.deletePosition(position.id);
-                          dispatcher(listDeductionsRequested());
+                        //   dispatcher(listDeductionsRequested());
                         }}
                       >
                         <RiDeleteBin6Line />

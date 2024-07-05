@@ -15,6 +15,7 @@ import {
   addDeductionDone,
   deleteDeductionDone,
   editDeductionDone,
+  getDeductionDone,
   listDeductionDone,
   unfinishedAdd,
 } from "./deduction-slice";
@@ -90,7 +91,7 @@ function* GetDeductions() {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view employees",
+          desc: "You are not allowed to view deductions",
           duration: 3,
         })
       );
@@ -99,7 +100,53 @@ function* GetDeductions() {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "List Employee",
+          title: "List Deduction",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* GetDeduction(action: PayloadAction<string>) {
+  try {
+    const response: AddDeductionResponse = yield call(
+      DeductionAPI.getDeduction,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getDeductionDone(response.deduction));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view deduction",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Get deduction",
           desc: response.error,
           duration: 3,
         })
@@ -284,4 +331,6 @@ export function* watchDeductionRequest() {
   yield takeEvery("deduction/addDeductionRequested", addDeduction);
   yield takeEvery("deduction/listDeductionsRequested", GetDeductions);
   yield takeEvery("deduction/deleteDeductionRequested", DeleteDeduction);
+  yield takeEvery("deduction/getDeductionRequested", GetDeduction);
+
 }

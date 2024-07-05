@@ -19,35 +19,72 @@ import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   addAllowanceRequested,
   closeAllowanceTask,
+  editAllowanceRequested,
+  getAllowanceRequested,
   resetAllowanceState,
 } from "../../../store/allowance/allowance-slice";
 import { useEffect } from "react";
 import { useAllowance } from "../../../hooks/allowance-hook";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 export const AddAllowance = () => {
   // Getting necessary information
   const dispatcher = useAppDispatch();
   const allowance = useAllowance();
   const navigate = useNavigate();
+  const { allowance_id } = useParams();
+  const initialValues = {
+    allowance_type: allowance.curr_allowance?.allowance_type || "",
+    allowance_rate: allowance.curr_allowance?.allowance_rate || "",
+  };
+  useEffect(() => {
+    allowance_id && dispatcher(getAllowanceRequested(allowance_id));
+  }, []);
+  useEffect(() => {
+    if (allowance.curr_allowance && allowance_id) {
+      setFieldValue("allowance_type", allowance.curr_allowance.allowance_type);
+      setFieldValue("allowance_rate", allowance.curr_allowance.allowance_rate);
+    }
+  }, [allowance.curr_allowance]);
   // initializing formik instance
-  const { values, handleChange, handleSubmit, errors, touched, isSubmitting } =
-    useFormik({
-      initialValues: {
-        allowance_type: "",
-        allowance_rate: "",
-      },
-      validationSchema: AddAllowanceSchema,
-      onSubmit(values) {
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    errors,
+    dirty,
+    touched,
+    isSubmitting,
+    setFieldValue
+  } = useFormik({
+    initialValues,
+    validationSchema: AddAllowanceSchema,
+    onSubmit(values) {
+      dispatcher(
+        resetAllowanceState({
+          ...allowance,
+          task_error: undefined,
+        })
+      );
+      if (dirty) {
+        if (allowance_id) {
+          dispatcher(editAllowanceRequested({ ...values, id: allowance_id }));
+        } else dispatcher(addAllowanceRequested(values));
+      } else {
         dispatcher(
-          resetAllowanceState({
-            ...allowance,
-            task_error: undefined,
+          setFlashMessage({
+            desc: "No changes to save",
+            title: "No changes made",
+            status: true,
+            duration: 3,
+            type: "error",
           })
         );
-        dispatcher(addAllowanceRequested(values));
-      },
-    });
+      }
+    },
+  });
 
   // Writing use effect to close modal after succefully adding allowance
 
@@ -65,7 +102,7 @@ export const AddAllowance = () => {
     <Modal closeAction={clearTask}>
       <AllowanceContainer>
         <AllowanceBody>
-          <Title>Add Allowance</Title>
+          <Title>{allowance_id ? "Edit" : "Add"} Allowance</Title>
           <AllowanceForm onSubmit={handleSubmit}>
             <InputContainer>
               <Label>Allowance Name</Label>
@@ -103,6 +140,8 @@ export const AddAllowance = () => {
             <AddBtn type="submit">
               {!allowance.task_finished && !allowance.task_error ? (
                 <SmallSpinner />
+              ) : allowance_id ? (
+                "Save"
               ) : (
                 "Add"
               )}

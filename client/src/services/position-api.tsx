@@ -74,6 +74,29 @@ const listPositions = async (pageUrl?: string) => {
   return positions;
 };
 
+const getPosition = async (position_id: string) => {
+  const endpoint = "/position/get/" + position_id;
+
+  const position = await api
+    .get(endpoint)
+    .then((res) => {
+      return {
+        position: res.data,
+        code: res.status,
+        success: "Successfully returned position",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return position;
+};
+
 const editPosition = async (
   position_id: string,
   values: EditPositionParams
@@ -84,7 +107,7 @@ const editPosition = async (
       return {
         success: "Position updated successfully",
         code: res.status,
-        employee: res.data,
+        position: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -145,26 +168,6 @@ const openPosition = async (position_id: string) => {
     .then((res) => {
       return {
         success: "Position opened successfully",
-        code: res.status,
-        position: res.data,
-      };
-    })
-    .catch((err: AxiosError) => {
-      const { error } = err.response?.data as { error: string };
-      return {
-        error: error,
-        code: err.response?.status,
-      } as { error: string; code: number };
-    });
-  return response;
-};
-
-const getPosition = async (position_id: string) => {
-  const response = await api
-    .get("/position/get/" + position_id)
-    .then((res) => {
-      return {
-        success: "Position returned successfully",
         code: res.status,
         position: res.data,
       };

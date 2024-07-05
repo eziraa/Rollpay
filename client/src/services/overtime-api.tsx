@@ -57,17 +57,40 @@ const listOvertimes = async (pageUrl?: string) => {
   return overtimes;
 };
 
+const getOvertime = async (overtime_id: string) => {
+  const endpoint = "/overtime/get/" + overtime_id;
+
+  const overtime = await api
+    .get(endpoint)
+    .then((res) => {
+      return {
+        overtime: res.data,
+        code: res.status,
+        success: "Successfully returned overtimes",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return overtime;
+};
+
 const editOvertime = async (
   overtime_id: string,
   values: EditOvertimeParams
 ) => {
   const response = await api
-    .put<AddOvertimeResponse[]>("/edit/" + overtime_id, values)
+    .put<AddOvertimeResponse[]>("/overtime/edit/" + overtime_id, values)
     .then((res) => {
       return {
         success: "Overtime updated successfully",
         code: res.status,
-        employee: res.data,
+        overtime: res.data,
       };
     })
     .catch((err: AxiosError) => {
@@ -107,6 +130,7 @@ const OvertimeAPI = {
   editOvertime,
   deleteOvertime,
   addOvertime,
+  getOvertime
 };
 
 export default OvertimeAPI;
