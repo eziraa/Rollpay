@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
@@ -39,18 +40,25 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { TbFileTypePdf } from "react-icons/tb";
 import { RiFileExcel2Line } from "react-icons/ri";
+import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 
 export const EmployeesSalaryPage = () => {
   // Calling  hooks and  Getting necessary information
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
-  const [searchBy, setSearchBy] = useState("first_name");
+  const [searchBy, _] = useState("first_name");
   const { pagination, setPagination } = usePagination();
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
 
+  const {
+    year: curr_year,
+    month: curr_month,
+    changeMonth,
+    changeYear,
+  } = useYearMonthPagination();
   const navigate = useNavigate();
   const { year, month } = useParams();
   useEffect(() => {
@@ -194,13 +202,17 @@ export const EmployeesSalaryPage = () => {
     { length: end_month - start_month + 1 },
     (_, index) => start_month + index
   );
-  const [curr_year, setCurrYear] = useState(start_year);
-  const [curr_month, setCurrMonth] = useState(start_month);
 
   // Defining use effect to navigate if there is a change
   useEffect(() => {
-    navigate(`/employees-salary/${curr_year}/${curr_month}`);
-  }, [curr_month, curr_year]);
+    if (!curr_month && !curr_year) return;
+
+    !curr_year && changeYear(start_year);
+    !curr_month && changeMonth(start_month);
+    curr_year &&
+      curr_month &&
+      navigate(`/employees-salary/${curr_year}/${curr_month}`);
+  }, [curr_year, curr_month]);
 
   return (
     <SalaryContainer>
@@ -244,7 +256,7 @@ export const EmployeesSalaryPage = () => {
           <Select
             value={`${curr_year}`}
             onChange={(e) => {
-              setCurrYear(+e.target.value);
+              changeYear(+e.target.value);
             }}
           >
             {years.map((year) => (
@@ -256,12 +268,12 @@ export const EmployeesSalaryPage = () => {
           <Select
             value={`${curr_month}`}
             onChange={(e) => {
-              setCurrMonth(+e.target.value);
+              changeMonth(+e.target.value);
             }}
           >
             {months.map(
               (month) =>
-                (curr_year < end_year ||
+                ((curr_year && curr_year < end_year) ||
                   month <= new Date(Date.now()).getMonth()) && (
                   <SelectOption key={month} value={`${month}`}>
                     {getNamedMonth(new Date(`${year}-${month}-01`))}
@@ -271,7 +283,7 @@ export const EmployeesSalaryPage = () => {
           </Select>
         </Label>
       </EmpsDisplayerHeader>
-      {salary.loading ? (
+      {!salary.task_finished ? (
         <LoadingSpinner />
       ) : (
         <SalaryTable id="table">
