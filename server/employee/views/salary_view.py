@@ -20,6 +20,12 @@ class SalaryView(APIView):
         if employee_id:
             payments = Payment.objects.filter(employee_id=employee_id)
             if payments.exists():
+                if curr_month and year:
+                    try:
+                        payments = payments.filter(
+                            month=month.Month((year), month=curr_month))
+                    except Exception as e:
+                        return JsonResponse({"error": str(e)}, status=400)
                 serializer = MonthlyPaymentSerializer(payments, many=True)
                 data = {
                     **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
@@ -46,22 +52,7 @@ class SalaryView(APIView):
                     return Response(data)
                 else:
                     return JsonResponse({"error": "No payments found for the given employee ID"}, status=404)
-        elif curr_month and year:
-            try:
-                queryset = Payment.objects.filter(
-                    month=month.Month((year), month=curr_month))
-                paginator = StandardResultsSetPagination()
-                paginator.page_size = request.query_params.get(
-                    "page_size", 20)
-                page = paginator.paginate_queryset(queryset, request)
-                if page is not None:
-                    serializer = PaymentSerializer(page, many=True)
-                    return paginator.get_paginated_response(serializer.data)
-                serializer = PaymentSerializer(queryset, many=True)
-                return JsonResponse(data=serializer.data, safe=False)
 
-            except Exception as e:
-                return JsonResponse({"error": str(e)}, status=400)
         else:
             try:
                 # employees = Employee.objects.all()
