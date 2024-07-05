@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   CustomTable,
   HeaderTitle,
@@ -19,12 +20,42 @@ import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { ThreeDots } from "../../utils/loading/dots";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
+import { useEffect } from "react";
+import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 export const EmployeeOvertime = () => {
-  const { curr_emp, loading } = useAppSelector((state) => state.salary);
+  //Callig hooks and getting necessary information
+  const { curr_emp, task_finished } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { year, month, changeYear, changeMonth } = useYearMonthPagination();
+  useEffect(() => {
+    if (!year && !month) return;
+    !year && changeYear(2022);
+    !month && changeMonth(1);
+    year &&
+      month &&
+      navigate(pathname.split("overtimes")[0] + `overtimes/${year}/${month}`);
+  }, [year, month]);
+  const { year: curr_year, month: curr_month, employee_id } = useParams();
+
+  useEffect(() => {
+    if (curr_year && curr_month) {
+      dispatcher(
+        getCurrEmpPaymentInfo(`${employee_id}/${curr_year}/${curr_month}`)
+      );
+    } else {
+      employee_id &&
+        dispatcher(
+          getCurrEmpPaymentInfo(
+            `${employee_id}/${2024}/${new Date(Date.now()).getMonth()}`
+          )
+        );
+    }
+  }, [curr_year, curr_month]);
   return (
     <OvertimeContainer>
       <OvertimeHeader>
@@ -41,7 +72,7 @@ export const EmployeeOvertime = () => {
         </AddButton>
       </OvertimeHeader>
       <OvertimeBody>
-        {loading ? (
+        {!task_finished ? (
           <ThreeDots size={2} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.overtimes.length === 0
