@@ -14,5 +14,7 @@ urlpatterns = [
          name='__close_position__'),
     path('open/<position_id>', position.PositionView.as_view(),
          name='__open_position__'),
+    path('get/<position_id>', position.PositionView.as_view(),
+         name='__get_position__'),
     path('get/<str:id>', position.PositionView.as_view(), name='__get_position__'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
