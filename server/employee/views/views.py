@@ -187,3 +187,10 @@ class EmployementContract(APIView):
         serializer = EmployeeSerializer(employee)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class EmployeeNumber(APIView):
+     def get(self, request: Request,format=None):
+        try:
+            queryset = Employee.objects.count()
+            return Response({"employee_number": queryset})
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)

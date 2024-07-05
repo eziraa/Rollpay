@@ -67,7 +67,6 @@ class PositionView (APIView):
         serializer = PositionSerializer(position)
 
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-
     def patch(self, request, position_id):
         try:
             position = Position.objects.get(pk=position_id)
@@ -78,3 +77,14 @@ class PositionView (APIView):
         serializer = PositionSerializer(position)
 
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+    
+class PositionNumber(APIView):
+     def get(self, request: Request,format=None):
+        try:
+            queryset = Position.objects.count()
+            return Response({"position_number": queryset})
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+
+    

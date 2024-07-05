@@ -9,8 +9,10 @@ from employee.utils.search import Search
 from employee.serializers.employee import EmployeeSerializer
 from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerializer
 from employee.views.views import StandardResultsSetPagination
-from ..models import Employee, Payment
+from ..models import Employee, Payment, Salary
 import month
+from django.db.models import Avg
+
 
 class SalaryView(APIView):
     authentication_classes = []
@@ -113,3 +115,13 @@ class SalaryView(APIView):
 
             except Exception as e:
                 return JsonResponse({"error": str(e)}, status=400)
+
+class BasicSalaryAverage(APIView):
+     def get(self, request: Request,format=None):
+        try:
+            average_basic_salary = Salary.objects.aggregate(avg_basic_salary=Avg('basic_salary'))['avg_basic_salary']
+
+            return Response({"avg_basic_salary": '{:.2f}'.format(average_basic_salary)})
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+
