@@ -38,4 +38,6 @@ urlpatterns = [
      path('average-salary', salary_view.BasicSalaryAverage.as_view(), name='__average_basic_salary__'),
 
 
+    path("total-income-tax",
+         salary_view.TotalIncomeTax.as_view(), name='_total_income_tax__'),
 ] 
