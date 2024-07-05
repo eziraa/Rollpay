@@ -32,8 +32,8 @@ export const DotsContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  height: 100%;
-  width: 100%;
+  height: 60vh;
+  width: 80vw;
 `;
 
 export const ThreeDots = ({ size }: { size: number }) => {

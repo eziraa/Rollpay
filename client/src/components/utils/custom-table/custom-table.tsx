@@ -9,10 +9,10 @@ export const CustomTable = styled.table`
   border-collapse: collapse;
   border: none;
   width: 100%;
-  margin:0;
+  margin: 0;
 `;
 
-export const Caption = styled.h4`
+export const Caption = styled.th`
   font-size: 1.4rem;
   font-weight: bold;
   color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};
@@ -51,10 +51,10 @@ export const TableRow = styled.tr<ThemeProps>`
   cursor: pointer;
   font-size: 1.2rem;
   width: 100%;
-  background-color: ${({ theme }) =>
-    addOpacityToColor(0.4, theme.table.tableRow)};
+  background-color: ${({ theme }) => theme.backgrounds.primary};
   &:nth-child(even) {
-    background-color: ${({ theme }) => theme.backgrounds.primary};
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.4, theme.table.tableRow)};
   }
 
   &:hover {

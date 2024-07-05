@@ -16,7 +16,7 @@ const InitialEmpState: PositionState = {
   task_error: undefined,
   task_finished: true,
 };
-const EmployeeSlice = createSlice({
+const PositionSlice = createSlice({
   name: "position",
   initialState: InitialEmpState,
   reducers: {
@@ -69,8 +69,25 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.positions.splice(state.positions.indexOf(action.payload), 1);
     },
-    unfinishedDelete: (_) => {
-      // state.task_finished = true;
+    closePositionRequested: (__, _: PayloadAction<string>) => {},
+    closePositionDone: (state, action: PayloadAction<Position>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.positions = state.positions.map((position) =>
+        position.id === action.payload.id ? action.payload : position
+      );
+    },
+    openPositionRequested: (__, _: PayloadAction<string>) => {},
+    openPositionDone: (state, action: PayloadAction<Position>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.positions = state.positions.map((position) =>
+        position.id === action.payload.id ? action.payload : position
+      );
+    },
+
+    taskUnfinished: (state, action: PayloadAction<string>) => {
+      state.task_error = action.payload;
     },
     listPositionDone: (
       state,
@@ -119,16 +136,18 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.curr_position = action.payload;
     },
-    resetCurrEmployee: (state) => {
-      state.curr_position = undefined;
-      state.task_finished = true;
-    },
-    unfinishedEdit: (_) => {
-      // state.task_finished = true
+    resetPositionState: (state, action: PayloadAction<PositionState>) => {
+      state = {
+        ...action.payload,
+      };
     },
     closePositionTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
+    },
+    getPositionRequest: (__, _: PayloadAction<string>) => {},
+    getPositionDone: (state, action: PayloadAction<Position>) => {
+      state.curr_position = action.payload;
     },
   },
 });
@@ -140,20 +159,25 @@ export const {
   tryingToDelete,
   deletePositionRequested,
   deletePositionDone,
-  unfinishedDelete,
+  taskUnfinished,
   setCurrentPosition,
   addPositionRequested,
   addPositionDone,
   editPositionRequested,
   editPositionDone,
-  unfinishedEdit,
-  resetCurrEmployee,
+  resetPositionState,
   searching,
   noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
   closePositionTask,
-} = EmployeeSlice.actions;
+  closePositionRequested,
+  closePositionDone,
+  openPositionRequested,
+  openPositionDone,
+  getPositionRequest,
+  getPositionDone,
+} = PositionSlice.actions;
 
-export default EmployeeSlice.reducer;
+export default PositionSlice.reducer;

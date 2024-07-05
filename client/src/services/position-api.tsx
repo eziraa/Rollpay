@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
 import { AddPositionParams, EditPositionParams } from "../typo/position/params";
-import { CustomResponse } from "../typo/utils/response";
+import { BaseResponse } from "../typo/utils/response";
 import { AddPositionResponse, Position } from "../typo/position/response";
 
 const addPosition = async (values: AddPositionParams) => {
@@ -32,7 +32,7 @@ export interface Pagination {
   number_of_pages: number;
 }
 
-export interface PaginatedPositionResponse extends CustomResponse {
+export interface PaginatedPositionResponse extends BaseResponse {
   count: number;
   results: Position[];
   pagination: Pagination;
@@ -99,9 +99,9 @@ const editPosition = async (
   return response;
 };
 
-const deletePosition = async (empployee_id: string) => {
+const deletePosition = async (position_id: string) => {
   const response = await api
-    .delete("/position/delete/" + empployee_id)
+    .delete("/position/delete/" + position_id)
     .then((res) => {
       return {
         success: "Position deleted successfully",
@@ -119,11 +119,74 @@ const deletePosition = async (empployee_id: string) => {
   return response;
 };
 
+const closePosition = async (position_id: string) => {
+  const response = await api
+    .put("/position/close/" + position_id)
+    .then((res) => {
+      return {
+        success: "Position close successfully",
+        code: res.status,
+        position: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
+const openPosition = async (position_id: string) => {
+  const response = await api
+    .patch("/position/open/" + position_id)
+    .then((res) => {
+      return {
+        success: "Position opened successfully",
+        code: res.status,
+        position: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
+const getPosition = async (position_id: string) => {
+  const response = await api
+    .get("/position/get/" + position_id)
+    .then((res) => {
+      return {
+        success: "Position returned successfully",
+        code: res.status,
+        position: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const PositionAPI = {
   listPositions,
   editPosition,
   deletePosition,
   addPosition,
+  closePosition,
+  openPosition,
+  getPosition,
 };
 
 export default PositionAPI;
