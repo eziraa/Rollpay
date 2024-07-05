@@ -12,7 +12,8 @@ import { PaymentEmployee } from "../../typo/payment/response";
 const InitialState: PaymentState = {
   employees: [],
   curr_emp: undefined,
-  loading: false,
+  task_finished: true,
+  task_error: undefined,
   searching: false,
   search_response: [],
   pagination: undefined,
@@ -23,13 +24,13 @@ const SalarySlice = createSlice({
   initialState: InitialState,
   reducers: {
     getSalariesRequested: (state) => {
-      state.loading = true;
+      state.task_finished = false;
     },
     getSalariesDone: (
       state,
       action: PayloadAction<PaginatedPaymentResponse>
     ) => {
-      state.loading = false;
+      state.task_finished = true;
       state.employees = action.payload.results;
       state.searching = false;
       state.pagination = {
@@ -39,13 +40,13 @@ const SalarySlice = createSlice({
       };
     },
     getCurrEmpPaymentInfo: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
     },
     currentEmpPaymentInfoDone: (
       state,
       action: PayloadAction<CurrentEmpPaymentsResponse>
     ) => {
-      state.loading = false;
+      state.task_finished = true;
       state.curr_emp = action.payload;
     },
     searchPaymentRequested: (_, __: PayloadAction<SearchParams>) => {},
@@ -54,21 +55,22 @@ const SalarySlice = createSlice({
       state.search_response = action.payload;
     },
     loadNextPaymentListPage: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page++;
       else if (state.pagination) state.pagination.current_page = 1;
     },
     loadPrevPaymentListPage: (state, _: PayloadAction<string>) => {
-      state.loading = true;
+      state.task_finished = false;
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
     },
+
     noSearchResult: (state) => {
       state.searching = false;
-      state.loading = false;
+      state.task_finished = true;
     },
     unfinishedList: (state) => {
-      state.loading = false;
+      state.task_finished = true;
     },
     setProfilePicture: (state, action: PayloadAction<string>) => {
       if (state.curr_emp)
