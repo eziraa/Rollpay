@@ -14,6 +14,7 @@ import {
   unfinishedAdd,
   taskUnfinished,
   closePositionDone,
+  getPositionDone,
 } from "./position-slice";
 import {
   AddPositionParams,
@@ -158,6 +159,62 @@ function* DeletePosition(action: PayloadAction<string>) {
           type: "error",
           status: true,
           title: "Delete Position",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* GetPosition(action: PayloadAction<string>) {
+  try {
+    const response: AddPositionResponse = yield call(
+      PositionAPI.getPosition,
+      action.payload
+    );
+    if (response.code === 200) {
+      console.log(response.position);
+      yield put(getPositionDone(response.position));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Getting Position",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(taskUnfinished(response.error || "Cann't get position"));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(taskUnfinished(response.error || "Cann't get position"));
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to get positions",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Get Position",
           desc: response.error,
           duration: 3,
         })
@@ -406,4 +463,5 @@ export function* watchPositionRequest() {
   yield takeEvery("position/deletePositionRequested", DeletePosition);
   yield takeEvery("position/closePositionRequested", CLosePosition);
   yield takeEvery("position/openPositionRequested", OpenPosition);
+  yield takeEvery("position/getPositionRequest", GetPosition);
 }
