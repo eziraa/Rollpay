@@ -29,7 +29,7 @@ import {
 } from "../../../store/salary/salary-slice";
 import Pagination from "../../sections/pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
-import { getFormattedMonth } from "./utils";
+import { getFormattedMonth, getNamedMonth } from "./utils";
 import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
 import * as XLSX from "xlsx";
@@ -41,7 +41,7 @@ import { TbFileTypePdf } from "react-icons/tb";
 import { RiFileExcel2Line } from "react-icons/ri";
 
 export const EmployeesSalaryPage = () => {
-  // Getting necessary information
+  // Calling  hooks and  Getting necessary information
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
   const [searchBy, setSearchBy] = useState("first_name");
@@ -50,7 +50,7 @@ export const EmployeesSalaryPage = () => {
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
-  // const [exportTo, setExportTo] = useState<string>("excel");
+
   const navigate = useNavigate();
   const { year, month } = useParams();
   useEffect(() => {
@@ -174,27 +174,33 @@ export const EmployeesSalaryPage = () => {
     pdf.save("Employee payroll.pdf");
   };
 
-  // if (exportTo === "excel") handleExport();
-  // else if (exportTo === "pdf") pdfExport();
-
   useEffect(() => {
     if (salary.searching && salary.search_response)
       setEmployeeSalary(salary.search_response || []);
     else setEmployeeSalary(salary.employees || []);
   }, [salary.employees, salary.search_response]);
-  const start = 2022;
-  const end = 2024;
+
+  // Implementing year-month pagination
+  const start_year = 2022;
+  const end_year = 2024;
   const years = Array.from(
-    { length: end - start + 1 },
-    (_, index) => start + index
+    { length: end_year - start_year + 1 },
+    (_, index) => start_year + index
   );
 
-  const month_start = 1;
-  const month_end = 12;
+  const start_month = 1;
+  const end_month = 12;
   const months = Array.from(
-    { length: month_end - month_start + 1 },
-    (_, index) => month_start + index
+    { length: end_month - start_month + 1 },
+    (_, index) => start_month + index
   );
+  const [curr_year, setCurrYear] = useState(start_year);
+  const [curr_month, setCurrMonth] = useState(start_month);
+
+  // Defining use effect to navigate if there is a change
+  useEffect(() => {
+    navigate(`/employees-salary/${curr_year}/${curr_month}`);
+  }, [curr_month, curr_year]);
 
   return (
     <SalaryContainer>
@@ -212,19 +218,6 @@ export const EmployeesSalaryPage = () => {
           />
         </SearchContainer>
 
-        {/* <ExportLabel>Export to:</ExportLabel> */}
-        {/* <Select
-          style={{
-            width: "15rem",
-          }}
-          name="export-to"
-          onChange={(e) => {
-            setExportTo(e.currentTarget.value);
-          }}
-        >
-          <SelectOption value="excel">Excel</SelectOption>
-          <SelectOption value="pdf">PDF</SelectOption>
-        </Select> */}
         <ExportButton onClick={handleExport}>
           <ExportIcon>
             <RiFileExcel2Line />
@@ -244,20 +237,36 @@ export const EmployeesSalaryPage = () => {
             right: "10px",
             top: "10px",
             fontSize: "1.5rem",
+            display: "flex",
+            gap: "1rem",
           }}
         >
           <Select
-            value={`${year}/${month}`}
+            value={`${curr_year}`}
             onChange={(e) => {
-              navigate("/employees-salary/" + e.target.value);
+              setCurrYear(+e.target.value);
             }}
           >
-            {years.map((year) =>
-              months.map((month) => (
-                <SelectOption key={year + month} value={`${year}/${month}`}>
-                  {getFormattedMonth(new Date(`${year}-${month}-01`))}
-                </SelectOption>
-              ))
+            {years.map((year) => (
+              <SelectOption key={year} value={`${year}`}>
+                {year}
+              </SelectOption>
+            ))}
+          </Select>
+          <Select
+            value={`${curr_month}`}
+            onChange={(e) => {
+              setCurrMonth(+e.target.value);
+            }}
+          >
+            {months.map(
+              (month) =>
+                (curr_year < end_year ||
+                  month <= new Date(Date.now()).getMonth()) && (
+                  <SelectOption key={month} value={`${month}`}>
+                    {getNamedMonth(new Date(`${year}-${month}-01`))}
+                  </SelectOption>
+                )
             )}
           </Select>
         </Label>
@@ -265,95 +274,86 @@ export const EmployeesSalaryPage = () => {
       {salary.loading ? (
         <LoadingSpinner />
       ) : (
-        <div
-          style={{
-            padding: "1rem 2rem",
-            width: "100%",
-          }}
-        >
-          <SalaryTable id="table">
-            <TableHeader>
-              <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Basic Salary</HeaderTitle>
-              <HeaderTitle
-                style={{
-                  textAlign: "center",
-                }}
-                colSpan={allowanceTypes.length}
-              >
-                Allowance
-              </HeaderTitle>
-              <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
-              <HeaderTitle
-                style={{
-                  textAlign: "center",
-                }}
-                colSpan={deductionTypes.length + 1}
-              >
-                Deduction
-              </HeaderTitle>
-              <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Month</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
-              <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
-            </TableHeader>
-            <TableHeader>
-              {allowanceTypes.map((allowanceType) => {
-                return <HeaderTitle> {allowanceType} </HeaderTitle>;
-              })}
-              <HeaderTitle>Income Tax</HeaderTitle>
-              {deductionTypes.map((deductionType) => {
-                return <HeaderTitle> {deductionType} </HeaderTitle>;
-              })}
-            </TableHeader>
-            {employeeSalary
-              .filter((employee) => employee)
-              .map((employee) => (
-                <TableRow key={employee.employee_id}>
-                  <TableData>{employee.employee_id}</TableData>
-                  <TableData>{employee.employee_name}</TableData>
-                  <TableData>{employee.basic_salary}</TableData>
-                  {allowanceTypes.map((allowanceType) => {
-                    return (
-                      <TableData>
-                        {getRate(
-                          employee.allowances.find(
-                            (alowance) =>
-                              alowance.allowance_type === allowanceType
-                          )?.allowance_rate
-                        )}
-                      </TableData>
-                    );
-                  })}
-                  <TableData>{getSalary(employee.gross_salary)}</TableData>
-                  <TableData>{getSalary(employee.income_tax)}</TableData>
-                  {deductionTypes.map((deductionType) => {
-                    return (
-                      <TableData>
-                        {getRate(
-                          employee.deductions.find(
-                            (deduction) =>
-                              deduction.deduction_type === deductionType
-                          )?.deduction_rate
-                        )}
-                      </TableData>
-                    );
-                  })}
-                  <TableData>{employee.total_deduction}</TableData>
-                  <TableData>{employee.net_salary}</TableData>
-                  <TableData>
-                    {getFormattedMonth(new Date(employee.month)).split("-")[0]}
-                  </TableData>
-                  <TableData>
-                    {!employee.payment_status && "Not"} Paid{" "}
-                  </TableData>
-                  <TableData> {employee.payment_date} </TableData>
-                </TableRow>
-              ))}
-          </SalaryTable>
-        </div>
+        <SalaryTable id="table">
+          <TableHeader>
+            <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
+            <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
+            <HeaderTitle rowSpan={2}>Basic Salary</HeaderTitle>
+            <HeaderTitle
+              style={{
+                textAlign: "center",
+              }}
+              colSpan={allowanceTypes.length}
+            >
+              Allowance
+            </HeaderTitle>
+            <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
+            <HeaderTitle
+              style={{
+                textAlign: "center",
+              }}
+              colSpan={deductionTypes.length + 1}
+            >
+              Deduction
+            </HeaderTitle>
+            <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
+            <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
+            <HeaderTitle rowSpan={2}>Month</HeaderTitle>
+            <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
+            <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
+          </TableHeader>
+          <TableHeader>
+            {allowanceTypes.map((allowanceType) => {
+              return <HeaderTitle> {allowanceType} </HeaderTitle>;
+            })}
+            <HeaderTitle>Income Tax</HeaderTitle>
+            {deductionTypes.map((deductionType) => {
+              return <HeaderTitle> {deductionType} </HeaderTitle>;
+            })}
+          </TableHeader>
+          {employeeSalary
+            .filter((employee) => employee)
+            .map((employee) => (
+              <TableRow key={employee.employee_id}>
+                <TableData>{employee.employee_id}</TableData>
+                <TableData>{employee.employee_name}</TableData>
+                <TableData>{employee.basic_salary}</TableData>
+                {allowanceTypes.map((allowanceType) => {
+                  return (
+                    <TableData>
+                      {getRate(
+                        employee.allowances.find(
+                          (alowance) =>
+                            alowance.allowance_type === allowanceType
+                        )?.allowance_rate
+                      )}
+                    </TableData>
+                  );
+                })}
+                <TableData>{getSalary(employee.gross_salary)}</TableData>
+                <TableData>{getSalary(employee.income_tax)}</TableData>
+                {deductionTypes.map((deductionType) => {
+                  return (
+                    <TableData>
+                      {getRate(
+                        employee.deductions.find(
+                          (deduction) =>
+                            deduction.deduction_type === deductionType
+                        )?.deduction_rate
+                      )}
+                    </TableData>
+                  );
+                })}
+                <TableData>{employee.total_deduction}</TableData>
+                <TableData>{employee.net_salary}</TableData>
+                <TableData>
+                  {getFormattedMonth(new Date(employee.month)).split("-")[0]}
+                </TableData>
+                <TableData>{!employee.payment_status && "Not"} Paid </TableData>
+                <TableData> {employee.payment_date} </TableData>
+              </TableRow>
+            ))}
+        </SalaryTable>
       )}
       <Pagination pagination={pagination} />
     </SalaryContainer>

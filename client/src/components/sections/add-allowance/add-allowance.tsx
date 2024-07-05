@@ -35,10 +35,7 @@ export const AddAllowance = () => {
   const allowance = useAllowance();
   const navigate = useNavigate();
   const { allowance_id } = useParams();
-  const initialValues = {
-    allowance_type: allowance.curr_allowance?.allowance_type || "",
-    allowance_rate: allowance.curr_allowance?.allowance_rate || "",
-  };
+
   useEffect(() => {
     allowance_id && dispatcher(getAllowanceRequested(allowance_id));
   }, []);
@@ -59,7 +56,10 @@ export const AddAllowance = () => {
     isSubmitting,
     setFieldValue
   } = useFormik({
-    initialValues,
+    initialValues:{
+      allowance_type: "",
+      allowance_rate: "",
+    },
     validationSchema: AddAllowanceSchema,
     onSubmit(values) {
       dispatcher(
