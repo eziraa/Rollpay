@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   CustomTable,
   HeaderTitle,
@@ -19,12 +20,42 @@ import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 import { ThreeDots } from "../../utils/loading/dots";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
+import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
+import { useEffect } from "react";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 export const EmployeeDeduction = () => {
-  const { curr_emp, loading } = useAppSelector((state) => state.salary);
+  const { curr_emp, task_finished } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { year, month, changeYear, changeMonth } = useYearMonthPagination();
+  useEffect(() => {
+    if (!year && !month) return;
+    !year && changeYear(2022);
+    !month && changeMonth(1);
+    year &&
+      month &&
+      navigate(pathname.split("deductions")[0] + `deductions/${year}/${month}`);
+  }, [year, month]);
+
+  const { year: curr_year, month: curr_month, employee_id } = useParams();
+
+  useEffect(() => {
+    if (curr_year && curr_month) {
+      dispatcher(
+        getCurrEmpPaymentInfo(`${employee_id}/${curr_year}/${curr_month}`)
+      );
+    } else {
+      employee_id &&
+        dispatcher(
+          getCurrEmpPaymentInfo(
+            `${employee_id}/${2024}/${new Date(Date.now()).getMonth()}`
+          )
+        );
+    }
+  }, [curr_year, curr_month]);
   return (
     <DeductionContainer>
       <Outlet />
@@ -42,7 +73,7 @@ export const EmployeeDeduction = () => {
         </AddButton>
       </DeductionHeader>
       <DeductionBody>
-        {loading ? (
+        {!task_finished ? (
           <ThreeDots size={2} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.deductions.length === 0
