@@ -1,4 +1,5 @@
-from ..models import Salary
+from ..models import Salary, Payment
+from django.utils import timezone
 
 
 class SalaryCalculator:
@@ -7,13 +8,14 @@ class SalaryCalculator:
     net_salary = 0
     income_tax = 0
 
-    def __init__(self, salary: Salary):
-        self.salary = salary
-        self.calc_gross_salary()
-        self.calc_total_deduction()
-        self.calc_net_salary()
-        self.calc_income_tax()
-        self.calc_net_salary()
+    def __init__(self, salary:Salary=None):
+        if salary is not None:
+            self.salary = salary
+            self.calc_gross_salary()
+            self.calc_total_deduction()
+            self.calc_net_salary()
+            self.calc_income_tax()
+            self.calc_net_salary()
 
     def calc_income_tax(self):
         if self.gross_salary > 0 and self.gross_salary <= 600:
@@ -31,6 +33,7 @@ class SalaryCalculator:
         elif self.gross_salary > 10900:
             self.income_tax = self.gross_salary * 0.35 - 1500
 
+
     def calc_gross_salary(self):
         allowances_sum = sum(
             [allowance.allowance_rate for allowance in self.salary.allowances.all()])
@@ -46,6 +49,20 @@ class SalaryCalculator:
             self.total_deduction = float(
                 self.total_deduction) + self.income_tax
         self.total_deduction = round(self.total_deduction, 2)
+    
+    def calc_income_tax_current_month(self):
+        current_month_payments = Payment.objects.filter(
+            month__year=timezone.now().year,
+            month__month=timezone.now().month
+        )
+
+        total_income_tax = sum(
+            SalaryCalculator(salary=payment.salary).income_tax
+            for payment in current_month_payments
+        )
+
+        return total_income_tax
+
 
     def calc_net_salary(self):
         self.net_salary = self.gross_salary - float(self.total_deduction)
