@@ -6,7 +6,6 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
-  AddSalaryParams,
   UpdateEmployementContract,
   UpdateProfileParams,
 } from "../../typo/employee/params";
@@ -57,9 +56,6 @@ const EmployeeSlice = createSlice({
       state.task_error = undefined;
       state.curr_emp = action.payload;
     },
-    unfinishedAdd: (state, action: PayloadAction<string | undefined>) => {
-      state.task_error = action.payload;
-    },
     listEmpRequested: (state) => {
       state.task_finished = false;
     },
@@ -67,16 +63,11 @@ const EmployeeSlice = createSlice({
       state.task_finished = false;
     },
     deleteEmpRequested: (__, _: PayloadAction<string>) => {},
-    addSearched: (state, action: PayloadAction<Employee[]>) => {
-      state.query_set = action.payload;
-    },
     deleteEmpDone: (state, action: PayloadAction<Employee>) => {
       state.task_finished = true;
       state.employees.splice(state.employees.indexOf(action.payload), 1);
     },
-    unfinishedDelete: (state) => {
-      state.task_finished = false;
-    },
+
     listEmpDone: (state, payload: PayloadAction<PaginatedEmpResponse>) => {
       state.employees = payload.payload.results;
       state.task_finished = true;
@@ -86,9 +77,6 @@ const EmployeeSlice = createSlice({
         type: "employee",
         number_of_pages: payload.payload.pagination.number_of_pages,
       };
-    },
-    unfinishedList: (state) => {
-      state.employees = [];
     },
     loadNextEmployeeListPage: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
@@ -100,25 +88,11 @@ const EmployeeSlice = createSlice({
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
     },
-    searching: (state, payload: PayloadAction<Employee[]>) => {
-      state.query_set = payload.payload;
-      state.searching = true;
-    },
-    noSearchResult: (state) => {
-      state.searching = false;
-    },
     setCurrentEmployee: (
       state,
       payload: PayloadAction<Employee | undefined>
     ) => {
       state.curr_emp = payload.payload;
-    },
-    addSalaryRequested: (state, _: PayloadAction<AddSalaryParams>) => {
-      state.task_finished = false;
-    },
-    addSalaryDone: (state, action: PayloadAction<Employee>) => {
-      state.task_finished = true;
-      state.curr_emp = action.payload;
     },
     editEmployeeRequested: (state, _: PayloadAction<EditEmployeeParams>) => {
       state.task_finished = false;
@@ -148,10 +122,6 @@ const EmployeeSlice = createSlice({
       _: PayloadAction<AddOvertimeToEmpParams>
     ) => {
       state.task_finished = false;
-    },
-    addingDone: (state) => {
-      state.task_finished = true;
-      state.task_error = undefined;
     },
     updateProfileRequest: (state, _: PayloadAction<UpdateProfileParams>) => {
       state.task_finished = false;
@@ -187,31 +157,26 @@ const EmployeeSlice = createSlice({
       state.employees = action.payload;
       state.task_finished = true;
     },
+    errorOccurred: (state, action: PayloadAction<string | undefined>) => {
+      state.task_error = action.payload;
+    },
   },
 });
 export const {
   addEmpRequested,
   addEmpDone,
-  unfinishedAdd,
   listEmpRequested,
   listEmpDone,
-  unfinishedList,
   tryingToDelete,
   deleteEmpRequested,
   addEmpAllowanceRequested,
   finishAddAllowanceDone,
   addEmpDeductionRequested,
   addEmpOvertimeRequested,
-  addingDone,
   deleteEmpDone,
-  unfinishedDelete,
   setCurrentEmployee,
-  addSalaryRequested,
-  addSalaryDone,
   editEmployeeRequested,
   editEmployeeDone,
-  searching,
-  noSearchResult,
   loadNextEmployeeListPage,
   loadPrevEmployeeListPage,
   setPagesize,
@@ -223,6 +188,7 @@ export const {
   filterEmployeeDone,
   updateContractRequest,
   updateContractDone,
+  errorOccurred,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
