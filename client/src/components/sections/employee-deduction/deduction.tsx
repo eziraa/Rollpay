@@ -36,7 +36,7 @@ export const EmployeeDeduction = () => {
 
   // Getting necessary information
   const baseUrl = curr_year
-    ? pathname.slice(0, pathname.indexOf(curr_year + "/"))
+    ? pathname.slice(0, pathname.indexOf("/" + curr_year + "/"))
     : pathname;
   // Defining use effect to navigate when there is chnage in the year and month
   useEffect(() => {
@@ -70,7 +70,7 @@ export const EmployeeDeduction = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate(baseUrl + "add-deduction");
+            navigate(baseUrl + "/-deduction");
             dispatcher(listDeductionsRequested());
           }}
         >

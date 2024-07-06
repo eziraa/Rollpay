@@ -36,7 +36,7 @@ export const EmployeeOvertime = () => {
 
   // Getting the base URL
   const baseUrl = curr_year
-    ? pathname.slice(0, pathname.indexOf(curr_year + "/"))
+    ? pathname.slice(0, pathname.indexOf("/" + curr_year + "/"))
     : pathname;
   // Defining a ue effect to naviagate when there is a month or year change
   useEffect(() => {
@@ -70,7 +70,7 @@ export const EmployeeOvertime = () => {
           onClick={(e) => {
             e.stopPropagation();
             dispatcher(listOvertimesRequested());
-            navigate(baseUrl + "add-overtime");
+            navigate(baseUrl + "/add-overtime");
           }}
         >
           Add
