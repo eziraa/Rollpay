@@ -18,19 +18,16 @@ import { Label } from "../form-elements/form.style";
 import { RiPencilLine } from "react-icons/ri";
 import { ImageCard } from "../profile-card/profile-card";
 import { baseURL } from "../../../config/api";
-import { CurrEmpPayments } from "../../../typo/payment/response";
 import { CURRENT_USER } from "../../../constants/token-constants";
 import { useParams } from "react-router";
 import { useUser } from "../../../hooks/user-hook";
 import { setProfilePicture as changeProfile } from "../../../store/salary/salary-slice";
 import UpdateEmployee from "../../pages/see-employee/update-employee";
+import { Employee } from "../../../typo/employee/response";
 
-export const EmployeeProfile = ({
-  employee,
-}: {
-  employee: CurrEmpPayments;
-}) => {
+export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
   const { curr_emp } = useAppSelector((state) => state.salary);
+  const { user } = useUser();
   const dispatcher = useAppDispatch();
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
@@ -134,7 +131,7 @@ export const EmployeeProfile = ({
         </EmployeeData>
       </EmployeeInfoContainer>
 
-      {employee.position === "Clerk" && <UpdateEmployee />}
+      {user?.employee.position === "Clerk" && <UpdateEmployee />}
     </EmployeeeProfileContainer>
   );
 };
