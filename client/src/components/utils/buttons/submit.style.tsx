@@ -4,10 +4,10 @@ import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const Button = styled.button<ThemeProps>`
   width: 30%;
-  height: 35px;
-  margin: 10px 140px;
-  font-size: 15px;
-  border-radius: 7px;
+  height: 3.5rem;
+  margin: 1rem 14rem;
+  font-size: 1.5rem;
+  border-radius: 0.7rem;
   border: none;
   background-color: ${({ theme }) => theme.buttons.primary};
   color: ${({ theme }) => theme.backgrounds.primary};

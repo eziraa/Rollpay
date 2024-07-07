@@ -31,15 +31,13 @@ urlpatterns = [
          salary_view.SalaryView.as_view(), name='__get_salary_by_month__'),
     path('salary/get/<str:employee_id>/<int:year>/<int:curr_month>',
          salary_view.SalaryView.as_view(), name='__get_emoployee_payment_by_month__'),
-    path('get/<str:id>', views.EmployeeView.as_view(), name='__get_emoploye__'),
+    path('get/<str:employee_id>', views.EmployeeView.as_view(),
+         name='__get_emoploye__'),
     path('update/<str:id>/', views.EmployeeView.as_view(),
          name='__update_emoployee__'),
     path("contract/<str:employee_id>",
          EmployementContract.as_view(), name='_employement_contract__'),
-     path('employee-number', views.EmployeeNumber.as_view(), name='__get_employee_number__'),
-     path('average-salary', salary_view.BasicSalaryAverage.as_view(), name='__average_basic_salary__'),
+    path('employee-number', views.EmployeeNumber.as_view(),
+         name='__get_employee_number__'),
 
-
-    path("total-income-tax",
-         salary_view.TotalIncomeTax.as_view(), name='_total_income_tax__'),
 ] 

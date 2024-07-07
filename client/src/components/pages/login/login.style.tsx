@@ -13,7 +13,7 @@ export const LoginSection = styled.div<ThemeProps>`
   color: ${({ theme }) => theme.backgrounds.primary};
   width: 23%;
   height: 60%;
-  box-shadow: 0px 0px 1rem
+  box-shadow: 0 0 1rem
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
   display: flex;
   flex-direction: column;

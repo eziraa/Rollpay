@@ -20,7 +20,7 @@ export const SearchInputContainer = styled.div<ThemeProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border: 0.1rem solid ${({ theme }) => theme.colors.primary};
   border-radius: 3rem;
   width: 40vw;
   background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -35,7 +35,7 @@ export const SearchInput = styled(Input)`
   width: 50rem;
   height: 4rem;
   padding: 0 1rem;
-  border: 1px solid ${({ theme }) => theme.backgrounds.primary};
+  border: 0.1rem solid ${({ theme }) => theme.backgrounds.primary};
   border-radius: 3rem;
   &:focus {
     border: none;

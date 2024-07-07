@@ -35,7 +35,7 @@ export const PaymentRow = styled.div`
   grid-template-columns: 2fr repeat(2, 1fr) 2fr 1fr;
   padding: 0.5rem 0;
   margin: 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.secondary};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.secondary};
   &:last-child {
     border-bottom: none;
   }

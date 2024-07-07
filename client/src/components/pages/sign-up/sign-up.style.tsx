@@ -8,16 +8,16 @@ import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 const Text = css`
   color: ${({ theme }) => theme.colors.primary};
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 15px;
+  font-size: 1.5rem;
 `;
 
-export const SignUpPage= styled.div`
+export const SignUpPage = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 export const SignUpContainer = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
@@ -43,15 +43,15 @@ export const SignUpContainer = styled.div<ThemeProps>`
 
 export const Title = styled.h1`
   ${Text}
-  font-size: 30px;
+  font-size: 3rem;
   margin-bottom: 1rem;
 `;
 
 export const ErrorMessage = styled.p`
   ${Text}
-  margin: 0px 10px;
-  font-size: 15px;
+  margin: 0 1rem;
+  font-size: 1.5rem;
   font-weight: 400;
-  padding-left: 10px;
+  padding-left: 1rem;
   color: #ef3131;
 `;

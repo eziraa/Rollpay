@@ -43,7 +43,7 @@ export const ProfileImage = styled.img<Props>`
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
-  border: 2px solid ${({ theme }) => theme.colors.primary};
+  border: 0.2rem solid ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   /* transition: all 0.3s ease-in-out; */
   /* &:hover {

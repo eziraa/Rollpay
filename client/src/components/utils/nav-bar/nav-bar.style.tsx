@@ -19,7 +19,7 @@ export const NavItem = styled.div<NavItemProps>`
   padding: 1rem 2rem;
   display: inline-block;
   font-size: 1.7rem;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   cursor: pointer;
   text-align: center;
   color: ${({ theme }) => theme.colors.primary};

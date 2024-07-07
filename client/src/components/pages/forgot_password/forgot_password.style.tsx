@@ -11,10 +11,9 @@ export const ForgotPasswordBody = styled.div`
   padding: 1rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
-  box-shadow: 0px 0px 1rem
+  box-shadow: 0 0 1rem
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
 `;
-
 
 export const ForgotPasswordContainer = styled(LoginContainer)`
   padding: 4rem 2rem;
@@ -24,7 +23,7 @@ export const ForgotPasswordContainer = styled(LoginContainer)`
   left: 50%;
   transform: translate(-50%, -50%);
   width: fit-content;
-  box-shadow: 0px 0px 1rem
+  box-shadow: 0 0 1rem
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
 `;
 

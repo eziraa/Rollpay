@@ -40,7 +40,7 @@ export const Title = styled.h1`
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.15rem;
   color: ${({ theme }) => theme.colors.primary};
 `;
 

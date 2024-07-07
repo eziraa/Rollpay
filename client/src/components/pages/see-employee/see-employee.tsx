@@ -65,7 +65,7 @@ export const SeeEmployee = () => {
           style={{
             position: "absolute",
             right: "2rem",
-            top: "10px",
+            top: "1rem",
             fontSize: "1.5rem",
             display: "flex",
             gap: "1rem",

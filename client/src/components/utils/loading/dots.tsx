@@ -15,7 +15,7 @@ export const Dot = styled.div<DotProps>`
   height: ${({ size }) => size}rem;
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 50%;
-  margin: 0 4px;
+  margin: 0 0.4rem;
   &:nth-child(1) {
     animation: ${animation} 2s infinite;
   }
@@ -31,7 +31,7 @@ export const DotsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 2rem;
   height: 60vh;
   width: 80vw;
 `;

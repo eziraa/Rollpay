@@ -51,7 +51,7 @@ export const FilterInput = styled(Input)`
   outline: none;
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid
+  border-bottom: 0.1rem solid
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
   &:focus {
     border: none;

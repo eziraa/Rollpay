@@ -38,7 +38,7 @@ export const SalaryTitle = styled.h1`
   left: 25rem;
   font-size: 2.5rem;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   color: ${({ theme }) => addOpacityToColor(0.65, theme.colors.primary)};
 `;
 
@@ -46,7 +46,7 @@ export const SearchContainer = styled.div<ThemeProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border: 0.1rem solid ${({ theme }) => theme.colors.primary};
   border-radius: 3rem;
   width: 40rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -61,7 +61,7 @@ export const SearchInput = styled(Input)`
   padding: 0 1rem;
   border-radius: 3rem;
 
-  border: 1px solid ${({ theme }) => theme.backgrounds.primary};
+  border: 0.1rem solid ${({ theme }) => theme.backgrounds.primary};
   outline: none;
   &:focus {
     border: none;

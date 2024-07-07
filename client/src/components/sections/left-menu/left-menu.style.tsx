@@ -33,7 +33,7 @@ export const LogoContainer = styled.div`
   font-weight: 700;
   width: 100%;
   height: 25%;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   margin: 0;
   padding: 0;
 `;
@@ -80,7 +80,6 @@ export const SubMenuContainer = styled.div`
   margin-left: 4rem;
   border-radius: 0.5rem;
 
-  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
   transition: all 0.5s ease;
   border-left: 0.3rem solid #23232378;
 `;
@@ -111,7 +110,7 @@ export const MenuItemText = styled.h1`
   font-weight: 500;
   line-height: 0.8;
   padding: 0.5rem 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
 `;
 
 export const Icon = css`

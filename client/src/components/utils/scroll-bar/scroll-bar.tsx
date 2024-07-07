@@ -3,12 +3,12 @@ import styled, { css } from "styled-components";
 export const custom_scroll_bar = css`
   overflow-y: scroll;
   &::-webkit-scrollbar {
-    width: 2px;
+    width: 0.2rem;
   }
 
   &::-webkit-scrollbar-thumb {
     background: #888;
-    border-radius: 4px;
+    border-radius: 0.4rem;
   }
 `;
 export const ScrollBar = styled.div`

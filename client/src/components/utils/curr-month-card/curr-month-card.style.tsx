@@ -9,7 +9,7 @@ export const MonthCardContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding: 2rem;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.5rem;
   cursor: pointer;
   box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
@@ -88,8 +88,8 @@ export const MonthFooter = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
-  border-top: 1px solid #ccc;
+  padding: 1rem;
+  border-top: 0.1rem solid #ccc;
   font-size: 1.2rem;
   color: #666;
   &:hover {
