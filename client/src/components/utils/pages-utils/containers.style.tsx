@@ -35,7 +35,7 @@ export const MainContainer = styled.div`
   align-items: start;
   justify-content: flex-start;
   height: 100%;
-  width: 85vw;
+  width: 100%;
   padding: 1rem;
   padding-right: 2rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
