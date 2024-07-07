@@ -41,15 +41,14 @@ export const ProfileImage = styled.img<Props>`
   background: ${(props) =>
       props.profile ? `url(${props.profile})` : `url(${Placeholder})`},
     linear-gradient(90deg, #60565596, #6866619d);
-  background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
   border: 0.2rem solid ${({ theme }) => theme.colors.primary};
   cursor: pointer;
-  /* transition: all 0.3s ease-in-out; */
-  /* &:hover {
+  transition: all 0.3s ease-in-out;
+  &:hover {
     transform: scale(1.1);
-  } */
+  }
 `;
 
 export const WelcomeMessageContainer = styled.div`
