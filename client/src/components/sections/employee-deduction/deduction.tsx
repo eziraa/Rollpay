@@ -70,7 +70,7 @@ export const EmployeeDeduction = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate(baseUrl + "/-deduction");
+            navigate(baseUrl + "/add-deduction");
             dispatcher(listDeductionsRequested());
           }}
         >
