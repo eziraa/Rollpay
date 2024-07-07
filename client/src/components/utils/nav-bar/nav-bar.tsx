@@ -5,7 +5,7 @@ export const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <NavBar>
+    <NavBar className="nav-bar">
       <NavItem
         active={location.pathname.includes("/allowances")}
         onClick={(e) => {
