@@ -27,8 +27,12 @@ class StandardResultsSetPagination(PageNumberPagination):
 class EmployeeView (APIView):
     permission_classes = [IsUserInGroupWithClerk]
 
-    def get(self, request: Request, format=None):
+    def get(self, request: Request, employee_id=None, format=None):
         try:
+            if employee_id:
+                employee = Employee.objects.get(id=employee_id)
+                serializer = EmployeeSerializer(employee)
+                return Response(serializer.data, status=200)
             queryset = Employee.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)
