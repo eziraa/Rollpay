@@ -37,17 +37,16 @@ export const PositionListHeader = styled.div`
   margin-bottom: 1rem;
   margin-top: 3rem;
   padding: 0 5rem;
+  position: relative;
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const AddButton = styled(Button)`
   width: fit-content;
-  justify-self: end;
   display: block;
-  position: absolute;
-  right: 3rem;
 `;
 
 export const ActionBtnsContainer = styled.td`

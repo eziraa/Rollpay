@@ -5,7 +5,6 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { Input} from "../../utils/form-elements/form.style";
 import { CustomTable } from "../../utils/custom-table/custom-table";
 import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
-import { Button } from "../see-employee/see-employee.style";
 import {
   MainContainer,
   body,
@@ -28,9 +27,9 @@ export const SalaryContainer = styled(MainContainer)`
   justify-content: start;
   height: 90vh;
   position: relative;
-  overflow-x: hidden;
   padding: 2rem;
-  width: fit-content;
+  width: auto;
+  overflow-x: scroll;
 `;
 
 export const SalaryTitle = styled.h1`
@@ -77,15 +76,22 @@ export const SearchIcon = styled(GoSearch)`
 
 export const SalaryTable = styled(CustomTable)`
   ${custom_scroll_bar};
-  width: 100%;
+  width: fit-content;
+  padding: 7px;
   height: 62vh;
   display: block;
+  margin-right: 1rem;
 `;
 
-export const ExportButton = styled(Button)`
-  width: 9rem;
-  padding-right: 1rem;
-  margin-left: 1rem;
+export const ExportButton = styled.div`
+  width: fit-content;
+  display: flex;
+  background-color: #1eaa74;
+  color: white;
+  align-items: center;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
 `;
 export const ExportLabel = styled(Label)`
   font-size: 1.5rem;
@@ -95,7 +101,6 @@ export const ExportLabel = styled(Label)`
 export const ExportIcon = styled(Icon)`
   margin: 0rem;
   padding: 0rem;
-  width: max-content;
   height: 2rem;
   color: ${({ theme }) => theme.backgrounds.primary};
   background-color: transparent;

@@ -10,6 +10,8 @@ import {
 
 export const EmployeesListContainer = styled.div<ThemeProps>`
   ${container}
+  width: auto;
+  border: 1px solid red;
 `;
 
 export const EmployeesListBody = styled.div<ThemeProps>`
@@ -34,10 +36,14 @@ export const Title = styled.h1<ThemeProps>`
 
 export const EmpsDisplayerHeader = styled.div`
   ${sub_header_css}
+  position: relative;
+  width: 100%;
 `;
 
 export const EmployeesListHeader = styled.div`
   ${sub_header_css}
+  width: 100%;
+  position: relative;
 `;
 
 export const Body = styled.div<ThemeProps>`
@@ -50,6 +56,5 @@ export const AddButton = styled(Button)`
   justify-self: end;
   display: block;
   position: absolute;
-  right: 4rem;
-
+  right: 5rem;
 `;

@@ -37,5 +37,6 @@ export const MainContainer = styled.div`
   height: 100%;
   width: 85vw;
   padding: 1rem;
+  padding-right: 2rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
 `;

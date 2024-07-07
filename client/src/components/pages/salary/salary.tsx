@@ -246,8 +246,8 @@ export const EmployeesSalaryPage = () => {
         <Label
           style={{
             position: "absolute",
-            right: "10rem",
-            top: "10rem",
+            right: "1rem",
+            top: "0rem",
             fontSize: "1.5rem",
             display: "flex",
             gap: "1rem",

@@ -2,12 +2,7 @@
 import { Search } from "../../utils/search/search";
 import EmployeeListDisplayer from "../../sections/list-displayer/list-displayer";
 import Pagination from "../../sections/pagination/pagination";
-import {
-  AddButton,
-  Body,
-  Title,
-  EmployeesListHeader,
-} from "./display-employee.style";
+import { Body, Title, EmployeesListHeader, AddButton } from "./display-employee.style";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
@@ -15,6 +10,7 @@ import { useContext, useEffect } from "react";
 import { listEmpRequested } from "../../../store/employee/employee-slice";
 import { PaginationContext } from "../../../contexts/pagination-context";
 import { Outlet, useNavigate } from "react-router";
+import { IoAddOutline } from "react-icons/io5";
 export const EmployeesListPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
@@ -41,7 +37,7 @@ export const EmployeesListPage = () => {
             dispatcher(listPositionsRequested());
           }}
         >
-          Add Employee
+          <IoAddOutline /> Add New
         </AddButton>
       </EmployeesListHeader>
       <Body>

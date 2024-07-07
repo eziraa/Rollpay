@@ -57,7 +57,9 @@ body{
         display: block;
 
       }
-
+      option{
+        line-height: .6;
+      }
       .left-menu{
         width: max-content;
         background-color: aliceblue;
