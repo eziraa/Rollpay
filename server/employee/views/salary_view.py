@@ -18,6 +18,7 @@ class SalaryView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request: Request, employee_id=None, year=None, curr_month=None):
+        print(curr_month, year, employee_id)
         if employee_id:
             payments = Payment.objects.filter(employee_id=employee_id)
             if payments.exists():
@@ -65,8 +66,12 @@ class SalaryView(APIView):
                 #                 employee=employee, month=curr_month, salary=employee.salary)
                 #             payment.save()
                 queryset = Payment.objects.all().order_by("month")
-                # my_month = month.Month(2024, 4)
-                # queryset = queryset.filter(month__lt=my_month)
+                if curr_month and year:
+                    try:
+                        queryset = queryset.filter(
+                            month=month.Month((year), month=curr_month))
+                    except Exception as e:
+                        return JsonResponse({"error": str(e)}, status=400)
                 paginator = StandardResultsSetPagination()
                 paginator.page_size = request.query_params.get(
                     "page_size", 10)
