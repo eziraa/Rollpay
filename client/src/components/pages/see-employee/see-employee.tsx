@@ -12,16 +12,21 @@ import { MainContainer } from "../../utils/pages-utils/containers.style";
 
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
-import { Outlet } from "react-router-dom";
-import { useSalary } from "../../../hooks/salary-hook";
+import { Outlet, useParams } from "react-router-dom";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 import { Label } from "../edit-employee/edit-employee.style";
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
 import { getNamedMonth } from "../salary/utils";
+import { useEffect } from "react";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { getCurrentEmployeeRequest } from "../../../store/employee/employee-slice";
+import { useEmployee } from "../../../hooks/employee-hook";
 
 export const SeeEmployee = () => {
   //Calling hooks and getting necessary information
-  const employee = useSalary().curr_emp?.employee;
+  const employee = useEmployee().curr_emp;
+  const { employee_id } = useParams();
+  const dispatcher = useAppDispatch();
   const {
     year: curr_year,
     month: curr_month,
@@ -44,6 +49,11 @@ export const SeeEmployee = () => {
     (_, index) => start_month + index
   );
 
+  // Defining a useEffect to get the infomration of current employee
+
+  useEffect(() => {
+    employee_id && dispatcher(getCurrentEmployeeRequest(employee_id));
+  }, [employee_id]);
   return (
     <MainContainer>
       <SeeEmployeeHeader>
