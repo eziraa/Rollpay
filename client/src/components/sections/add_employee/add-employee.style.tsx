@@ -36,7 +36,7 @@ export const GenderContainer = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
@@ -48,12 +48,12 @@ export const AddButton = styled(Button)<ThemeProps>`
   position: absolute;
   bottom: 3rem;
   right: 4rem;
-  width: 100px;
-  height: 40px;
+  width: 10rem;
+  height: 4rem;
 `;
 
 export const AddBtn = styled(Button)<ThemeProps>`
-  width: 100px;
+  width: 10rem;
   padding: 0.7rem 1rem;
 `;
 
