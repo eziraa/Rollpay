@@ -16,7 +16,7 @@ import { mockData } from "./stat";
 export const DashBoard = () => {
   return (
     <DashboardContainer>
-      <StatContainer>
+      <StatContainer className="state-card-container">
         {mockData.map((data, index) => {
           return (
             <StatCard>
