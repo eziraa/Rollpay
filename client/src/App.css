@@ -23,22 +23,6 @@ body{
   :root {
     font-size: 8.5px;
   }
-
-  .left-menu-modal {
-    display: none;
-  }
-  .hamburger-menu{
-  display: block;
-}
-}
-
-
-
-@media screen and  (max-width: 768px) {
-  :root {
-    font-size: 7px;
-  }
-
 body{
     overflow: scroll !important;;
      
@@ -58,7 +42,8 @@ body{
 
       }
       option{
-        line-height: .6;
+        line-height: 0.6;
+        font-size: 1.3rem;
       }
       .left-menu{
         width: max-content;
@@ -77,6 +62,15 @@ body{
   display: block;
   }
 }
+}
+
+
+
+@media screen and  (max-width: 768px) {
+  :root {
+    font-size: 7px;
+  }
+
 
 }
 

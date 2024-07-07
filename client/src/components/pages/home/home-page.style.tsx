@@ -17,7 +17,6 @@ export const HomeBody = styled.div<ThemeProps>`
 export const HamburgerMenu = styled.div<ThemeProps>`
   font-size: 2.5rem;
   display: none;
-  margin-top: 3rem;
   margin-left: 1rem;
   align-self: flex-start;
   cursor: pointer;
