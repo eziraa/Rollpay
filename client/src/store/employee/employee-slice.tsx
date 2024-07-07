@@ -160,6 +160,14 @@ const EmployeeSlice = createSlice({
     errorOccurred: (state, action: PayloadAction<string | undefined>) => {
       state.task_error = action.payload;
     },
+    getCurrentEmployeeRequest: (state, _: PayloadAction<string>) => {
+      state.task_finished = false;
+    },
+    getCurrentEmployeeDone: (state, action: PayloadAction<Employee>) => {
+      state.task_finished = true;
+      state.curr_emp = action.payload;
+      state.task_error = undefined;
+    },
   },
 });
 export const {
@@ -189,6 +197,8 @@ export const {
   updateContractRequest,
   updateContractDone,
   errorOccurred,
+  getCurrentEmployeeRequest,
+  getCurrentEmployeeDone,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
