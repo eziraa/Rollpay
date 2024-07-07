@@ -7,9 +7,9 @@ import {
 } from "../typo/employee/params";
 import api from "../config/api";
 import {
-  AddEmpResponse,
   Contract,
   Employee,
+  EmployeeResponse,
   Profile,
 } from "../typo/employee/response";
 import { BaseResponse } from "../typo/utils/response";
@@ -17,7 +17,7 @@ import { AddOvertimeToEmpParams } from "../typo/overtime/params";
 
 const addEmp = async (values: AddEmpParams) => {
   const response = await api
-    .post<AddEmpResponse>("/employee/add", values)
+    .post<EmployeeResponse>("/employee/add", values)
     .then((res) => {
       return {
         success: "Employee added successfully",
@@ -70,6 +70,27 @@ const listEmployee = async (pageUrl?: string) => {
           previous: res.data.previous,
           count: res.data.count,
         },
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return employees;
+};
+
+const getEmployee = async (employee_id: string) => {
+  const employees = await api
+    .get("employee/get/" + employee_id)
+    .then((res) => {
+      return {
+        employee: res.data,
         code: res.status,
         success: "Success returned employees",
       };
@@ -196,7 +217,7 @@ const editEmployee = async (
   values: EditEmployeeParams
 ) => {
   const response = await api
-    .put<AddEmpResponse[]>("/employee/edit/" + empployee_id, values)
+    .put<EmployeeResponse[]>("/employee/edit/" + empployee_id, values)
     .then((res) => {
       return {
         success: "Employee updated successfully",
@@ -295,6 +316,7 @@ const EmployeeAPI = {
   getProfilePicture,
   updatEmployementAgreement,
   uploadDocument,
+  getEmployee,
 };
 
 export default EmployeeAPI;
