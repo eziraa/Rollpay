@@ -21,7 +21,7 @@ export interface Profile {
 export interface Contract {
   employement_contract: string;
 }
-export interface AddEmpResponse {
+export interface EmployeeResponse {
   success: string;
   error: string;
   code: number;
