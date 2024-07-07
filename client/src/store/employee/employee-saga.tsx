@@ -9,6 +9,7 @@ import {
   editEmployeeDone,
   errorOccurred,
   finishAddAllowanceDone,
+  getCurrentEmployeeDone,
   listEmpDone,
   updateContractDone,
 } from "./employee-slice";
@@ -20,7 +21,7 @@ import {
   UpdateEmployementContract,
 } from "../../typo/employee/params";
 import {
-  AddEmpResponse,
+  EmployeeResponse,
   Employee,
   PaginatedEmpResponse,
 } from "../../typo/employee/response";
@@ -28,7 +29,7 @@ import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
 import { currentEmpPaymentInfoDone } from "../salary/salary-slice";
 import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
 
-interface AddEmployeeResponse extends AddEmpResponse {
+interface AddEmployeeResponse extends EmployeeResponse {
   employee: Employee;
 }
 
@@ -216,7 +217,7 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
     );
   }
 }
-function* GetEmployee() {
+function* GetEmployees() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
@@ -259,9 +260,55 @@ function* GetEmployee() {
   }
 }
 
+function* GetEmployee(action: PayloadAction<string>) {
+  try {
+    const response: EmployeeResponse = yield call(
+      EmployeeAPI.getEmployee,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getCurrentEmployeeDone(response.employee));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view employee",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* DeleteEmployee(action: PayloadAction<string>) {
   try {
-    const response: AddEmpResponse = yield call(
+    const response: EmployeeResponse = yield call(
       EmployeeAPI.deleteEmployee,
       action.payload
     );
@@ -366,7 +413,7 @@ function* loadPrevPage(action: PayloadAction<string>) {
 
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
   try {
-    const response: AddEmpResponse = yield call(
+    const response: EmployeeResponse = yield call(
       EmployeeAPI.editEmployee,
       action.payload.id || "",
       action.payload
@@ -459,7 +506,7 @@ function* filterEmployees(action: PayloadAction<string>) {
         duration: 3,
       })
     );
-  } 
+  }
 }
 function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
   try {
@@ -484,7 +531,8 @@ function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
 export function* watchEmployeeRequests() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/addEmpRequested", AddEmployee);
-  yield takeEvery("employee/listEmpRequested", GetEmployee);
+  yield takeEvery("employee/listEmpRequested", GetEmployees);
+  yield takeEvery("employee/getCurrentEmployeeRequest", GetEmployee);
   yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
   yield takeEvery("employee/addEmpAllowanceRequested", addAllowance);
   yield takeEvery("employee/addEmpDeductionRequested", addDeduction);
@@ -492,10 +540,5 @@ export function* watchEmployeeRequests() {
   yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
   yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
   yield takeEvery("employee/filterEmployeeRequest", filterEmployees);
-}
-export function* watchEditEmployee() {
-  yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/updateContractRequest", updateContract);
-
-  // yield takeEvery("employee/addPositionRequested", addPosition);
 }
