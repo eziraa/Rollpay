@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   DataLabel,
   DataValue,
@@ -26,7 +26,6 @@ import UpdateEmployee from "../../pages/see-employee/update-employee";
 import { Employee } from "../../../typo/employee/response";
 
 export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
-  const { curr_emp } = useAppSelector((state) => state.salary);
   const { user } = useUser();
   const dispatcher = useAppDispatch();
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
@@ -42,7 +41,6 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
       dispatcher(changeProfile(changedPic));
     }
   }, [changedPic]);
-
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.target.files) {
@@ -63,7 +61,7 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
     <ThreeDots size={1} />
   ) : (
     <EmployeeeProfileContainer>
-      <ProfileContainer profile={baseURL + curr_emp?.employee.profile_picture}>
+      <ProfileContainer profile={baseURL + employee.profile_picture}>
         {curr_user_id === employee_id && (
           <form onSubmit={() => {}}>
             <Label>
@@ -130,7 +128,6 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
           <DataValue>{employee?.date_of_hire}</DataValue>
         </EmployeeData>
       </EmployeeInfoContainer>
-
       {user?.employee.position === "Clerk" && <UpdateEmployee />}
     </EmployeeeProfileContainer>
   );
