@@ -1,8 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Search } from "../../utils/search/search";
 import EmployeeListDisplayer from "../../sections/list-displayer/list-displayer";
-import Pagination from "../../sections/pagination/pagination";
-import { Body, Title, EmployeesListHeader, AddButton } from "./display-employee.style";
+import {
+  Body,
+  Title,
+  EmployeesListHeader,
+  AddButton,
+} from "./display-employee.style";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
@@ -14,7 +18,7 @@ import { IoAddOutline } from "react-icons/io5";
 export const EmployeesListPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { pagination, setPagination } = useContext(PaginationContext);
+  const { setPagination } = useContext(PaginationContext);
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listEmpRequested());
@@ -43,7 +47,6 @@ export const EmployeesListPage = () => {
       <Body>
         <Outlet />
         <EmployeeListDisplayer />
-        <Pagination pagination={pagination} />
       </Body>
     </MainContainer>
   );

@@ -21,6 +21,8 @@ import { useNavigate } from "react-router";
 
 import DownloadPDF from "../../utils/download/download";
 import { ThreeDots } from "../../utils/loading/dots";
+import Pagination from "../pagination/pagination";
+import { usePagination } from "../../../hooks/use-pagination";
 
 interface EmployeeOrderType {
   name: string;
@@ -68,6 +70,7 @@ function EmployeeListDisplayer() {
   const emplist = [...employee.employees];
   const [emp_list, setEmpList] = useState(emplist);
   const { display } = useContext(DisplayContext);
+  const { pagination } = usePagination();
 
   useEffect(() => {
     if (display.list_employees) setEmpList(emplist);
@@ -105,6 +108,8 @@ function EmployeeListDisplayer() {
       style={{
         position: "relative",
         marginTop: "1rem",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <ListContainer>
@@ -245,6 +250,7 @@ function EmployeeListDisplayer() {
             })}
           </ScrollBar>
         </ListBody>
+        <Pagination pagination={pagination} />
       </ListContainer>
     </div>
   );

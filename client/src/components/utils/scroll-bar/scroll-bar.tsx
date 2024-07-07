@@ -12,11 +12,7 @@ export const custom_scroll_bar = css`
   }
 `;
 export const ScrollBar = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
   height: 50vh;
-  top: 0rem;
   overflow-y: scroll;
   width: 100%;
   ${custom_scroll_bar}
