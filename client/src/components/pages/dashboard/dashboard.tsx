@@ -2,14 +2,16 @@ import { useEffect } from "react";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentCard } from "../../utils/payment-card/payment-card";
-import { LargeText, NormalBlurredText } from "../../utils/titles/titles";
+import { LargeText, 
+  // NormalBlurredText 
+} from "../../utils/titles/titles";
 import {
   CardColumnTemplate,
   CardRowTemplate,
   DashboardBody,
   DashboardContainer,
-  DecreaseIcon,
-  IncreaseIcon,
+  // DecreaseIcon,
+  // IncreaseIcon,
   StatCard,
   StatContainer,
 } from "./dashboard.style";
@@ -20,39 +22,47 @@ import { FaUser } from "react-icons/fa";
 export const DashBoard = () => {
   const { stat } = useStatistics();
   const dispatcher = useAppDispatch();
+
   useEffect(() => {
     dispatcher(getStatRequest());
-    console.log(stat);
-  }, []);
-
-  // const employee = useEmployee();
-
-  // useEffect(() => {
-  //   dispatcher(getEmpNumRequested());
-  // }, []);
+  }, [dispatcher]);
+  if (!stat) {
+    return null;
+  }
   return (
     <DashboardContainer>
       <StatContainer className="state-card-container">
-        {Object.entries(stat).map(([key, value], index) => {
-          return (
-            <StatCard>
-              <CardRowTemplate>
-                <CardColumnTemplate>
-                  <LargeText>{value}</LargeText>
-                  <p>{key.toLocaleUpperCase()}</p>
-                </CardColumnTemplate>
-                {<FaUser />}
-              </CardRowTemplate>
-              <CardRowTemplate>
-                {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />}
-                <CardColumnTemplate>
-                  <NormalBlurredText>{87}%</NormalBlurredText>
-                </CardColumnTemplate>
-              </CardRowTemplate>
-            </StatCard>
-          );
-        })}
-      </StatContainer>
+        <StatCard>
+          <CardRowTemplate>
+            <CardColumnTemplate>
+              <LargeText>Total Employees</LargeText>
+              <p>{stat.total_employees}</p>
+            </CardColumnTemplate>
+            {<FaUser />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
+            <CardColumnTemplate>
+              {/* <NormalBlurredText>{87}%</NormalBlurredText> */}
+            </CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
+        <StatCard>
+          <CardRowTemplate>
+            <CardColumnTemplate>
+              <LargeText>Total Positions</LargeText>
+              <p>{stat.total_positions}</p>
+            </CardColumnTemplate>
+            {<FaUser />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
+            <CardColumnTemplate>
+              {/* <NormalBlurredText>{87}%</NormalBlurredText> */}
+            </CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
+            </StatContainer>
       <DashboardBody>
         <PaymentCard />
         <MonthCard />
