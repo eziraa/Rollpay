@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { BoldText } from "../titles/text";
 import { LargeText } from "../titles/titles";
 import Piechart from "./bar";
@@ -12,37 +13,59 @@ import {
   RedBar,
   YellowBar,
 } from "./curr-month-card.style";
+import { useStatistics } from "../../../hooks/statistics-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { getStatRequest } from "../../../store/statistics/statistics-slice";
 
-export const MonthCard = () => {
-  return (
-    <MonthCardContainer>
-      <MonthHeader>
-        <LargeText>Current - month</LargeText>
-      </MonthHeader>
-      <MonthCardBody>
-        <MonthColumnTemplate>
-          <LargeText>450 Total employees</LargeText>
-          <MonthRowTemplate>
-            <RedBar />
-            <p>
-              <BoldText>50</BoldText> Rejected
-            </p>
-          </MonthRowTemplate>
-          <MonthRowTemplate>
-            <GreenBar />
-            <p>
-              <BoldText>240</BoldText> approved
-            </p>
-          </MonthRowTemplate>
-          <MonthRowTemplate>
-            <YellowBar />
-            <p>
-              <BoldText>120</BoldText> Pending
-            </p>
-          </MonthRowTemplate>
-        </MonthColumnTemplate>
-        <Piechart />
-      </MonthCardBody>
-    </MonthCardContainer>
-  );
+interface Props {
+  statType: string;
+}
+export const MonthCard = ({ statType }: Props) => {
+  const [currentMonth, setCurrentMonth] = useState("");
+  const { stat } = useStatistics();
+  const dispatcher = useAppDispatch();
+
+  useEffect(() => {
+    dispatcher(getStatRequest());
+  }, [dispatcher]);
+
+  useEffect(() => {
+    const date = new Date();
+    const monthYear = date.toLocaleString("default", {
+      month: "long",
+      year: "numeric",
+    });
+    setCurrentMonth(monthYear);
+  }, []);
+  if (statType === "allowance") {
+    return (
+      <MonthCardContainer>
+        <MonthHeader>
+          <LargeText>Allowance of {currentMonth}</LargeText>
+        </MonthHeader>
+        <MonthCardBody>
+          <MonthColumnTemplate>
+            {Object.keys(stat.curr_month_allowance).map(
+              (allowanceType, index) => (
+                <MonthRowTemplate key={index}>
+                  {/* <Colorbar color={index}*/}
+                  {index === 0 && <RedBar />}
+                  {index === 1 && <GreenBar />}
+                  {index === 2 && <YellowBar />}
+                  <p>
+                    <BoldText>
+                      {stat.curr_month_allowance[allowanceType]}
+                    </BoldText>{" "}
+                    {allowanceType}
+                  </p>
+                </MonthRowTemplate>
+              )
+            )}
+            <LargeText>Total: {stat.curr_month_allowances} ETB</LargeText>
+          </MonthColumnTemplate>
+          <Piechart />
+        </MonthCardBody>
+      </MonthCardContainer>
+    );
+  }
 };
