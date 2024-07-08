@@ -2,19 +2,15 @@ import { useEffect } from "react";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentCard } from "../../utils/payment-card/payment-card";
-import {
-  LargeText,
-  // NormalBlurredText
-} from "../../utils/titles/titles";
+import { LargeText } from "../../utils/titles/titles";
 import {
   CardColumnTemplate,
   CardRowTemplate,
   DashboardBody,
   DashboardContainer,
-  // DecreaseIcon,
-  // IncreaseIcon,
   StatCard,
   StatContainer,
+  Text,
 } from "./dashboard.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
@@ -38,51 +34,54 @@ export const DashBoard = () => {
           <CardRowTemplate>
             <CardColumnTemplate>
               <LargeText>Total Employees</LargeText>
-              <p>{stat.total_employees}</p>
+              <Text>{stat.total_employees}</Text>
             </CardColumnTemplate>
             {<FaUsers />}
           </CardRowTemplate>
           <CardRowTemplate>
-            {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
-            <CardColumnTemplate>
-              {/* <NormalBlurredText>{87}%</NormalBlurredText> */}
-            </CardColumnTemplate>
+            <CardColumnTemplate></CardColumnTemplate>
           </CardRowTemplate>
         </StatCard>
         <StatCard>
           <CardRowTemplate>
             <CardColumnTemplate>
               <LargeText>Total Positions</LargeText>
-              <p>{stat.total_positions}</p>
+              <Text>{stat.total_positions}</Text>
             </CardColumnTemplate>
             {<IoBriefcase />}
           </CardRowTemplate>
           <CardRowTemplate>
-            {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
-            <CardColumnTemplate>
-              {/* <NormalBlurredText>{87}%</NormalBlurredText> */}
-            </CardColumnTemplate>
+            <CardColumnTemplate></CardColumnTemplate>
           </CardRowTemplate>
         </StatCard>
         <StatCard>
           <CardRowTemplate>
             <CardColumnTemplate>
               <LargeText>Average Salary</LargeText>
-              <p>{stat.avg_basic_salary} ETB</p>
+              <Text>{stat.avg_basic_salary} ETB</Text>
             </CardColumnTemplate>
             {<FaDollarSign />}
           </CardRowTemplate>
           <CardRowTemplate>
-            {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
+            <CardColumnTemplate></CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
+        <StatCard>
+          <CardRowTemplate>
             <CardColumnTemplate>
-              {/* <NormalBlurredText>{87}%</NormalBlurredText> */}
+              <LargeText>Income Tax</LargeText>
+              <Text>{stat.curr_month_tax} ETB</Text>
             </CardColumnTemplate>
+            {<FaDollarSign />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            <CardColumnTemplate></CardColumnTemplate>
           </CardRowTemplate>
         </StatCard>
       </StatContainer>
       <DashboardBody>
         <PaymentCard />
-        <MonthCard />
+        <MonthCard statType="allowance" />
       </DashboardBody>
     </DashboardContainer>
   );
