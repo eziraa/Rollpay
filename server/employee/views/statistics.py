@@ -6,9 +6,14 @@ from employee.serializers.statistics import StatisticsSerializer
 
 class StatisticsView(APIView):
     """
-    A view that process the statistics of an employees and their salary related stuff.
+    A view that process the statistics of employees and their salary related stuff.
     """
 
     def get(self, request, *args, **kwargs):
-        serializer = StatisticsSerializer(Payment.objects.all().first())
-        return Response(serializer.data, status=200)
+       try:
+        payment = Payment.objects.all().first()
+        serializer = StatisticsSerializer(payment)
+  
+        return Response(data=serializer.data,status=200)
+       except Exception as e:
+                return Response({"error": str(e)}, status=400)

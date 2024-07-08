@@ -2,6 +2,7 @@ import { BaseResponse } from "../utils/response";
 
 export interface StatisticsResponse {
   total_employees: number;
+  total_positions: number;
   curr_month_tax: number;
   curr_month_allowances: number;
   curr_month_deductions: number;
