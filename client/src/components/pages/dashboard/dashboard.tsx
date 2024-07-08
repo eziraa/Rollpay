@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentCard } from "../../utils/payment-card/payment-card";
 import { LargeText, NormalBlurredText } from "../../utils/titles/titles";
@@ -12,8 +14,19 @@ import {
   StatContainer,
 } from "./dashboard.style";
 import { mockData } from "./stat";
+import { useEmployee } from "../../../hooks/employee-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
+import { getEmpNumRequested } from "../../../store/employee/employee-slice";
 
 export const DashBoard = () => {
+  const dispatcher = useAppDispatch();
+
+  const employee = useEmployee();
+
+  useEffect(() => {
+    dispatcher(getEmpNumRequested());
+  }, []);
+
   return (
     <DashboardContainer>
       <StatContainer>
@@ -30,7 +43,9 @@ export const DashBoard = () => {
               <CardRowTemplate>
                 {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />}
                 <CardColumnTemplate>
-                  <NormalBlurredText>{data.percentage}%</NormalBlurredText>
+                  <NormalBlurredText>
+                    Our company has {employee.total} employees.
+                  </NormalBlurredText>
                 </CardColumnTemplate>
               </CardRowTemplate>
             </StatCard>
