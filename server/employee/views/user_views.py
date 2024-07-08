@@ -1,11 +1,11 @@
 
+from re import match
 from django.http import JsonResponse
 from django.contrib.auth.models import User, Permission, Group
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
 from django.core.files.storage import default_storage
-
-import uuid
 import json
 
 from rest_framework.views import APIView
@@ -17,7 +17,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from employee.serializers.employee import EmployeeSerializer, ProfilePicSerializer
-from employee.models import Employee
+from employee.models import *
 
 
 class UserView(APIView):
@@ -104,21 +104,35 @@ class AccountView(APIView):
                     return JsonResponse({'error': 'Username already exists'}, status=400)
                 if empoyee.user:
                     return JsonResponse({'error': 'There is an other user registed in this ID Please check your ID '}, status=400)
+
+                if empoyee.position == "Clerk":
+                    group, created = Group.objects.get_or_create(
+                        name="clerk")
+                    content_types = ContentType.objects.get_for_models(
+                        Employee, User, Salary, Payment, Position, Allowance, Deduction, Overtime, OvertimeItem)
+                    permissions = Permission.objects.filter(
+                        content_type__in=[content_type for content_type in content_types.values()])
+
+                elif empoyee.position == "System Administrator":
+                    group, created = Group.objects.get_or_create(
+                        name="system_admin")
+                    permissions = Permission.objects.all()
+                else:
+                    group, created = Group.objects.get_or_create(
+                        name="employee")
+                    content_type = ContentType.objects.get_for_model(User)
+                    permissions = Permission.objects.filter(
+                        content_type=content_type)
+
                 user = User.objects.create_user(
                     username=data['username'], password=data['password'],
                 )
-                empoyee.user = user
-                empoyee.save()
-                group, created = Group.objects.get_or_create(name="employee")
-                group, created = Group.objects.get_or_create(
-                    name='add_emplyee')
-
-                permissions = Permission.objects.filter(
-                    codename__in=['add_employee', 'change_employee'])
                 group.permissions.set(permissions)
                 group.save()
                 user.groups.add(group)
                 user.save()
+                empoyee.user = user
+                empoyee.save()
                 return JsonResponse({'message': 'User registered successfully'}, status=201)
             else:
                 return JsonResponse({'error': 'Employee does not exist \n Check Your ID'}, status=400)
