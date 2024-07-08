@@ -5,11 +5,11 @@ const initialState: StatisticsState = {
   task_error: undefined,
   task_finished: true,
   stat: {
-    total_employees: 39,
-    curr_month_tax: 360233.0,
-    curr_month_allowances: 36380.0,
-    curr_month_deductions: 23460.0,
-    curr_month_payment_amount: 812687.0,
+    total_employees: "39",
+    curr_month_tax: "360233.0",
+    curr_month_allowances: "36380.0",
+    curr_month_deductions: "23460.0",
+    curr_month_payment_amount: "812687.0",
   },
 };
 
