@@ -13,11 +13,12 @@ class StatisticsSerializer(serializers.Serializer):
     curr_month_deductions = serializers.SerializerMethodField(read_only=True)
     curr_month_payment_amount = serializers.SerializerMethodField(
         read_only=True)
+    avg_basic_salary = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Payment
         fields = ("total_employees", "total_positions","curr_month_tax",
-                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount")
+                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary")
 
     def get_total_employees(self, obj):
         return Employee.objects.all().count()
@@ -73,3 +74,12 @@ class StatisticsSerializer(serializers.Serializer):
             calculator.calc_net_salary()
             acc += calculator.net_salary
         return acc
+    def get_avg_basic_salary(self, obj):
+        basic_salaries = Salary.objects.values('basic_salary')
+        sum_basic_salary = 0
+        print(basic_salaries)
+        for salary in basic_salaries:
+            sum_basic_salary += salary['basic_salary']
+        average = sum_basic_salary / len(basic_salaries)
+
+        return round(average,2)
