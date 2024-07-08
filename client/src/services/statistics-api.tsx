@@ -5,7 +5,7 @@ const getStatistics = async () => {
     .get("/stat/get")
     .then((res) => {
       return {
-        results: res.data,
+        stat: res.data,
         code: res.status,
         success: "Success returned employees",
       };
