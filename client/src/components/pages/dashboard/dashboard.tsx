@@ -15,37 +15,37 @@ import {
 } from "./dashboard.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
-import { FaUser } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa6";
 
 export const DashBoard = () => {
   const { stat } = useStatistics();
   const dispatcher = useAppDispatch();
   useEffect(() => {
     dispatcher(getStatRequest());
-    console.log(stat);
   }, []);
   return (
     <DashboardContainer>
       <StatContainer className="state-card-container">
-        {Object.entries(stat).map(([key, value], index) => {
-          return (
-            <StatCard>
-              <CardRowTemplate>
-                <CardColumnTemplate>
-                  <LargeText>{value}</LargeText>
-                  <p>{key.toLocaleUpperCase()}</p>
-                </CardColumnTemplate>
-                {<FaUser />}
-              </CardRowTemplate>
-              <CardRowTemplate>
-                {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />}
-                <CardColumnTemplate>
-                  <NormalBlurredText>{87}%</NormalBlurredText>
-                </CardColumnTemplate>
-              </CardRowTemplate>
-            </StatCard>
-          );
-        })}
+        {stat &&
+          Object.entries(stat).map(([key, value], index) => {
+            return (
+              <StatCard>
+                <CardRowTemplate>
+                  <CardColumnTemplate>
+                    <LargeText>{value}</LargeText>
+                    <p>{key.toLocaleUpperCase()}</p>
+                  </CardColumnTemplate>
+                  {<FaUsers />}
+                </CardRowTemplate>
+                <CardRowTemplate>
+                  {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />}
+                  <CardColumnTemplate>
+                    <NormalBlurredText>{87}%</NormalBlurredText>
+                  </CardColumnTemplate>
+                </CardRowTemplate>
+              </StatCard>
+            );
+          })}
       </StatContainer>
       <DashboardBody>
         <PaymentCard />
