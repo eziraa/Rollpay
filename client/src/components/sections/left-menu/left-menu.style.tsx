@@ -6,12 +6,13 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { LuCircleDollarSign } from "react-icons/lu";
 import { PiUsersThree } from "react-icons/pi";
+import { CloseIcon } from "../../utils/flash-message/flash-message.style";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
   width: 16vw;
   height: 100vh;
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.07, theme.buttons.secondary)};
+    addOpacityToColor(0.9, theme.backgrounds.primary)};
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -19,6 +20,7 @@ export const LeftMenuContainer = styled.div<ThemeProps>`
 
   color: ${({ theme }) => theme.colors.secondary};
   border-right: 0.3rem solid ${({ theme }) => theme.colors.secondary};
+  position: relative;
 `;
 
 export const LogoContainer = styled.div`
@@ -31,7 +33,7 @@ export const LogoContainer = styled.div`
   font-weight: 700;
   width: 100%;
   height: 25%;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   margin: 0;
   padding: 0;
 `;
@@ -78,7 +80,6 @@ export const SubMenuContainer = styled.div`
   margin-left: 4rem;
   border-radius: 0.5rem;
 
-  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
   transition: all 0.5s ease;
   border-left: 0.3rem solid #23232378;
 `;
@@ -96,7 +97,7 @@ export const SubMenuItem = styled.div<SubMenuItemProps>`
   text-align: left;
   font-size: 1.6rem;
   color: #0f0f0f;
-  background-color: ${({ active }) => (active ? "#d9e3dff8" : "transparent")};
+  background-color: ${({ active }) => (active ? "#d9e3df" : "transparent")};
   cursor: pointer;
   transition: all 0.5s ease;
   &:hover {
@@ -109,7 +110,7 @@ export const MenuItemText = styled.h1`
   font-weight: 500;
   line-height: 0.8;
   padding: 0.5rem 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
 `;
 
 export const Icon = css`
@@ -132,6 +133,13 @@ export const UserIcon = styled(HiUserCircle)`
 
 export const SalaryIcon = styled(LuCircleDollarSign)`
   ${Icon}
+`;
+export const Close = styled(CloseIcon)`
+  ${Icon}
+  position: absolute;
+  top: 0.51rem;
+  right: 0.5rem;
+  display: none;
 `;
 
 export const ColapseExpand = styled.div`

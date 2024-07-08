@@ -21,7 +21,7 @@ export const FlashMessageItem = styled.div`
   align-items: center;
   justify-content: start;
   padding: 1rem;
-  border-width: 2px;
+  border-width: 0.2rem;
   border-style: solid;
   border-radius: 1rem;
   gap: 1rem;

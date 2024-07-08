@@ -4,14 +4,14 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 import {
   addEmpDone,
-  addingDone,
+  closeEmployeeTask,
   deleteEmpDone,
   editEmployeeDone,
+  errorOccurred,
   finishAddAllowanceDone,
   getEmpNumDone,
+  getCurrentEmployeeDone,
   listEmpDone,
-  unfinishedAdd,
-  unfinishedDelete,
   updateContractDone,
 } from "./employee-slice";
 import EmployeeAPI, { EditEmployeeParams } from "../../services/employee-api";
@@ -22,7 +22,7 @@ import {
   UpdateEmployementContract,
 } from "../../typo/employee/params";
 import {
-  AddEmpResponse,
+  EmployeeResponse,
   Employee,
   EmpRes,
   PaginatedEmpResponse,
@@ -30,10 +30,8 @@ import {
 import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
 import { currentEmpPaymentInfoDone } from "../salary/salary-slice";
 import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
-// import { closeModal } from "../../providers/actions";
-// import { ADD_ALLOWANCE_TO_EMP } from "../../constants/tasks";
 
-interface AddEmployeeResponse extends AddEmpResponse {
+interface AddEmployeeResponse extends EmployeeResponse {
   employee: Employee;
 }
 
@@ -46,9 +44,9 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
     if (response.code === 201) {
       yield put(addEmpDone(response.employee));
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -59,10 +57,10 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd("Cann't add employee please try again later"));
+    yield put(errorOccurred("Cann't add employee please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -95,9 +93,9 @@ function* addAllowance(action: PayloadAction<AddAllowanceToEmployeesParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -108,10 +106,10 @@ function* addAllowance(action: PayloadAction<AddAllowanceToEmployeesParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd("Cann't add allowance please try again later"));
+    yield put(errorOccurred("Cann't add allowance please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -131,7 +129,7 @@ function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
       action.payload
     );
     if (response.code === 201) {
-      yield put(addingDone());
+      yield put(closeEmployeeTask());
       yield put(currentEmpPaymentInfoDone(response));
       // yield put(closeModal(ADD_ALLOWANCE_TO_EMP));
       yield put(
@@ -144,9 +142,9 @@ function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -157,10 +155,10 @@ function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd("Cann't add allowance please try again later"));
+    yield put(errorOccurred("Cann't add allowance please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -181,7 +179,7 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
       action.payload
     );
     if (response.code === 201) {
-      yield put(addingDone());
+      yield put(closeEmployeeTask());
       yield put(currentEmpPaymentInfoDone(response));
       yield put(
         setFlashMessage({
@@ -193,9 +191,9 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -206,10 +204,10 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd("Cann't add overtime please try again later"));
+    yield put(errorOccurred("Cann't add overtime please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -221,7 +219,7 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
     );
   }
 }
-function* GetEmployee() {
+function* GetEmployees() {
   try {
     const response: PaginatedEmpResponse = yield call(EmployeeAPI.listEmployee);
     if (response.code === 200) {
@@ -264,9 +262,55 @@ function* GetEmployee() {
   }
 }
 
+function* GetEmployee(action: PayloadAction<string>) {
+  try {
+    const response: EmployeeResponse = yield call(
+      EmployeeAPI.getEmployee,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getCurrentEmployeeDone(response.employee));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view employee",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* DeleteEmployee(action: PayloadAction<string>) {
   try {
-    const response: AddEmpResponse = yield call(
+    const response: EmployeeResponse = yield call(
       EmployeeAPI.deleteEmployee,
       action.payload
     );
@@ -282,7 +326,7 @@ function* DeleteEmployee(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedDelete());
+      yield put(errorOccurred(response.error));
       // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
@@ -294,7 +338,7 @@ function* DeleteEmployee(action: PayloadAction<string>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedDelete());
+      yield put(errorOccurred(response.error));
       // window.location.href = "/access-denied";
       yield put(
         setFlashMessage({
@@ -371,7 +415,7 @@ function* loadPrevPage(action: PayloadAction<string>) {
 
 function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
   try {
-    const response: AddEmpResponse = yield call(
+    const response: EmployeeResponse = yield call(
       EmployeeAPI.editEmployee,
       action.payload.id || "",
       action.payload
@@ -398,7 +442,7 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(errorOccurred(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -532,7 +576,8 @@ function* GetEmpNum() {
 export function* watchEmployeeRequests() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/addEmpRequested", AddEmployee);
-  yield takeEvery("employee/listEmpRequested", GetEmployee);
+  yield takeEvery("employee/listEmpRequested", GetEmployees);
+  yield takeEvery("employee/getCurrentEmployeeRequest", GetEmployee);
   yield takeEvery("employee/deleteEmpRequested", DeleteEmployee);
   yield takeEvery("employee/addEmpAllowanceRequested", addAllowance);
   yield takeEvery("employee/addEmpDeductionRequested", addDeduction);
@@ -545,6 +590,4 @@ export function* watchEmployeeRequests() {
 export function* watchEditEmployee() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/updateContractRequest", updateContract);
-
-  // yield takeEvery("employee/addPositionRequested", addPosition);
 }

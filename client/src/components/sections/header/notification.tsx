@@ -23,7 +23,7 @@ export const NotificationCount = styled.p`
   position: absolute;
   top: 0rem;
   left: 1rem;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   background-color: red;
   color: white;
 `;

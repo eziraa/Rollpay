@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
+import { useStatistics } from "../../../hooks/statistics-hook";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentCard } from "../../utils/payment-card/payment-card";
 import { LargeText, NormalBlurredText } from "../../utils/titles/titles";
@@ -13,39 +13,40 @@ import {
   StatCard,
   StatContainer,
 } from "./dashboard.style";
-import { mockData } from "./stat";
-import { useEmployee } from "../../../hooks/employee-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { getEmpNumRequested } from "../../../store/employee/employee-slice";
+import { getStatRequest } from "../../../store/statistics/statistics-slice";
+import { FaUser } from "react-icons/fa";
 
 export const DashBoard = () => {
+  const { stat } = useStatistics();
   const dispatcher = useAppDispatch();
-
-  const employee = useEmployee();
-
   useEffect(() => {
-    dispatcher(getEmpNumRequested());
+    dispatcher(getStatRequest());
+    console.log(stat);
   }, []);
 
+  // const employee = useEmployee();
+
+  // useEffect(() => {
+  //   dispatcher(getEmpNumRequested());
+  // }, []);
   return (
     <DashboardContainer>
-      <StatContainer>
-        {mockData.map((data, index) => {
+      <StatContainer className="state-card-container">
+        {Object.entries(stat).map(([key, value], index) => {
           return (
             <StatCard>
               <CardRowTemplate>
                 <CardColumnTemplate>
-                  <LargeText>{data.total}</LargeText>
-                  <p>{data.name}</p>
+                  <LargeText>{value}</LargeText>
+                  <p>{key.toLocaleUpperCase()}</p>
                 </CardColumnTemplate>
-                {<data.icon />}
+                {<FaUser />}
               </CardRowTemplate>
               <CardRowTemplate>
                 {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />}
                 <CardColumnTemplate>
-                  <NormalBlurredText>
-                    Our company has {employee.total} employees.
-                  </NormalBlurredText>
+                  <NormalBlurredText>{87}%</NormalBlurredText>
                 </CardColumnTemplate>
               </CardRowTemplate>
             </StatCard>

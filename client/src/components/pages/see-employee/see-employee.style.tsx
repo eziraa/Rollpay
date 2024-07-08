@@ -52,8 +52,8 @@ export const EmployeeeProfileContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   min-width: 30rem;
-  border: 1px solid ${({ theme }) => theme.colors.secondary};
-  border-radius: 10px;
+  border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
+  border-radius: 10rem;
   height: 100%;
   padding: 1rem;
   gap: 2rem;
@@ -68,7 +68,7 @@ export const ProfileImage = styled.img`
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
-  border: 2px solid ${({ theme }) => theme.colors.primary};
+  border: 0.2rem solid ${({ theme }) => theme.colors.primary};
   cursor: pointer;
 `;
 
@@ -84,17 +84,14 @@ export const EmployeeInfoContainer = styled.div`
 `;
 
 export const Button = styled.button`
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   color: #ffffff;
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;
   background-color: ${({ theme }) => theme.buttons.primary};
-  border-radius: 5px;
-  width: 10rem;
-  display: flex;
-  gap: 1rem;
-  font-size: medium;
+  border-radius: 0.5rem;
+  text-align: center;
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};
@@ -106,7 +103,7 @@ export const BackButton = styled.div`
   display: inline-block;
   color: ${({ theme }) => theme.buttons.primary};
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   padding-bottom: -0.4rem;
   text-align: center;
   &:hover {
@@ -123,7 +120,7 @@ export const ActionBtnsContainer = styled.div`
 `;
 
 export const ActionBtn = styled.div`
-  border-radius: 10px;
+  border-radius: 1rem;
   cursor: pointer;
   font-size: 1.6rem;
   padding: 1rem 2rem;

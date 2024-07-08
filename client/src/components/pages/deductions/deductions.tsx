@@ -28,12 +28,15 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDeduction } from "../../../hooks/deduction-hook";
 import { deleteDeductionRequested, listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
+import { IoAddOutline } from "react-icons/io5";
 export const DeductionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, deductions,curr_deduction} = useDeduction();
+  const { task_error, task_finished, deductions, curr_deduction } =
+    useDeduction();
   const DELETE = "delete";
-  const [action, setAction] = useState("");  const navigate = useNavigate();
+  const [action, setAction] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listDeductionsRequested());
   }, [curr_deduction]);
@@ -49,7 +52,7 @@ export const DeductionPage = () => {
             dispatcher(listDeductionsRequested());
           }}
         >
-          Add Deduction
+          <IoAddOutline /> Add New
         </AddButton>
       </PositionListHeader>
       <PositionListBody>

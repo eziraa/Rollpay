@@ -24,10 +24,10 @@ export const Modal = styled.div<ThemeProps>`
   flex-direction: column;
   justify-content: first baseline;
   border-radius: 0.5rem;
-  box-shadow: 5px 0 5px -5px ${({ theme }) => theme.colors.primary},
-    -5px 0 5px -5px ${({ theme }) => theme.colors.primary},
-    0 5px 5px -5px ${({ theme }) => theme.colors.primary},
-    0 -5px 5px -5px ${({ theme }) => theme.colors.primary};
+  box-shadow: 0.5rem 0 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
+    -0.5rem 0 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
+    0 0.5rem 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
+    0 -0.5rem 0.5rem -0.5rem ${({ theme }) => theme.colors.primary};
 `;
 
 export const ResetLink = styled(CustomLink)<ThemeProps>`

@@ -5,9 +5,9 @@ export const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <NavBar>
+    <NavBar className="nav-bar">
       <NavItem
-        active={location.pathname.endsWith("allowances")}
+        active={location.pathname.includes("/allowances")}
         onClick={(e) => {
           e.preventDefault();
           navigate("allowances");
@@ -16,7 +16,7 @@ export const NavigationBar = () => {
         Allowances
       </NavItem>
       <NavItem
-        active={location.pathname.endsWith("overtimes")}
+        active={location.pathname.includes("/overtimes")}
         onClick={(e) => {
           e.preventDefault();
           navigate(`overtimes`);
@@ -25,7 +25,7 @@ export const NavigationBar = () => {
         Overtimes
       </NavItem>
       <NavItem
-        active={location.pathname.endsWith("deductions")}
+        active={location.pathname.includes("/deductions")}
         onClick={(e) => {
           e.preventDefault();
           navigate(`deductions`);

@@ -31,6 +31,7 @@ import {
   listOvertimesRequested,
 } from "../../../store/overtime/overtime-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
+import { IoAddOutline } from "react-icons/io5";
 export const OvertimePage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
@@ -53,7 +54,7 @@ export const OvertimePage = () => {
             dispatcher(listOvertimesRequested());
           }}
         >
-          Add overtime
+          <IoAddOutline /> Add New
         </AddButton>
       </PositionListHeader>
       <PositionListBody>

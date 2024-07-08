@@ -2,6 +2,7 @@
 import { useAppSelector } from "../../../utils/custom-hook";
 import { useContext, useEffect, useState } from "react";
 import {
+  ColumnTemplate,
   Data,
   HeaderItem,
   ListBody,
@@ -9,6 +10,7 @@ import {
   ListHeader,
   ListRow,
   ListTitle,
+  RowTemplate,
   SortBtn,
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
@@ -21,6 +23,10 @@ import { useNavigate } from "react-router";
 
 import DownloadPDF from "../../utils/download/download";
 import { ThreeDots } from "../../utils/loading/dots";
+import Pagination from "../pagination/pagination";
+import { usePagination } from "../../../hooks/use-pagination";
+import { ProfileImage } from "../header/header.style";
+import { baseURL } from "../../../config/api";
 
 interface EmployeeOrderType {
   name: string;
@@ -68,6 +74,7 @@ function EmployeeListDisplayer() {
   const emplist = [...employee.employees];
   const [emp_list, setEmpList] = useState(emplist);
   const { display } = useContext(DisplayContext);
+  const { pagination } = usePagination();
 
   useEffect(() => {
     if (display.list_employees) setEmpList(emplist);
@@ -105,6 +112,8 @@ function EmployeeListDisplayer() {
       style={{
         position: "relative",
         marginTop: "1rem",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <ListContainer>
@@ -113,7 +122,7 @@ function EmployeeListDisplayer() {
             gridTemplateColumns:
               emp_list.length > 0
                 ? getTableElements(emp_list)
-                : "2fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr  ",
+                : "3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr  ",
           }}
         >
           <HeaderItem>
@@ -214,7 +223,14 @@ function EmployeeListDisplayer() {
                     gridTemplateColumns: getTableElements(emplists),
                   }}
                 >
-                  <Data> {emp.first_name + " " + emp.last_name} </Data>
+                  <Data>
+                    <RowTemplate>
+                      <ProfileImage profile={baseURL + emp.profile_picture} />
+                      <ColumnTemplate>
+                        {emp.first_name + " " + emp.last_name}
+                      </ColumnTemplate>
+                    </RowTemplate>
+                  </Data>
                   <Data> {emp.id} </Data>
                   <Data> {emp.gender} </Data>
                   <Data> {emp.email} </Data>
@@ -238,13 +254,13 @@ function EmployeeListDisplayer() {
                   >
                     View
                   </Data>
-                  {/* <Data>{emp.employement_contract.split('/')[3].substring(0,4) + "..."}</Data> */}
                   <DownloadPDF url={emp.employement_contract} />
                 </ListRow>
               );
             })}
           </ScrollBar>
         </ListBody>
+        <Pagination pagination={pagination} />
       </ListContainer>
     </div>
   );

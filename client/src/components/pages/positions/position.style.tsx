@@ -37,17 +37,16 @@ export const PositionListHeader = styled.div`
   margin-bottom: 1rem;
   margin-top: 3rem;
   padding: 0 5rem;
+  position: relative;
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const AddButton = styled(Button)`
   width: fit-content;
-  justify-self: end;
   display: block;
-  position: absolute;
-  right: 3rem;
 `;
 
 export const ActionBtnsContainer = styled.td`
@@ -63,8 +62,8 @@ export const ActionButton = styled.button`
   display: flex;
   align-items: center;
   background-color: transparent;
-  border: 1px solid #2f8236;
-  border-radius: 3px;
+  border: 0.1rem solid #2f8236;
+  border-radius: 0.5rem;
   outline: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -79,7 +78,7 @@ export const ActionButton = styled.button`
 `;
 
 export const EditButton = styled(ActionButton)`
-  border: 1px solid #369143;
+  border: 0.1rem solid #369143;
   flex: 0.6;
   &:hover {
     background-color: #369143;
@@ -88,7 +87,7 @@ export const EditButton = styled(ActionButton)`
 `;
 export const SuspendButton = styled(ActionButton)`
   color: #ad6e01;
-  border: 1px solid #ad6e01;
+  border: 0.1rem solid #ad6e01;
   &:hover {
     background-color: #ad6e01;
     color: #ffffff;
@@ -97,7 +96,7 @@ export const SuspendButton = styled(ActionButton)`
 
 export const DeleteButton = styled(ActionButton)`
   color: #dc3545;
-  border: 1px solid #dc3545;
+  border: 0.1rem solid #dc3545;
   &:hover {
     background-color: #dc3545;
     color: #ffffff;

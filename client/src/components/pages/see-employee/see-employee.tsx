@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import {
@@ -12,21 +13,47 @@ import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
 import { Outlet, useParams } from "react-router-dom";
+import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
+import { Label } from "../edit-employee/edit-employee.style";
+import { Select, SelectOption } from "../../utils/form-elements/form.style";
+import { getNamedMonth } from "../salary/utils";
 import { useEffect } from "react";
-import { useSalary } from "../../../hooks/salary-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
+import { getCurrentEmployeeRequest } from "../../../store/employee/employee-slice";
+import { useEmployee } from "../../../hooks/employee-hook";
 
 export const SeeEmployee = () => {
   //Calling hooks and getting necessary information
+  const employee = useEmployee().curr_emp;
   const { employee_id } = useParams();
-  const employee = useSalary().curr_emp?.employee;
   const dispatcher = useAppDispatch();
+  const {
+    year: curr_year,
+    month: curr_month,
+    changeMonth,
+    changeYear,
+  } = useYearMonthPagination();
 
-  // Mock data for employee profile
+  // Implementing year-month pagination
+  const start_year = 2022;
+  const end_year = 2024;
+  const years = Array.from(
+    { length: end_year - start_year + 1 },
+    (_, index) => start_year + index
+  );
+
+  const start_month = 1;
+  const end_month = 12;
+  const months = Array.from(
+    { length: end_month - start_month + 1 },
+    (_, index) => start_month + index
+  );
+
+  // Defining a useEffect to get the infomration of current employee
+
   useEffect(() => {
-    employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
-  }, []);
+    employee_id && dispatcher(getCurrentEmployeeRequest(employee_id));
+  }, [employee_id]);
   return (
     <MainContainer>
       <SeeEmployeeHeader>
@@ -34,6 +61,45 @@ export const SeeEmployee = () => {
           <Title>Current Employee</Title>
         </TitleContainer>
         <NavigationBar />
+        <Label
+          style={{
+            position: "absolute",
+            right: "2rem",
+            top: "1rem",
+            fontSize: "1.5rem",
+            display: "flex",
+            gap: "1rem",
+          }}
+        >
+          <Select
+            value={`${curr_year}`}
+            onChange={(e) => {
+              changeYear(+e.target.value);
+            }}
+          >
+            {years.map((year) => (
+              <SelectOption key={year} value={`${year}`}>
+                {year}
+              </SelectOption>
+            ))}
+          </Select>
+          <Select
+            value={`${curr_month}`}
+            onChange={(e) => {
+              changeMonth(+e.target.value);
+            }}
+          >
+            {months.map(
+              (month) =>
+                ((curr_year && curr_year < end_year) ||
+                  month <= new Date(Date.now()).getMonth()) && (
+                  <SelectOption key={month} value={`${month}`}>
+                    {getNamedMonth(new Date(`${curr_year}-${month}-01`))}
+                  </SelectOption>
+                )
+            )}
+          </Select>
+        </Label>
       </SeeEmployeeHeader>
       <CurrEmployeeContent>
         {employee && <EmployeeProfile employee={employee} />}

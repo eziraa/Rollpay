@@ -14,3 +14,84 @@
 body{
   overflow: hidden;
 }
+
+.left-menu-modal{
+  display: block;
+}
+
+@media screen and  (max-width: 1000px) {
+  :root {
+    font-size: 8.5px;
+  }
+body{
+    overflow: scroll !important;;
+     
+    .left-menu-modal{
+      display: none;
+    }
+    .collapsed {
+      display: block;
+      z-index: 1010;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ebeaea36;
+
+      .close{
+        display: block;
+
+      }
+      option{
+        line-height: 0.6;
+        font-size: 1.3rem;
+      }
+      .left-menu{
+        width: max-content;
+        background-color: aliceblue;
+      }
+      /* &::before{
+        content: "";
+        display: block;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(216, 215, 215, 0.317);
+      } */
+    }
+
+  .hamburger-menu{
+  display: block;
+  }
+}
+}
+
+
+
+@media screen and  (max-width: 768px) {
+  :root {
+    font-size: 7px;
+  }
+
+
+}
+
+
+
+@media screen and  (max-width: 540px) {
+  :root {
+    font-size: 5.5px;
+  }
+    body{
+      .state-card-container { 
+     grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: 1fr;
+  }
+    }
+  .left-menu {
+    background-color: brown;
+    display: none;
+  }
+  .hamburger-menu{
+  display: block;
+}
+}
+
