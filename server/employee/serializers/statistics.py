@@ -14,12 +14,38 @@ class StatisticsSerializer(serializers.Serializer):
     curr_month_payment_amount = serializers.SerializerMethodField(
         read_only=True)
     avg_basic_salary = serializers.SerializerMethodField(read_only=True)
+    curr_month_allowance = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Payment
         fields = ("total_employees", "total_positions","curr_month_tax",
-                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary")
+                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary", "curr_month_allowance")
+    def get_curr_month_allowance(self, obj):
+        now = datetime.datetime.now()
+        curr_month_payments = Payment.objects.filter(
+            month__year=now.year, month__month=now.month
+        )
 
+        allowances_dict = {}
+
+        for curr_month_payment in curr_month_payments:
+            salary = curr_month_payment.salary
+            allowances = salary.allowances.values('allowance_type').annotate(
+                total_allowance=models.Sum('allowance_rate')
+            )
+
+            for allowance in allowances:
+                allowance_type = allowance['allowance_type']
+                total_allowance_rate = allowance['total_allowance'] / 100
+                total_allowance_amount = total_allowance_rate * salary.basic_salary
+
+                if allowance_type in allowances_dict:
+                    allowances_dict[allowance_type] += total_allowance_amount
+                else:
+                    allowances_dict[allowance_type] = total_allowance_amount
+
+        formatted_allowances_dict = {key: round(value, 2) for key, value in allowances_dict.items()}
+        return formatted_allowances_dict
     def get_total_employees(self, obj):
         return Employee.objects.all().count()
     def get_total_positions(self, obj):
@@ -34,7 +60,7 @@ class StatisticsSerializer(serializers.Serializer):
             calculator = SalaryCalculator(curr_month_paymnet.salary)
             calculator.calc_income_tax()
             sum_month_paymnets += calculator.income_tax
-        return sum_month_paymnets
+        return format(round(sum_month_paymnets,2),',')
 
     def get_curr_month_allowances(self, obj):
 
@@ -82,4 +108,4 @@ class StatisticsSerializer(serializers.Serializer):
             sum_basic_salary += salary['basic_salary']
         average = sum_basic_salary / len(basic_salaries)
 
-        return round(average,2)
+        return format(round(average,2),',')
