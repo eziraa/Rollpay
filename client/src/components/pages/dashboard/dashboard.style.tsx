@@ -1,5 +1,6 @@
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
 import styled from "styled-components";
+import { Label } from "../edit-employee/edit-employee.style";
 
 export const DashboardContainer = styled.div`
   display: flex;
@@ -84,6 +85,11 @@ export const CardColumnTemplate = styled.div`
     flex-direction: column;
     gap: 0.5rem;
   }
+`;
+
+export const Text = styled(Label)`
+  padding: 0;
+  font-size: 2rem;
 `;
 
 export const IncreaseIcon = styled(IoIosArrowRoundUp)`
