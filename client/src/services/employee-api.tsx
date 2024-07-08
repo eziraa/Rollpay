@@ -305,6 +305,26 @@ const deleteEmployee = async (empployee_id: string) => {
   return response;
 };
 
+const getTotalEmployee = async () => {
+  const employee = await api
+    .get("/employee/total")
+    .then((res) => {
+      return {
+        total: res.data.total,
+        code: res.status,
+        success: "Success returned allowances",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return employee;
+};
+
 const EmployeeAPI = {
   addEmp,
   listEmployee,
@@ -316,6 +336,7 @@ const EmployeeAPI = {
   getProfilePicture,
   updatEmployementAgreement,
   uploadDocument,
+  getTotalEmployee,
   getEmployee,
 };
 

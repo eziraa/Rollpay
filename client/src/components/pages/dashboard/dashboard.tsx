@@ -24,6 +24,12 @@ export const DashBoard = () => {
     dispatcher(getStatRequest());
     console.log(stat);
   }, []);
+
+  // const employee = useEmployee();
+
+  // useEffect(() => {
+  //   dispatcher(getEmpNumRequested());
+  // }, []);
   return (
     <DashboardContainer>
       <StatContainer className="state-card-container">

@@ -11,7 +11,7 @@ export interface Employee {
   date_of_hire: string;
   salary: number;
   profile_picture: string | undefined;
-  employement_contract: string ;
+  employement_contract: string;
 }
 
 export interface Profile {
@@ -34,4 +34,14 @@ export interface PaginatedEmpResponse extends PaginatedResponse {
 
 export interface PaginatedEmpBackEndResponse extends PaginatedBackEndResponse {
   results: Employee[];
+}
+
+export interface TotalEmployee {
+  total: number;
+}
+export interface EmpRes {
+  success: string;
+  error: string;
+  code: number;
+  total: number;
 }

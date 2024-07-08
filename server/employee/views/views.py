@@ -195,6 +195,6 @@ class EmployeeNumber(APIView):
      def get(self, request: Request,format=None):
         try:
             queryset = Employee.objects.count()
-            return Response({"employee_number": queryset})
+            return Response(data={"total": queryset})
         except Exception as e:
             return Response({"error": str(e)}, status=400)
