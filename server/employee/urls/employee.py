@@ -38,6 +38,5 @@ urlpatterns = [
     path("contract/<str:employee_id>",
          EmployementContract.as_view(), name='_employement_contract__'),
      path('total', views.EmployeeNumber.as_view(), name='__get_total_employee__'),
-     path('average-salary', salary_view.BasicSalaryAverage.as_view(), name='__average_basic_salary__'),
-
+  
 ] 
