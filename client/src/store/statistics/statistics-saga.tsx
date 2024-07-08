@@ -27,5 +27,5 @@ function* getStatistics() {
 }
 
 export function* watchStatisticsRequest() {
-  yield takeEvery("statisticsa/getStatRequest", getStatistics);
+  yield takeEvery("statistics/getStatRequest", getStatistics);
 }
