@@ -53,6 +53,7 @@ export const ListRow = styled.div<ThemeProps>`
   padding: 0.4rem 0.5rem;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
+  justify-content: center;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.4, theme.table.tableRow)};
   &:nth-child(even) {
@@ -75,8 +76,6 @@ export const Data = styled.div<ThemeProps>`
   /* width: auto; */
 `;
 
-
-
 export const SortBtn = styled.div`
   width: 2rem;
   height: 2rem;
@@ -88,4 +87,18 @@ export const SortBtn = styled.div`
     background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.backgrounds.primary};
   }
+`;
+
+export const RowTemplate = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+`;
+
+export const ColumnTemplate = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
 `;

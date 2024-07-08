@@ -5,13 +5,13 @@ const moveIn = keyframes`
         transform: translate(0, 0) 
     }
     25% {
-        transform: translate(50px, 0);
+        transform: translate(5.0rem, 0);
     }
     50% {
-        transform: translate(50px, 50px) 
+        transform: translate(5.0rem, 5.0rem) 
     }
     75% {
-        transform: translate(0, 50px);
+        transform: translate(0, 5.0rem);
     }
     100% {
         transform: translate(0, 0) 
@@ -23,13 +23,13 @@ const moveOutI = keyframes`
         transform: translate(0, 0) 
     }
     25% {
-        transform: translate(0, 50px);
+        transform: translate(0, 5.0rem);
     }
     50% {
-        transform: translate(-50px, 50px) 
+        transform: translate(-5.0rem, 5.0rem) 
     }
     75% {
-        transform: translate(-50px, 0);
+        transform: translate(-5.0rem, 0);
     }
     100% {
         transform: translate(0, 0) 
@@ -41,13 +41,13 @@ const moveOut = keyframes`
         transform: translate(0, 0) 
     }
     25% {
-        transform: translate(-50px, 0);
+        transform: translate(-5.0rem, 0);
     }
     50% {
-        transform: translate(-50px, -50px) 
+        transform: translate(-5.0rem, -5.0rem) 
     }
     75% {
-        transform: translate(0, -50px);
+        transform: translate(0, -5.0rem);
     }
     100% {
         transform: translate(0, 0) 
@@ -59,13 +59,13 @@ const moveInO = keyframes`
         transform: translate(0, 0) 
     }
     25% {
-        transform: translate(0, -50px);
+        transform: translate(0, -5.0rem);
     }
     50% {
-        transform: translate(50px, -50px) 
+        transform: translate(5.0rem, -5.0rem) 
     }
     75% {
-        transform: translate(50px, 0);
+        transform: translate(5.0rem, 0);
     }
     100% {
         transform: translate(0, 0) 
@@ -84,8 +84,8 @@ const LoadingContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 0.5rem;
-  height: 100px;
-  width: 100px;
+  height: 10rem;
+  width: 10rem;
   padding: 0;
   margin: 0;
   padding: auto;
@@ -98,8 +98,8 @@ const LoadingItemStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
-  width: 30px;
+  height: 3rem;
+  width: 3rem;
   border-radius: 50%;
   background-color: rgba(92, 82, 82, 0.553);
   padding: 0;

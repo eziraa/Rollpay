@@ -10,48 +10,40 @@ import {
   CancelBtn,
   BackButton,
 } from "./edit-employee.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 
 import { editEmployeeRequested } from "../../../store/employee/employee-slice";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { MdArrowBackIos } from "react-icons/md";
-import { DisplayContext } from "../../../contexts/display-context";
-import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
+import { useEmployee } from "../../../hooks/employee-hook";
 
 export const EditEmployee = () => {
-  const current_employee = useAppSelector(
-    (state) => state.salary?.curr_emp?.employee
-  );
-  const { task_finished } = useAppSelector((state) => state.employee);
+  const { curr_emp: employee, task_finished } = useEmployee();
   const dispatcher = useAppDispatch();
-  useEffect(() => {
-    const curr_emp_id = localStorage.getItem("curr_emp_id");
-    curr_emp_id && dispatcher(getCurrEmpPaymentInfo(curr_emp_id));
-  }, []);
-  const { display, setDisplay } = useContext(DisplayContext);
+
   const initialValues = {
-    id: current_employee?.id ?? "",
-    first_name: current_employee?.first_name ?? "",
-    last_name: current_employee?.last_name ?? "",
-    gender: current_employee?.gender ?? "",
-    email: current_employee?.email ?? "",
-    position: current_employee?.position ?? "",
-    phone_number: current_employee?.phone_number ?? "",
-    date_of_birth: current_employee?.date_of_birth ?? "",
-    date_of_hire: current_employee?.date_of_hire ?? "",
-    salary: current_employee?.salary ?? 0, // Default to 0 if salary is undefined
+    id: employee?.id ?? "",
+    first_name: employee?.first_name ?? "",
+    last_name: employee?.last_name ?? "",
+    gender: employee?.gender ?? "",
+    email: employee?.email ?? "",
+    position: employee?.position ?? "",
+    phone_number: employee?.phone_number ?? "",
+    date_of_birth: employee?.date_of_birth ?? "",
+    date_of_hire: employee?.date_of_hire ?? "",
+    salary: employee?.salary ?? 0, // Default to 0 if salary is undefined
   };
 
   useEffect(() => {
     resetForm({
       values: initialValues,
     });
-  }, [current_employee]);
+  }, [employee]);
   const {
     resetForm,
     dirty,
@@ -85,15 +77,11 @@ export const EditEmployee = () => {
       style={{
         position: "relative",
       }}
+      onSubmit={handleSubmit}
     >
       <BackButton
         onClick={(e) => {
           e.stopPropagation();
-          setDisplay({
-            ...display,
-            edit_employee: false,
-          });
-          // dispatcher(setMajorTask(undefined));
         }}
       >
         <MdArrowBackIos /> Back
@@ -304,14 +292,7 @@ export const EditEmployee = () => {
           >
             {"Reset"}
           </CancelBtn>
-          <SaveBtn
-            type="submit"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleSubmit();
-            }}
-          >
+          <SaveBtn type="submit">
             {!task_finished ? <SmallSpinner /> : "Save"}
           </SaveBtn>
         </ButtonContainer>

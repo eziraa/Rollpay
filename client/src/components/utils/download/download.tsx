@@ -9,11 +9,10 @@ export const DownloadButton = styled.button<ThemeProps>`
   font-size: 1.5rem;
   color: #fff;
   cursor: pointer;
-  padding: 0rem 0.5rem;
-  width: max-content;
+  padding: 0.25rem;
   margin: 0.5rem;
   border-radius: 0.5rem;
-
+  height: fit-content;
   background-color: ${({ theme }) => theme.buttons.primary};
   border: none;
   &:hover {
@@ -79,12 +78,8 @@ const DownloadPDF = ({ url }: { url: string }) => {
   };
 
   return (
-    <DownloadButton
-      onClick={handleDownload}
-      // disabled={downloading}
-    >
+    <DownloadButton onClick={handleDownload}>
       <MdFileDownload />
-      {/* {buttonText} */}
     </DownloadButton>
   );
 };

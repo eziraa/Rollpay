@@ -15,7 +15,7 @@ export const CheckFlashMessageContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   gap: 1rem;
-  border: 1px solid #089c75;
+  border: 0.1rem solid #089c75;
   background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
@@ -28,14 +28,14 @@ export const CheckFlashMessageHeader = styled.div`
   padding: 0.5rem 1rem;
   width: 100%;
   flex: 1;
-  border-bottom: 1px solid #089c75;
+  border-bottom: 0.1rem solid #089c75;
 `;
 
 export const CheckFlashMessageTitle = styled.h1`
   font-size: 1.8rem;
   font-weight: bold;
   flex: 1;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   color: ${({ theme }) => addOpacityToColor(0.65, theme.colors.primary)};
 `;
 

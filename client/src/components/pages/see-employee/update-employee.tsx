@@ -36,7 +36,7 @@ const UpdateEmployee = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigator("/employees");
+            navigator("edit");
           }}
         >
           <MdModeEditOutline /> Edit

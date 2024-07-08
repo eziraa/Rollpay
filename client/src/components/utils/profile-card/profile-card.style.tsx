@@ -59,5 +59,5 @@ export const SaveButton = styled.button`
 export const TextInput = styled.input`
   padding: 0.5rem;
   border-radius: 0.3rem;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
 `;

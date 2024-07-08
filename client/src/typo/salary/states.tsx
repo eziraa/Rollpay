@@ -3,7 +3,8 @@ import { Pagination } from "../utils/response";
 import { CurrentEmpPaymentsResponse } from "./response";
 
 export interface PaymentState {
-  loading: boolean;
+  task_finished: boolean;
+  task_error: string | undefined;
   searching: boolean;
   search_response: PaymentEmployee[];
   curr_emp: CurrentEmpPaymentsResponse | undefined;

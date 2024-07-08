@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   CustomTable,
   HeaderTitle,
@@ -19,12 +20,47 @@ import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { ThreeDots } from "../../utils/loading/dots";
 import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
+import { useEffect } from "react";
+import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
+import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 
 export const EmployeeOvertime = () => {
-  const { curr_emp, loading } = useAppSelector((state) => state.salary);
+  //Callig hooks and getting necessary information
+  const { curr_emp, task_finished } = useAppSelector((state) => state.salary);
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { year, month, changeYear, changeMonth } = useYearMonthPagination();
+  const { year: curr_year, month: curr_month, employee_id } = useParams();
+
+  // Getting the base URL
+  const baseUrl = curr_year
+    ? pathname.slice(0, pathname.indexOf("/" + curr_year + "/"))
+    : pathname;
+  // Defining a ue effect to naviagate when there is a month or year change
+  useEffect(() => {
+    if (!year && !month) return;
+    !year && changeYear(2022);
+    !month && changeMonth(1);
+    year && month && navigate(`${baseUrl}/${year}/${month}`);
+  }, [year, month]);
+
+  //Defining a use effect to fetch an employee information based on the year and month
+  useEffect(() => {
+    if (curr_year && curr_month) {
+      dispatcher(
+        getCurrEmpPaymentInfo(`${employee_id}/${curr_year}/${curr_month}`)
+      );
+    } else {
+      employee_id &&
+        dispatcher(
+          getCurrEmpPaymentInfo(
+            `${employee_id}/${2024}/${new Date(Date.now()).getMonth()}`
+          )
+        );
+    }
+  }, [curr_year, curr_month]);
   return (
     <OvertimeContainer>
       <OvertimeHeader>
@@ -34,14 +70,14 @@ export const EmployeeOvertime = () => {
           onClick={(e) => {
             e.stopPropagation();
             dispatcher(listOvertimesRequested());
-            navigate("add-overtime");
+            navigate(baseUrl + "/add-overtime");
           }}
         >
           Add
         </AddButton>
       </OvertimeHeader>
       <OvertimeBody>
-        {loading ? (
+        {!task_finished ? (
           <ThreeDots size={2} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.overtimes.length === 0

@@ -30,10 +30,6 @@ export interface PageInfo {
 
 function Pagination({ pagination }: { pagination: PaginationResponse }) {
   const dispatcher = useAppDispatch();
-  // const salary = useAppSelector((state) => state.salary);
-  // const employee = useAppSelector((state) => state.employee);
-
-  console.log(pagination);
   const [pageNumber, setPageNumber] = useState<number>(pagination.current_page);
 
   const loadNextPage = async () => {

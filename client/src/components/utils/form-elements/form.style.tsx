@@ -9,19 +9,18 @@ export const Form = styled.form`
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  /* border: 1px solid ${({ theme }) => theme.colors.secondary}; */
 `;
 
 export const Input = styled.input`
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.secondary};
+  border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.backgrounds.primary};
   outline: none;
   color: ${({ theme }) => theme.colors.primary};
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border: 0.1rem solid ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -63,18 +62,18 @@ export const PasswordContainer = styled.div`
   gap: 0.5rem;
   width: 100%;
   border-radius: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.secondary};
+  border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
   outline: none;
   position: relative;
   input {
-    outline: 1px solid transparent;
+    outline: 0.1rem solid transparent;
     width: 100%;
     padding: 1rem;
     border: none;
     border-radius: 0.5rem;
     background-color: ${({ theme }) => theme.backgrounds.primary};
     &:focus {
-      border: 1px solid ${({ theme }) => theme.colors.primary};
+      border: 0.1rem solid ${({ theme }) => theme.colors.primary};
     }
     color: ${({ theme }) => theme.colors.primary};
   }
@@ -85,23 +84,22 @@ export const FormError = styled.span({
   fontSize: "1rem",
 });
 
-
 export const Select = styled.select`
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.secondary};
+  border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.backgrounds.primary};
   outline: none;
   color: ${({ theme }) => theme.colors.primary};
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border: 0.1rem solid ${({ theme }) => theme.colors.primary};
   }
   option {
     background: transparent;
-    padding: 0px 2px 1px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+    padding: 0 0.2rem 0.1rem;
+    border: 0.1rem solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.4rem;
     height: 100%;
     line-height: 1.6;
   }

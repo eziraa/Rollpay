@@ -125,7 +125,6 @@ function* getEmpSalaryInfo(action: PayloadAction<string>) {
         })
       );
     }
-    console.log(response);
   } catch (e) {
     console.log(e);
   }

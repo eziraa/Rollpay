@@ -12,8 +12,8 @@ export const EmployeeeProfileContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   min-width: 30rem;
-  border: 1px solid ${({ theme }) => theme.colors.secondary};
-  border-radius: 10px;
+  border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
+  border-radius: 1rem;
   height: auto;
   padding: 1rem;
   gap: 2rem;
@@ -22,17 +22,16 @@ export const EmployeeeProfileContainer = styled.div`
 `;
 
 export const Button = styled.button`
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   color: #ffffff;
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;
   background-color: ${({ theme }) => theme.buttons.primary};
-  border-radius: 5px;
-  width: 10rem;
-  display: flex;
-  gap: 1rem;
-  font-size: medium;
+  border-radius: 0.5rem;
+  width: fit-content;
+  text-align: center;
+  vertical-align: baseline;
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};
@@ -64,7 +63,7 @@ export const InputButton = styled.button`
   color: #ffffff;
   cursor: pointer;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   display: flex;
   gap: 1rem;
   font-size: medium;
@@ -100,7 +99,7 @@ export const ProfileImage = styled.img`
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;
-  border: 2px solid ${({ theme }) => theme.colors.primary};
+  border: 0.2rem solid ${({ theme }) => theme.colors.primary};
   cursor: pointer;
 `;
 
@@ -153,7 +152,7 @@ export const BackButton = styled.div`
   display: inline-block;
   color: ${({ theme }) => theme.buttons.primary};
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   padding-bottom: -0.4rem;
   text-align: center;
   &:hover {
@@ -172,7 +171,7 @@ export const ActionBtnsContainer = styled.div`
 `;
 
 export const ActionBtn = styled.div`
-  border-radius: 10px;
+  border-radius: 1rem;
   cursor: pointer;
   font-size: 1.6rem;
   padding: 1rem 2rem;
@@ -208,7 +207,7 @@ export const NavItem = styled.div<NavItemProps>`
   padding: 1rem 2rem;
   display: inline-block;
   font-size: 1.7rem;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   cursor: pointer;
   text-align: center;
   color: ${({ theme }) => theme.colors.primary};
@@ -218,8 +217,6 @@ export const NavItem = styled.div<NavItemProps>`
 `;
 
 export const DeleteButton = styled(Button)`
-  /* background-color: ${({ theme }) =>
-    addOpacityToColor(0.6, theme.buttons.primary)}; */
   background-color: white;
   border: 0.2rem solid #dc3545;
   color: #dc3545;

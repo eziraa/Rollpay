@@ -14,7 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import {
   deleteEmpRequested,
-  unfinishedDelete,
+  closeEmployeeTask,
 } from "../../../store/employee/employee-slice";
 import { useNavigate } from "react-router";
 
@@ -33,7 +33,7 @@ export const CheckFlashMessage = () => {
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
-        dispatcher(unfinishedDelete());
+        dispatcher(closeEmployeeTask());
         navigate(-1);
       }}
     >
@@ -42,7 +42,7 @@ export const CheckFlashMessage = () => {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            dispatcher(unfinishedDelete());
+            dispatcher(closeEmployeeTask());
             navigate(-1);
           }}
         >
@@ -61,7 +61,7 @@ export const CheckFlashMessage = () => {
               e.stopPropagation();
               e.preventDefault();
               navigate(-1);
-              dispatcher(unfinishedDelete());
+              dispatcher(closeEmployeeTask());
             }}
           >
             Cancel

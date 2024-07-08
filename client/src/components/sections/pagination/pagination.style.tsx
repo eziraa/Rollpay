@@ -3,10 +3,7 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { Button } from "../../utils/form-elements/form.style";
 
 export const PaginationContainer = styled.div`
-  width: 85%;
-  position: absolute;
-  bottom: 0rem;
-  right: 3rem;
+  width: 100%;
 `;
 export const BottomContainer = styled.ul`
   display: flex;
