@@ -12,6 +12,7 @@ const initialState: StatisticsState = {
     curr_month_deductions: 0,
     curr_month_payment_amount: 0,
     avg_basic_salary: 0,
+    curr_month_allowance: {},
   },
 };
 
