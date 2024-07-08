@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentCard } from "../../utils/payment-card/payment-card";
-import { LargeText, 
-  // NormalBlurredText 
+import {
+  LargeText,
+  // NormalBlurredText
 } from "../../utils/titles/titles";
 import {
   CardColumnTemplate,
@@ -17,7 +18,8 @@ import {
 } from "./dashboard.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
-import { FaUser } from "react-icons/fa";
+import { FaDollarSign, FaUsers } from "react-icons/fa";
+import { IoBriefcase } from "react-icons/io5";
 
 export const DashBoard = () => {
   const { stat } = useStatistics();
@@ -38,7 +40,7 @@ export const DashBoard = () => {
               <LargeText>Total Employees</LargeText>
               <p>{stat.total_employees}</p>
             </CardColumnTemplate>
-            {<FaUser />}
+            {<FaUsers />}
           </CardRowTemplate>
           <CardRowTemplate>
             {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
@@ -53,7 +55,7 @@ export const DashBoard = () => {
               <LargeText>Total Positions</LargeText>
               <p>{stat.total_positions}</p>
             </CardColumnTemplate>
-            {<FaUser />}
+            {<IoBriefcase />}
           </CardRowTemplate>
           <CardRowTemplate>
             {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
@@ -62,7 +64,22 @@ export const DashBoard = () => {
             </CardColumnTemplate>
           </CardRowTemplate>
         </StatCard>
-            </StatContainer>
+        <StatCard>
+          <CardRowTemplate>
+            <CardColumnTemplate>
+              <LargeText>Average Salary</LargeText>
+              <p>{stat.avg_basic_salary} ETB</p>
+            </CardColumnTemplate>
+            {<FaDollarSign />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            {/* {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />} */}
+            <CardColumnTemplate>
+              {/* <NormalBlurredText>{87}%</NormalBlurredText> */}
+            </CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
+      </StatContainer>
       <DashboardBody>
         <PaymentCard />
         <MonthCard />
