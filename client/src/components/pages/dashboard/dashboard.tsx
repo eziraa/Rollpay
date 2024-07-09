@@ -83,7 +83,7 @@ export const DashBoard = () => {
       <DashboardBody>
         <DashboardBodyRow>
           <MonthCard statType="allowance" />
-          <MonthCard statType="allowance" />
+          <MonthCard statType="deduction" />
           <MonthCard statType="allowance" />
         </DashboardBodyRow>
         <DashboardBodyRow>
