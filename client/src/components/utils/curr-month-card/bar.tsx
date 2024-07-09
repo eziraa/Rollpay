@@ -4,6 +4,7 @@ import Chart from "react-apexcharts"; // Import the Chart component from react-a
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
+import { AllowanceResponse } from "../../../typo/statistics/response";
 interface ChartData {
   series: number[];
   labels: string[];
@@ -30,13 +31,14 @@ function Piechart() {
     "#f15c80",
   ];
 
-  
   useEffect(() => {
     if (stat.curr_month_allowance) {
-      const series = Object.values(stat.curr_month_allowance).map(
-        (allowance) => allowance || 0
+      const series = stat.curr_month_allowance.map(
+        (allowance: AllowanceResponse) => allowance.amount || 0
       );
-      const labels = Object.keys(stat.curr_month_allowance);
+      const labels = stat.curr_month_allowance.map(
+        (allowance: AllowanceResponse) => allowance.allowance_type
+      );
 
       setChartData({
         series: series,
@@ -44,7 +46,6 @@ function Piechart() {
       });
     }
   }, [stat.curr_month_allowance]);
-
 
   return (
     <React.Fragment>
@@ -66,4 +67,3 @@ function Piechart() {
   );
 }
 export default Piechart;
-
