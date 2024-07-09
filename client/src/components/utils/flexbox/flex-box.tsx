@@ -59,7 +59,14 @@ export const column_template_al_center = css`
   ${column_template}
   align-items: center;
 `;
-
+export const column_template_js_start = css`
+  ${column_template}
+  justify-content: start;
+`;
+export const column_template_js_end = css`
+  ${column_template}
+  justify-content: end;
+`;
 export const column_template_js_center = css`
   ${column_template}
   justify-content: center;
