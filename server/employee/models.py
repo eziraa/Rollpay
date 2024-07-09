@@ -35,6 +35,10 @@ class CustomUser(BaseUser):
     profile_picture = models.OneToOneField(
         ProfilePicture, on_delete=models.SET_NULL, null=True, blank=True)
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.id = CustomUser.id_generator()
+
     @staticmethod
     def id_generator():
         users = CustomUser.objects.all()
@@ -48,12 +52,10 @@ class CustomUser(BaseUser):
 
     @staticmethod
     def generate_id():
-        small_letters = 'abcdefghijklmnopqrstuvwxyz'.split('')
-        numbers = '0123456789'.split('')
+        numbers = [number for number in '0123456789']
         generated_id = ""
         for i in range(0, 10):
-            generated_id += random.choice([random.choice(numbers),
-                                          random.choice(small_letters)])
+            generated_id += random.choice(numbers)
         return generated_id
 
 
