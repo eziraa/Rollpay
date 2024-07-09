@@ -15,11 +15,57 @@ class StatisticsSerializer(serializers.Serializer):
         read_only=True)
     avg_basic_salary = serializers.SerializerMethodField(read_only=True)
     curr_month_allowance = serializers.SerializerMethodField(read_only=True)
+    curr_month_deduction = serializers.SerializerMethodField(read_only=True)
+
 
     class Meta:
         model = Payment
         fields = ("total_employees", "total_positions","curr_month_tax",
-                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary", "curr_month_allowance")
+                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary", "curr_month_allowance", "curr_month_deduction")
+    def get_curr_month_tax(self, obj: Payment):
+        now = datetime.datetime.now()
+        curr_month_paymnets = Payment.objects.filter(
+            month=Month(now.year, now.month))
+        sum_month_paymnets = 0
+        for curr_month_paymnet in curr_month_paymnets:
+            calculator = SalaryCalculator(curr_month_paymnet.salary)
+            calculator.calc_income_tax()
+            sum_month_paymnets += calculator.income_tax
+        return format(round(sum_month_paymnets,2),',')   
+    def get_curr_month_deduction(self, obj):
+        now = datetime.datetime.now()
+        curr_month_payments = Payment.objects.filter(
+            month__year=now.year, month__month=now.month
+        )
+
+        deductions_dict = {}
+
+        for curr_month_payment in curr_month_payments:
+            salary = curr_month_payment.salary
+            deductions = salary.deductions.values('id', 'deduction_type').annotate(
+                total_deduction=models.Sum('deduction_rate')
+            )
+
+            for deduction in deductions:
+                deduction_type = deduction['deduction_type']
+                total_deduction_rate = deduction['total_deduction'] or 0
+                total_deduction_amount = (total_deduction_rate / 100) * salary.basic_salary
+
+                if deduction_type in deductions_dict:
+                    deductions_dict[deduction_type]['amount'] += total_deduction_amount
+                else:
+                    deductions_dict[deduction_type] = {
+                        'deduction_type': deduction_type,
+                        'amount': total_deduction_amount
+                    }
+            income_tax = self.get_curr_month_tax(curr_month_payment) 
+            deductions_dict['income_tax'] = {
+                'deduction_type': 'Income Tax',
+                'amount': income_tax,
+            }
+
+        formatted_deductions_list = list(deductions_dict.values())
+        return formatted_deductions_list
     def get_curr_month_allowance(self, obj):
         now = datetime.datetime.now()
         curr_month_payments = Payment.objects.filter(
@@ -51,21 +97,11 @@ class StatisticsSerializer(serializers.Serializer):
 
         formatted_allowances_list = list(allowances_dict.values())
         return formatted_allowances_list
+    
     def get_total_employees(self, obj):
         return Employee.objects.all().count()
     def get_total_positions(self, obj):
         return Position.objects.all().count()
-
-    def get_curr_month_tax(self, obj: Payment):
-        now = datetime.datetime.now()
-        curr_month_paymnets = Payment.objects.filter(
-            month=Month(now.year, now.month))
-        sum_month_paymnets = 0
-        for curr_month_paymnet in curr_month_paymnets:
-            calculator = SalaryCalculator(curr_month_paymnet.salary)
-            calculator.calc_income_tax()
-            sum_month_paymnets += calculator.income_tax
-        return format(round(sum_month_paymnets,2),',')
 
     def get_curr_month_allowances(self, obj):
 
