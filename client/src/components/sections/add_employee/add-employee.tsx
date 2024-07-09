@@ -29,8 +29,6 @@ import {
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useModal } from "../../../hooks/modal-hook";
-import { ADD_POSITION } from "../../../constants/tasks";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { usePosition } from "../../../hooks/position-hook";
