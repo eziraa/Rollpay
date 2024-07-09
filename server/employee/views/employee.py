@@ -1,27 +1,24 @@
+
+# Restframework packages
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from employee.serializers.employee import EmployeeSerializer, EmployementContractSerializer
-from employee.serializers.position import PositionSerializer
-from employee.permissions.clerk_permission import IsUserInGroupWithClerk
-from employee.serializers.payment import MonthlyPaymentSerializer, PaymentSerializer
-from rest_framework.permissions import AllowAny
-from rest_framework.parsers import MultiPartParser, FormParser
-from employee.serializers.salary import SalarySerializer
-from ..models import Employee, Payment, Salary, Position, Allowance, Deduction, OvertimeItem, Overtime
+
+#  Django modules
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
-import os
 import json
 import datetime
 from month import Month
 
-class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10  # Define how many items per page
-    page_size_query_param = 'page_size'
-    max_page_size = 100
+# Local modules
+from employee.serializers.employee import EmployeeSerializer
+from employee.serializers.position import PositionSerializer
+from employee.permissions.clerk_permission import IsUserInGroupWithClerk
+from employee.serializers.payment import MonthlyPaymentSerializer
+from employee.views.utils.pagination import StandardResultsSetPagination
+from ..models import Employee, Payment, Salary, Position, Allowance, Deduction, OvertimeItem, Overtime
 
 
 class EmployeeView (APIView):
@@ -161,40 +158,3 @@ class PositionView(APIView):
         position_serializer = PositionSerializer(
             Position.objects.all(), many=True)
         return JsonResponse(data=position_serializer.data, safe=False)
-
-class EmployementContract(APIView):
-    permission_classes = [AllowAny]
-    parser_classes = [MultiPartParser, FormParser]
-
-    def post(self, request: Request, employee_id, format=None):
-        try:
-            employee = Employee.objects.get(pk=employee_id)
-        except Employee.DoesNotExist:
-            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        employement_contract = request.data.get('employement_contract')
-        if employement_contract:
-            if employee.employement_contract:
-                if default_storage.exists(employee.employement_contract.name):
-                    default_storage.delete(employee.employement_contract.name)
-            employee.employement_contract = employement_contract
-
-            employee.save()
-            return Response({"message": "Employment contract updated successfully"}, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Employment contract not updated "}, status=status.HTTP_400_BAD_REQUEST)
-    def get(self, request, employee_id, format=None):
-        try:
-            employee = Employee.objects.get(pk=employee_id)
-        except Employee.DoesNotExist:
-            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = EmployeeSerializer(employee)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-class EmployeeNumber(APIView):
-     def get(self, request: Request,format=None):
-        try:
-            queryset = Employee.objects.count()
-            return Response({"employee_number": queryset})
-        except Exception as e:
-            return Response({"error": str(e)}, status=400)
