@@ -38,6 +38,7 @@ import { FileInput } from "../../utils/profile/employee-profile.style";
 import EmployeeAPI from "../../../services/employee-api";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { MdFileUpload } from "react-icons/md";
+import { Outlet, useNavigate } from "react-router";
 
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
@@ -47,7 +48,7 @@ export const AddEmployee = () => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
-
+  const navigate = useNavigate();
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.target.files) {
@@ -122,7 +123,6 @@ export const AddEmployee = () => {
     }
   };
 
-  const { openModal } = useModal();
   useEffect(() => {
     if (curr_position) {
       dispatcher(listPositionsRequested());
@@ -157,6 +157,7 @@ export const AddEmployee = () => {
   return (
     <Modal closeAction={clearTask}>
       <AddEmployeeContainer>
+        <Outlet />
         <Title>Add Employee</Title>
         <AddEmployeeForm
           onSubmit={(e) => {
@@ -296,7 +297,7 @@ export const AddEmployee = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openModal(ADD_POSITION);
+                    navigate("add-position");
                   }}
                   style={{ flex: 1.2 }}
                 >
