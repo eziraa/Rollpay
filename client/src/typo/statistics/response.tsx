@@ -1,7 +1,9 @@
 import { BaseResponse } from "../utils/response";
 
-export interface AllowanceResponse{
-
+export interface AllowanceResponse {
+  id: number;
+  allowance_type: string;
+  amount: number;
 }
 export interface StatisticsResponse {
   total_employees: number;
@@ -11,9 +13,7 @@ export interface StatisticsResponse {
   curr_month_deductions: number;
   curr_month_payment_amount: number;
   avg_basic_salary: number;
-  curr_month_allowance: {
-    [key: string]: number; 
-  };
+  curr_month_allowance: AllowanceResponse[];
 }
 
 export interface StatResponse extends BaseResponse {
