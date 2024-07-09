@@ -11,7 +11,8 @@ export interface Employee {
   date_of_hire: string;
   salary: number;
   profile_picture: string | undefined;
-  employement_contract: string ;
+  employement_contract: string;
+  role: string | undefined;
 }
 
 export interface Profile {
