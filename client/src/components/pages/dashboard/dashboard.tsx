@@ -7,6 +7,7 @@ import {
   CardColumnTemplate,
   CardRowTemplate,
   DashboardBody,
+  DashboardBodyRow,
   DashboardContainer,
   StatCard,
   StatContainer,
@@ -80,8 +81,15 @@ export const DashBoard = () => {
         </StatCard>
       </StatContainer>
       <DashboardBody>
-        <PaymentCard />
-        <MonthCard statType="allowance" />
+        <DashboardBodyRow>
+          <MonthCard statType="allowance" />
+          <MonthCard statType="allowance" />
+          <MonthCard statType="allowance" />
+        </DashboardBodyRow>
+        <DashboardBodyRow>
+          <PaymentCard />
+          <PaymentCard />
+        </DashboardBodyRow>
       </DashboardBody>
     </DashboardContainer>
   );
