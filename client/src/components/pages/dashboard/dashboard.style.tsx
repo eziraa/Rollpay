@@ -9,6 +9,10 @@ export const DashboardContainer = styled.div`
   width: 100%;
   padding: 3rem;
   align-items: flex-start;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const DashboardTitle = styled.h1`
@@ -17,7 +21,7 @@ export const DashboardTitle = styled.h1`
 `;
 
 export const DashboardBody = styled.div`
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
@@ -25,6 +29,15 @@ export const DashboardBody = styled.div`
   padding: 2rem 0;
 `;
 
+export const BodyRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0rem;
+  margin-bottom: 2rem;
+`;
 export const StatContainer = styled.div`
   display: grid;
   flex-wrap: wrap;
