@@ -29,7 +29,7 @@ export const DashboardBody = styled.div`
   padding: 2rem 0;
 `;
 
-export const BodyRow = styled.div`
+export const DashboardBodyRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
