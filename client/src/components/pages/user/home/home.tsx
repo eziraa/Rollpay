@@ -1,7 +1,7 @@
 import { HomeBody, HomeContainer } from "../../home/home-page.style";
 import LeftMenu from "../../../sections/left-menu/left-menu";
 import { Header } from "../../../sections/header/header";
-import { DashBoard } from "../../dashboard/dashboard";
+import { Outlet } from "react-router";
 
 export const UserHomePage = () => {
   return (
@@ -9,7 +9,7 @@ export const UserHomePage = () => {
       <LeftMenu />
       <HomeBody>
         <Header />
-        <DashBoard />
+        <Outlet />
       </HomeBody>
     </HomeContainer>
   );
