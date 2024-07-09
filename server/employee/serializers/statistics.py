@@ -30,22 +30,27 @@ class StatisticsSerializer(serializers.Serializer):
 
         for curr_month_payment in curr_month_payments:
             salary = curr_month_payment.salary
-            allowances = salary.allowances.values('allowance_type').annotate(
+            allowances = salary.allowances.values('id', 'allowance_type').annotate(
                 total_allowance=models.Sum('allowance_rate')
             )
 
             for allowance in allowances:
+                allowance_id = allowance['id']
                 allowance_type = allowance['allowance_type']
-                total_allowance_rate = allowance['total_allowance'] / 100
-                total_allowance_amount = total_allowance_rate * salary.basic_salary
+                total_allowance_rate = allowance['total_allowance'] or 0
+                total_allowance_amount = (total_allowance_rate / 100) * salary.basic_salary
 
-                if allowance_type in allowances_dict:
-                    allowances_dict[allowance_type] += total_allowance_amount
+                if allowance_id in allowances_dict:
+                    allowances_dict[allowance_id]['amount'] += total_allowance_amount
                 else:
-                    allowances_dict[allowance_type] = total_allowance_amount
+                    allowances_dict[allowance_id] = {
+                        'id': allowance_id,
+                        'allowance_type': allowance_type,
+                        'amount': total_allowance_amount
+                    }
 
-        formatted_allowances_dict = {key: round(value, 2) for key, value in allowances_dict.items()}
-        return formatted_allowances_dict
+        formatted_allowances_list = list(allowances_dict.values())
+        return formatted_allowances_list
     def get_total_employees(self, obj):
         return Employee.objects.all().count()
     def get_total_positions(self, obj):
@@ -74,7 +79,7 @@ class StatisticsSerializer(serializers.Serializer):
             if allowance['allowance'] is not None:
                 allowances.append(
                     allowance["allowance"] * curr_month_payment.salary.basic_salary)
-        return sum(allowances) / 100
+        return format(round(sum(allowances)/100,2),',')
 
     def get_curr_month_deductions(self, obj):
 
@@ -88,7 +93,7 @@ class StatisticsSerializer(serializers.Serializer):
             if deduction['deduction'] is not None:
                 deductions.append(
                     deduction["deduction"] * curr_month_payment.salary.basic_salary)
-        return sum(deductions) / 100
+        return format(round(sum(deductions)/100,2),',')
 
     def get_curr_month_payment_amount(self, obj):
         now = datetime.datetime.now()
@@ -99,11 +104,10 @@ class StatisticsSerializer(serializers.Serializer):
             calculator = SalaryCalculator(curr_month_payment.salary)
             calculator.calc_net_salary()
             acc += calculator.net_salary
-        return acc
+        return format(round(acc,2),',')
     def get_avg_basic_salary(self, obj):
         basic_salaries = Salary.objects.values('basic_salary')
         sum_basic_salary = 0
-        print(basic_salaries)
         for salary in basic_salaries:
             sum_basic_salary += salary['basic_salary']
         average = sum_basic_salary / len(basic_salaries)
