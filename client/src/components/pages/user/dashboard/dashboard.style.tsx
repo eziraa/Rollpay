@@ -1,17 +1,26 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../../../utils/convertor/add-opacity-color";
 import {
+  column_template_al_center,
   column_template_al_start,
+  column_template_js_end,
+  column_template_js_start,
   row_template_al_center,
+  row_template_js_center,
+  row_template_js_space_between,
   row_template_js_start,
 } from "../../../utils/flexbox/flex-box";
+import { place_center } from "../../../utils/flexbox/place-center.style";
+import { mini_shadow } from "../../../utils/shadows/shadows.style";
+import { ThemeProps } from "../../../../typo/theme/theme";
+import { NormalBlurredText } from "../../../utils/titles/titles";
 
 export const DashboardContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${column_template_al_start}
   justify-content: center;
   height: fit-content;
+  padding: 1rem;
 `;
 
 export const DashBoardTitle = styled.h1`
@@ -39,6 +48,7 @@ export const DashBoardCard = styled.div`
   &:hover {
     transform: scale(1.02);
   }
+  ${mini_shadow}
 `;
 
 export const CardBody = styled.div`
@@ -75,3 +85,121 @@ export const Icon = styled.div`
   padding: 1rem;
   font-size: 2.5rem;
 `;
+
+export const BarGraphContainer = styled.div`
+  ${place_center};
+  ${mini_shadow};
+  border-radius: 1rem;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.05, theme.colors.primary)};
+  height: 50vh;
+  width: fit-content;
+  margin: 1rem;
+  padding: 1rem;
+`;
+
+export const BarGraphContent = styled.div`
+  ${column_template_al_center}
+  ${column_template_js_start}
+  padding: 1rem;
+  border-radius: 1rem;
+  height: 100%;
+  width: 100%;
+`;
+
+export const BarGraphHeader = styled.div`
+  ${row_template_js_space_between}
+  align-items: center;
+  width: 100%;
+`;
+
+export const GrpahKeyContainer = styled.div`
+  ${row_template_js_start}
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+`;
+export const GraphKey = styled.div`
+  ${row_template_js_start}
+  width: fit-content;
+  gap: 0.5rem;
+  align-items: center;
+`;
+
+export const GraphContainer = styled.div`
+  ${place_center};
+  padding: 2rem;
+  color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+`;
+
+export const VerticalAxis = styled.div`
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  border-right: 2px solid
+    ${({ theme }) => addOpacityToColor(0.07, theme.colors.primary)};
+  height: 100%;
+`;
+
+export const AxisKey = styled.div`
+  ${place_center}
+  padding: 1rem;
+`;
+
+export const HorizontalAxis = styled.div`
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  width: 100%;
+`;
+
+export const DataVerticalAxis = styled.div`
+  ${column_template_js_end};
+  align-items: end;
+  height: 100%;
+  position: relative;
+`;
+
+export const DataHorizontalAxis = styled.div`
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  width: 100%;
+  gap: 2rem;
+`;
+
+interface DataProps extends ThemeProps {
+  height: number;
+  color: string;
+}
+
+export const GraphData = styled.div<DataProps>`
+  ${place_center};
+  width: 3rem;
+  height: ${({ height }) => height}rem;
+  /* background-color: ${({ color }) => color}; */
+  position: absolute;
+  bottom: 0;
+  border-radius: 2rem 2rem 0 0;
+  background-image: linear-gradient(to top, white, ${({ color }) => color});
+`;
+
+export const GraphFooter = styled.div`
+  ${row_template_js_center}
+  align-items: flex-start;
+  transform: translateY(24deg);
+  width: 100%;
+  height: fit-content;
+  margin-left: 3rem;
+  gap: 1rem;
+  margin-top: 2.5rem;
+`;
+
+export const BlurredText = styled(NormalBlurredText)`
+  transform: rotate(-45deg);
+  width: 5rem;
+  text-align: end;
+`;
+
+
+
+
+
+
