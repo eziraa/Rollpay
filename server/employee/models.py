@@ -182,3 +182,5 @@ class Asset(models.Model):
     asset_name = models.CharField(max_length=255, null=False)
     asset_value = models.FileField(upload_to=upload_file)
 
+    class Meta:
+        unique_together = ('employee', 'asset_name')
