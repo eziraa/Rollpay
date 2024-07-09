@@ -13,7 +13,10 @@ import { useStatistics } from "../../../hooks/statistics-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
 import React from "react";
-import { AllowanceResponse } from "../../../typo/statistics/response";
+import {
+  AllowanceResponse,
+  DeductionResponse,
+} from "../../../typo/statistics/response";
 
 interface Props {
   statType: string;
@@ -26,7 +29,11 @@ export const MonthCard = ({ statType }: Props) => {
   const [currentMonth, setCurrentMonth] = useState("");
   const { stat } = useStatistics();
   const dispatcher = useAppDispatch();
-  const [chartData, setChartData] = useState<ChartData>({
+  const [allowanceData, setAllowanceData] = useState<ChartData>({
+    series: [],
+    labels: [],
+  });
+  const [deductiontData, setDeductionData] = useState<ChartData>({
     series: [],
     labels: [],
   });
@@ -54,12 +61,27 @@ export const MonthCard = ({ statType }: Props) => {
         (allowance: AllowanceResponse) => allowance.allowance_type
       );
 
-      setChartData({
+      setAllowanceData({
         series: series,
         labels: labels,
       });
     }
   }, [stat.curr_month_allowance]);
+  useEffect(() => {
+    if (stat.curr_month_deduction) {
+      const series = stat.curr_month_deduction.map(
+        (deduction: DeductionResponse) => deduction.amount || 0
+      );
+      const labels = stat.curr_month_deduction.map(
+        (deduction: DeductionResponse) => deduction.deduction_type
+      );
+
+      setDeductionData({
+        series: series,
+        labels: labels,
+      });
+    }
+  }, [stat.curr_month_deduction]);
 
   useEffect(() => {
     dispatcher(getStatRequest());
@@ -86,18 +108,45 @@ export const MonthCard = ({ statType }: Props) => {
                 type="pie"
                 width={350}
                 height={350}
-                series={chartData.series}
+                series={allowanceData.series}
                 options={{
                   title: { text: "Allowance PieChart" },
                   noData: { text: "Empty Data" },
-                  colors: colors.slice(0, chartData.series.length),
-                  labels: chartData.labels,
+                  colors: colors.slice(0, allowanceData.series.length),
+                  labels: allowanceData.labels,
                 }}
               ></Chart>
             </div>
           </React.Fragment>{" "}
         </MonthCardBody>
         <LargeText>Total: {stat.curr_month_allowances} ETB</LargeText>
+      </MonthCardContainer>
+    );
+  } else if (statType === "deduction") {
+    return (
+      <MonthCardContainer>
+        <MonthHeader>
+          <LargeText>Deduction of {currentMonth}</LargeText>
+        </MonthHeader>
+        <MonthCardBody>
+          <React.Fragment>
+            <div className="container-fluid mb-3">
+              <Chart
+                type="pie"
+                width={350}
+                height={350}
+                series={deductiontData.series}
+                options={{
+                  title: { text: "Deduction PieChart" },
+                  noData: { text: "Empty Data" },
+                  colors: colors.slice(0, deductiontData.series.length),
+                  labels: deductiontData.labels,
+                }}
+              ></Chart>
+            </div>
+          </React.Fragment>{" "}
+        </MonthCardBody>
+        <LargeText>Total: {stat.curr_month_deductions} ETB</LargeText>
       </MonthCardContainer>
     );
   }
