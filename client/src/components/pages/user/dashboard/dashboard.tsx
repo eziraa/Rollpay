@@ -20,14 +20,18 @@ export const UserDashboard = () => {
               <DashboardBody>
                 <Icon> {data.icon} </Icon>
                 <DataBox>
-                  <DashboardTitle>{data.salary}</DashboardTitle>
-                  <DashboardTitle>{data.title}</DashboardTitle>
+                  <DashboardTitle className="success">
+                    {data.salary}
+                  </DashboardTitle>
+                  <DashboardTitle className="italic">
+                    {data.title}
+                  </DashboardTitle>
                 </DataBox>
               </DashboardBody>
               <CardFooter>
-                <MidBlurredText>
-                  Your {data.title} is greater than prev month by{" "}
-                  {data.persentage}{" "}
+                <MidBlurredText className="mid-spaced">
+                  Your {data.title} is greater than prev month by
+                  <span className="fail"> {data.persentage}</span>
                 </MidBlurredText>
               </CardFooter>
             </DashBoardCard>
