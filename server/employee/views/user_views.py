@@ -127,6 +127,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         employee = get_object_or_404(Employee, user=user)
         if employee:
             data.data['employee'] = EmployeeSerializer(employee).data
+            data.data['username'] = user.username
         else:
             pass
         return Response(data=data.data, status=status.HTTP_200_OK)
