@@ -8,7 +8,7 @@ from django.http.response import JsonResponse
 from employee.utils.search import Search
 from employee.serializers.employee import EmployeeSerializer
 from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerializer
-from employee.views.views import StandardResultsSetPagination
+from employee.views.employee import StandardResultsSetPagination
 from ..models import Employee, Payment
 import month
 
