@@ -1,16 +1,20 @@
-import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../api";
-import { REFRESH_TOKEN, ACCESS_TOKEN } from "../../constants/token-constants";
+import {
+  REFRESH_TOKEN,
+  ACCESS_TOKEN,
+  LOGGED_IN_USERS,
+} from "../../constants/token-constants";
 import { useState, useEffect } from "react";
 import { useAppDispatch } from "../../utils/custom-hook";
 import { getCurrentUserRequest } from "../../store/user/user-slice";
 import { useUser } from "../../hooks/user-hook";
+import { ClerkRouterConfig } from "../router/clerk-router";
+import { UserRouterConfig } from "../router/user-router";
+import AccessDenied from "../../components/pages/access-denied/access-denied";
+import { Route } from "react-router-dom";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
-function ProtectedRoute({ children }: ProtectedRouteProps) {
+function ProtectedRoute() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const dispatcher = useAppDispatch();
   const { user } = useUser();
@@ -26,7 +30,19 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
         refresh: refreshToken,
       });
       if (res.status === 200) {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        let logged_in_users = JSON.parse(
+          localStorage.getItem(LOGGED_IN_USERS) || "[]"
+        );
+
+        logged_in_users = [
+          ...logged_in_users,
+          {
+            username: res.data.username,
+            access_token: res.data.access,
+            refresh_token: res.data.refresh,
+          },
+        ];
+        localStorage.setItem(ACCESS_TOKEN, logged_in_users);
         setIsAuthorized(true);
       } else {
         setIsAuthorized(false);
@@ -38,9 +54,10 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   const auth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
+
     if (!token) {
       setIsAuthorized(false);
-      return;
+      return <Route path="/access-denied" element={<AccessDenied />} />;
     }
     const decoded: {
       exp: number;
@@ -58,11 +75,10 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   };
 
   if (!isAuthorized) {
-    return <div>Loading...</div>;
-  } else {
-    console.log(user);
+    return <Route path="/access-denied" element={<AccessDenied />} />;
   }
-  return isAuthorized ? children : <Navigate to="/" />;
+
+  return user?.role === "Clerk" ? ClerkRouterConfig() : UserRouterConfig();
 }
 
 export default ProtectedRoute;
