@@ -52,7 +52,9 @@ export const RouterConfig = () => (
       >
         <Route path="/" element={<DashBoard />} />
         <Route path="/employees" element={<EmployeesListPage />}>
-          <Route path="add-employee" element={<AddEmployee />} />
+          <Route path="add-employee" element={<AddEmployee />}>
+            <Route path="add-position" element={<AddPosition />} />
+          </Route>
         </Route>
         <Route path="/positions" element={<PositionPage />}>
           <Route path="add-position" element={<AddPosition />} />
