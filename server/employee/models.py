@@ -54,7 +54,7 @@ class CustomUser(BaseUser):
     def generate_id():
         numbers = [number for number in '0123456789']
         generated_id = ""
-        for i in range(0, 10):
+        for i in range(0, 9):
             generated_id += random.choice(numbers)
         return generated_id
 
