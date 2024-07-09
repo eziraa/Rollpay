@@ -5,6 +5,11 @@ export interface AllowanceResponse {
   allowance_type: string;
   amount: number;
 }
+
+export interface DeductionResponse {
+  deduction_type: string;
+  amount: number;
+}
 export interface StatisticsResponse {
   total_employees: number;
   total_positions: number;
@@ -14,6 +19,7 @@ export interface StatisticsResponse {
   curr_month_payment_amount: number;
   avg_basic_salary: number;
   curr_month_allowance: AllowanceResponse[];
+  curr_month_deduction: DeductionResponse[];
 }
 
 export interface StatResponse extends BaseResponse {
