@@ -15,7 +15,7 @@ body{
   overflow: hidden;
 
   .success{
-    color: rgb(40, 206, 151);
+    color: #28ce97;
   }
 
   .fail{

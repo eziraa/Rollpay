@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const NavBar = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const NavBar = styled.div`
   align-items: center;
   justify-content: start;
   flex: 3.8;
-  gap: 0rem;
+  gap: 1rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
@@ -16,7 +17,7 @@ interface NavItemProps extends ThemeProps {
 }
 
 export const NavItem = styled.div<NavItemProps>`
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
   display: inline-block;
   font-size: 1.7rem;
   letter-spacing: 0.1rem;
@@ -26,4 +27,9 @@ export const NavItem = styled.div<NavItemProps>`
   border-bottom: 0.5rem solid;
   border-bottom-color: ${({ active, theme }) =>
     active ? theme.buttons.primary : "transparent"};
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.3, theme.buttons.primary)};
+  }
 `;
