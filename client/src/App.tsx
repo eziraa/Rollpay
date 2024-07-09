@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { store } from "./utils/store";
 import { RouterConfig } from "./config/router/router";
 import { FlashMessage } from "./components/utils/flash-message/flash-message";
-import { AuthProvider } from "./contexts/auth-context";
 import { PaginationContext } from "./contexts/pagination-context";
 import { usePagination } from "./hooks/use-pagination";
 import { DisplayProvider } from "./providers/display-provider";
@@ -17,6 +16,7 @@ import { FilterProvider } from "./providers/filter-provider";
 import { ProfileProvider } from "./contexts/profile-context";
 import { YearMonthPaginationProvider } from "./providers/year-month-pagination-provider";
 import { RefsProvider } from "./providers/refs-provider";
+import { AuthProvider } from "./providers/auth-provider";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
