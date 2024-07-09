@@ -140,7 +140,6 @@ const addDeduction = async (values: AddDeductionToEmployeesParams) => {
         values.deduction_type
     )
     .then((res) => {
-      console.log(res);
       return {
         employee: res.data,
         code: res.status,
@@ -148,7 +147,6 @@ const addDeduction = async (values: AddDeductionToEmployeesParams) => {
       };
     })
     .catch((err: AxiosError) => {
-      console.log(err);
       const { error } = err.response?.data as { error: string };
       return {
         error: error,
@@ -171,7 +169,6 @@ const addOvertime = async (values: AddOvertimeToEmpParams) => {
       }
     )
     .then((res) => {
-      console.log(res);
       return {
         employee: res.data,
         code: res.status,
@@ -179,7 +176,6 @@ const addOvertime = async (values: AddOvertimeToEmpParams) => {
       };
     })
     .catch((err: AxiosError) => {
-      console.log(err);
       const { error } = err.response?.data as { error: string };
       return {
         error: error,
@@ -259,7 +255,6 @@ const getProfilePicture = async (employee_id: string) => {
 };
 
 const updatEmployementAgreement = async (values: UpdateEmployementContract) => {
-  console.log("from api", values.file_url);
   const response = await axios
     .put<Contract>("/user/profile/" + values.employee_id, values.file_url, {
       headers: {

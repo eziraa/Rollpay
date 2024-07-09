@@ -108,7 +108,7 @@ function* GetOvertimes() {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO: Handle
   }
 }
 
@@ -154,7 +154,7 @@ function* GetOvertime(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO: Handle
   }
 }
 
@@ -207,7 +207,7 @@ function* DeleteOvertime(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO: Handle
   }
 }
 
@@ -297,7 +297,7 @@ function* loadNextPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO: Handle
   }
 }
 
@@ -321,7 +321,7 @@ function* loadPrevPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO: Handle
   }
 }
 
