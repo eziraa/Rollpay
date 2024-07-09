@@ -13,6 +13,45 @@
 
 body{
   overflow: hidden;
+
+  .success{
+    color: rgb(40, 206, 151);
+  }
+
+  .fail{
+    color: rgb(198, 52, 52);
+  }
+
+  .underlined{
+    text-decoration: underline;
+  }
+
+  .warning{
+    color: rgb(232, 160, 3);
+  }
+  .small-spaced{
+    letter-spacing: 0.08rem;
+  }
+  
+  .mid-spaced{
+    letter-spacing: 0.14rem;
+  }
+
+  .large-spaced{
+    letter-spacing: 0.2rem;
+  }
+
+  .italic{
+    font-style: italic;
+  }
+
+  .oblique{
+    font-style: oblique;
+  }
+
+  .bold{
+    font-weight: 700;
+  }
 }
 
 .left-menu-modal{
