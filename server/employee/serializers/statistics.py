@@ -1,3 +1,4 @@
+from decimal import Decimal
 from rest_framework import serializers
 from employee.models import *
 from django.db import models
@@ -22,16 +23,7 @@ class StatisticsSerializer(serializers.Serializer):
         model = Payment
         fields = ("total_employees", "total_positions","curr_month_tax",
                   "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary", "curr_month_allowance", "curr_month_deduction")
-    def get_curr_month_tax(self, obj: Payment):
-        now = datetime.datetime.now()
-        curr_month_paymnets = Payment.objects.filter(
-            month=Month(now.year, now.month))
-        sum_month_paymnets = 0
-        for curr_month_paymnet in curr_month_paymnets:
-            calculator = SalaryCalculator(curr_month_paymnet.salary)
-            calculator.calc_income_tax()
-            sum_month_paymnets += calculator.income_tax
-        return format(round(sum_month_paymnets,2),',')   
+   
     def get_curr_month_deduction(self, obj):
         now = datetime.datetime.now()
         curr_month_payments = Payment.objects.filter(
@@ -116,6 +108,19 @@ class StatisticsSerializer(serializers.Serializer):
                 allowances.append(
                     allowance["allowance"] * curr_month_payment.salary.basic_salary)
         return format(round(sum(allowances)/100,2),',')
+    def get_curr_month_tax(self, obj):
+        now = datetime.datetime.now()
+        curr_month_payments = Payment.objects.filter(
+            month__year=now.year, month__month=now.month
+        )
+        total_income_tax = 0
+
+        for curr_month_payment in curr_month_payments:
+            calculator = SalaryCalculator(curr_month_payment.salary)
+            calculator.calc_income_tax()
+            total_income_tax += calculator.income_tax
+
+        return total_income_tax
 
     def get_curr_month_deductions(self, obj):
 
@@ -129,7 +134,10 @@ class StatisticsSerializer(serializers.Serializer):
             if deduction['deduction'] is not None:
                 deductions.append(
                     deduction["deduction"] * curr_month_payment.salary.basic_salary)
-        return format(round(sum(deductions)/100,2),',')
+        income_tax = self.get_curr_month_tax(curr_month_payment) 
+        total_deduction = sum(deductions)/100
+        total_deduction = float(total_deduction) + float(income_tax)
+        return format(round(total_deduction,2),',')
 
     def get_curr_month_payment_amount(self, obj):
         now = datetime.datetime.now()
