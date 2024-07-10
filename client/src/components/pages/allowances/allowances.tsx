@@ -82,11 +82,9 @@ export const AllowancePage = () => {
                   <TableRow key={index}>
                     <TableData>{allowance.allowance_type}</TableData>
                     <TableData>{allowance.allowance_rate}</TableData>
-                    <TableData>
-                      {allowance.date_of_start?.split("T")[0]}
-                    </TableData>
-                    {allowance.date_of_end ? (
-                      <TableData>{allowance.date_of_end}</TableData>
+                    <TableData>{allowance.start_at?.split("T")[0]}</TableData>
+                    {allowance.end_at ? (
+                      <TableData>{allowance.end_at}</TableData>
                     ) : (
                       <TableData>Not ended</TableData>
                     )}
