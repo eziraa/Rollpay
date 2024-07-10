@@ -15,6 +15,7 @@ import {
   SearchInput,
   ExportButton,
   ExportIcon,
+  StartPaymentBtn,
   // ExportLabel,
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
@@ -242,6 +243,7 @@ export const EmployeesSalaryPage = () => {
           </ExportIcon>
           PDF
         </ExportButton>
+        <StartPaymentBtn>Rise Salary</StartPaymentBtn>
 
         <Label
           style={{

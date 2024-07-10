@@ -107,3 +107,11 @@ export const ExportIcon = styled(Icon)`
   border-radius: 0rem;
 `;
 
+export const StartPaymentBtn = styled.button`
+  padding: 0.7rem 1rem;
+  border-radius: 0.6rem;
+  font-size: 1.6rem;
+  background-color: ${({ theme }) => theme.buttons.primary};
+  border: none;
+  color: #fff;
+`;
