@@ -276,7 +276,7 @@ export const EmployeesSalaryPage = () => {
             {months.map(
               (month) =>
                 ((curr_year && curr_year < end_year) ||
-                  month <= new Date(Date.now()).getMonth()) && (
+                  month <= new Date(Date.now()).getMonth() + 1) && (
                   <SelectOption key={month} value={`${month}`}>
                     {getNamedMonth(new Date(`${year}-${month}-01`))}
                   </SelectOption>
