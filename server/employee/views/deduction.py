@@ -7,7 +7,7 @@ from employee.serializers.deduction import DeductionSerializer
 from django.http import JsonResponse
 import json
 from employee.views.utils.pagination import StandardResultsSetPagination
-
+import datetime
 
 class DeductionView (APIView):
 
@@ -60,12 +60,20 @@ class DeductionView (APIView):
     def put(self, request, deduction_id):
         try:
             deduction = Deduction.objects.get(pk=deduction_id)
-        except Deduction.DoesNotExist:
-            return Response({"error": "Deduction not found"}, status=status.HTTP_404_NOT_FOUND)
-        data = json.loads(request.body)
-        serializer = DeductionSerializer(deduction, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except deduction.DoesNotExist:
+            return Response({"error": "deduction not found"}, status=status.HTTP_404_NOT_FOUND)
+        deduction.end_at = (datetime.datetime.now().date())
+        deduction.save()
+        serializer = DeductionSerializer(deduction)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+    def patch(self, request, deduction_id):
+        try:
+            deduction = Deduction.objects.get(pk=deduction_id)
+        except deduction.DoesNotExist:
+            return Response({"error": "deduction not found"}, status=status.HTTP_404_NOT_FOUND)
+        deduction.end_at = None
+        deduction.save()
+        serializer = DeductionSerializer(deduction)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
