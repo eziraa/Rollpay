@@ -83,10 +83,10 @@ export const DeductionPage = () => {
                     <TableData>{deduction.deduction_type}</TableData>
                     <TableData>{deduction.deduction_rate}</TableData>
                     <TableData>
-                      {deduction.date_of_start?.split("T")[0]}
+                      {deduction.start_at?.split("T")[0]}
                     </TableData>
-                    {deduction.date_of_end ? (
-                      <TableData>{deduction.date_of_end}</TableData>
+                    {deduction.end_at ? (
+                      <TableData>{deduction.end_at}</TableData>
                     ) : (
                       <TableData>Not ended</TableData>
                     )}
