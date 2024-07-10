@@ -26,7 +26,10 @@ import {
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDeduction } from "../../../hooks/deduction-hook";
-import { deleteDeductionRequested, listDeductionsRequested } from "../../../store/deduction/deduction-slice";
+import {
+  deleteDeductionRequested,
+  listDeductionsRequested,
+} from "../../../store/deduction/deduction-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
 export const DeductionPage = () => {
@@ -98,7 +101,6 @@ export const DeductionPage = () => {
                         }}
                       >
                         <MdOutlineEdit />
-                        Edit
                       </EditButton>
                       <DeleteButton
                         onClick={(e) => {
@@ -113,7 +115,6 @@ export const DeductionPage = () => {
                         ) : (
                           <>
                             <RiDeleteBin6Line />
-                            Delete
                           </>
                         )}
                       </DeleteButton>
