@@ -17,11 +17,12 @@ class StatisticsSerializer(serializers.Serializer):
 
     class Meta:
         model = Payment
-        fields = ("total_employees", "total_positions","curr_month_tax",
+        fields = ("total_employees", "total_positions", "curr_month_tax",
                   "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary")
 
     def get_total_employees(self, obj):
         return Employee.objects.all().count()
+
     def get_total_positions(self, obj):
         return Position.objects.all().count()
 
