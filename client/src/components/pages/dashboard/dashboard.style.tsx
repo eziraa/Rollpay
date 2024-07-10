@@ -1,5 +1,6 @@
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
 import styled from "styled-components";
+import { Label } from "../edit-employee/edit-employee.style";
 
 export const DashboardContainer = styled.div`
   display: flex;
@@ -8,6 +9,10 @@ export const DashboardContainer = styled.div`
   width: 100%;
   padding: 3rem;
   align-items: flex-start;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const DashboardTitle = styled.h1`
@@ -15,7 +20,7 @@ export const DashboardTitle = styled.h1`
 `;
 
 export const DashboardBody = styled.div`
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
@@ -23,6 +28,15 @@ export const DashboardBody = styled.div`
   padding: 2rem 0;
 `;
 
+export const DashboardBodyRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0rem;
+  margin-bottom: 2rem;
+`;
 export const StatContainer = styled.div`
   display: grid;
   flex-wrap: wrap;
@@ -83,6 +97,11 @@ export const CardColumnTemplate = styled.div`
     flex-direction: column;
     gap: 0.5rem;
   }
+`;
+
+export const Text = styled(Label)`
+  padding: 0;
+  font-size: 2rem;
 `;
 
 export const IncreaseIcon = styled(IoIosArrowRoundUp)`

@@ -1,8 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const MonthCardContainer = styled.div`
-  width: 50%;
-  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -14,6 +13,7 @@ export const MonthCardContainer = styled.div`
   cursor: pointer;
   box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
+  margin-right: 2rem;
 `;
 
 export const MonthHeader = styled.div`

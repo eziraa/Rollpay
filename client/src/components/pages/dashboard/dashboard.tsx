@@ -2,26 +2,21 @@ import { useEffect } from "react";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentCard } from "../../utils/payment-card/payment-card";
-import {
-  LargeText,
-  NormalBlurredText,
-  // NormalBlurredText
-} from "../../utils/titles/titles";
+import { LargeText } from "../../utils/titles/titles";
 import {
   CardColumnTemplate,
   CardRowTemplate,
   DashboardBody,
+  DashboardBodyRow,
   DashboardContainer,
-  DecreaseIcon,
-  IncreaseIcon,
-  // DecreaseIcon,
-  // IncreaseIcon,
   StatCard,
   StatContainer,
+  Text,
 } from "./dashboard.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
-import { FaUsers } from "react-icons/fa6";
+import { FaDollarSign, FaUsers } from "react-icons/fa";
+import { IoBriefcase } from "react-icons/io5";
 
 export const DashBoard = () => {
   const { stat } = useStatistics();
@@ -33,30 +28,65 @@ export const DashBoard = () => {
   return (
     <DashboardContainer>
       <StatContainer className="state-card-container">
-        {stat &&
-          Object.entries(stat).map(([key, value], index) => {
-            return (
-              <StatCard>
-                <CardRowTemplate>
-                  <CardColumnTemplate>
-                    <LargeText>{value}</LargeText>
-                    <p>{key.toLocaleUpperCase()}</p>
-                  </CardColumnTemplate>
-                  {<FaUsers />}
-                </CardRowTemplate>
-                <CardRowTemplate>
-                  {index % 2 === 0 ? <IncreaseIcon /> : <DecreaseIcon />}
-                  <CardColumnTemplate>
-                    <NormalBlurredText>{87}%</NormalBlurredText>
-                  </CardColumnTemplate>
-                </CardRowTemplate>
-              </StatCard>
-            );
-          })}
+        <StatCard>
+          <CardRowTemplate>
+            <CardColumnTemplate>
+              <LargeText>Total Employees</LargeText>
+              <Text>{stat.total_employees}</Text>
+            </CardColumnTemplate>
+            {<FaUsers />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            <CardColumnTemplate></CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
+        <StatCard>
+          <CardRowTemplate>
+            <CardColumnTemplate>
+              <LargeText>Total Positions</LargeText>
+              <Text>{stat.total_positions}</Text>
+            </CardColumnTemplate>
+            {<IoBriefcase />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            <CardColumnTemplate></CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
+        <StatCard>
+          <CardRowTemplate>
+            <CardColumnTemplate>
+              <LargeText>Average Salary</LargeText>
+              <Text>{stat.avg_basic_salary} ETB</Text>
+            </CardColumnTemplate>
+            {<FaDollarSign />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            <CardColumnTemplate></CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
+        <StatCard>
+          <CardRowTemplate>
+            <CardColumnTemplate>
+              <LargeText>Income Tax</LargeText>
+              <Text>{stat.curr_month_tax} ETB</Text>
+            </CardColumnTemplate>
+            {<FaDollarSign />}
+          </CardRowTemplate>
+          <CardRowTemplate>
+            <CardColumnTemplate></CardColumnTemplate>
+          </CardRowTemplate>
+        </StatCard>
       </StatContainer>
       <DashboardBody>
-        <PaymentCard />
-        <MonthCard />
+        <DashboardBodyRow>
+          <MonthCard statType="allowance" />
+          <MonthCard statType="deduction" />
+          <MonthCard statType="allowance" />
+        </DashboardBodyRow>
+        <DashboardBodyRow>
+          <PaymentCard />
+          <PaymentCard />
+        </DashboardBodyRow>
       </DashboardBody>
     </DashboardContainer>
   );

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const BlurredText = styled.h1`
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
   letter-spacing: 0.1rem;
 `;
@@ -28,5 +28,3 @@ export const SmallBlurredText = styled.h1`
 export const LargeText = styled(BlurredText)`
   color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};
 `;
-  
-
