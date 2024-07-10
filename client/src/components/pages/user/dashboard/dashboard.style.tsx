@@ -21,7 +21,7 @@ export const DashboardContainer = styled.div`
   display: flex;
   ${column_template_al_start}
   justify-content: center;
-  height: fit-content;
+  height: 100%;
   padding: 1rem;
   padding-top: 2rem;
   ${custom_scroll_bar}
@@ -101,8 +101,6 @@ export const BarGraphContainer = styled.div`
   border-radius: 1rem;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.02, theme.colors.primary)};
-  height: 50vh;
-  width: fit-content;
   margin: 1rem;
   padding: 1rem;
 `;
@@ -160,11 +158,24 @@ export const HorizontalAxis = styled.div`
   width: 100%;
 `;
 
-export const DataVerticalAxis = styled.div`
+interface AxisProps extends ThemeProps {
+  colors: string[];
+}
+export const DataVerticalAxis = styled.div<AxisProps>`
   ${row_template_al_end};
   align-items: end;
   height: 100%;
   width: fit-content;
+  &:hover {
+    .data {
+      ${({ colors }) => {
+        return colors.map(
+          (color, index) => `&:nth-child(${index + 1}){
+      background-image: linear-gradient(to top, white, ${color});}`
+        );
+      }}
+    }
+  }
 `;
 
 export const DataHorizontalAxis = styled.div`
@@ -184,7 +195,11 @@ export const GraphData = styled.div<DataProps>`
   width: 2rem;
   height: ${({ height }) => height}rem;
   border-radius: 1rem 1rem 0 0;
-  background-image: linear-gradient(to top, white, ${({ color }) => color});
+
+  background-image: linear-gradient(to top, white, #9f9f9f);
+  &:hover {
+    background-image: linear-gradient(to top, white, ${({ color }) => color});
+  }
 `;
 
 export const GraphFooter = styled.div`
