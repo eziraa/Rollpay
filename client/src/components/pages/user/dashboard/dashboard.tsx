@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FaMoneyBill } from "react-icons/fa";
+import { FaDAndDBeyond, FaMoneyBill, FaUserSecret } from "react-icons/fa";
 import { MediumIcon } from "../../../utils/icons/icons.style";
 import {
   MidBlurredText,
@@ -12,6 +12,7 @@ import {
   BarGraphContainer,
   BarGraphContent,
   BarGraphHeader,
+  BarsContainer,
   BlurredText,
   CardBody,
   CardFooter,
@@ -23,19 +24,23 @@ import {
   DataVerticalAxis,
   GraphContainer,
   GraphData,
-  GraphFooter,
   GraphKey,
   GrpahKeyContainer,
   Icon,
+  ToastContainer,
+  ToastRow,
   VerticalAxis,
 } from "./dashboard.style";
-import { mock_data, monthMock } from "./mock_data";
 import { SmallDot } from "../../../utils/dots/dots";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import { useSalary } from "../../../../hooks/salary-hook";
 import { getCurrEmpPaymentInfo } from "../../../../store/salary/salary-slice";
 import { useUser } from "../../../../hooks/user-hook";
 import { useEffect } from "react";
+import { colors } from "./colors";
+import { getNamedMonth } from "../../salary/utils";
+import { Cross } from "./cross";
+import { FaAmazonPay, FaSackDollar } from "react-icons/fa6";
 
 export const UserDashboard = () => {
   const dispatcher = useAppDispatch();
@@ -43,35 +48,91 @@ export const UserDashboard = () => {
   const { user } = useUser();
 
   useEffect(() => {
-    dispatcher(getCurrEmpPaymentInfo(user?.employee.id || "ED1001"));
-  }, []);
+    user?.employee &&
+      dispatcher(getCurrEmpPaymentInfo(user?.employee.id || "ED1001"));
+  }, [user]);
 
   return (
     <DashboardContainer>
       <CardsContainer>
-        {mock_data.map((data, index) => {
-          return (
-            <DashBoardCard key={index}>
-              <CardBody>
-                <Icon> {data.icon} </Icon>
-                <DataBox>
-                  <DashboardTitle className="success">
-                    {data.salary}
-                  </DashboardTitle>
-                  <DashboardTitle className="italic">
-                    {data.title}
-                  </DashboardTitle>
-                </DataBox>
-              </CardBody>
-              <CardFooter>
-                <MidBlurredText className="mid-spaced">
-                  Your {data.title} is greater than prev month by
-                  <span className="fail"> {data.persentage}</span>
-                </MidBlurredText>
-              </CardFooter>
-            </DashBoardCard>
-          );
-        })}
+        <DashBoardCard>
+          <CardBody>
+            <Icon>
+              <FaUserSecret />
+            </Icon>
+            <DataBox>
+              <DashboardTitle className="success">
+                {employee?.salary}
+              </DashboardTitle>
+              <DashboardTitle className="italic">
+                Employee Salary
+              </DashboardTitle>
+            </DataBox>
+          </CardBody>
+          <CardFooter>
+            <MidBlurredText className="mid-spaced">
+              Your salary is greater than prev month by
+              <span className="fail">5%</span>
+            </MidBlurredText>
+          </CardFooter>
+        </DashBoardCard>
+        <DashBoardCard>
+          <CardBody>
+            <Icon>
+              <FaAmazonPay />
+            </Icon>
+            <DataBox>
+              <DashboardTitle className="success">
+                {employee?.payments.slice(-1)[0].net_salary}
+              </DashboardTitle>
+              <DashboardTitle className="italic">Net Salary</DashboardTitle>
+            </DataBox>
+          </CardBody>
+          <CardFooter>
+            <MidBlurredText className="mid-spaced">
+              Your net Salary is greater than prev month by
+              <span className="fail"> 14% </span>
+            </MidBlurredText>
+          </CardFooter>
+        </DashBoardCard>
+        <DashBoardCard>
+          <CardBody>
+            <Icon>
+              <FaSackDollar />
+            </Icon>
+            <DataBox>
+              <DashboardTitle className="success">
+                {employee?.payments.slice(-1)[0].gross_salary}
+              </DashboardTitle>
+              <DashboardTitle className="italic">Gross salary</DashboardTitle>
+            </DataBox>
+          </CardBody>
+          <CardFooter>
+            <MidBlurredText className="mid-spaced">
+              Your gross salary is greater than prev month by
+              <span className="fail">12%</span>
+            </MidBlurredText>
+          </CardFooter>
+        </DashBoardCard>
+        <DashBoardCard>
+          <CardBody>
+            <Icon>
+              <FaDAndDBeyond />
+            </Icon>
+            <DataBox>
+              <DashboardTitle className="success">
+                {employee?.payments.slice(-1)[0].income_tax}
+              </DashboardTitle>
+              <DashboardTitle className="italic"> Imcome Tax </DashboardTitle>
+            </DataBox>
+          </CardBody>
+          <CardFooter>
+            <MidBlurredText className="mid-spaced">
+              Your income tax is greater than prev month by
+              <span className="fail"> 4%</span>
+            </MidBlurredText>
+          </CardFooter>
+        </DashBoardCard>
       </CardsContainer>
       <BarGraphContainer>
         <BarGraphContent>
@@ -100,6 +161,7 @@ export const UserDashboard = () => {
             </GraphKey>
           </GrpahKeyContainer>
           <GraphContainer>
+            <Cross />
             <DataHorizontalAxis>
               <VerticalAxis>
                 <AxisKey>5k</AxisKey>
@@ -112,36 +174,54 @@ export const UserDashboard = () => {
               {employee?.payments.slice(-12).map((payment) => {
                 return (
                   <DataVerticalAxis>
-                    {payment?.allowances
-                      .slice(0)
-                      .sort((a, b) => b.allowance_rate - a.allowance_rate)
-                      .map((allowance, index) => {
-                        return (
-                          <GraphData
-                            color={
-                              allowance.allowance_type === "Meal"
-                                ? "#E253FF"
-                                : allowance.allowance_type === "Education"
-                                ? "#D39D08"
-                                : index === 2
-                                ? "#1e00fe"
-                                : index === 3
-                                ? "#04b701"
-                                : "#5a6cf9"
-                            }
-                            height={allowance.allowance_rate * 2.3}
-                          />
-                        );
-                      })}
+                    <BarsContainer colors={colors}>
+                      {payment?.allowances
+                        .slice(0)
+                        .sort((a, b) => b.allowance_rate - a.allowance_rate)
+                        .map((allowance, index) => {
+                          return (
+                            <GraphData
+                              className="data"
+                              color={colors[index]}
+                              height={
+                                (allowance.allowance_rate * employee.salary) /
+                                30000
+                              }
+                            />
+                          );
+                        })}
+                      <ToastContainer className="toast">
+                        {payment.allowances
+                          .slice(0)
+                          .sort((a, b) => b.allowance_rate - a.allowance_rate)
+                          .map((allowance, index) => (
+                            <ToastRow>
+                              <SmallDot color={colors[index]} />
+                              <span className="italic">
+                                {allowance.allowance_type}{" "}
+                                {(allowance.allowance_rate * employee.salary) /
+                                  100}
+                              </span>
+                            </ToastRow>
+                          ))}
+                      </ToastContainer>
+                    </BarsContainer>
                   </DataVerticalAxis>
                 );
               })}
             </DataHorizontalAxis>
-            <GraphFooter>
-              {monthMock.map((month) => (
-                <BlurredText> {month} </BlurredText>
-              ))}
-            </GraphFooter>
+            <DataHorizontalAxis>
+              <div></div>
+              {employee?.payments.slice(-12).map((payment) => {
+                return (
+                  <div>
+                    <BlurredText>
+                      {getNamedMonth(new Date(payment.month))}
+                    </BlurredText>
+                  </div>
+                );
+              })}
+            </DataHorizontalAxis>
           </GraphContainer>
         </BarGraphContent>
       </BarGraphContainer>

@@ -179,6 +179,7 @@ export const BarsContainer = styled.div<AxisProps>`
   width: fit-content;
   position: relative;
   cursor: pointer;
+  padding-bottom: 1.5rem;
   &:hover {
     .toast {
       display: flex;
