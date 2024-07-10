@@ -108,6 +108,26 @@ const editAllowance = async (
   return response;
 };
 
+const closeAllowance = async (allowance_id: string) => {
+  const response = await api
+    .put("/allowance/close/" + allowance_id)
+    .then((res) => {
+      return {
+        success: "Allowance close successfully",
+        code: res.status,
+        allowance: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const deleteAllowance = async (empployee_id: string) => {
   const response = await api
     .delete("/allowance/delete/" + empployee_id)
@@ -134,6 +154,8 @@ const AllowanceAPI = {
   deleteAllowance,
   addAllowance,
   getAllowance,
+
+  closeAllowance,
 };
 
 export default AllowanceAPI;
