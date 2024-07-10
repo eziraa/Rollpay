@@ -4,6 +4,7 @@ import {
   column_template_al_center,
   column_template_al_end,
   column_template_al_start,
+  column_template_js_center,
   column_template_js_start,
   row_template_al_center,
   row_template_al_end,
@@ -166,7 +167,11 @@ export const DataVerticalAxis = styled.div<AxisProps>`
   align-items: end;
   height: 100%;
   width: fit-content;
+  position: relative;
   &:hover {
+    .toast {
+      display: flex;
+    }
     .data {
       ${({ colors }) => {
         return colors.map(
@@ -219,7 +224,28 @@ export const BlurredText = styled(NormalBlurredText)`
   text-align: end;
 `;
 
+export const ToastContainer = styled.div`
+  ${place_center}
+  padding: 1rem;
+  ${column_template_js_center};
+  align-items: flex-start;
+  border-radius: 1rem;
+  background-color: #1b0f1e;
+  color: #e4e4e4 !important;
+  position: absolute;
+  left: 105%;
+  bottom: 50%;
+  display: none;
+  width: 10rem;
+  gap: 0.5rem;
+  z-index: 10;
+`;
 
+export const ToastRow = styled.div`
+  ${row_template_js_start}
+  align-items: center;
+  gap: 1rem;
+`;
 
 
 
