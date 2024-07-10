@@ -10,10 +10,7 @@ class StatisticsView(APIView):
     """
 
     def get(self, request, *args, **kwargs):
-       try:
         payment = Payment.objects.all().first()
         serializer = StatisticsSerializer(payment)
   
-        return Response(data=serializer.data,status=200)
-       except Exception as e:
-                return Response({"error": str(e)}, status=400)
+        return Response(data=serializer.data, status=200)
