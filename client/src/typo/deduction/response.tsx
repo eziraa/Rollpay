@@ -2,8 +2,8 @@ import { BaseResponse, Pagination } from "../utils/response";
 import { EditDeductionParams } from "./params";
 
 export interface Deduction extends EditDeductionParams {
-  date_of_start: string | undefined;
-  date_of_end: string | undefined;
+  start_at: string | undefined;
+  end_at: string | undefined;
 }
 
 export interface AddDeductionResponse extends BaseResponse {
