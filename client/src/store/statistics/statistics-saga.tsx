@@ -22,7 +22,7 @@ function* getStatistics() {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO: Handle
   }
 }
 

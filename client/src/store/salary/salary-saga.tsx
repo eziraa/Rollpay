@@ -54,7 +54,7 @@ function* GetEmployeeSalary() {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -101,7 +101,7 @@ function* searchEmployee(action: PayloadAction<SearchParams>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -126,7 +126,7 @@ function* getEmpSalaryInfo(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -150,7 +150,7 @@ function* loadNextPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -174,7 +174,7 @@ function* loadPrevPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 export function* watchGetEmployeeSalary() {

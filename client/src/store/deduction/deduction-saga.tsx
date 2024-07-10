@@ -107,7 +107,7 @@ function* GetDeductions() {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -153,7 +153,7 @@ function* GetDeduction(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -206,7 +206,7 @@ function* DeleteDeduction(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -296,7 +296,7 @@ function* loadNextPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -320,7 +320,7 @@ function* loadPrevPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 

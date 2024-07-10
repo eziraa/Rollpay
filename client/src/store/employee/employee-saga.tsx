@@ -258,7 +258,7 @@ function* GetEmployees() {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -304,7 +304,7 @@ function* GetEmployee(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -361,7 +361,7 @@ function* DeleteEmployee(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -385,7 +385,7 @@ function* loadNextPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -409,7 +409,7 @@ function* loadPrevPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 

@@ -4,6 +4,7 @@ export type UserResponse = {
   username: string;
   employeeId: string;
   employee: Employee;
+  role: string;
 };
 
 export type ErrorUserResponse = {

@@ -34,7 +34,7 @@ class StatisticsSerializer(serializers.Serializer):
             calculator = SalaryCalculator(curr_month_paymnet.salary)
             calculator.calc_income_tax()
             sum_month_paymnets += calculator.income_tax
-        return sum_month_paymnets
+        return str(round(sum_month_paymnets * 1.0, 2)) + " ETB"
 
     def get_curr_month_allowances(self, obj):
 
@@ -48,7 +48,7 @@ class StatisticsSerializer(serializers.Serializer):
             if allowance['allowance'] is not None:
                 allowances.append(
                     allowance["allowance"] * curr_month_payment.salary.basic_salary)
-        return sum(allowances) / 100
+        return str(round(sum(allowances) / 100, 2)) + " ETB"
 
     def get_curr_month_deductions(self, obj):
 
@@ -62,7 +62,9 @@ class StatisticsSerializer(serializers.Serializer):
             if deduction['deduction'] is not None:
                 deductions.append(
                     deduction["deduction"] * curr_month_payment.salary.basic_salary)
-        return sum(deductions) / 100
+        total_deductions = sum(deductions) / 100
+        rounded_deductions = round(total_deductions, 2)
+        return str(rounded_deductions) + " ETB"
 
     def get_curr_month_payment_amount(self, obj):
         now = datetime.datetime.now()
@@ -73,13 +75,4 @@ class StatisticsSerializer(serializers.Serializer):
             calculator = SalaryCalculator(curr_month_payment.salary)
             calculator.calc_net_salary()
             acc += calculator.net_salary
-        return acc
-    def get_avg_basic_salary(self, obj):
-        basic_salaries = Salary.objects.values('basic_salary')
-        sum_basic_salary = 0
-        print(basic_salaries)
-        for salary in basic_salaries:
-            sum_basic_salary += salary['basic_salary']
-        average = sum_basic_salary / len(basic_salaries)
-
-        return round(average,2)
+        return str(round(acc, 2)) + " ETB"

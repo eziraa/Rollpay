@@ -7,8 +7,6 @@ import {
 } from "../see-employee/see-employee.style";
 import {
   Item,
-  UserHome,
-  UserHomeBody,
   UserProfileBody,
   UserProfileContent,
   UserProfileHeader,
@@ -23,8 +21,6 @@ import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { useSalary } from "../../../hooks/salary-hook";
-import { Header } from "../../sections/header/header";
-import UserMenu from "../../sections/user-menu/user-menu";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -36,36 +32,30 @@ const UserProfile = () => {
     employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
   }, [employee_id]);
   return (
-    <UserHome>
-      <UserMenu />
-      <UserHomeBody>
-        <Header />
-        <UserProfileBody>
-          <UserProfileHeader>
-            <TitleContainer>
-              <BackButton
-                onClick={() => {
-                  navigate(-1);
-                }}
-              >
-                <IoChevronBackCircleOutline />
-              </BackButton>
-              <Item>
-                <IconContainer>
-                  <FaRegUserCircle />
-                </IconContainer>
-                <Title>My Profile</Title>
-              </Item>
-            </TitleContainer>
-            <NavigationBar />
-          </UserProfileHeader>
-          <UserProfileContent>
-            {employee && <EmployeeProfile employee={employee} />}
-            <Outlet />
-          </UserProfileContent>
-        </UserProfileBody>
-      </UserHomeBody>
-    </UserHome>
+    <UserProfileBody>
+      <UserProfileHeader>
+        <TitleContainer>
+          <BackButton
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <IoChevronBackCircleOutline />
+          </BackButton>
+          <Item>
+            <IconContainer>
+              <FaRegUserCircle />
+            </IconContainer>
+            <Title>My Profile</Title>
+          </Item>
+        </TitleContainer>
+        <NavigationBar />
+      </UserProfileHeader>
+      <UserProfileContent>
+        {employee && <EmployeeProfile employee={employee} />}
+        <Outlet />
+      </UserProfileContent>
+    </UserProfileBody>
   );
 };
 
