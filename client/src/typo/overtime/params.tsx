@@ -8,6 +8,7 @@ export interface AddOvertimeToEmpParams {
   employee_id: string;
   start_time: string;
   end_time: string;
+  query_params: string;
 }
 export interface EditOvertimeParams extends AddOvertimeParams {
   id: string;
