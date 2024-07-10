@@ -13,10 +13,12 @@ import {
 import DeductionAPI from "../../services/deduction-api";
 import {
   addDeductionDone,
+  closeDeductionDone,
   deleteDeductionDone,
   editDeductionDone,
   getDeductionDone,
   listDeductionDone,
+  taskUnfinished,
   unfinishedAdd,
 } from "./deduction-slice";
 function* addDeduction(action: PayloadAction<AddDeductionParams>) {
@@ -147,6 +149,61 @@ function* GetDeduction(action: PayloadAction<string>) {
           type: "error",
           status: true,
           title: "Get deduction",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    // TODO:
+  }
+}
+function* CLoseDeduction(action: PayloadAction<string>) {
+  try {
+    const response: AddDeductionResponse = yield call(
+      DeductionAPI.closeDeduction,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(closeDeductionDone(response.deduction));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Closing Deduction",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(taskUnfinished(response.error || "Can't close deduction"));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(taskUnfinished(response.error || "Can't close deduction"));
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to close deductions",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Closing Deduction",
           desc: response.error,
           duration: 3,
         })
@@ -332,5 +389,6 @@ export function* watchDeductionRequest() {
   yield takeEvery("deduction/listDeductionsRequested", GetDeductions);
   yield takeEvery("deduction/deleteDeductionRequested", DeleteDeduction);
   yield takeEvery("deduction/getDeductionRequested", GetDeduction);
+  yield takeEvery("deduction/CLoseDeduction", GetDeduction);
 
 }
