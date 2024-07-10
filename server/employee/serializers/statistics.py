@@ -7,19 +7,24 @@ from employee.utils.salary_calculator import SalaryCalculator
 
 class StatisticsSerializer(serializers.Serializer):
     total_employees = serializers.SerializerMethodField(read_only=True)
+    total_positions = serializers.SerializerMethodField(read_only=True)
     curr_month_tax = serializers.SerializerMethodField(read_only=True)
     curr_month_allowances = serializers.SerializerMethodField(read_only=True)
     curr_month_deductions = serializers.SerializerMethodField(read_only=True)
     curr_month_payment_amount = serializers.SerializerMethodField(
         read_only=True)
+    avg_basic_salary = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Payment
-        fields = ("total_employees", "curr_month_tax",
-                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount")
+        fields = ("total_employees", "total_positions", "curr_month_tax",
+                  "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary")
 
     def get_total_employees(self, obj):
         return Employee.objects.all().count()
+
+    def get_total_positions(self, obj):
+        return Position.objects.all().count()
 
     def get_curr_month_tax(self, obj: Payment):
         now = datetime.datetime.now()
@@ -71,4 +76,14 @@ class StatisticsSerializer(serializers.Serializer):
             calculator = SalaryCalculator(curr_month_payment.salary)
             calculator.calc_net_salary()
             acc += calculator.net_salary
-        return str(round(acc, 2)) + " ETB"
+        return acc
+
+    def get_avg_basic_salary(self, obj):
+        basic_salaries = Salary.objects.values('basic_salary')
+        sum_basic_salary = 0
+        print(basic_salaries)
+        for salary in basic_salaries:
+            sum_basic_salary += salary['basic_salary']
+        average = sum_basic_salary / len(basic_salaries)
+
+        return round(average, 2)

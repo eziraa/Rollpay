@@ -1,11 +1,12 @@
 import { BaseResponse } from "../utils/response";
 
 export interface StatisticsResponse {
-  total_employees: string;
-  curr_month_tax: string;
-  curr_month_allowances: string;
-  curr_month_deductions: string;
-  curr_month_payment_amount: string;
+  total_employees: number;
+  total_positions: number;
+  curr_month_tax: number;
+  curr_month_allowances: number;
+  curr_month_deductions: number;
+  curr_month_payment_amount: number;
 }
 
 export interface StatResponse extends BaseResponse {

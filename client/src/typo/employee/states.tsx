@@ -9,4 +9,5 @@ export interface EmployeeState {
   query_set: Employee[];
   searching: boolean;
   task_finished: boolean;
+  total: number;
 }

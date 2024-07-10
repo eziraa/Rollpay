@@ -10,7 +10,10 @@ import {
   UpdateProfileParams,
 } from "../../typo/employee/params";
 import { EditEmployeeParams } from "../../services/employee-api";
-import { Employee, PaginatedEmpResponse } from "../../typo/employee/response";
+import {
+  Employee,
+  PaginatedEmpResponse,
+} from "../../typo/employee/response";
 import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
 
 const InitialEmpState: EmployeeState = {
@@ -21,6 +24,7 @@ const InitialEmpState: EmployeeState = {
   pagination: undefined,
   task_error: undefined,
   task_finished: true,
+  total: 0,
 };
 const EmployeeSlice = createSlice({
   name: "employee",
@@ -144,6 +148,10 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.task_error = undefined;
     },
+    getEmpNumRequested: () => {},
+    getEmpNumDone: (state, action: PayloadAction<number>) => {
+      state.total = action.payload;
+    },
     resetEmployeeState: (state, action: PayloadAction<EmployeeState>) => {
       state = {
         ...action.payload,
@@ -196,6 +204,8 @@ export const {
   filterEmployeeDone,
   updateContractRequest,
   updateContractDone,
+  getEmpNumDone,
+  getEmpNumRequested,
   errorOccurred,
   getCurrentEmployeeRequest,
   getCurrentEmployeeDone,
