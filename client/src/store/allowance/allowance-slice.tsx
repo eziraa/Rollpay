@@ -88,6 +88,9 @@ const EmployeeSlice = createSlice({
         allowance.id === action.payload.id ? action.payload : allowance
       );
     },
+    taskUnfinished: (state, action: PayloadAction<string>) => {
+      state.task_error = action.payload;
+    },
     deleteAllowanceRequested: (__, _: PayloadAction<string>) => {},
     addSearched: (state, action: PayloadAction<Allowance[]>) => {
       state.query_set = action.payload;
@@ -176,6 +179,7 @@ export const {
   closeAllowanceDone,
   openAllowanceDone,
   openAllowanceRequested,
+  taskUnfinished,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
