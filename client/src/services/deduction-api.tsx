@@ -108,6 +108,26 @@ const editDeduction = async (
   return response;
 };
 
+const openDeduction = async (deduction_id: string) => {
+  const response = await api
+    .patch("/deduction/open/" + deduction_id)
+    .then((res) => {
+      return {
+        success: "Deduction opened successfully",
+        code: res.status,
+        deduction: res.data,
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const deleteDeduction = async (empployee_id: string) => {
   const response = await api
     .delete("/deduction/delete/" + empployee_id)
@@ -134,6 +154,7 @@ const DeductionAPI = {
   deleteDeduction,
   addDeduction,
   getDeduction,
+  openDeduction
 };
 
 export default DeductionAPI;
