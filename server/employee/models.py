@@ -81,7 +81,7 @@ class Deduction(models.Model):
     deduction_type = models.CharField(max_length=255, null=False)
     deduction_rate = models.DecimalField(
         max_digits=7, decimal_places=2, null=False)
-    start_at = models.DateField(auto_now=True)
+    start_at = models.DateField(auto_now_add=True)
     end_at = models.DateField(blank=True, null=True)
     def __str__(self):
         return self.deduction_type
