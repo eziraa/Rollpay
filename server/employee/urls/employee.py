@@ -2,7 +2,7 @@ from django.urls import path
 
 from employee.views import salary_view, filter_employee
 from employee.views.user_views import ProfilePicture
-from employee.views import salary_view
+from employee.views import salary_view, payment
 from employee.views.assets import EmployeeAssetView
 from employee.views import employee
 
@@ -20,6 +20,18 @@ urlpatterns = [
          name='__edit_emoployee__'),
     path('delete/<employee_id>', employee.EmployeeView.as_view(),
          name='__delete_emoployee__'),
+    path("payment",
+         payment.PaymentView.as_view(), name='__start_payment__'),
+    path("payment/<year>",
+         payment.PaymentView.as_view(), name='__start_payment_by_year__'),
+    path("payment/<year>/<month>",
+         payment.PaymentView.as_view(), name='__start_payment_by_month_year__'),
+    path("payment/<employee_id>",
+         payment.PaymentView.as_view(), name='__start_payment_to_employee__'),
+    path("payment/<employee_id>/<year>",
+         payment.PaymentView.as_view(), name='__start_payment_to_employee_by_year__'),
+    path("payment/<employee_id>/<year>/<month>",
+         payment.PaymentView.as_view(), name='__start_payment_to_employee_by_year_month__'),
     path("salary/get/<employee_id>",
          salary_view.SalaryView.as_view(), name='__get_emp_salary__'),
     path("allowance/add/<employee_id>/<allowance_type>",
