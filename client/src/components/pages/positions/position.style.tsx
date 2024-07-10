@@ -85,8 +85,7 @@ export const EditButton = styled(ActionButton)`
   }
 `;
 export const SuspendButton = styled(ActionButton)`
-  color: #ad6e01;
-  border: 0.1rem solid #ad6e01;
+  border: none;
   &:hover {
     background-color: #69a199;
     color: #ffffff;
