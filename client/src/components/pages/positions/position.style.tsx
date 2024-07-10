@@ -52,10 +52,9 @@ export const AddButton = styled(Button)`
 export const ActionBtnsContainer = styled.td`
   display: flex;
   gap: 1rem;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-  justify-content: flex-end;
+  align-items: flex-start;
+  margin: 0.5rem 0rem;
+  justify-content: flex-start;
   width: 80%;
 `;
 export const ActionButton = styled.button`
@@ -70,7 +69,7 @@ export const ActionButton = styled.button`
   font-size: 1.6rem;
   padding: 0.5rem 1rem;
   gap: 0.3rem;
-  flex: 1;
+  /* flex: 1; */
   &:hover {
     background-color: #2f8236;
     color: #ffffff;
@@ -78,10 +77,10 @@ export const ActionButton = styled.button`
 `;
 
 export const EditButton = styled(ActionButton)`
-  border: 0.1rem solid #369143;
-  flex: 0.6;
+  border: none;
+  /* flex: 0.6; */
   &:hover {
-    background-color: #369143;
+    background-color: #69a199;
     color: #ffffff;
   }
 `;
@@ -89,16 +88,16 @@ export const SuspendButton = styled(ActionButton)`
   color: #ad6e01;
   border: 0.1rem solid #ad6e01;
   &:hover {
-    background-color: #ad6e01;
+    background-color: #69a199;
     color: #ffffff;
   }
 `;
 
 export const DeleteButton = styled(ActionButton)`
   color: #dc3545;
-  border: 0.1rem solid #dc3545;
+  border: none;
   &:hover {
-    background-color: #dc3545;
+    background-color: #69a199;
     color: #ffffff;
   }
 `;
