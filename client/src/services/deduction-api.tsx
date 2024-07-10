@@ -133,7 +133,7 @@ const closeDeduction = async (deduction_id: string) => {
     .put("/deduction/close/" + deduction_id)
     .then((res) => {
       return {
-        success: "Position close successfully",
+        success: "Deduction closed successfully",
         code: res.status,
         deduction: res.data,
       };
