@@ -5,6 +5,7 @@ import {
   column_template_al_end,
   column_template_al_start,
   column_template_js_center,
+  column_template_js_end,
   column_template_js_start,
   row_template_al_center,
   row_template_al_end,
@@ -137,7 +138,9 @@ export const GraphKey = styled.div`
 export const GraphContainer = styled.div`
   ${place_center};
   padding: 2rem;
+  gap: 2.5rem;
   color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+  position: relative;
 `;
 
 export const VerticalAxis = styled.div`
@@ -162,12 +165,20 @@ export const HorizontalAxis = styled.div`
 interface AxisProps extends ThemeProps {
   colors: string[];
 }
-export const DataVerticalAxis = styled.div<AxisProps>`
+
+export const DataVerticalAxis = styled.div`
+  ${column_template_js_end};
+  align-items: end;
+  height: 100%;
+  width: fit-content;
+`;
+export const BarsContainer = styled.div<AxisProps>`
   ${row_template_al_end};
   align-items: end;
   height: 100%;
   width: fit-content;
   position: relative;
+  cursor: pointer;
   &:hover {
     .toast {
       display: flex;
@@ -188,6 +199,9 @@ export const DataHorizontalAxis = styled.div`
   grid-template-columns: repeat(13, 1fr);
   width: 100%;
   gap: 2rem;
+  &:first-child {
+    border-bottom: 0.1rem solid #8b8b8b;
+  }
 `;
 
 interface DataProps extends ThemeProps {
@@ -247,6 +261,21 @@ export const ToastRow = styled.div`
   gap: 1rem;
 `;
 
+export const LimitContainer = styled.div`
+  ${place_center}
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 3.5rem;
+  right: 0;
+  height: 100%;
+  width: 92%;
+`;
 
+export const BrokenLine = styled.div`
+  width: 100%;
+  height: 3.2rem;
+  border-bottom: 1px #434343 dashed;
+`;
 
 
