@@ -166,6 +166,7 @@ const addOvertime = async (values: AddOvertimeToEmpParams) => {
         "/" +
         values.overtime_type,
       {
+        overtime: values.overtime_type,
         start_time: values.start_time,
         end_time: values.end_time,
       }
