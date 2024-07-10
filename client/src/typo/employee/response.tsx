@@ -36,3 +36,13 @@ export interface PaginatedEmpResponse extends PaginatedResponse {
 export interface PaginatedEmpBackEndResponse extends PaginatedBackEndResponse {
   results: Employee[];
 }
+
+export interface TotalEmployee {
+  total: number;
+}
+export interface EmpRes {
+  success: string;
+  error: string;
+  code: number;
+  total: number;
+}

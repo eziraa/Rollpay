@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentCard } from "../../utils/payment-card/payment-card";
-import { LargeText, NormalBlurredText } from "../../utils/titles/titles";
+import {
+  LargeText,
+  NormalBlurredText,
+  // NormalBlurredText
+} from "../../utils/titles/titles";
 import {
   CardColumnTemplate,
   CardRowTemplate,
@@ -10,6 +14,8 @@ import {
   DashboardContainer,
   DecreaseIcon,
   IncreaseIcon,
+  // DecreaseIcon,
+  // IncreaseIcon,
   StatCard,
   StatContainer,
 } from "./dashboard.style";
@@ -20,6 +26,7 @@ import { FaUsers } from "react-icons/fa6";
 export const DashBoard = () => {
   const { stat } = useStatistics();
   const dispatcher = useAppDispatch();
+
   useEffect(() => {
     dispatcher(getStatRequest());
   }, []);

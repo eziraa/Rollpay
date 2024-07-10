@@ -9,6 +9,7 @@ import {
   editEmployeeDone,
   errorOccurred,
   finishAddAllowanceDone,
+  getEmpNumDone,
   getCurrentEmployeeDone,
   listEmpDone,
   updateContractDone,
@@ -23,6 +24,7 @@ import {
 import {
   EmployeeResponse,
   Employee,
+  EmpRes,
   PaginatedEmpResponse,
 } from "../../typo/employee/response";
 import { CurrentEmpPaymentsResponse } from "../../typo/salary/response";
@@ -528,6 +530,49 @@ function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
   }
 }
 
+function* GetEmpNum() {
+  try {
+    const response: EmpRes = yield call(EmployeeAPI.getTotalEmployee);
+    if (response.code === 200) {
+      yield put(getEmpNumDone(response.total));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to view dashboard",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Get total employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchEmployeeRequests() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/addEmpRequested", AddEmployee);
@@ -540,5 +585,9 @@ export function* watchEmployeeRequests() {
   yield takeEvery("employee/loadNextEmployeeListPage", loadNextPage);
   yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
   yield takeEvery("employee/filterEmployeeRequest", filterEmployees);
+  yield takeEvery("employee/getEmpNumRequested", GetEmpNum);
+}
+export function* watchEditEmployee() {
+  yield takeEvery("employee/editEmployeeRequested", editEmployee);
   yield takeEvery("employee/updateContractRequest", updateContract);
 }

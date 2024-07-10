@@ -24,9 +24,11 @@ const StatisticsSlice = createSlice({
 
     getStatDone: (state, action: PayloadAction<StatisticsResponse>) => {
       state.stat = action.payload;
+      state.task_finished = true;
     },
     raiseError: (state, action: PayloadAction<string>): void => {
       state.task_error = action.payload;
+      state.task_finished = true;
     },
   },
 });
