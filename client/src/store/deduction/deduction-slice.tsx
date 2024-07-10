@@ -92,7 +92,9 @@ const EmployeeSlice = createSlice({
         deduction.id === action.payload.id ? action.payload : deduction
       );
     },
-
+    taskUnfinished: (state, action: PayloadAction<string>) => {
+      state.task_error = action.payload;
+    },
     listDeductionDone: (
       state,
       payload: PayloadAction<PaginatedDeductionResponse>
@@ -179,7 +181,8 @@ export const {
   closeDeductionDone,
   closeDeductionRequested,
   openDeductionDone,
-  openDeductionRequested
+  openDeductionRequested,
+  taskUnfinished,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
