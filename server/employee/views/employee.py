@@ -57,11 +57,11 @@ class EmployeeView (APIView):
             if not Position.objects.filter(position_name=data['position']).exists():
                 return JsonResponse({'error': 'Position does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             position = Position.objects.get(position_name=data['position'])
-            salary = Salary.objects.create(
-                basic_salary=position.basic_salary)
-            data['salary'] = salary
             employee = Employee.objects.create(**data)
             employee.save()
+            salary = Salary.objects.create(
+                basic_salary=position.basic_salary, employee=employee)
+            data['salary'] = salary.basic_salary
             serializer = EmployeeSerializer(employee, data=data)
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -70,47 +70,43 @@ class EmployeeView (APIView):
         except KeyError:
             return JsonResponse({'error': 'Required field(s) missing in request data'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, employee_id, allowance_type=None, overtime_type=None, deduction_type=None, position_name=None):
+    def patch(self, request: Request, employee_id, allowance_type=None, overtime_type=None, deduction_type=None, position_name=None):
         try:
-            employe = Employee.objects.get(pk=employee_id)
+            employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        if allowance_type:
-            if employe.salary.allowances.filter(allowance_type=allowance_type).exists():
-                return JsonResponse({'error': 'This allowance already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                employe.salary.allowances.add(
-                    Allowance.objects.get(allowance_type=allowance_type))
-                employe.save()
-                if not Payment.objects.filter(employee_id=employee_id, salary_id=employe.salary.id).exists():
-                    payment = Payment.objects.create(employee=employe, month=Month(datetime.datetime.now(
-                    ).year, datetime.datetime.now().month), salary=employe.salary)
-                    payment.save()
-        elif deduction_type:
-            if employe.salary.deductions.filter(deduction_type=deduction_type).exists():
-                return JsonResponse({'error': 'This deduction already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                employe.salary.deductions.add(
-                    Deduction.objects.get(deduction_type=deduction_type))
-                employe.save()
-                if not Payment.objects.filter(employee_id=employee_id, salary_id=employe.salary.id).exists():
-                    payment = Payment.objects.create(employee=employe, month=Month(datetime.datetime.now(
-                    ).year, datetime.datetime.now().month), salary=employe.salary)
-                    payment.save()
-        elif overtime_type:
-            overtime = Overtime.objects.get(overtime_type=overtime_type)
-            if employe.salary.overtimes.filter(overtime=overtime).exists():
-                return JsonResponse({'error': 'This overtime already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                employe.salary.overtimes.add(OvertimeItem.objects.create(
-                    overtime=overtime, start_time=request.data["start_time"], end_time=request.data["end_time"]))
 
-                employe.save()
-                if not Payment.objects.filter(employee_id=employee_id, salary_id=employe.salary.id).exists():
-                    payment = Payment.objects.create(employee=employe, month=Month(datetime.datetime.now(
-                    ).year, datetime.datetime.now().month), salary=employe.salary)
-                    payment.save()
-        payments = Payment.objects.filter(employee_id=employee_id)
+        def add_to_employee(year, month):
+            if allowance_type:
+                if not SalaryManager.add_allowance(allowance_type, month=Month(int(year), int(month)), employee=employee):
+                    return JsonResponse({'error': 'This allowance already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+            elif deduction_type:
+                if not SalaryManager.add_deduction(deduction_type, month=Month(int(year), int(month)), employee=employee):
+                    return JsonResponse({'error': 'This deduction already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+
+            elif overtime_type:
+                if not SalaryManager.add_overtime(overtime_type=overtime_type, employee=employee, month=Month(int(year), int(month)), start_time=request.data['start_time'], end_time=request.data['end_time']):
+                    return JsonResponse({'error': 'This overtime already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+
+        now = datetime.datetime.now()
+        year = request.query_params['year']
+        curr_month = request.query_params['month']
+        if year != "undefined":
+            year = int(year)
+            if curr_month != "undefined":
+                curr_month = int(curr_month)
+                add_to_employee(year, curr_month)
+            else:
+                for month in range(1, 13):
+                    add_to_employee(year, month)
+        elif curr_month != "undefined":
+            curr_month = int(curr_month)
+            add_to_employee(now.year, curr_month)
+        else:
+            add_to_employee(now.year, now.month)
+
+        payments = Payment.objects.filter(
+            employee_id=employee_id, month=Month(now.year, now.month))
         if payments.exists():
             serializer = MonthlyPaymentSerializer(payments, many=True)
             data = {
@@ -158,3 +154,59 @@ class PositionView(APIView):
         position_serializer = PositionSerializer(
             Position.objects.all(), many=True)
         return JsonResponse(data=position_serializer.data, safe=False)
+
+
+class SalaryManager:
+
+    @staticmethod
+    def add_allowance(allowance_type: str, month: Month, employee: Employee):
+        emp_payment = Payment.objects.filter(
+            month=month, employee=employee)
+        if emp_payment.exists():
+            if emp_payment.first().allowances.filter(allowance_type=allowance_type).exists():
+                return JsonResponse({'error': 'This allowance already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                emp_payment.first().allowances.add(
+                    Allowance.objects.get(allowance_type=allowance_type))
+                emp_payment.first().save()
+        else:
+            payment = Payment.objects.create(
+                employee=employee, month=month, salary=employee.salaries.all().last().basic_salary)
+            payment.allowances.add(
+                Allowance.objects.get(allowance_type=allowance_type))
+            payment.save()
+
+    @staticmethod
+    def add_deduction(deduction_type: str, month: Month, employee: Employee):
+        emp_payment = Payment.objects.filter(
+            month=month, employee=employee)
+        if emp_payment.exists():
+            if emp_payment.first().deductions.filter(deduction_type=deduction_type).exists():
+                return False
+            else:
+                emp_payment.first().deductions.add(
+                    Deduction.objects.get(deduction_type=deduction_type))
+                emp_payment.first().save()
+        else:
+            payment = Payment.objects.create(
+                employee=employee, month=month, salary=employee.salaries.all().last().basic_salary)
+            payment.deductions.add(
+                Deduction.objects.get(deduction_type=deduction_type))
+            payment.save()
+
+            return True
+
+    @staticmethod
+    def add_overtime(overtime_type: str, month: Month, employee: Employee, start_time: str, end_time: str):
+        overtime = Overtime.objects.get(overtime_type=overtime_type)
+        emp_payment = Payment.objects.filter(
+            month=month, employee=employee)
+        if emp_payment.exists():
+            payment = emp_payment.first()
+            if payment.overtimes.filter(overtime=overtime).exists():
+                return JsonResponse({'error': 'This overtime already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                payment.overtimes.add(OvertimeItem.objects.create(
+                    overtime=overtime, start_time=start_time, end_time=end_time))
+
+                payment.save()
