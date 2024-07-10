@@ -71,7 +71,7 @@ class Overtime(models.Model):
     overtime_type = models.CharField(max_length=255, null=False)
     overtime_rate = models.DecimalField(
         max_digits=6, decimal_places=2, null=False)
-    start_at = models.DateTimeField(auto_now=True)
+    start_at = models.DateTimeField(auto_now_add=True)
     end_at = models.DateTimeField(null=True, blank=True)
     def __str__(self):
         return self.overtime_type
