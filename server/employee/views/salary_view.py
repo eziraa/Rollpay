@@ -18,7 +18,6 @@ class SalaryView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request: Request, employee_id=None, year=None, curr_month=None):
-        print(curr_month, year, employee_id)
         if employee_id:
             payments = Payment.objects.filter(employee_id=employee_id)
             if payments.exists():
