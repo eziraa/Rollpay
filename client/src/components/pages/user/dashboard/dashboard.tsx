@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FaMoneyBill } from "react-icons/fa";
 import { MediumIcon } from "../../../utils/icons/icons.style";
@@ -5,13 +6,14 @@ import {
   MidBlurredText,
   NormalBlurredText,
 } from "../../../utils/titles/titles";
-import { DashboardBody, DashboardTitle } from "../../dashboard/dashboard.style";
+import { DashboardTitle } from "../../dashboard/dashboard.style";
 import {
   AxisKey,
   BarGraphContainer,
   BarGraphContent,
   BarGraphHeader,
   BlurredText,
+  CardBody,
   CardFooter,
   CardsContainer,
   DashBoardCard,
@@ -50,7 +52,7 @@ export const UserDashboard = () => {
         {mock_data.map((data, index) => {
           return (
             <DashBoardCard key={index}>
-              <DashboardBody>
+              <CardBody>
                 <Icon> {data.icon} </Icon>
                 <DataBox>
                   <DashboardTitle className="success">
@@ -60,7 +62,7 @@ export const UserDashboard = () => {
                     {data.title}
                   </DashboardTitle>
                 </DataBox>
-              </DashboardBody>
+              </CardBody>
               <CardFooter>
                 <MidBlurredText className="mid-spaced">
                   Your {data.title} is greater than prev month by

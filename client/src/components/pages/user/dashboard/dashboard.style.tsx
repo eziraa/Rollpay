@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../../../utils/convertor/add-opacity-color";
 import {
   column_template_al_center,
+  column_template_al_end,
   column_template_al_start,
   column_template_js_start,
   row_template_al_center,
@@ -14,6 +15,7 @@ import { place_center } from "../../../utils/flexbox/place-center.style";
 import { mini_shadow } from "../../../utils/shadows/shadows.style";
 import { ThemeProps } from "../../../../typo/theme/theme";
 import { NormalBlurredText } from "../../../utils/titles/titles";
+import { custom_scroll_bar } from "../../../utils/scroll-bar/scroll-bar";
 
 export const DashboardContainer = styled.div`
   display: flex;
@@ -21,6 +23,8 @@ export const DashboardContainer = styled.div`
   justify-content: center;
   height: fit-content;
   padding: 1rem;
+  padding-top: 2rem;
+  ${custom_scroll_bar}
 `;
 
 export const DashBoardTitle = styled.h1`
@@ -52,14 +56,19 @@ export const DashBoardCard = styled.div`
 `;
 
 export const CardBody = styled.div`
-  ${row_template_al_center};
-  justify-content: center;
-  gap: 1rem;
+  ${row_template_js_space_between};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  padding: 2rem 0;
 `;
 
 export const DataBox = styled.div`
-  ${column_template_al_start}
-  justify-content: center;
+  ${column_template_al_end}
+  width: 100%;
+  justify-content: end;
   gap: 1rem;
 `;
 
