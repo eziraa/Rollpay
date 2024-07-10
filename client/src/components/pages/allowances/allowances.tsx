@@ -26,7 +26,10 @@ import {
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useAllowance } from "../../../hooks/allowance-hook";
-import { deleteAllowanceRequested, listAllowancesRequested } from "../../../store/allowance/allowance-slice";
+import {
+  deleteAllowanceRequested,
+  listAllowancesRequested,
+} from "../../../store/allowance/allowance-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
 export const AllowancePage = () => {
@@ -98,7 +101,6 @@ export const AllowancePage = () => {
                         }}
                       >
                         <MdOutlineEdit />
-                        Edit
                       </EditButton>
                       <DeleteButton
                         onClick={(e) => {
@@ -113,7 +115,6 @@ export const AllowancePage = () => {
                         ) : (
                           <>
                             <RiDeleteBin6Line />
-                            Delete
                           </>
                         )}
                       </DeleteButton>
