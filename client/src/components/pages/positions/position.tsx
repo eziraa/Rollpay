@@ -129,7 +129,6 @@ export const PositionPage = () => {
                         }}
                       >
                         <MdOutlineEdit />
-                        Edit
                       </EditButton>
                       <SuspendButton
                         onClick={(e) => {
@@ -146,12 +145,10 @@ export const PositionPage = () => {
                         ) : position.end_date ? (
                           <>
                             <IoOpenOutline />
-                            Resume
                           </>
                         ) : (
                           <>
                             <MdOutlineClose />
-                            Close
                           </>
                         )}
                       </SuspendButton>
@@ -168,7 +165,6 @@ export const PositionPage = () => {
                         ) : (
                           <>
                             <RiDeleteBin6Line />
-                            Delete
                           </>
                         )}
                       </DeleteButton>
