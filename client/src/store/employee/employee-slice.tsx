@@ -59,6 +59,7 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.task_error = undefined;
       state.curr_emp = action.payload;
+      state.employees.push(action.payload);
     },
     listEmpRequested: (state) => {
       state.task_finished = false;
