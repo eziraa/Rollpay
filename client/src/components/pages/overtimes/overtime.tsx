@@ -91,7 +91,6 @@ export const OvertimePage = () => {
                         }}
                       >
                         <MdOutlineEdit />
-                        Edit
                       </EditButton>
                       <DeleteButton
                         onClick={(e) => {
@@ -106,7 +105,6 @@ export const OvertimePage = () => {
                         ) : (
                           <>
                             <RiDeleteBin6Line />
-                            Delete
                           </>
                         )}
                       </DeleteButton>
