@@ -84,6 +84,14 @@ const EmployeeSlice = createSlice({
         deduction.id === action.payload.id ? action.payload : deduction
       );
     },
+    openDeductionRequested: (__, _: PayloadAction<string>) => {},
+    openDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.deductions = state.deductions.map((deduction) =>
+        deduction.id === action.payload.id ? action.payload : deduction
+      );
+    },
 
     listDeductionDone: (
       state,
@@ -169,7 +177,9 @@ export const {
   getDeductionDone,
   getDeductionRequested,
   closeDeductionDone,
-  closeDeductionRequested
+  closeDeductionRequested,
+  openDeductionDone,
+  openDeductionRequested
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
