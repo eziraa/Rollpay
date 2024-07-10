@@ -1,20 +1,23 @@
-import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../api";
 import {
   REFRESH_TOKEN,
   ACCESS_TOKEN,
-  CURRENT_USER,
+  LOGGED_IN_USERS,
 } from "../../constants/token-constants";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../contexts/auth-context";
+import { useAppDispatch } from "../../utils/custom-hook";
+import { getCurrentUserRequest } from "../../store/user/user-slice";
+import { useUser } from "../../hooks/user-hook";
+import { ClerkRouterConfig } from "../router/clerk-router";
+import { UserRouterConfig } from "../router/user-router";
+import AccessDenied from "../../components/pages/access-denied/access-denied";
+import { Route } from "react-router-dom";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
-function ProtectedRoute({ children }: ProtectedRouteProps) {
+function ProtectedRoute() {
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const { setCurrUser } = useAuth();
+  const dispatcher = useAppDispatch();
+  const { user } = useUser();
 
   useEffect(() => {
     auth().catch(() => setIsAuthorized(false));
@@ -27,7 +30,19 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
         refresh: refreshToken,
       });
       if (res.status === 200) {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        let logged_in_users = JSON.parse(
+          localStorage.getItem(LOGGED_IN_USERS) || "[]"
+        );
+
+        logged_in_users = [
+          ...logged_in_users,
+          {
+            username: res.data.username,
+            access_token: res.data.access,
+            refresh_token: res.data.refresh,
+          },
+        ];
+        localStorage.setItem(ACCESS_TOKEN, logged_in_users);
         setIsAuthorized(true);
       } else {
         setIsAuthorized(false);
@@ -39,12 +54,15 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   const auth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
-    const current_user = localStorage.getItem(CURRENT_USER);
+
     if (!token) {
       setIsAuthorized(false);
-      return;
+      return <Route path="/access-denied" element={<AccessDenied />} />;
     }
-    const decoded = jwtDecode(token);
+    const decoded: {
+      exp: number;
+      user_id: string;
+    } = jwtDecode(token);
     const tokenExpiration = decoded.exp;
     const now = Date.now() / 1000;
     if (tokenExpiration)
@@ -52,14 +70,15 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
         await refreshToken();
       } else {
         setIsAuthorized(true);
-        setCurrUser(JSON.parse(current_user || ""));
+        dispatcher(getCurrentUserRequest(decoded.user_id));
       }
   };
 
   if (!isAuthorized) {
-    return <div>Loading...</div>;
+    return <Route path="/access-denied" element={<AccessDenied />} />;
   }
-  return isAuthorized ? children : <Navigate to="/" />;
+
+  return user?.role === "Clerk" ? ClerkRouterConfig() : UserRouterConfig();
 }
 
 export default ProtectedRoute;

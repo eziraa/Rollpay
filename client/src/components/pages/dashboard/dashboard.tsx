@@ -24,10 +24,7 @@ export const DashBoard = () => {
 
   useEffect(() => {
     dispatcher(getStatRequest());
-  }, [dispatcher]);
-  if (!stat) {
-    return null;
-  }
+  }, []);
   return (
     <DashboardContainer>
       <StatContainer className="state-card-container">

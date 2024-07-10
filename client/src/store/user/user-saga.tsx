@@ -21,6 +21,7 @@ function* userSignUp(action: PayloadAction<SignUpParams>) {
 
     if (response.code === 201) {
       yield put(signUpFinished());
+      window.location.href = "/login";
     } else {
       yield put(wrongSignup(response.error));
     }

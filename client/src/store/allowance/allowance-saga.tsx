@@ -53,7 +53,7 @@ function* addAllowance(action: PayloadAction<AddAllowanceParams>) {
     } else {
       yield put(unfinishedAdd(response.error));
     }
-  } catch (e) {
+  } catch (_) {
     yield put(unfinishedAdd("Cann't add allowance please try again later"));
     yield put(
       setFlashMessage({
@@ -107,8 +107,8 @@ function* GetAllowances() {
         })
       );
     }
-  } catch (e) {
-    console.log(e);
+  } catch (_) {
+    // TODO: handle error
   }
 }
 function* GetAllowance(action: PayloadAction<string>) {
@@ -152,8 +152,8 @@ function* GetAllowance(action: PayloadAction<string>) {
         })
       );
     }
-  } catch (e) {
-    console.log(e);
+  } catch (_) {
+    // TODO:
   }
 }
 
@@ -205,8 +205,8 @@ function* DeleteAllowance(action: PayloadAction<string>) {
         })
       );
     }
-  } catch (e) {
-    console.log(e);
+  } catch (_) {
+    // TODO:
   }
 }
 
@@ -264,7 +264,7 @@ function* editAllowance(action: PayloadAction<EditAllowanceParams>) {
         })
       );
     }
-  } catch (e) {
+  } catch (_) {
     yield put(
       setFlashMessage({
         type: "error",
@@ -296,8 +296,8 @@ function* loadNextPage(action: PayloadAction<string>) {
         })
       );
     }
-  } catch (e) {
-    console.log(e);
+  } catch (_) {
+    // TODO:
   }
 }
 
@@ -320,8 +320,8 @@ function* loadPrevPage(action: PayloadAction<string>) {
         })
       );
     }
-  } catch (e) {
-    console.log(e);
+  } catch (_) {
+    // TODO:
   }
 }
 

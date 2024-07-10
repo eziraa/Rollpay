@@ -92,6 +92,7 @@ class StatisticsSerializer(serializers.Serializer):
     
     def get_total_employees(self, obj):
         return Employee.objects.all().count()
+
     def get_total_positions(self, obj):
         return Position.objects.all().count()
 

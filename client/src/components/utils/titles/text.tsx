@@ -2,5 +2,5 @@ import styled from "styled-components";
 
 export const BoldText = styled.span`
   font-weight: bold;
-  font-size: medium;
+  font-size: 1.4rem;
 `;

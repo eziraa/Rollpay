@@ -16,8 +16,7 @@ export const DashboardContainer = styled.div`
 `;
 
 export const DashboardTitle = styled.h1`
-  text-align: center;
-  margin-bottom: 2rem;
+  text-align: left;
 `;
 
 export const DashboardBody = styled.div`

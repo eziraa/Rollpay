@@ -4,7 +4,7 @@ from rest_framework.response import Response
 # Assuming your model is named Employee and located in models.py
 from ..models import Employee
 from employee.serializers.employee import EmployeeSerializer
-from .views import StandardResultsSetPagination
+from employee.views.utils.pagination import StandardResultsSetPagination
 
 
 class FilterEmployeeView(APIView):

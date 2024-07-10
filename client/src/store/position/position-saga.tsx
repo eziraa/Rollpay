@@ -109,7 +109,7 @@ function* GetPositions() {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -165,7 +165,7 @@ function* DeletePosition(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 function* GetPosition(action: PayloadAction<string>) {
@@ -175,7 +175,6 @@ function* GetPosition(action: PayloadAction<string>) {
       action.payload
     );
     if (response.code === 200) {
-      console.log(response.position);
       yield put(getPositionDone(response.position));
       yield put(
         setFlashMessage({
@@ -221,7 +220,7 @@ function* GetPosition(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -277,7 +276,7 @@ function* CLosePosition(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -333,7 +332,7 @@ function* OpenPosition(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -357,7 +356,7 @@ function* loadNextPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 
@@ -381,7 +380,7 @@ function* loadPrevPage(action: PayloadAction<string>) {
       );
     }
   } catch (e) {
-    console.log(e);
+    // TODO:
   }
 }
 

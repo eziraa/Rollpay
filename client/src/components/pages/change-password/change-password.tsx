@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import emailjs from "emailjs-com";
@@ -27,12 +28,10 @@ export const ChangePassword = () => {
         "k3GlkvUNSNjbu-6bp"
       )
       .then(
-        (result) => {
-          console.log(result.text);
+        (_result) => {
           alert("Email sent successfully");
         },
-        (error) => {
-          console.log(error.text);
+        (_) => {
           alert("Failed to send email. Please try again.");
         }
       );

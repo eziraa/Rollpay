@@ -7,6 +7,8 @@ export const BlurredText = styled.h1`
   letter-spacing: 0.1rem;
 `;
 
+export const LargeBlurredText = styled(BlurredText);
+
 export const MidBlurredText = styled(BlurredText)`
   font-size: 1.4rem;
 `;
