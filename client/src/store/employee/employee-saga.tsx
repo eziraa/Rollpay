@@ -172,7 +172,6 @@ function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
 }
 
 function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
-  alert("reached");
   try {
     const response: CurrentEmpPaymentsResponse = yield call(
       EmployeeAPI.addOvertime,
