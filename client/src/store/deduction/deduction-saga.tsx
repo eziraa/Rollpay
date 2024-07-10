@@ -214,6 +214,62 @@ function* CLoseDeduction(action: PayloadAction<string>) {
   }
 }
 
+function* OpenDeduction(action: PayloadAction<string>) {
+  try {
+    const response: AddDeductionResponse = yield call(
+      DeductionAPI.openDeduction,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(closeDeductionDone(response.deduction));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Opening Deduction",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(taskUnfinished(response.error || "Can't open deduction"));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(taskUnfinished(response.error || "Can't open deduction"));
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to open deductions",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Open Deduction",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    // TODO:
+  }
+}
+
 function* DeleteDeduction(action: PayloadAction<string>) {
   try {
     const response: AddDeductionResponse = yield call(
@@ -389,6 +445,6 @@ export function* watchDeductionRequest() {
   yield takeEvery("deduction/listDeductionsRequested", GetDeductions);
   yield takeEvery("deduction/deleteDeductionRequested", DeleteDeduction);
   yield takeEvery("deduction/getDeductionRequested", GetDeduction);
-  yield takeEvery("deduction/CLoseDeduction", GetDeduction);
-
+  yield takeEvery("deduction/closeDeductionRequested", CLoseDeduction);
+  yield takeEvery("deduction/openDeductionRequested", OpenDeduction);
 }
