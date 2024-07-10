@@ -39,7 +39,7 @@ export const AddAllowanceToEmp = () => {
   const { allowances, curr_allowance } = useAllowance();
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
-  const { employee_id } = useParams();
+  const { year, month, employee_id } = useParams();
   const { curr_emp } = useSalary();
   const employee = useEmployee();
 
@@ -80,6 +80,7 @@ export const AddAllowanceToEmp = () => {
     initialValues: {
       allowance_type: curr_allowance?.allowance_type || "",
       employee_id: employee_id || "",
+      query_string: `?year=${year}&month=${month}`,
     },
     validationSchema: AddAllowanceToEmpSchema,
     onSubmit: (values) => {
