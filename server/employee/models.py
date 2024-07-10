@@ -95,18 +95,7 @@ class OvertimeItem (models.Model):
         null=False, blank=False, default=datetime.datetime.now())
 
 
-class Salary(models.Model):
-    basic_salary = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=False)
-    allowances = models.ManyToManyField(
-        Allowance, blank=True)
-    overtimes = models.ManyToManyField(
-        OvertimeItem,  blank=True)
-    deductions = models.ManyToManyField(
-        Deduction, blank=True)
 
-    def __str__(self):
-        return str(self.basic_salary)
 
 
 class Employee(models.Model):
@@ -128,8 +117,6 @@ class Employee(models.Model):
     position = models.CharField(max_length=100, null=False)
     user = models.OneToOneField(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
-    salary = models.OneToOneField(
-        Salary, blank=True, null=True, on_delete=models.PROTECT)
 
 
     @staticmethod
@@ -141,6 +128,14 @@ class Employee(models.Model):
         return self.first_name + " " + self.last_name
 
 
+class Salary(models.Model):
+    basic_salary = models.DecimalField(
+        max_digits=12, decimal_places=2, blank=True, null=False)
+    start_date = models.DateField(auto_now_add=True)
+    employee = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, related_name="salaries")
+
+
 
 
 class Payment(models.Model):
@@ -148,7 +143,15 @@ class Payment(models.Model):
         Employee, blank=True, on_delete=models.CASCADE)
     payment_date = models.DateField(null=True, blank=True)
     month = MonthField()
-    salary = models.ForeignKey(Salary, blank=False, on_delete=models.PROTECT)
+    salary = models.DecimalField(
+        max_digits=12, decimal_places=2, blank=True, null=False)
+    allowances = models.ManyToManyField(
+        Allowance, blank=True)
+    overtimes = models.ManyToManyField(
+        OvertimeItem,  blank=True)
+    deductions = models.ManyToManyField(
+        Deduction, blank=True)
+
 
     class Meta:
         unique_together = ('employee', 'month')
