@@ -38,7 +38,7 @@ const SignUp = () => {
       },
     });
   useEffect(() => {
-    if (user.acc_created) window.location.href = "/";
+    if (user.acc_created) window.location.href = "/login";
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password_C_Visible, setPassword_C_Visible] = useState<boolean>(false);
