@@ -34,7 +34,7 @@ export const AddOvertimeToEmp = () => {
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
   const { curr_emp } = useSalary();
-  const { employee_id } = useParams();
+  const { year, month, employee_id } = useParams();
   const { task_error, task_finished } = useEmployee();
   useEffect(() => {
     if (curr_overtime) {
@@ -47,6 +47,7 @@ export const AddOvertimeToEmp = () => {
       employee_id: employee_id || "",
       start_time: "",
       end_time: "",
+      query_params: `?year=${year}&month=${month}`,
     },
     onSubmit(values) {
       dispatcher(addEmpOvertimeRequested(values));

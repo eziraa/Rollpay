@@ -25,11 +25,13 @@ export interface AddPositionParams {
 export interface AddAllowanceToEmployeesParams {
   employee_id: string;
   allowance_type: string;
+  query_string: string;
 }
 
 export interface AddDeductionToEmployeesParams {
   employee_id: string;
   deduction_type: string;
+  query_string: string;
 }
 
 export interface UpdateProfileParams {

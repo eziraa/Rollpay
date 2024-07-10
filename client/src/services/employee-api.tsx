@@ -112,7 +112,8 @@ const addAllowance = async (values: AddAllowanceToEmployeesParams) => {
       "/employee/allowance/add/" +
         values.employee_id +
         "/" +
-        values.allowance_type
+        values.allowance_type +
+        values.query_string
     )
     .then((res) => {
       return {
@@ -137,7 +138,8 @@ const addDeduction = async (values: AddDeductionToEmployeesParams) => {
       "/employee/deduction/add/" +
         values.employee_id +
         "/" +
-        values.deduction_type
+        values.deduction_type +
+        values.query_string
     )
     .then((res) => {
       return {
@@ -162,7 +164,8 @@ const addOvertime = async (values: AddOvertimeToEmpParams) => {
       "/employee/overtime/add/" +
         values.employee_id +
         "/" +
-        values.overtime_type,
+        values.overtime_type +
+        values.query_params,
       {
         overtime: values.overtime_type,
         start_time: values.start_time,

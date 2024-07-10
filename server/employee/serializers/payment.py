@@ -38,7 +38,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         return obj.employee.first_name + " " + obj.employee.last_name
 
     def get_basic_salary(self, obj: Payment):
-        return obj.salary.basic_salary
+        return obj.salary
 
     def get_salary(self, obj):
         return SalarySerializer(obj.salary).data
@@ -50,31 +50,31 @@ class PaymentSerializer(serializers.ModelSerializer):
             return False
 
     def get_allowances(self, obj: Payment):
-        return AllowanceSerializer(obj.salary.allowances, many=True).data
+        return AllowanceSerializer(obj.allowances, many=True).data
 
     def get_deductions(self, obj: Payment):
-        return DeductionSerializer(obj.salary.deductions, many=True).data
+        return DeductionSerializer(obj.deductions, many=True).data
 
     def get_overtimes(self, obj: Payment):
-        return OvertimeItemSerializer(obj.salary.overtimes, many=True).data
+        return OvertimeItemSerializer(obj.overtimes, many=True).data
 
     def get_net_salary(self, obj: Payment):
-        calculator = SalaryCalculator(obj.salary)
+        calculator = SalaryCalculator(obj)
         calculator.calc_net_salary()
         return calculator.net_salary
 
     def get_total_deduction(self, obj: Payment) -> float:
-        calculator = SalaryCalculator(obj.salary)
+        calculator = SalaryCalculator(obj)
         calculator.calc_total_deduction()
         return calculator.total_deduction
 
     def get_gross_salary(self, obj: Payment) -> float:
-        calculator = SalaryCalculator(obj.salary)
+        calculator = SalaryCalculator(obj)
         calculator.calc_gross_salary()
         return calculator.gross_salary
 
     def get_income_tax(self, obj: Payment) -> Decimal:
-        calculator = SalaryCalculator(obj.salary)
+        calculator = SalaryCalculator(obj)
         calculator.calc_income_tax()
         return calculator.income_tax
 

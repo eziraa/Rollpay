@@ -56,19 +56,31 @@ export const ClerkRouterConfig = () => (
     />
     <Route path="/employees/employee/:employee_id" element={<SeeEmployee />}>
       <Route path="" element={<Navigate to="allowances" replace />} />
-      <Route path="allowances/:year/:month" element={<EmployeeAllowance />} />
+      <Route path="allowances/:year/:month" element={<EmployeeAllowance />}>
+        <Route path="add-allowance" element={<AddAllowanceToEmp />}>
+          <Route path="add-new-allowance" element={<AddAllowance />} />
+        </Route>
+      </Route>
       <Route path="allowances" element={<EmployeeAllowance />}>
         <Route path="add-allowance" element={<AddAllowanceToEmp />}>
           <Route path="add-new-allowance" element={<AddAllowance />} />
         </Route>
       </Route>
-      <Route path="overtimes/:year/:month" element={<EmployeeOvertime />} />
+      <Route path="overtimes/:year/:month" element={<EmployeeOvertime />}>
+        <Route path="add-overtime" element={<AddOvertimeToEmp />}>
+          <Route path="add-new-overtime" element={<AddOvertime />} />
+        </Route>
+      </Route>
       <Route path="overtimes" element={<EmployeeOvertime />}>
         <Route path="add-overtime" element={<AddOvertimeToEmp />}>
           <Route path="add-new-overtime" element={<AddOvertime />} />
         </Route>
       </Route>
-      <Route path="deductions/:year/:month" element={<EmployeeDeduction />} />
+      <Route path="deductions/:year/:month" element={<EmployeeDeduction />}>
+        <Route path="add-deduction" element={<AddDeductionToEmp />}>
+          <Route path="add-new-deduction" element={<AddDeduction />} />
+        </Route>
+      </Route>
       <Route path="deductions" element={<EmployeeDeduction />}>
         <Route path="add-deduction" element={<AddDeductionToEmp />}>
           <Route path="add-new-deduction" element={<AddDeduction />} />

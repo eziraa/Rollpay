@@ -20,7 +20,7 @@ export const DashboardTitle = styled.h1`
 `;
 
 export const DashboardBody = styled.div`
-  /* display: flex; */
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;

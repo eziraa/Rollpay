@@ -32,7 +32,7 @@ export const AddDeductionToEmp = () => {
   const { deductions, curr_deduction } = useDeduction();
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
-  const { employee_id } = useParams();
+  const { year, month, employee_id } = useParams();
   const employee = useEmployee();
   const { curr_emp } = useSalary();
   useEffect(() => {
@@ -44,6 +44,7 @@ export const AddDeductionToEmp = () => {
     initialValues: {
       deduction_type: "",
       employee_id: employee_id || "",
+      query_string: `?year=${year}&month=${month}`,
     },
     onSubmit: (values) => {
       dispatcher(

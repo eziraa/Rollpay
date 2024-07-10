@@ -2,15 +2,16 @@ from ..models import Salary, Payment
 from django.utils import timezone
 
 
+
 class SalaryCalculator:
     gross_salary = 0
     total_deduction = 0
     net_salary = 0
     income_tax = 0
 
-    def __init__(self, salary:Salary=None):
-        if salary is not None:
-            self.salary = salary
+    def __init__(self, payment: Payment = None):
+        if payment is not None:
+            self.payment = payment
             self.calc_gross_salary()
             self.calc_total_deduction()
             self.calc_net_salary()
@@ -36,14 +37,14 @@ class SalaryCalculator:
 
     def calc_gross_salary(self):
         allowances_sum = sum(
-            [allowance.allowance_rate for allowance in self.salary.allowances.all()])
+            [allowance.allowance_rate for allowance in self.payment.allowances.all()])
         self.gross_salary = float(
-            self.salary.basic_salary + allowances_sum * self.salary.basic_salary / 100)
+            self.payment.salary + allowances_sum * self.payment.salary / 100)
 
     def calc_total_deduction(self):
         self.total_deduction = 0
-        for deduction in self.salary.deductions.all():
-            self.total_deduction += deduction.deduction_rate * self.salary.basic_salary / 100
+        for deduction in self.payment.deductions.all():
+            self.total_deduction += deduction.deduction_rate * self.payment.salary / 100
         self.calc_income_tax()
         if self.income_tax:
             self.total_deduction = float(

@@ -15,6 +15,7 @@ import {
   SearchInput,
   ExportButton,
   ExportIcon,
+  StartPaymentBtn,
   // ExportLabel,
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
@@ -242,6 +243,7 @@ export const EmployeesSalaryPage = () => {
           </ExportIcon>
           PDF
         </ExportButton>
+        <StartPaymentBtn>Rise Salary</StartPaymentBtn>
 
         <Label
           style={{
@@ -274,7 +276,7 @@ export const EmployeesSalaryPage = () => {
             {months.map(
               (month) =>
                 ((curr_year && curr_year < end_year) ||
-                  month <= new Date(Date.now()).getMonth()) && (
+                  month <= new Date(Date.now()).getMonth() + 1) && (
                   <SelectOption key={month} value={`${month}`}>
                     {getNamedMonth(new Date(`${year}-${month}-01`))}
                   </SelectOption>

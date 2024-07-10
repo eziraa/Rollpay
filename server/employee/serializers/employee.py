@@ -15,8 +15,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
                   'phone_number', 'date_of_birth', 'date_of_hire', 'position', 'salary', 'profile_picture', 'employement_contract')
 
     def get_salary(self, obj: Employee):
-        if obj.salary:
-         return obj.salary.basic_salary
+        if obj.salaries.all():
+         return obj.salaries.all().last().basic_salary
         else:
             return 0
 

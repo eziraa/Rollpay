@@ -70,7 +70,7 @@ export const EmployeeOvertime = () => {
           onClick={(e) => {
             e.stopPropagation();
             dispatcher(listOvertimesRequested());
-            navigate(baseUrl + "/add-overtime");
+            navigate("add-overtime");
           }}
         >
           Add
