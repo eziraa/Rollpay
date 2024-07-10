@@ -107,29 +107,27 @@ export const UserDashboard = () => {
                 <AxisKey>1k</AxisKey>
                 <AxisKey>0k</AxisKey>
               </VerticalAxis>
-              {employee?.payments.slice(0, 12).map((payment) => {
+              {employee?.payments.slice(-12).map((payment) => {
                 return (
                   <DataVerticalAxis>
                     {payment?.allowances
-                      ?.map((all) => {
-                        return all.allowance_rate;
-                      })
-                      .sort((a, b) => b - a)
+                      .slice(0)
+                      .sort((a, b) => b.allowance_rate - a.allowance_rate)
                       .map((allowance, index) => {
                         return (
                           <GraphData
                             color={
-                              index === 0
-                                ? "#0cfcbc"
-                                : index === 1
-                                ? "#e6ff04"
+                              allowance.allowance_type === "Meal"
+                                ? "#E253FF"
+                                : allowance.allowance_type === "Education"
+                                ? "#D39D08"
                                 : index === 2
                                 ? "#1e00fe"
                                 : index === 3
                                 ? "#04b701"
                                 : "#5a6cf9"
                             }
-                            height={allowance * 3}
+                            height={allowance.allowance_rate * 2.3}
                           />
                         );
                       })}

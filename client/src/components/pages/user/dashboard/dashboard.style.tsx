@@ -3,9 +3,9 @@ import { addOpacityToColor } from "../../../utils/convertor/add-opacity-color";
 import {
   column_template_al_center,
   column_template_al_start,
-  column_template_js_end,
   column_template_js_start,
   row_template_al_center,
+  row_template_al_end,
   row_template_js_center,
   row_template_js_space_between,
   row_template_js_start,
@@ -42,7 +42,7 @@ export const DashBoardCard = styled.div`
   border-radius: 1rem;
   padding: 2rem;
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.06, theme.colors.primary)};
+    addOpacityToColor(0.02, theme.colors.primary)};
   transition: transform 0.5s ease-in-out;
   cursor: pointer;
   &:hover {
@@ -91,7 +91,7 @@ export const BarGraphContainer = styled.div`
   ${mini_shadow};
   border-radius: 1rem;
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.05, theme.colors.primary)};
+    addOpacityToColor(0.02, theme.colors.primary)};
   height: 50vh;
   width: fit-content;
   margin: 1rem;
@@ -152,10 +152,10 @@ export const HorizontalAxis = styled.div`
 `;
 
 export const DataVerticalAxis = styled.div`
-  ${column_template_js_end};
+  ${row_template_al_end};
   align-items: end;
   height: 100%;
-  position: relative;
+  width: fit-content;
 `;
 
 export const DataHorizontalAxis = styled.div`
@@ -172,12 +172,9 @@ interface DataProps extends ThemeProps {
 
 export const GraphData = styled.div<DataProps>`
   ${place_center};
-  width: 3rem;
+  width: 2rem;
   height: ${({ height }) => height}rem;
-  /* background-color: ${({ color }) => color}; */
-  position: absolute;
-  bottom: 0;
-  border-radius: 2rem 2rem 0 0;
+  border-radius: 1rem 1rem 0 0;
   background-image: linear-gradient(to top, white, ${({ color }) => color});
 `;
 
