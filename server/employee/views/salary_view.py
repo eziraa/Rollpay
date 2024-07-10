@@ -40,7 +40,8 @@ class SalaryView(APIView):
                     for curent_month in range(1, 13):
                         curr_month = month.Month(year, curent_month)
                         payment = Payment.objects.create(
-                            employee=employee, month=curr_month, salary=employee.salary)
+                            employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary,
+                        )
                         payment.save()
                 payments = Payment.objects.filter(employee_id=employee_id)
                 if payments.exists():
