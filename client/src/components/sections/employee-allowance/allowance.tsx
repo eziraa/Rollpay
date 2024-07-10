@@ -68,7 +68,7 @@ export const EmployeeAllowance = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate(baseUrl + "/add-allowance");
+            navigate("add-allowance");
           }}
         >
           Add
