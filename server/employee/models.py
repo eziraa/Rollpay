@@ -24,11 +24,6 @@ class ProfilePicture(models.Model):
         upload_to=upload_to, default="photos/profile.png")
 
 
-# class ProfilePicture(models.Model):
-#     last_update = models.DateTimeField(auto_now_add=True)
-#     pictures = models.ManyToManyField(ProfilePhoto, blank=True)
-
-
 class CustomUser(BaseUser):
     role = models.ForeignKey(
         Role, on_delete=models.DO_NOTHING, null=True, blank=True)
