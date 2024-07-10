@@ -62,6 +62,5 @@ export const getTableElements = (data: Employee[]) => {
     gridTamplates += element.max_length + "fr ";
   });
 
-  console.log(gridTamplates);
   return gridTamplates + " 6fr 6fr";
 };

@@ -8,7 +8,7 @@ from django.http.response import JsonResponse
 from employee.utils.search import Search
 from employee.serializers.employee import EmployeeSerializer
 from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerializer
-from employee.views.views import StandardResultsSetPagination
+from employee.views.employee import StandardResultsSetPagination
 from ..models import Employee, Payment
 import month
 
@@ -18,7 +18,6 @@ class SalaryView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request: Request, employee_id=None, year=None, curr_month=None):
-        print(curr_month, year, employee_id)
         if employee_id:
             payments = Payment.objects.filter(employee_id=employee_id)
             if payments.exists():

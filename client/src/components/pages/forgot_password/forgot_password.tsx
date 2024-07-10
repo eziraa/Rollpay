@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import emailjs from "emailjs-com";
@@ -25,12 +26,10 @@ export const ForgotPassword = () => {
         to_email: "ezirayallew@gmail.com",
       })
       .then(
-        (result) => {
-          console.log(result.text);
+        (_) => {
           alert("Email sent successfully");
         },
-        (error) => {
-          console.log(error.text);
+        (_) => {
           alert("Failed to send email. Please try again.");
         }
       );

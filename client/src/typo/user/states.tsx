@@ -23,4 +23,5 @@ export interface CurrentUser {
   date_of_birth: string;
   date_of_hire: string;
   salary: number;
+  role: string;
 }

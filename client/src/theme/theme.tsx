@@ -45,7 +45,7 @@ export const lightTheme: Theme = {
     header: "#7aa09f",
   },
   buttons: {
-    primary: "#0a9280",
+    primary: "#28ce97",
     secondary: "#16dec0",
     primaryHover: "#1b1a1a",
     secondaryHover: "#0a0a0a26",

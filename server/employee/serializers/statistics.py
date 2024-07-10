@@ -76,14 +76,4 @@ class StatisticsSerializer(serializers.Serializer):
             calculator = SalaryCalculator(curr_month_payment.salary)
             calculator.calc_net_salary()
             acc += calculator.net_salary
-        return acc
-
-    def get_avg_basic_salary(self, obj):
-        basic_salaries = Salary.objects.values('basic_salary')
-        sum_basic_salary = 0
-        print(basic_salaries)
-        for salary in basic_salaries:
-            sum_basic_salary += salary['basic_salary']
-        average = sum_basic_salary / len(basic_salaries)
-
-        return round(average, 2)
+        return str(round(acc, 2)) + " ETB"
