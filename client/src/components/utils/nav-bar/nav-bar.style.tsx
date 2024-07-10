@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const NavBar = styled.div`
   display: flex;
@@ -29,7 +28,8 @@ export const NavItem = styled.div<NavItemProps>`
     active ? theme.buttons.primary : "transparent"};
 
   &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.3, theme.buttons.primary)};
+
+    color: ${({ theme }) => theme.buttons.primary};
+    font-weight: 500;
   }
 `;
