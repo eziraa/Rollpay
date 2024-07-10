@@ -136,12 +136,15 @@ class EmployeeView (APIView):
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
         data = json.loads(request.body)
 
-        if employee.salary:
-            employee.salary.basic_salary = data['salary']
+        if employee.salaries.count() > 0:
+
+            salary = employee.salaries.all().last()
+            salary.basic_salary = data['salary']
+            salary.save()
         else:
             salary = Salary.objects.create(
-                basic_salary=data['salary'])
-            employee.salary = salary
+                basic_salary=data['salary'], employee=employee)
+            salary.save()
         data.pop('salary', None)  # Use pop to remove 'salary' safely
         serializer = EmployeeSerializer(employee, data=data)
         if serializer.is_valid():
