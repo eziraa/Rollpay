@@ -8,7 +8,7 @@ def upload_to(instance, filename):
     return 'photos/{filename}'.format(filename = filename)
 
 def upload_file(instance, filename):
-    return 'contracts/{filename}'.format(filename=filename)
+    return 'documents/{filename}'.format(filename=filename)
 
 
 class Role(models.Model):
@@ -176,7 +176,7 @@ class Position(models.Model):
 class Asset(models.Model):
     id = models.AutoField(primary_key=True)
     employee = models.ForeignKey(
-        Employee, blank=True, on_delete=models.PROTECT)
+        Employee, related_name='assets', blank=True, on_delete=models.PROTECT)
     asset_name = models.CharField(max_length=255, null=False)
     asset_value = models.FileField(upload_to=upload_file)
 

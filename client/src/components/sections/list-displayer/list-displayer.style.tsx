@@ -54,6 +54,7 @@ export const ListRow = styled.div<ThemeProps>`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
   justify-content: center;
+  align-items: center;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.4, theme.table.tableRow)};
   &:nth-child(even) {

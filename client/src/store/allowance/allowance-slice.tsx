@@ -20,7 +20,7 @@ const InitialEmpState: AllowanceState = {
   task_error: undefined,
   task_finished: true,
 };
-const EmployeeSlice = createSlice({
+const AllowanceSlice = createSlice({
   name: "allowance",
   initialState: InitialEmpState,
   reducers: {
@@ -180,6 +180,6 @@ export const {
   openAllowanceDone,
   openAllowanceRequested,
   taskUnfinished,
-} = EmployeeSlice.actions;
+} = AllowanceSlice.actions;
 
-export default EmployeeSlice.reducer;
+export default AllowanceSlice.reducer;

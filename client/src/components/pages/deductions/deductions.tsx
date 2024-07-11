@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../utils/custom-table/custom-table";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDeduction } from "../../../hooks/deduction-hook";
 import {
@@ -34,9 +34,7 @@ import {
   openDeductionRequested,
 } from "../../../store/deduction/deduction-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { IoAddOutline } from "react-icons/io5";
-import { VscDebugStart } from "react-icons/vsc";
-import { CiPause1 } from "react-icons/ci";
+import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 export const DeductionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
@@ -144,11 +142,11 @@ export const DeductionPage = () => {
                           <SmallSpinner />
                         ) : deduction.end_at ? (
                           <>
-                            <VscDebugStart />
+                            <IoOpenOutline />
                           </>
                         ) : (
                           <>
-                            <CiPause1 />
+                            <MdOutlineClose />
                           </>
                         )}
                       </SuspendButton>
