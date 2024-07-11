@@ -87,12 +87,6 @@ class Deduction(models.Model):
         return self.deduction_type
 
 
-class OvertimeItem (models.Model):
-    overtime = models.ForeignKey(Overtime, on_delete=models.CASCADE)
-    start_time = models.DateTimeField(
-        null=False, blank=False, default=datetime.datetime.now())
-    end_time = models.DateTimeField(
-        null=False, blank=False, default=datetime.datetime.now())
 
 
 
@@ -145,12 +139,7 @@ class Payment(models.Model):
     month = MonthField()
     salary = models.DecimalField(
         max_digits=12, decimal_places=2, blank=True, null=False)
-    allowances = models.ManyToManyField(
-        Allowance, blank=True)
-    overtimes = models.ManyToManyField(
-        OvertimeItem,  blank=True)
-    deductions = models.ManyToManyField(
-        Deduction, blank=True)
+
 
 
     class Meta:
@@ -159,6 +148,33 @@ class Payment(models.Model):
     def __str__(self):
         return "Payment of " + self.employee.first_name + " " + self.employee.last_name + " at  " + str(self.month)
 
+
+class OvertimeItem (models.Model):
+    overtime = models.ForeignKey(Overtime, on_delete=models.CASCADE)
+    start_time = models.DateTimeField(
+        null=False, blank=False, default=datetime.datetime.now())
+    end_time = models.DateTimeField(
+        null=False, blank=False, default=datetime.datetime.now())
+    payment = models.ForeignKey(
+        Payment, null=False, related_name="overtimes", blank=False, on_delete=models.CASCADE)
+
+
+class AllowanceItem(models.Model):
+    date_of_given = models.DateTimeField(
+        auto_now_add=True)
+    payment = models.ForeignKey(
+        Payment, null=False, blank=False, on_delete=models.CASCADE, related_name="allowances")
+    allowance = models.ForeignKey(
+        Allowance, null=False, blank=False, on_delete=models.CASCADE)
+
+
+class DeductionItem(models.Model):
+    date_of_given = models.DateTimeField(
+        auto_now_add=True)
+    payment = models.ForeignKey(
+        Payment, null=False, blank=False, on_delete=models.CASCADE, related_name="deductions")
+    deduction = models.ForeignKey(
+        Deduction, null=False, blank=False, on_delete=models.CASCADE)
 
 class Position(models.Model):
     id = models.AutoField(primary_key=True)
