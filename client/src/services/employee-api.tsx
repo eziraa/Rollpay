@@ -3,6 +3,7 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
+  RemoveSalaryAssetParams,
   UpdateEmployementContract,
 } from "../typo/employee/params";
 import api from "../config/api";
@@ -237,6 +238,34 @@ const editEmployee = async (
   return response;
 };
 
+const removeSalaryAsset = async (values: RemoveSalaryAssetParams) => {
+  const employees = await api
+    .put<BaseResponse>(
+      "/employee/remove/" +
+        values.employee_id +
+        "/" +
+        values.asset_type +
+        "/" +
+        values.asset_id +
+        values.qury_string
+    )
+    .then((res) => {
+      return {
+        employee: res.data,
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return employees;
+};
+
 const getProfilePicture = async (employee_id: string) => {
   const response = await api
     .get<Profile>("/user/profile" + employee_id)
@@ -337,6 +366,7 @@ const EmployeeAPI = {
   uploadDocument,
   getTotalEmployee,
   getEmployee,
+  removeSalaryAsset,
 };
 
 export default EmployeeAPI;
