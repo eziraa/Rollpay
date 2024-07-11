@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
-import { custom_scroll_bar } from "../scroll-bar/scroll-bar";
+import { custom_vertical_scroll_bar } from "../scroll-bar/scroll-bar";
 
 export const PaymentCardContainer = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ export const PaymentTable = styled.div`
   padding: 0;
   padding: 0 1rem;
   max-height: 40vh;
-  ${custom_scroll_bar}
+  ${custom_vertical_scroll_bar}
 `;
 
 export const PaymentRow = styled.div`

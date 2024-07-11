@@ -1,7 +1,7 @@
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
 import styled from "styled-components";
 import { Label } from "../edit-employee/edit-employee.style";
-import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
+import { custom_vertical_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 
 export const DashboardContainer = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ export const DashboardContainer = styled.div`
   width: 100%;
   padding: 3rem;
   align-items: flex-start;
-  ${custom_scroll_bar};
+  ${custom_vertical_scroll_bar};
 `;
 
 export const DashboardTitle = styled.h1`

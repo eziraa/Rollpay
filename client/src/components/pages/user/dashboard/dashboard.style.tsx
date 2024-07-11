@@ -17,7 +17,7 @@ import { place_center } from "../../../utils/flexbox/place-center.style";
 import { mini_shadow } from "../../../utils/shadows/shadows.style";
 import { ThemeProps } from "../../../../typo/theme/theme";
 import { NormalBlurredText } from "../../../utils/titles/titles";
-import { custom_scroll_bar } from "../../../utils/scroll-bar/scroll-bar";
+import { custom_vertical_scroll_bar } from "../../../utils/scroll-bar/scroll-bar";
 
 export const DashboardContainer = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ export const DashboardContainer = styled.div`
   height: 100%;
   padding: 1rem;
   padding-top: 2rem;
-  ${custom_scroll_bar}
+  ${custom_vertical_scroll_bar}
 `;
 
 export const DashBoardTitle = styled.h1`
