@@ -103,6 +103,7 @@ export const EmployeeOvertime = () => {
                     <HeaderTitle>Overtime Value</HeaderTitle>
                     <HeaderTitle>Length of Time</HeaderTitle>
                     <HeaderTitle>Date of Given</HeaderTitle>
+                    <HeaderTitle>Action</HeaderTitle>
                   </TableHeader>
                 </thead>
                 <TableBody>

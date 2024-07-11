@@ -102,6 +102,7 @@ export const EmployeeAllowance = () => {
                     <HeaderTitle>Allowance Name</HeaderTitle>
                     <HeaderTitle>Allowance Value</HeaderTitle>
                     <HeaderTitle>Date of Given</HeaderTitle>
+                    <HeaderTitle>Action</HeaderTitle>
                   </TableHeader>
                 </thead>
                 <TableBody>

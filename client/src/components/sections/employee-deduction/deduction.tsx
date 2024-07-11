@@ -102,6 +102,7 @@ export const EmployeeDeduction = () => {
                     <HeaderTitle>Deduction Name</HeaderTitle>
                     <HeaderTitle>Deduction Value</HeaderTitle>
                     <HeaderTitle>Date of Given</HeaderTitle>
+                    <HeaderTitle>Action</HeaderTitle>
                   </TableHeader>
                 </thead>
                 <TableBody>
