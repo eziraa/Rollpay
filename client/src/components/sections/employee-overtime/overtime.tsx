@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
+import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information
@@ -66,7 +67,7 @@ export const EmployeeOvertime = () => {
       <OvertimeHeader>
         <Outlet />
         <OvertimeTitle>Employee Overtime</OvertimeTitle>
-        {user?.role === "CLerk" && (
+        {user?.role === "Clerk" && (
           <AddButton
             onClick={(e) => {
               e.preventDefault();
@@ -85,7 +86,7 @@ export const EmployeeOvertime = () => {
             (payment) => payment.overtimes.length === 0
           ) ? (
           <div>
-            <NoResult>No overtimes found for all month</NoResult>
+            <NoResult>No overtimes found </NoResult>
           </div>
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
@@ -113,6 +114,25 @@ export const EmployeeOvertime = () => {
                         <TableData>{overtime.length}</TableData>
                         <TableData>
                           {new Date(payment.payment_date).toLocaleDateString()}
+                        </TableData>
+                        <TableData>
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              dispatcher(
+                                removeSalaryAssetRequested({
+                                  employee_id: curr_emp.employee.id,
+                                  asset_type: "overtime",
+                                  asset_id: overtime.id,
+                                  qury_string: `?year=${
+                                    payment.month.split("-")[0]
+                                  }&month=${payment.month.split("-")[1]}`,
+                                })
+                              );
+                            }}
+                          >
+                            <span className="fail italic">Remove</span>
+                          </span>
                         </TableData>
                       </TableRow>
                     );
