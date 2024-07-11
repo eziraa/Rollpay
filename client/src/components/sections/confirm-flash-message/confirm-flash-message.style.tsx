@@ -58,8 +58,8 @@ export const BtnsContainer = styled.div`
 `;
 
 export const btn_css = css`
-  background-color: #22c79b;
-  color: #fff;
+  background-color: ${({ theme }) => theme.buttons.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
   font-size: 1.3rem;
   font-weight: bold;
   padding: 1rem 2rem;
@@ -74,7 +74,7 @@ export const DoneButton = styled.button`
 export const CancelButton = styled.button`
   ${btn_css};
   background-color: #d5bc69;
-  color: #089c75;
+  color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
 export const CloseButton = styled.button`

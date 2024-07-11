@@ -7,7 +7,7 @@ import { MdFileDownload } from "react-icons/md";
 
 export const DownloadButton = styled.button<ThemeProps>`
   font-size: 1.5rem;
-  color: #fff;
+  color: ${({ theme }) => addOpacityToColor(0.99, theme.backgrounds.primary)};
   cursor: pointer;
   padding: 0.25rem;
   margin: 0.5rem;

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const NoResultContainer = styled.div`
   width: 100%;
@@ -12,7 +13,7 @@ export const NoResultContainer = styled.div`
 
 export const NoResultText = styled.h1`
   font-size: 2rem;
-  color: #747474;
+  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   font-weight: 500;
   height: 3rem;
   margin: auto;

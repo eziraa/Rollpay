@@ -47,7 +47,7 @@ export const PageNumber = styled.input`
 `;
 export const ButtonText = styled.p<ThemeProps>`
   font-size: 1.2rem;
-  color: #ffffff;
+  color: ${({ theme }) => theme.backgrounds.primary};
 `;
 export const ButtonName = styled.div`
   display: flex;

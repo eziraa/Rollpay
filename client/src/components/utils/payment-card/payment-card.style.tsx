@@ -9,7 +9,8 @@ export const PaymentCardContainer = styled.div`
   gap: 1rem;
   border-radius: 1rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  background-color: #f9f9f9;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.89, theme.backgrounds.primary)};
 `;
 
 export const PaymentCardHeader = styled.div`

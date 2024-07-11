@@ -35,7 +35,7 @@ export const title_css = css`
 
 export const btn_css = css`
   font-size: 2rem;
-  color: #ffffff;
+  color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
