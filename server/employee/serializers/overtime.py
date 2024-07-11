@@ -1,4 +1,4 @@
-from ..models import Overtime, OvertimeItem
+from ..models import Overtime, OvertimeItem, AllowanceItem, DeductionItem
 from rest_framework import serializers
 
 
@@ -30,3 +30,4 @@ class OvertimeItemSerializer(serializers.ModelSerializer):
 
     def get_length_of_overtime(self, obj: OvertimeItem):
         return obj.end_time - obj.start_time
+
