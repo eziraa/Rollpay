@@ -34,6 +34,8 @@ urlpatterns = [
          payment.PaymentView.as_view(), name='__start_payment_to_employee_by_year_month__'),
     path("salary/get/<employee_id>",
          salary_view.SalaryView.as_view(), name='__get_emp_salary__'),
+    path("remove/<employee_id>/<asset_type>/<asset_id>",
+         employee.EmployeeView.as_view(), name='__remove_asset_from_emp__'),
     path("allowance/add/<employee_id>/<allowance_type>",
          employee.EmployeeView.as_view(), name='__add_allowance_to_emp__'),
     path("deduction/add/<employee_id>/<deduction_type>",
