@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 
 #  Django modules
 from django.http import JsonResponse
+from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
 import json
 import datetime
@@ -129,27 +130,81 @@ class EmployeeView (APIView):
         except Exception as e:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, employee_id):
+    def put(self, request, employee_id, asset_type=None, asset_id=None):
         try:
             employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        data = json.loads(request.body)
+        if asset_type:
+            year = request.query_params['year']
+            curr_month = request.query_params['month']
+            asset_id = int(asset_id)
+            if year != "undefind" and curr_month != "undefined":
+                curr_month = Month(int(year), int(curr_month))
+                payments = Payment.objects.filter(
+                    employee_id=employee_id, month=curr_month)
+                if payments.exists():
+                    payment = payments.first()
 
-        if employee.salaries.count() > 0:
+                    def remove_allowance():
+                        allowance_to_remove = payment.allowances.filter(
+                            id=asset_id).first()
+                        if allowance_to_remove:
+                            payment.allowances.remove(allowance_to_remove)
+                            payment.save()
+                            serializer = MonthlyPaymentSerializer(
+                                payments, many=True)
+                            data = {
+                                **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+                                'payments': serializer.data,
+                            }
+                            return Response(data=data, status=status.HTTP_200_OK)
+                        else:
+                            return Response({"error": "Allowance cann't be removed"}, status=status.HTTP_400_BAD_REQUEST)
 
-            salary = employee.salaries.all().last()
-            salary.basic_salary = data['salary']
-            salary.save()
+                    def remove_deduction():
+                        deduction_to_remove = payment.deductions.filter(
+                            id=asset_id).first()
+                        if deduction_to_remove:
+                            payment.deductions.remove(deduction_to_remove)
+                            payment.save()
+                            serializer = MonthlyPaymentSerializer(
+                                payments, many=True)
+                            data = {
+                                **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+                                'payments': serializer.data,
+                            }
+                            return Response(data=data, status=status.HTTP_200_OK)
+                        else:
+                            return Response({"error": "Deduction cann't be removed"}, status=status.HTTP_400_BAD_REQUEST)
+
+                    def remove_overtime():
+                        overtime_to_remove = payment.overtimes.filter(
+                            id=asset_id).first()
+                        if overtime_to_remove:
+                            payment.overtimes.remove(overtime_to_remove)
+                            payment.save()
+                            serializer = MonthlyPaymentSerializer(
+                                payments, many=True)
+                            data = {
+                                **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+                                'payments': serializer.data,
+                            }
+                            return Response(data=data, status=status.HTTP_200_OK)
+                        else:
+                            return Response({"error": "overtime cann't be removed"}, status=status.HTTP_400_BAD_REQUEST)
+
+                    return remove_allowance() if asset_type == "allowance" else remove_deduction() if asset_type == "deduction" else remove_overtime() if asset_type == "overtime" else Response({"error": "Please have year and month to remove "}, status=status.HTTP_400_BAD_REQUEST)
+
+                else:
+                    return Response({"error": "No payment found for this month"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"error": "Please have year and month to remove "}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            salary = Salary.objects.create(
-                basic_salary=data['salary'], employee=employee)
-            salary.save()
-        data.pop('salary', None)  # Use pop to remove 'salary' safely
-        serializer = EmployeeSerializer(employee, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({"error": "Please have year and month to remove "}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 class PositionView(APIView):
