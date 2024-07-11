@@ -8,20 +8,13 @@ import {
   PositionListHeader,
   SuspendButton,
   Title,
-} from "./position.style";
-import {
-  closePositionRequested,
-  deletePositionRequested,
-  listPositionsRequested,
-  openPositionRequested,
-} from "../../../store/position/position-slice";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { MainContainer } from "../../utils/pages-utils/containers.style";
+} from "../../positions/position.style";
+import { useAppDispatch, useAppSelector } from "../../../../utils/custom-hook";
+import { MainContainer } from "../../../utils/pages-utils/containers.style";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
-import { ThreeDots } from "../../utils/loading/dots";
-import { usePosition } from "../../../hooks/position-hook";
-import { NoResult } from "../../utils/no-result/no-result";
+import { ThreeDots } from "../../../utils/loading/dots";
+import { NoResult } from "../../../utils/no-result/no-result";
 import {
   Caption,
   CustomTable,
@@ -30,33 +23,41 @@ import {
   TableData,
   TableHeader,
   TableRow,
-} from "../../utils/custom-table/custom-table";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { SmallSpinner } from "../../utils/spinner/spinner";
+} from "../../../utils/custom-table/custom-table";
 import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { useAllowance } from "../../../../hooks/allowance-hook";
+import {
+  closeAllowanceRequested,
+  deleteAllowanceRequested,
+  listAllowancesRequested,
+  openAllowanceRequested,
+} from "../../../../store/allowance/allowance-slice";
+import { SmallSpinner } from "../../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 
-export const PositionPage = () => {
+export const AllowancePage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, positions, curr_position } = usePosition();
+  const { task_error, task_finished, allowances, curr_allowance } =
+    useAllowance();
   const DELETE = "delete";
   const CLOSE = "close";
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    dispatcher(listPositionsRequested());
-  }, [curr_position]);
+    dispatcher(listAllowancesRequested());
+  }, [curr_allowance]);
   return (
     <MainContainer>
       <PositionListHeader>
-        <Title>Postions</Title>
+        <Title>Allowance</Title>
         <AddButton
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate("add-position");
-            dispatcher(listPositionsRequested());
+            navigate("add-allowance");
+            dispatcher(listAllowancesRequested());
           }}
         >
           <IoAddOutline /> Add New
@@ -66,30 +67,31 @@ export const PositionPage = () => {
         <Outlet />
         {!employee.task_finished ? (
           <ThreeDots size={2} />
-        ) : positions.length === 0 ? (
+        ) : allowances.length === 0 ? (
           <div>
-            <NoResult text="Not Positions found" />
+            <NoResult text="No allowances found" />
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Positions</Caption>
+            <Caption>List of Allowances</Caption>
             <TableHeader>
-              <HeaderTitle>Position Name</HeaderTitle>
-              <HeaderTitle>Initial Salary</HeaderTitle>
+              <HeaderTitle>Allowance Name</HeaderTitle>
+              <HeaderTitle>Allowance Rate</HeaderTitle>
               <HeaderTitle>Date of Start</HeaderTitle>
               <HeaderTitle>Status</HeaderTitle>
+
               <HeaderTitle>Date of End</HeaderTitle>
               <HeaderTitle>Actions</HeaderTitle>
             </TableHeader>
             <TableBody>
-              {positions.map((position, index) => {
+              {allowances.map((allowance, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableData>{position.position_name}</TableData>
-                    <TableData>{position.basic_salary}</TableData>
-                    <TableData> {position.start_date} </TableData>
+                    <TableData>{allowance.allowance_type}</TableData>
+                    <TableData>{allowance.allowance_rate}</TableData>
+                    <TableData>{allowance.start_at?.split("T")[0]}</TableData>
                     <TableData>
-                      {position.end_date ? (
+                      {allowance.end_at ? (
                         <span
                           style={{
                             color: "#f45",
@@ -109,20 +111,19 @@ export const PositionPage = () => {
                         </span>
                       )}{" "}
                     </TableData>
-                    <TableData>
-                      {position.end_date ? (
-                        position.end_date
-                      ) : (
-                        <i>Not Endded</i>
-                      )}
-                    </TableData>
+                    {allowance.end_at ? (
+                      <TableData>{allowance.end_at}</TableData>
+                    ) : (
+                      <TableData>Not ended</TableData>
+                    )}
+
                     <ActionBtnsContainer>
                       <EditButton
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          navigate(`edit-position/${position.id}`);
-                          dispatcher(listPositionsRequested());
+                          navigate(`edit-allowance/${allowance.id}`);
+                          dispatcher(listAllowancesRequested());
                         }}
                       >
                         <MdOutlineEdit />
@@ -132,14 +133,14 @@ export const PositionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(CLOSE);
-                          position.end_date
-                            ? dispatcher(openPositionRequested(position.id))
-                            : dispatcher(closePositionRequested(position.id));
+                          allowance.end_at
+                            ? dispatcher(openAllowanceRequested(allowance.id))
+                            : dispatcher(closeAllowanceRequested(allowance.id));
                         }}
                       >
                         {action === CLOSE && !task_error && !task_finished ? (
                           <SmallSpinner />
-                        ) : position.end_date ? (
+                        ) : allowance.end_at ? (
                           <>
                             <IoOpenOutline />
                           </>
@@ -154,7 +155,7 @@ export const PositionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(DELETE);
-                          dispatcher(deletePositionRequested(position.id));
+                          dispatcher(deleteAllowanceRequested(allowance.id));
                         }}
                       >
                         {action === DELETE && !task_error && !task_finished ? (

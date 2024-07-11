@@ -8,20 +8,13 @@ import {
   PositionListHeader,
   SuspendButton,
   Title,
-} from "./position.style";
-import {
-  closePositionRequested,
-  deletePositionRequested,
-  listPositionsRequested,
-  openPositionRequested,
-} from "../../../store/position/position-slice";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { MainContainer } from "../../utils/pages-utils/containers.style";
+} from "../../positions/position.style";
+import { useAppDispatch, useAppSelector } from "../../../../utils/custom-hook";
+import { MainContainer } from "../../../utils/pages-utils/containers.style";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
-import { ThreeDots } from "../../utils/loading/dots";
-import { usePosition } from "../../../hooks/position-hook";
-import { NoResult } from "../../utils/no-result/no-result";
+import { ThreeDots } from "../../../utils/loading/dots";
+import { NoResult } from "../../../utils/no-result/no-result";
 import {
   Caption,
   CustomTable,
@@ -30,33 +23,41 @@ import {
   TableData,
   TableHeader,
   TableRow,
-} from "../../utils/custom-table/custom-table";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { SmallSpinner } from "../../utils/spinner/spinner";
+} from "../../../utils/custom-table/custom-table";
 import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { useDeduction } from "../../../../hooks/deduction-hook";
+import {
+  closeDeductionRequested,
+  deleteDeductionRequested,
+  listDeductionsRequested,
+  openDeductionRequested,
+} from "../../../../store/deduction/deduction-slice";
+import { SmallSpinner } from "../../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
-
-export const PositionPage = () => {
+export const DeductionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, positions, curr_position } = usePosition();
+  const { task_error, task_finished, deductions, curr_deduction } =
+    useDeduction();
   const DELETE = "delete";
   const CLOSE = "close";
+
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    dispatcher(listPositionsRequested());
-  }, [curr_position]);
+    dispatcher(listDeductionsRequested());
+  }, [curr_deduction]);
   return (
     <MainContainer>
       <PositionListHeader>
-        <Title>Postions</Title>
+        <Title>Deduction</Title>
         <AddButton
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            navigate("add-position");
-            dispatcher(listPositionsRequested());
+            navigate("add-deduction");
+            dispatcher(listDeductionsRequested());
           }}
         >
           <IoAddOutline /> Add New
@@ -66,30 +67,31 @@ export const PositionPage = () => {
         <Outlet />
         {!employee.task_finished ? (
           <ThreeDots size={2} />
-        ) : positions.length === 0 ? (
+        ) : deductions.length === 0 ? (
           <div>
-            <NoResult text="Not Positions found" />
+            <NoResult text="No deductions found" />
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Positions</Caption>
+            <Caption>List of Deductions</Caption>
             <TableHeader>
-              <HeaderTitle>Position Name</HeaderTitle>
-              <HeaderTitle>Initial Salary</HeaderTitle>
+              <HeaderTitle>Deduction Name</HeaderTitle>
+              <HeaderTitle>Deduction Rate</HeaderTitle>
               <HeaderTitle>Date of Start</HeaderTitle>
               <HeaderTitle>Status</HeaderTitle>
+
               <HeaderTitle>Date of End</HeaderTitle>
               <HeaderTitle>Actions</HeaderTitle>
             </TableHeader>
             <TableBody>
-              {positions.map((position, index) => {
+              {deductions.map((deduction, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableData>{position.position_name}</TableData>
-                    <TableData>{position.basic_salary}</TableData>
-                    <TableData> {position.start_date} </TableData>
+                    <TableData>{deduction.deduction_type}</TableData>
+                    <TableData>{deduction.deduction_rate}</TableData>
+                    <TableData>{deduction.start_at?.split("T")[0]}</TableData>
                     <TableData>
-                      {position.end_date ? (
+                      {deduction.end_at ? (
                         <span
                           style={{
                             color: "#f45",
@@ -109,20 +111,19 @@ export const PositionPage = () => {
                         </span>
                       )}{" "}
                     </TableData>
-                    <TableData>
-                      {position.end_date ? (
-                        position.end_date
-                      ) : (
-                        <i>Not Endded</i>
-                      )}
-                    </TableData>
+                    {deduction.end_at ? (
+                      <TableData>{deduction.end_at}</TableData>
+                    ) : (
+                      <TableData>Not ended</TableData>
+                    )}
+
                     <ActionBtnsContainer>
                       <EditButton
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          navigate(`edit-position/${position.id}`);
-                          dispatcher(listPositionsRequested());
+                          navigate(`edit-deduction/${deduction.id}`);
+                          dispatcher(listDeductionsRequested());
                         }}
                       >
                         <MdOutlineEdit />
@@ -132,14 +133,14 @@ export const PositionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(CLOSE);
-                          position.end_date
-                            ? dispatcher(openPositionRequested(position.id))
-                            : dispatcher(closePositionRequested(position.id));
+                          deduction.end_at
+                            ? dispatcher(openDeductionRequested(deduction.id))
+                            : dispatcher(closeDeductionRequested(deduction.id));
                         }}
                       >
                         {action === CLOSE && !task_error && !task_finished ? (
                           <SmallSpinner />
-                        ) : position.end_date ? (
+                        ) : deduction.end_at ? (
                           <>
                             <IoOpenOutline />
                           </>
@@ -154,7 +155,7 @@ export const PositionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(DELETE);
-                          dispatcher(deletePositionRequested(position.id));
+                          dispatcher(deleteDeductionRequested(deduction.id));
                         }}
                       >
                         {action === DELETE && !task_error && !task_finished ? (

@@ -19,11 +19,11 @@ import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
 import { ThreeDots } from "../../utils/loading/dots";
-import { listOvertimesRequested } from "../../../store/overtime/overtime-slice";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { useEffect } from "react";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
+import { useUser } from "../../../hooks/user-hook";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information
@@ -33,7 +33,7 @@ export const EmployeeOvertime = () => {
   const { pathname } = useLocation();
   const { year, month, changeYear, changeMonth } = useYearMonthPagination();
   const { year: curr_year, month: curr_month, employee_id } = useParams();
-
+  const { user } = useUser();
   // Getting the base URL
   const baseUrl = curr_year
     ? pathname.slice(0, pathname.indexOf("/" + curr_year + "/"))
@@ -66,15 +66,17 @@ export const EmployeeOvertime = () => {
       <OvertimeHeader>
         <Outlet />
         <OvertimeTitle>Employee Overtime</OvertimeTitle>
-        <AddButton
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatcher(listOvertimesRequested());
-            navigate("add-overtime");
-          }}
-        >
-          Add
-        </AddButton>
+        {user?.role === "CLerk" && (
+          <AddButton
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigate("add-overtime");
+            }}
+          >
+            Add
+          </AddButton>
+        )}
       </OvertimeHeader>
       <OvertimeBody>
         {!task_finished ? (
