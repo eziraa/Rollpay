@@ -146,6 +146,7 @@ export const AddEmployee = () => {
         })
       );
       dispatcher(addEmpRequested(values));
+      navigate(-1);
     },
   });
 
