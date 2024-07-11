@@ -16,7 +16,8 @@ class OvertimeItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OvertimeItem
-        fields =( "overtime_type", "overtime_rate", "date_of_overtime", "length_of_overtime")
+        fields = ("id", "overtime_type", "overtime_rate",
+                  "date_of_overtime", "length_of_overtime")
 
     def get_overtime_type(self, obj):
         return obj.overtime.overtime_type
