@@ -6,7 +6,7 @@ import {
   header_css,
   title_css,
 } from "../../utils/containers/containers.style";
-import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
+import { custom_vertical_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 
 export const AllowanceContainer = styled.div`
   ${container_css}
@@ -27,6 +27,6 @@ export const AddButton = styled.button`
 
 export const AllowanceBody = styled.div`
   ${body_css}
-  ${custom_scroll_bar};
+  ${custom_vertical_scroll_bar};
   height: 60vh;
 `;

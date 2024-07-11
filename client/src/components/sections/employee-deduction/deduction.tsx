@@ -18,12 +18,12 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
-import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 import { ThreeDots } from "../../utils/loading/dots";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 import { useEffect } from "react";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
+import { useUser } from "../../../hooks/user-hook";
 
 export const EmployeeDeduction = () => {
   //Calling hooks and getting nucessary information
@@ -33,7 +33,7 @@ export const EmployeeDeduction = () => {
   const { pathname } = useLocation();
   const { year, month, changeYear, changeMonth } = useYearMonthPagination();
   const { year: curr_year, month: curr_month, employee_id } = useParams();
-
+  const { user } = useUser();
   // Getting necessary information
   const baseUrl = curr_year
     ? pathname.slice(0, pathname.indexOf("/" + curr_year + "/"))
@@ -66,16 +66,17 @@ export const EmployeeDeduction = () => {
       <Outlet />
       <DeductionHeader>
         <DeductionTitle>Employee Deduction</DeductionTitle>
-        <AddButton
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            navigate("add-deduction");
-            dispatcher(listDeductionsRequested());
-          }}
-        >
-          Add
-        </AddButton>
+        {user?.role === "CLerk" && (
+          <AddButton
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigate("add-deduction");
+            }}
+          >
+            Add
+          </AddButton>
+        )}
       </DeductionHeader>
       <DeductionBody>
         {!task_finished ? (

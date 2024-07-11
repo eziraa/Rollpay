@@ -20,7 +20,7 @@ const InitialEmpState: OvertimeState = {
   task_error: undefined,
   task_finished: true,
 };
-const EmployeeSlice = createSlice({
+const OvertimeSlice = createSlice({
   name: "overtime",
   initialState: InitialEmpState,
   reducers: {
@@ -163,6 +163,6 @@ export const {
   resetOvertimeState,
   getOvertimeDone,
   getOvertimeRequested,
-} = EmployeeSlice.actions;
+} = OvertimeSlice.actions;
 
-export default EmployeeSlice.reducer;
+export default OvertimeSlice.reducer;

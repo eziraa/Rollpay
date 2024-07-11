@@ -20,7 +20,7 @@ const InitialEmpState: DeductionState = {
   task_error: undefined,
   task_finished: true,
 };
-const EmployeeSlice = createSlice({
+const DeductionSlice = createSlice({
   name: "deduction",
   initialState: InitialEmpState,
   reducers: {
@@ -183,6 +183,6 @@ export const {
   openDeductionDone,
   openDeductionRequested,
   taskUnfinished,
-} = EmployeeSlice.actions;
+} = DeductionSlice.actions;
 
-export default EmployeeSlice.reducer;
+export default DeductionSlice.reducer;

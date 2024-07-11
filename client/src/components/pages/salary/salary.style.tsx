@@ -4,7 +4,7 @@ import { GoSearch } from "react-icons/go";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { Input} from "../../utils/form-elements/form.style";
 import { CustomTable } from "../../utils/custom-table/custom-table";
-import { custom_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
+import { custom_vertical_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 import {
   MainContainer,
   body,
@@ -75,7 +75,7 @@ export const SearchIcon = styled(GoSearch)`
 `;
 
 export const SalaryTable = styled(CustomTable)`
-  ${custom_scroll_bar};
+  ${custom_vertical_scroll_bar};
   width: fit-content;
   padding: 7px;
   height: 62vh;

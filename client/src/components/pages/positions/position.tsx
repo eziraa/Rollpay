@@ -33,21 +33,20 @@ import {
 } from "../../utils/custom-table/custom-table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { CiPause1 } from "react-icons/ci";
-import { VscDebugStart } from "react-icons/vsc";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
+import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 
 export const PositionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, positions } = usePosition();
+  const { task_error, task_finished, positions, curr_position } = usePosition();
   const DELETE = "delete";
   const CLOSE = "close";
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listPositionsRequested());
-  }, []);
+  }, [curr_position]);
   return (
     <MainContainer>
       <PositionListHeader>
@@ -60,7 +59,7 @@ export const PositionPage = () => {
             dispatcher(listPositionsRequested());
           }}
         >
-          Add Position
+          <IoAddOutline /> Add New
         </AddButton>
       </PositionListHeader>
       <PositionListBody>
@@ -73,19 +72,15 @@ export const PositionPage = () => {
           </div>
         ) : (
           <CustomTable>
-            <thead>
-              <tr>
-                <Caption>List of Positions</Caption>
-              </tr>
-              <TableHeader>
-                <HeaderTitle>Position Name</HeaderTitle>
-                <HeaderTitle>Initial Salary</HeaderTitle>
-                <HeaderTitle>Date of Start</HeaderTitle>
-                <HeaderTitle>Status</HeaderTitle>
-                <HeaderTitle>Date of End</HeaderTitle>
-                <HeaderTitle>Actions</HeaderTitle>
-              </TableHeader>
-            </thead>
+            <Caption>List of Positions</Caption>
+            <TableHeader>
+              <HeaderTitle>Position Name</HeaderTitle>
+              <HeaderTitle>Initial Salary</HeaderTitle>
+              <HeaderTitle>Date of Start</HeaderTitle>
+              <HeaderTitle>Status</HeaderTitle>
+              <HeaderTitle>Date of End</HeaderTitle>
+              <HeaderTitle>Actions</HeaderTitle>
+            </TableHeader>
             <TableBody>
               {positions.map((position, index) => {
                 return (
@@ -146,11 +141,11 @@ export const PositionPage = () => {
                           <SmallSpinner />
                         ) : position.end_date ? (
                           <>
-                            <VscDebugStart />
+                            <IoOpenOutline />
                           </>
                         ) : (
                           <>
-                            <CiPause1 />
+                            <MdOutlineClose />
                           </>
                         )}
                       </SuspendButton>
