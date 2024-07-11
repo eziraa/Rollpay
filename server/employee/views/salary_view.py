@@ -9,7 +9,7 @@ from employee.utils.search import Search
 from employee.serializers.employee import EmployeeSerializer
 from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerializer
 from employee.views.employee import StandardResultsSetPagination
-from ..models import Employee, Payment
+from ..models import *
 import month
 
 
@@ -61,10 +61,33 @@ class SalaryView(APIView):
                 # for employee in employees:
                 #     for year in range(2022, 2025):
                 #         for curent_month in range(1, 13):
-                #             curr_month = month.Month(year, curent_month)
-                #             payment = Payment.objects.create(
-                #                 employee=employee, month=curr_month, salary=employee.salary)
-                #             payment.save()
+                #             if year <= 2024 and curent_month <= 7:
+                #                 curr_month = month.Month(year, curent_month)
+                #                 if Payment.objects.filter(month=curr_month, employee=employee).exists():
+                #                     continue
+                #                 salary = employee
+                #                 print(EmployeeSerializer(employee).data)
+
+                #                 payment = Payment.objects.create(
+                #                     employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary)
+                #                 payment.save()
+                #                 for allowance in Allowance.objects.all():
+                #                     if payment.allowances.filter(allowance=allowance):
+                #                         continue
+                #                     allowance = AllowanceItem.objects.create(
+                #                         allowance=allowance, payment=payment)
+                #                     allowance.save()
+                #                 # for overtime in Overtime.objects.all():
+                #                 #     overtime = OvertimeItem.objects.create(
+                #                 #         overtime=overtime, payment=payment)
+                #                 for deduction in Deduction.objects.all():
+                #                     if payment.deductions.filter(deduction=deduction):
+                #                         continue
+                #                     deduction = DeductionItem.objects.create(
+                #                         deduction=deduction, payment=payment)
+                #                     deduction.save()
+                #             else:
+                #                 break
                 queryset = Payment.objects.all().order_by("month")
                 if curr_month and year:
                     try:
