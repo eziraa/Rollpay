@@ -24,6 +24,7 @@ import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hoo
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
+import { useUser } from "../../../hooks/user-hook";
 
 export const EmployeeAllowance = () => {
   //--- Calling hooks and getting necessary information ---
@@ -31,6 +32,7 @@ export const EmployeeAllowance = () => {
   const navigate = useNavigate();
   const dispatcher = useAppDispatch();
   const { pathname } = useLocation();
+  const { user } = useUser();
 
   const { year, month, changeYear, changeMonth } = useYearMonthPagination();
 
@@ -64,15 +66,17 @@ export const EmployeeAllowance = () => {
       <AllowanceHeader>
         <Outlet />
         <AllowanceTitle>Employee Allowance</AllowanceTitle>
-        <AddButton
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            navigate("add-allowance");
-          }}
-        >
-          Add
-        </AddButton>
+        {user?.role === "CLerk" && (
+          <AddButton
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigate("add-allowance");
+            }}
+          >
+            Add
+          </AddButton>
+        )}
       </AllowanceHeader>
       <AllowanceBody>
         {!task_finished ? (

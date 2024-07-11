@@ -33,10 +33,8 @@ import {
 } from "../../utils/custom-table/custom-table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { CiPause1 } from "react-icons/ci";
-import { VscDebugStart } from "react-icons/vsc";
-import { MdOutlineEdit } from "react-icons/md";
-import { IoAddOutline } from "react-icons/io5";
+import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
+import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 
 export const PositionPage = () => {
   const employee = useAppSelector((state) => state.employee);
@@ -143,11 +141,11 @@ export const PositionPage = () => {
                           <SmallSpinner />
                         ) : position.end_date ? (
                           <>
-                            <VscDebugStart />
+                            <IoOpenOutline />
                           </>
                         ) : (
                           <>
-                            <CiPause1 />
+                            <MdOutlineClose />
                           </>
                         )}
                       </SuspendButton>

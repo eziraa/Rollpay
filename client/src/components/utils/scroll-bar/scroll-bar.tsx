@@ -13,7 +13,7 @@ export const custom_vertical_scroll_bar = css`
 `;
 
 export const custom_horizontal_scroll_bar = css`
-  overflow-y: scroll;
+  overflow-x: scroll;
   &::-webkit-scrollbar {
     width: 0.2rem;
   }

@@ -47,6 +47,7 @@ export const UserProfileHeader = styled.div`
   gap: 1rem;
   width: 90%;
   padding: 1rem 2rem;
+  position: relative;
 `;
 
 export const UserProfileContent = styled.div`
