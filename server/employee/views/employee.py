@@ -19,7 +19,7 @@ from employee.serializers.position import PositionSerializer
 from employee.permissions.clerk_permission import IsUserInGroupWithClerk
 from employee.serializers.payment import MonthlyPaymentSerializer
 from employee.views.utils.pagination import StandardResultsSetPagination
-from ..models import Employee, Payment, Salary, Position, Allowance, Deduction, OvertimeItem, Overtime
+from ..models import *
 
 
 class EmployeeView (APIView):
@@ -218,39 +218,48 @@ class SalaryManager:
 
     @staticmethod
     def add_allowance(allowance_type: str, month: Month, employee: Employee):
+        allowance = Allowance.objects.get(allowance_type=allowance_type)
         emp_payment = Payment.objects.filter(
             month=month, employee=employee)
         if emp_payment.exists():
-            if emp_payment.first().allowances.filter(allowance_type=allowance_type).exists():
+            payment = emp_payment.first()
+            if payment.allowances.filter(allowance=allowance).exists():
                 return JsonResponse({'error': 'This allowance already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                emp_payment.first().allowances.add(
-                    Allowance.objects.get(allowance_type=allowance_type))
-                emp_payment.first().save()
+                allowance_item = AllowanceItem.objects.create(
+                    allowance=allowance, payment=payment)
+                allowance_item.save()
+
         else:
             payment = Payment.objects.create(
                 employee=employee, month=month, salary=employee.salaries.all().last().basic_salary)
-            payment.allowances.add(
-                Allowance.objects.get(allowance_type=allowance_type))
             payment.save()
+            allowance_item = AllowanceItem.objects.create(
+                allowance=allowance, payment=payment)
+            allowance_item.save()
+
 
     @staticmethod
     def add_deduction(deduction_type: str, month: Month, employee: Employee):
+        deduction = Deduction.objects.get(deduction_type=deduction_type)
         emp_payment = Payment.objects.filter(
             month=month, employee=employee)
         if emp_payment.exists():
-            if emp_payment.first().deductions.filter(deduction_type=deduction_type).exists():
-                return False
+            payment = emp_payment.first()
+            if payment.deductions.filter(deduction=deduction).exists():
+                return JsonResponse({'error': 'This deduction already exists in this employee'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                emp_payment.first().deductions.add(
-                    Deduction.objects.get(deduction_type=deduction_type))
-                emp_payment.first().save()
+                deduction_item = DeductionItem.objects.create(
+                    deduction=deduction, payment=payment)
+                deduction_item.save()
+
         else:
             payment = Payment.objects.create(
                 employee=employee, month=month, salary=employee.salaries.all().last().basic_salary)
-            payment.deductions.add(
-                Deduction.objects.get(deduction_type=deduction_type))
             payment.save()
+            deduction_item = DeductionItem.objects.create(
+                deduction=deduction, payment=payment)
+            deduction_item.save()
 
             return True
 
