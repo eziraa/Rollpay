@@ -6,6 +6,7 @@ import {
   EditButton,
   PositionListBody,
   PositionListHeader,
+  SuspendButton,
   Title,
 } from "../positions/position.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
@@ -26,15 +27,24 @@ import {
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDeduction } from "../../../hooks/deduction-hook";
-import { deleteDeductionRequested, listDeductionsRequested } from "../../../store/deduction/deduction-slice";
+import {
+  closeDeductionRequested,
+  deleteDeductionRequested,
+  listDeductionsRequested,
+  openDeductionRequested,
+} from "../../../store/deduction/deduction-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
+import { VscDebugStart } from "react-icons/vsc";
+import { CiPause1 } from "react-icons/ci";
 export const DeductionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
   const { task_error, task_finished, deductions, curr_deduction } =
     useDeduction();
   const DELETE = "delete";
+  const CLOSE = "close";
+
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
@@ -70,6 +80,8 @@ export const DeductionPage = () => {
               <HeaderTitle>Deduction Name</HeaderTitle>
               <HeaderTitle>Deduction Rate</HeaderTitle>
               <HeaderTitle>Date of Start</HeaderTitle>
+              <HeaderTitle>Status</HeaderTitle>
+
               <HeaderTitle>Date of End</HeaderTitle>
               <HeaderTitle>Actions</HeaderTitle>
             </TableHeader>
@@ -79,11 +91,30 @@ export const DeductionPage = () => {
                   <TableRow key={index}>
                     <TableData>{deduction.deduction_type}</TableData>
                     <TableData>{deduction.deduction_rate}</TableData>
+                    <TableData>{deduction.start_at?.split("T")[0]}</TableData>
                     <TableData>
-                      {deduction.date_of_start?.split("T")[0]}
+                      {deduction.end_at ? (
+                        <span
+                          style={{
+                            color: "#f45",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Closed
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            color: "#04d574",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Active
+                        </span>
+                      )}{" "}
                     </TableData>
-                    {deduction.date_of_end ? (
-                      <TableData>{deduction.date_of_end}</TableData>
+                    {deduction.end_at ? (
+                      <TableData>{deduction.end_at}</TableData>
                     ) : (
                       <TableData>Not ended</TableData>
                     )}
@@ -98,8 +129,29 @@ export const DeductionPage = () => {
                         }}
                       >
                         <MdOutlineEdit />
-                        Edit
                       </EditButton>
+                      <SuspendButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setAction(CLOSE);
+                          deduction.end_at
+                            ? dispatcher(openDeductionRequested(deduction.id))
+                            : dispatcher(closeDeductionRequested(deduction.id));
+                        }}
+                      >
+                        {action === CLOSE && !task_error && !task_finished ? (
+                          <SmallSpinner />
+                        ) : deduction.end_at ? (
+                          <>
+                            <VscDebugStart />
+                          </>
+                        ) : (
+                          <>
+                            <CiPause1 />
+                          </>
+                        )}
+                      </SuspendButton>
                       <DeleteButton
                         onClick={(e) => {
                           e.preventDefault();
@@ -113,7 +165,6 @@ export const DeductionPage = () => {
                         ) : (
                           <>
                             <RiDeleteBin6Line />
-                            Delete
                           </>
                         )}
                       </DeleteButton>

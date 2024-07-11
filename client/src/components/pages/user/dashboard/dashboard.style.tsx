@@ -2,7 +2,10 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../../../utils/convertor/add-opacity-color";
 import {
   column_template_al_center,
+  column_template_al_end,
   column_template_al_start,
+  column_template_js_center,
+  column_template_js_end,
   column_template_js_start,
   row_template_al_center,
   row_template_al_end,
@@ -14,13 +17,16 @@ import { place_center } from "../../../utils/flexbox/place-center.style";
 import { mini_shadow } from "../../../utils/shadows/shadows.style";
 import { ThemeProps } from "../../../../typo/theme/theme";
 import { NormalBlurredText } from "../../../utils/titles/titles";
+import { custom_scroll_bar } from "../../../utils/scroll-bar/scroll-bar";
 
 export const DashboardContainer = styled.div`
   display: flex;
   ${column_template_al_start}
   justify-content: center;
-  height: fit-content;
+  height: 100%;
   padding: 1rem;
+  padding-top: 2rem;
+  ${custom_scroll_bar}
 `;
 
 export const DashBoardTitle = styled.h1`
@@ -52,14 +58,19 @@ export const DashBoardCard = styled.div`
 `;
 
 export const CardBody = styled.div`
-  ${row_template_al_center};
-  justify-content: center;
-  gap: 1rem;
+  ${row_template_js_space_between};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  padding: 2rem 0;
 `;
 
 export const DataBox = styled.div`
-  ${column_template_al_start}
-  justify-content: center;
+  ${column_template_al_end}
+  width: 100%;
+  justify-content: end;
   gap: 1rem;
 `;
 
@@ -92,8 +103,6 @@ export const BarGraphContainer = styled.div`
   border-radius: 1rem;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.02, theme.colors.primary)};
-  height: 50vh;
-  width: fit-content;
   margin: 1rem;
   padding: 1rem;
 `;
@@ -129,7 +138,9 @@ export const GraphKey = styled.div`
 export const GraphContainer = styled.div`
   ${place_center};
   padding: 2rem;
+  gap: 2.5rem;
   color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+  position: relative;
 `;
 
 export const VerticalAxis = styled.div`
@@ -151,11 +162,37 @@ export const HorizontalAxis = styled.div`
   width: 100%;
 `;
 
+interface AxisProps extends ThemeProps {
+  colors: string[];
+}
+
 export const DataVerticalAxis = styled.div`
+  ${column_template_js_end};
+  align-items: end;
+  height: 100%;
+  width: fit-content;
+`;
+export const BarsContainer = styled.div<AxisProps>`
   ${row_template_al_end};
   align-items: end;
   height: 100%;
   width: fit-content;
+  position: relative;
+  cursor: pointer;
+  padding-bottom: 1.5rem;
+  &:hover {
+    .toast {
+      display: flex;
+    }
+    .data {
+      ${({ colors }) => {
+        return colors.map(
+          (color, index) => `&:nth-child(${index + 1}){
+      background-image: linear-gradient(to top, white, ${color});}`
+        );
+      }}
+    }
+  }
 `;
 
 export const DataHorizontalAxis = styled.div`
@@ -163,6 +200,9 @@ export const DataHorizontalAxis = styled.div`
   grid-template-columns: repeat(13, 1fr);
   width: 100%;
   gap: 2rem;
+  &:first-child {
+    border-bottom: 0.1rem solid #8b8b8b;
+  }
 `;
 
 interface DataProps extends ThemeProps {
@@ -175,7 +215,11 @@ export const GraphData = styled.div<DataProps>`
   width: 2rem;
   height: ${({ height }) => height}rem;
   border-radius: 1rem 1rem 0 0;
-  background-image: linear-gradient(to top, white, ${({ color }) => color});
+
+  background-image: linear-gradient(to top, white, #9f9f9f);
+  &:hover {
+    background-image: linear-gradient(to top, white, ${({ color }) => color});
+  }
 `;
 
 export const GraphFooter = styled.div`
@@ -195,8 +239,44 @@ export const BlurredText = styled(NormalBlurredText)`
   text-align: end;
 `;
 
+export const ToastContainer = styled.div`
+  ${place_center}
+  padding: 1rem;
+  ${column_template_js_center};
+  align-items: flex-start;
+  border-radius: 1rem;
+  background-color: #1b0f1e;
+  color: #e4e4e4 !important;
+  position: absolute;
+  left: 105%;
+  bottom: 50%;
+  display: none;
+  width: 10rem;
+  gap: 0.5rem;
+  z-index: 10;
+`;
 
+export const ToastRow = styled.div`
+  ${row_template_js_start}
+  align-items: center;
+  gap: 1rem;
+`;
 
+export const LimitContainer = styled.div`
+  ${place_center}
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 3.5rem;
+  right: 0;
+  height: 100%;
+  width: 92%;
+`;
 
+export const BrokenLine = styled.div`
+  width: 100%;
+  height: 3.2rem;
+  border-bottom: 1px #434343 dashed;
+`;
 
 

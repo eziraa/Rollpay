@@ -13,10 +13,12 @@ import {
 import AllowanceAPI from "../../services/allowance-api";
 import {
   addAllowanceDone,
+  closeAllowanceDone,
   deleteAllowanceDone,
   editAllowanceDone,
   getAllowanceDone,
   listAllowanceDone,
+  taskUnfinished,
   unfinishedAdd,
 } from "./allowance-slice";
 function* addAllowance(action: PayloadAction<AddAllowanceParams>) {
@@ -64,6 +66,117 @@ function* addAllowance(action: PayloadAction<AddAllowanceParams>) {
         duration: 3,
       })
     );
+  }
+}
+function* CLoseAllowance(action: PayloadAction<string>) {
+  try {
+    const response: AddAllowanceResponse = yield call(
+      AllowanceAPI.closeAllowance,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(closeAllowanceDone(response.allowance));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Closing Allowance",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(taskUnfinished(response.error || "Can't close allowance"));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(taskUnfinished(response.error || "Can't close allowance"));
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to close allowances",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Closing Allowance",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    // TODO:
+  }
+}
+
+function* OpenAllowance(action: PayloadAction<string>) {
+  try {
+    const response: AddAllowanceResponse = yield call(
+      AllowanceAPI.openAllowance,
+      action.payload
+    );
+    if (response.code === 201) {
+      yield put(closeAllowanceDone(response.allowance));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Opening Allowance",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(taskUnfinished(response.error || "Can't open allowance"));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      yield put(taskUnfinished(response.error || "Can't open allowance"));
+      // window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "You are not allowed to open allowances",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Open Allowance",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    // TODO:
   }
 }
 
@@ -333,4 +446,6 @@ export function* watchAllowanceRequest() {
   yield takeEvery("allowance/listAllowancesRequested", GetAllowances);
   yield takeEvery("allowance/deleteAllowanceRequested", DeleteAllowance);
   yield takeEvery("allowance/getAllowanceRequested", GetAllowance);
+  yield takeEvery("allowance/openAllowanceRequested", OpenAllowance);
+  yield takeEvery("allowance/closeAllowanceRequested", CLoseAllowance);
 }

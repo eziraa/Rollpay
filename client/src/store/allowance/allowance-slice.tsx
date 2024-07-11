@@ -72,6 +72,25 @@ const EmployeeSlice = createSlice({
     tryingToDelete: (state) => {
       state.task_finished = false;
     },
+    closeAllowanceRequested: (__, _: PayloadAction<string>) => {},
+    closeAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.allowances = state.allowances.map((allowance) =>
+        allowance.id === action.payload.id ? action.payload : allowance
+      );
+    },
+    openAllowanceRequested: (__, _: PayloadAction<string>) => {},
+    openAllowanceDone: (state, action: PayloadAction<Allowance>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.allowances = state.allowances.map((allowance) =>
+        allowance.id === action.payload.id ? action.payload : allowance
+      );
+    },
+    taskUnfinished: (state, action: PayloadAction<string>) => {
+      state.task_error = action.payload;
+    },
     deleteAllowanceRequested: (__, _: PayloadAction<string>) => {},
     addSearched: (state, action: PayloadAction<Allowance[]>) => {
       state.query_set = action.payload;
@@ -156,6 +175,11 @@ export const {
   resetAllowanceState,
   getAllowanceRequested,
   getAllowanceDone,
+  closeAllowanceRequested,
+  closeAllowanceDone,
+  openAllowanceDone,
+  openAllowanceRequested,
+  taskUnfinished,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

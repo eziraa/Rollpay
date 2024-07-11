@@ -12,4 +12,8 @@ urlpatterns = [
          name='__delete_deduction__'),
     path('get/<deduction_id>', deduction.DeductionView.as_view(),
          name='__get_deduction__'),
+    path('close/<deduction_id>', deduction.DeductionView.as_view(),
+         name='__close_deduction__'),
+    path('open/<deduction_id>', deduction.DeductionView.as_view(),
+         name='__open_deduction__'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

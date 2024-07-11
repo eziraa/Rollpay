@@ -6,6 +6,7 @@ import {
   EditButton,
   PositionListBody,
   PositionListHeader,
+  SuspendButton,
   Title,
 } from "../positions/position.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
@@ -26,15 +27,23 @@ import {
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useAllowance } from "../../../hooks/allowance-hook";
-import { deleteAllowanceRequested, listAllowancesRequested } from "../../../store/allowance/allowance-slice";
+import {
+  closeAllowanceRequested,
+  deleteAllowanceRequested,
+  listAllowancesRequested,
+  openAllowanceRequested,
+} from "../../../store/allowance/allowance-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
+import { VscDebugStart } from "react-icons/vsc";
+import { CiPause1 } from "react-icons/ci";
 export const AllowancePage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
   const { task_error, task_finished, allowances, curr_allowance } =
     useAllowance();
   const DELETE = "delete";
+  const CLOSE = "close";
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
@@ -70,6 +79,8 @@ export const AllowancePage = () => {
               <HeaderTitle>Allowance Name</HeaderTitle>
               <HeaderTitle>Allowance Rate</HeaderTitle>
               <HeaderTitle>Date of Start</HeaderTitle>
+              <HeaderTitle>Status</HeaderTitle>
+
               <HeaderTitle>Date of End</HeaderTitle>
               <HeaderTitle>Actions</HeaderTitle>
             </TableHeader>
@@ -79,11 +90,30 @@ export const AllowancePage = () => {
                   <TableRow key={index}>
                     <TableData>{allowance.allowance_type}</TableData>
                     <TableData>{allowance.allowance_rate}</TableData>
+                    <TableData>{allowance.start_at?.split("T")[0]}</TableData>
                     <TableData>
-                      {allowance.date_of_start?.split("T")[0]}
+                      {allowance.end_at ? (
+                        <span
+                          style={{
+                            color: "#f45",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Closed
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            color: "#04d574",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Active
+                        </span>
+                      )}{" "}
                     </TableData>
-                    {allowance.date_of_end ? (
-                      <TableData>{allowance.date_of_end}</TableData>
+                    {allowance.end_at ? (
+                      <TableData>{allowance.end_at}</TableData>
                     ) : (
                       <TableData>Not ended</TableData>
                     )}
@@ -98,8 +128,29 @@ export const AllowancePage = () => {
                         }}
                       >
                         <MdOutlineEdit />
-                        Edit
                       </EditButton>
+                      <SuspendButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setAction(CLOSE);
+                          allowance.end_at
+                            ? dispatcher(openAllowanceRequested(allowance.id))
+                            : dispatcher(closeAllowanceRequested(allowance.id));
+                        }}
+                      >
+                        {action === CLOSE && !task_error && !task_finished ? (
+                          <SmallSpinner />
+                        ) : allowance.end_at ? (
+                          <>
+                            <VscDebugStart />
+                          </>
+                        ) : (
+                          <>
+                            <CiPause1 />
+                          </>
+                        )}
+                      </SuspendButton>
                       <DeleteButton
                         onClick={(e) => {
                           e.preventDefault();
@@ -113,7 +164,6 @@ export const AllowancePage = () => {
                         ) : (
                           <>
                             <RiDeleteBin6Line />
-                            Delete
                           </>
                         )}
                       </DeleteButton>

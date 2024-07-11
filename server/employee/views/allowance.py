@@ -7,7 +7,7 @@ from employee.serializers.allowance import AllowanceSerializer
 from django.http import JsonResponse
 import json
 from employee.views.utils.pagination import StandardResultsSetPagination
-
+import datetime
 
 class AllowanceView (APIView):
 
@@ -60,12 +60,20 @@ class AllowanceView (APIView):
     def put(self, request, allowance_id):
         try:
             allowance = Allowance.objects.get(pk=allowance_id)
-        except Allowance.DoesNotExist:
-            return Response({"error": "Allowance not found"}, status=status.HTTP_404_NOT_FOUND)
-        data = json.loads(request.body)
-        serializer = AllowanceSerializer(allowance, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except allowance.DoesNotExist:
+            return Response({"error": "allowance not found"}, status=status.HTTP_404_NOT_FOUND)
+        allowance.end_at = (datetime.datetime.now())
+        allowance.save()
+        serializer = AllowanceSerializer(allowance)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+    def patch(self, request, allowance_id):
+        try:
+            allowance = Allowance.objects.get(pk=allowance_id)
+        except allowance.DoesNotExist:
+            return Response({"error": "allowance not found"}, status=status.HTTP_404_NOT_FOUND)
+        allowance.end_at = None
+        allowance.save()
+        serializer = AllowanceSerializer(allowance)
+
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)

@@ -76,7 +76,25 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.deductions.splice(state.deductions.indexOf(action.payload), 1);
     },
-
+    closeDeductionRequested: (__, _: PayloadAction<string>) => {},
+    closeDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.deductions = state.deductions.map((deduction) =>
+        deduction.id === action.payload.id ? action.payload : deduction
+      );
+    },
+    openDeductionRequested: (__, _: PayloadAction<string>) => {},
+    openDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.task_finished = true;
+      state.task_error = "";
+      state.deductions = state.deductions.map((deduction) =>
+        deduction.id === action.payload.id ? action.payload : deduction
+      );
+    },
+    taskUnfinished: (state, action: PayloadAction<string>) => {
+      state.task_error = action.payload;
+    },
     listDeductionDone: (
       state,
       payload: PayloadAction<PaginatedDeductionResponse>
@@ -159,7 +177,12 @@ export const {
   closeDeductionTask,
   resetDeductionState,
   getDeductionDone,
-  getDeductionRequested
+  getDeductionRequested,
+  closeDeductionDone,
+  closeDeductionRequested,
+  openDeductionDone,
+  openDeductionRequested,
+  taskUnfinished,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
