@@ -8,6 +8,8 @@ import { watchDeductionRequest } from "../store/deduction/deduction-saga";
 import { watchAllowanceRequest } from "../store/allowance/allowance-saga";
 import { watchOvertimeRequest } from "../store/overtime/overtime-saga";
 import { watchStatisticsRequest } from "../store/statistics/statistics-saga";
+import { watchAssetRequest } from "../store/asset/asset-saga";
+
 export function* rootSaga() {
   yield all([
     watchSetFlashMessage(),
@@ -19,5 +21,6 @@ export function* rootSaga() {
     watchAllowanceRequest(),
     watchOvertimeRequest(),
     watchStatisticsRequest(),
+    watchAssetRequest(),
   ]);
 }
