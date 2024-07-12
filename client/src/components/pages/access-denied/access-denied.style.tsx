@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 // Styled components
 export const PageContainer = styled.div<ThemeProps>`
@@ -36,7 +37,7 @@ export const Button = styled.a`
   display: inline-block;
   padding: 10px 20px;
   background-color: #007bff;
-  color: white;
+  color: ${({ theme }) => addOpacityToColor(0.98, theme.colors.primary)};
   text-decoration: none;
   border-radius: 5px;
   margin-top: 20px;

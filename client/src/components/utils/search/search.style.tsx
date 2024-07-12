@@ -44,7 +44,7 @@ export const SearchInput = styled(Input)`
 
 export const SearchIcon = styled(GoSearch)`
   margin-left: 1rem;
-  color: #747272;
+  color: ${({ theme }) => theme.colors.primary};
   font-size: 2rem;
   cursor: pointer;
 `;
@@ -53,7 +53,7 @@ const icons_style = css`
   position: absolute;
   right: 1rem;
   top: 1rem;
-  color: #747272;
+  color: ${({ theme }) => theme.colors.primary};
   font-size: 2rem;
   cursor: pointer;
   &:hover {

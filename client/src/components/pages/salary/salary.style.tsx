@@ -69,8 +69,8 @@ export const SearchInput = styled(Input)`
 
 export const SearchIcon = styled(GoSearch)`
   margin-left: 1rem;
-  color: #747272;
-  font-size: 2rem;
+  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
+  font-size: 3rem;
   cursor: pointer;
 `;
 
@@ -86,8 +86,8 @@ export const SalaryTable = styled(CustomTable)`
 export const ExportButton = styled.div`
   width: fit-content;
   display: flex;
-  background-color: #1eaa74;
-  color: white;
+  background-color: ${({ theme }) => theme.buttons.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
   align-items: center;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
@@ -113,5 +113,5 @@ export const StartPaymentBtn = styled.button`
   font-size: 1.6rem;
   background-color: ${({ theme }) => theme.buttons.primary};
   border: none;
-  color: #fff;
+  color: ${({ theme }) => theme.backgrounds.primary};
 `;

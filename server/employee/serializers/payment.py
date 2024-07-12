@@ -1,9 +1,9 @@
 
 from decimal import Decimal
 from rest_framework import serializers
-from employee.serializers.allowance import AllowanceSerializer
+from employee.serializers.allowance import AllowanceItemSerializer
 from employee.serializers.salary import SalarySerializer
-from employee.serializers.deduction import DeductionSerializer
+from employee.serializers.deduction import DeductionItemSerializer
 from employee.serializers.overtime import OvertimeItemSerializer
 from employee.utils.salary_calculator import SalaryCalculator
 from ..models import Payment
@@ -50,13 +50,13 @@ class PaymentSerializer(serializers.ModelSerializer):
             return False
 
     def get_allowances(self, obj: Payment):
-        return AllowanceSerializer(obj.allowances, many=True).data
+        return AllowanceItemSerializer(obj.allowances.all(), many=True).data
 
     def get_deductions(self, obj: Payment):
-        return DeductionSerializer(obj.deductions, many=True).data
+        return DeductionItemSerializer(obj.deductions.all(), many=True).data
 
     def get_overtimes(self, obj: Payment):
-        return OvertimeItemSerializer(obj.overtimes, many=True).data
+        return OvertimeItemSerializer(obj.overtimes.all(), many=True).data
 
     def get_net_salary(self, obj: Payment):
         calculator = SalaryCalculator(obj)

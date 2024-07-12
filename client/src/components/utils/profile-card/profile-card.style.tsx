@@ -53,11 +53,11 @@ export const CancelButton = styled.button`
 
 export const SaveButton = styled.button`
   ${btn_css};
-  color: #ffffff;
+  color: ${({ theme }) => theme.backgrounds.primary};
 `;
 
 export const TextInput = styled.input`
   padding: 0.5rem;
   border-radius: 0.3rem;
-  border: 0.1rem solid #ccc;
+  border: 0.1rem solid ${({ theme }) => theme.backgrounds.primary};
 `;

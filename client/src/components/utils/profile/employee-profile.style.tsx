@@ -23,7 +23,7 @@ export const EmployeeeProfileContainer = styled.div`
 
 export const Button = styled.button`
   font-size: 1.6rem;
-  color: #ffffff;
+  color: ${({theme})=>theme.backgrounds.primary};
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;
@@ -60,7 +60,7 @@ export const ProfileContainer = styled.div<Props>`
 
 export const InputButton = styled.button`
   font-size: 1.2rem;
-  color: #ffffff;
+  color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
   border: none;
   border-radius: 0.5rem;
@@ -217,9 +217,9 @@ export const NavItem = styled.div<NavItemProps>`
 `;
 
 export const DeleteButton = styled(Button)`
-  background-color: white;
+  background-color: #f46262;
   border: 0.2rem solid #dc3545;
-  color: #dc3545;
+  color: #fbfbfb;
   &:hover {
     background-color: #dc3545;
     color: white;

@@ -22,6 +22,7 @@ import { PositionPage } from "../../components/pages/positions/position";
 import { AllowancePage } from "../../components/pages/allowances/allowances";
 import { DeductionPage } from "../../components/pages/deductions/deductions";
 import { OvertimePage } from "../../components/pages/overtimes/overtime";
+import { AddDocument } from "../../components/sections/add-document/add-document";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const ClerkRouterConfig = () => (
   <Route path="/" element={<HomePage />}>
@@ -30,6 +31,7 @@ export const ClerkRouterConfig = () => (
       <Route path="add-employee" element={<AddEmployee />}>
         <Route path="add-position" element={<AddPosition />} />
       </Route>
+      <Route path="upload-document" element={<AddDocument />} />
     </Route>
     <Route path="/positions" element={<PositionPage />}>
       <Route path="add-position" element={<AddPosition />} />

@@ -37,14 +37,14 @@ class SalaryCalculator:
 
     def calc_gross_salary(self):
         allowances_sum = sum(
-            [allowance.allowance_rate for allowance in self.payment.allowances.all()])
+            [allowance.allowance.allowance_rate for allowance in self.payment.allowances.all()])
         self.gross_salary = float(
             self.payment.salary + allowances_sum * self.payment.salary / 100)
 
     def calc_total_deduction(self):
         self.total_deduction = 0
         for deduction in self.payment.deductions.all():
-            self.total_deduction += deduction.deduction_rate * self.payment.salary / 100
+            self.total_deduction += deduction.deduction.deduction_rate * self.payment.salary / 100
         self.calc_income_tax()
         if self.income_tax:
             self.total_deduction = float(

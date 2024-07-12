@@ -58,14 +58,15 @@ export const MenuItem = styled.div<MenuItemProps>`
   font-size: 2rem;
   margin: 0.3rem 1rem;
   border-radius: 1rem;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ active, theme }) =>
+    active ? theme.backgrounds.primary : theme.colors.primary};
   cursor: pointer;
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
     background-color: ${({ theme }) => theme.colors.secondary};
   }
   border-bottom: 0.4rem solid transparent;
-  background-color: ${({ active }) => (active ? "#8b8b8b78 " : "transparent")};
+  background-color: ${({ active, theme }) =>
+    active ? theme.buttons.primary : "transparent"};
   position: relative;
 `;
 
@@ -81,7 +82,8 @@ export const SubMenuContainer = styled.div`
   border-radius: 0.5rem;
 
   transition: all 0.5s ease;
-  border-left: 0.3rem solid #23232378;
+  border-left: 0.3rem solid
+    ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
 `;
 
 interface SubMenuItemProps extends ThemeProps {
@@ -96,13 +98,14 @@ export const SubMenuItem = styled.div<SubMenuItemProps>`
   padding: 0.5rem 1rem;
   text-align: left;
   font-size: 1.6rem;
-  color: #0f0f0f;
-  background-color: ${({ active }) => (active ? "#d9e3df" : "transparent")};
+  color: ${({ theme }) => theme.colors.primary};
+
+  background-color: ${({ active }) => (active ? "#8b8b8b78 " : "transparent")};
+
   cursor: pointer;
   transition: all 0.5s ease;
   &:hover {
-    background-color: #0f0f0f0d;
-    color: ${({ theme }) => theme.colors.primary};
+    background-color: #a2a2a278;
   }
 `;
 export const MenuItemText = styled.h1`

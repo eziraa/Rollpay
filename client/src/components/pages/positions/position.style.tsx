@@ -3,6 +3,7 @@ import { Button } from "../../utils/form-elements/form.style";
 import styled from "styled-components";
 
 import { container } from "../../utils/pages-utils/containers.style";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const PositionListContainer = styled.div<ThemeProps>`
   ${container}
@@ -61,7 +62,8 @@ export const ActionButton = styled.button`
   display: flex;
   align-items: center;
   background-color: transparent;
-  border: 0.1rem solid #2f8236;
+  border: 0.1rem solid
+    ${({ theme }) => addOpacityToColor(0.85, theme.colors.primary)};
   border-radius: 0.5rem;
   outline: none;
   cursor: pointer;
@@ -70,9 +72,10 @@ export const ActionButton = styled.button`
   padding: 0.5rem 1rem;
   gap: 0.3rem;
   /* flex: 1; */
+  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   &:hover {
     background-color: #2f8236;
-    color: #ffffff;
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   }
 `;
 
@@ -80,14 +83,12 @@ export const EditButton = styled(ActionButton)`
   border: none;
   /* flex: 0.6; */
   &:hover {
-    background-color: #69a199;
     color: #ffffff;
   }
 `;
 export const SuspendButton = styled(ActionButton)`
   border: none;
   &:hover {
-    background-color: #69a199;
     color: #ffffff;
   }
 `;
@@ -96,7 +97,6 @@ export const DeleteButton = styled(ActionButton)`
   color: #dc3545;
   border: none;
   &:hover {
-    background-color: #69a199;
     color: #ffffff;
   }
 `;

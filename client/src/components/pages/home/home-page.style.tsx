@@ -20,6 +20,7 @@ export const HamburgerMenu = styled.div<ThemeProps>`
   margin-left: 1rem;
   align-self: flex-start;
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 

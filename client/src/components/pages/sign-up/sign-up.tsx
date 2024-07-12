@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { signUpRequested } from "../../../store/user/user-slice";
 import { CustomLink, LinkContainer, Text } from "../login/login.style";
 import { Link } from "react-router-dom";
+import { ACCESS_TOKEN } from "../../../constants/token-constants";
 
 const SignUp = () => {
   const dispatcher = useAppDispatch();
@@ -34,6 +35,7 @@ const SignUp = () => {
       initialValues,
       validationSchema: SignUpSchema,
       onSubmit: (values) => {
+        localStorage.removeItem(ACCESS_TOKEN);
         dispatcher(signUpRequested(values));
       },
     });

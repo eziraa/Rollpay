@@ -85,7 +85,7 @@ export const EmployeeInfoContainer = styled.div`
 
 export const Button = styled.button`
   font-size: 1.6rem;
-  color: #ffffff;
+  color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;
