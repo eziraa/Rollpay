@@ -26,6 +26,7 @@ import { useAppDispatch } from "../../../utils/custom-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
 import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
+import { stringDay } from "../../utils/day/string-day";
 
 export const EmployeeAllowance = () => {
   //--- Calling hooks and getting necessary information ---
@@ -110,8 +111,12 @@ export const EmployeeAllowance = () => {
                     return (
                       <TableRow key={index}>
                         <TableData>{allowance.allowance_type}</TableData>
-                        <TableData>{allowance.allowance_rate}</TableData>
-                        <TableData>{payment.payment_date}</TableData>
+                        <TableData className=" italic">
+                          {allowance.allowance_rate}%
+                        </TableData>
+                        <TableData className=" italic">
+                          {stringDay(new Date(allowance.date_of_given))}
+                        </TableData>
                         <TableData>
                           <span
                             onClick={(e) => {

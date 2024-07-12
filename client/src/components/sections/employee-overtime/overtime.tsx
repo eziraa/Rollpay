@@ -25,6 +25,7 @@ import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hoo
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
 import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
+import { stringDay } from "../../utils/day/string-day";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information
@@ -101,8 +102,9 @@ export const EmployeeOvertime = () => {
                   <TableHeader>
                     <HeaderTitle>Overtime Name</HeaderTitle>
                     <HeaderTitle>Overtime Value</HeaderTitle>
+                    <HeaderTitle>Start at</HeaderTitle>
+                    <HeaderTitle>End at</HeaderTitle>
                     <HeaderTitle>Length of Time</HeaderTitle>
-                    <HeaderTitle>Date of Given</HeaderTitle>
                     <HeaderTitle>Action</HeaderTitle>
                   </TableHeader>
                 </thead>
@@ -111,10 +113,17 @@ export const EmployeeOvertime = () => {
                     return (
                       <TableRow key={index}>
                         <TableData>{overtime.overtime_type}</TableData>
-                        <TableData>{overtime.overtime_rate}</TableData>
-                        <TableData>{overtime.length}</TableData>
+                        <TableData className="center-text italic">
+                          {overtime.overtime_rate}%
+                        </TableData>
                         <TableData>
-                          {new Date(payment.payment_date).toLocaleDateString()}
+                          {stringDay(new Date(overtime.start_time))}
+                        </TableData>
+                        <TableData>
+                          {stringDay(new Date(overtime.end_time))}
+                        </TableData>
+                        <TableData className="center-text italic">
+                          {overtime.length_of_overtime} hour
                         </TableData>
                         <TableData>
                           <span

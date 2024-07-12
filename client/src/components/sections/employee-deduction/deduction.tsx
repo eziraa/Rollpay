@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
 import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
+import { stringDay } from "../../utils/day/string-day";
 
 export const EmployeeDeduction = () => {
   //Calling hooks and getting nucessary information
@@ -110,9 +111,11 @@ export const EmployeeDeduction = () => {
                     return (
                       <TableRow key={index}>
                         <TableData>{deduction.deduction_type}</TableData>
-                        <TableData>{deduction.deduction_rate}</TableData>
+                        <TableData className="italic">
+                          {deduction.deduction_rate}%
+                        </TableData>
                         <TableData>
-                          {new Date(payment.payment_date).toLocaleDateString()}
+                          {stringDay(new Date(deduction.date_of_given))}
                         </TableData>
                         <TableData>
                           <span
