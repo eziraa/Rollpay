@@ -217,9 +217,9 @@ export const NavItem = styled.div<NavItemProps>`
 `;
 
 export const DeleteButton = styled(Button)`
-  background-color: white;
+  background-color: #f46262;
   border: 0.2rem solid #dc3545;
-  color: #dc3545;
+  color: #fbfbfb;
   &:hover {
     background-color: #dc3545;
     color: white;
