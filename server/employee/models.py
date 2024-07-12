@@ -18,21 +18,15 @@ class Role(models.Model):
     groups = models.ManyToManyField(Group, blank=False)
 
 
-class ProfilePicture(models.Model):
-    created_at = models.DateTimeField(auto_now=True)
-    profile_picture = models.ImageField(
-        upload_to=upload_to, default="photos/profile.png")
 
 
 class CustomUser(BaseUser):
     role = models.ForeignKey(
         Role, on_delete=models.DO_NOTHING, null=True, blank=True)
-    profile_picture = models.OneToOneField(
-        ProfilePicture, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.id = CustomUser.id_generator()
+    # def __init__(self, *args: Any, **kwargs: Any) -> None:
+    #     super().__init__(*args, **kwargs)
+    #     self.id = CustomUser.id_generator()
 
     @staticmethod
     def id_generator():
@@ -53,6 +47,13 @@ class CustomUser(BaseUser):
             generated_id += random.choice(numbers)
         return generated_id
 
+
+class ProfilePicture(models.Model):
+    created_at = models.DateTimeField(auto_now=True)
+    profile_picture = models.ImageField(
+        upload_to=upload_to, default="photos/profile.png")
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="profile_pictures")
 
 
 class Allowance(models.Model):
