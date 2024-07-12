@@ -3,7 +3,7 @@
 import { AxiosError } from "axios";
 import { LoginParams, SignUpParams } from "../typo/user/params";
 import api from "../config/api";
-import { SignUpResponse } from "../typo/user/response";
+import { SignUpResponse, UserResponse } from "../typo/user/response";
 import {
   ACCESS_TOKEN,
   CURRENT_USER,
@@ -40,8 +40,16 @@ const login = async (values: LoginParams) => {
       localStorage.setItem(ACCESS_TOKEN, res.data.access);
       localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
       localStorage.setItem(CURRENT_USER, JSON.stringify(res.data.employee));
+
       return {
-        employee: res.data.employee,
+        data: {
+          employee: res.data.employee,
+          username: res.data.username,
+          role: res.data.role[0],
+          user_id: res.data.user_id[0],
+          employeeId: res.data.employee_id[0],
+          profile_picture: res.data.profile_picture[0],
+        } as UserResponse,
         success: "User Logged in successfully",
         code: res.status,
       };
@@ -60,6 +68,7 @@ const login = async (values: LoginParams) => {
         code: err.response?.status,
       } as { error: string; code: number };
     });
+  console.log(response);
   return response;
 };
 
