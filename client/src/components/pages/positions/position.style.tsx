@@ -74,7 +74,7 @@ export const ActionButton = styled.button`
   /* flex: 1; */
   color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   &:hover {
-    background-color: #2f8236;
+    background-color: ${({ theme }) => theme.table.tableRowHover};
     color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   }
 `;
