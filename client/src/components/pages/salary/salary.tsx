@@ -25,23 +25,28 @@ import {
 } from "../display-employee/display-employee.style";
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
 import {
-  getSalariesRequested,
   loadNextPaymentListPage,
   searchPaymentRequested,
 } from "../../../store/salary/salary-slice";
 import Pagination from "../../sections/pagination/pagination";
 import LoadingSpinner from "../../utils/spinner/spinner";
-import { getFormattedMonth, getNamedMonth } from "./utils";
+import {
+  getAllowancesTypes,
+  getDeductionTypes,
+  getFormattedMonth,
+  getNamedMonth,
+  getRate,
+  getSalary,
+} from "./utils";
 import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
-import * as XLSX from "xlsx";
 import { usePagination } from "../../../hooks/use-pagination";
 import { useNavigate, useParams } from "react-router";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+
 import { TbFileTypePdf } from "react-icons/tb";
 import { RiFileExcel2Line } from "react-icons/ri";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
+import { handleExport, pdfExport } from "./export";
 
 export const EmployeesSalaryPage = () => {
   // Calling  hooks and  Getting necessary information
@@ -53,22 +58,56 @@ export const EmployeesSalaryPage = () => {
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
+  const navigate = useNavigate();
 
   const {
-    year: curr_year,
-    month: curr_month,
+    year: query_year,
+    month: query_month,
     changeMonth,
     changeYear,
   } = useYearMonthPagination();
-  const navigate = useNavigate();
   const { year, month } = useParams();
   useEffect(() => {
     if (year && month) {
       dispatcher(
         loadNextPaymentListPage(`employee/salary/get/${year}/${month}`)
       );
-    } else dispatcher(getSalariesRequested());
+    } else {
+      dispatcher(
+        loadNextPaymentListPage(
+          `employee/salary/get/${current_year}/${current_month}`
+        )
+      );
+    }
   }, [year, month]);
+
+  // Implementing year-month pagination
+  const now = new Date(Date.now());
+  const start_year = 2022;
+  const current_year = now.getFullYear();
+
+  const years = Array.from(
+    { length: current_year - start_year + 1 },
+    (_, index) => start_year + index
+  );
+
+  const start_month = 1;
+  const current_month = now.getMonth() + 1;
+  const months = Array.from(
+    { length: current_month - start_month + 1 },
+    (_, index) => start_month + index
+  );
+
+  // Defining use effect to navigate if there is a change
+  useEffect(() => {
+    if (!query_month && !query_year) return;
+    !query_year && changeYear(current_year);
+    !query_month && changeMonth(current_month);
+    query_year &&
+      query_month &&
+      navigate(`/employees-salary/${query_year}/${query_month}`);
+  }, [query_year, query_month]);
+
   useEffect(() => {
     salary.pagination && setPagination(salary.pagination);
   }, [salary.pagination]);
@@ -84,136 +123,19 @@ export const EmployeesSalaryPage = () => {
 
     return () => clearTimeout(loadEmployee);
   }, [search_val]);
+
   useEffect(() => {
-    const tempAllowanceTypes = new Set<string>();
-    const tempDeductionTypes = new Set<string>();
-    employees.forEach((employee) => {
-      employee.allowances.forEach((allowance) => {
-        tempAllowanceTypes.add(allowance.allowance_type);
-      });
-      employee.deductions.forEach((deduction) => {
-        tempDeductionTypes.add(deduction.deduction_type);
-      });
-      // }
-    });
-
-    setAllowanceTypes(Array.from(tempAllowanceTypes));
-    setDeductionTypes(Array.from(tempDeductionTypes));
+    setAllowanceTypes(Array.from(getAllowancesTypes(employees)));
+    setDeductionTypes(Array.from(getDeductionTypes(employees)));
   }, [employees]);
-  const getSalary = (salary: number | null) => {
-    if (salary) {
-      return (salary * 1.0).toFixed(2);
-    }
-    return "-";
-  };
-
-  const getRate = (rate: number | undefined) => {
-    if (rate) {
-      return (rate * 1.0).toFixed(2) + "%";
-    }
-    return (
-      <span
-        style={{
-          textAlign: "center",
-          width: "100%",
-          display: "inline-block",
-        }}
-      >
-        -
-      </span>
-    );
-  };
 
   const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
-  const handleExport = () => {
-    const wb = XLSX.utils.book_new();
-    const emplist = employeeSalary.map((employee) => {
-      let local_employee = {
-        ["Employee Id"]: employee.employee_id,
-        ["Employee Name"]: employee.employee_name,
-        ["Salary"]: employee.basic_salary,
-      };
-      allowanceTypes.forEach((type) => {
-        local_employee = {
-          ...local_employee,
-          [type]: employee.allowances.find(
-            (allowance) => allowance.allowance_type === type
-          )?.allowance_rate,
-        };
-      });
-      deductionTypes.forEach((type) => {
-        local_employee = {
-          ...local_employee,
-          [type]: employee.deductions.find(
-            (deduction) => deduction.deduction_type === type
-          )?.deduction_rate,
-        };
-      });
-
-      local_employee = {
-        ...local_employee,
-        ["Gross Salary" as string]: employee.gross_salary,
-        ["Income Tax" as string]: employee.income_tax,
-        ["Total Deduction" as string]: employee.total_deduction,
-        ["Net Salary" as string]: employee.net_salary,
-        ["Month" as string]: getFormattedMonth(new Date(employee.month)).split(
-          "-"
-        )[0],
-        ["Payment Date" as string]: employee.payment_date,
-        ["Payment Status" as string]: employee.payment_status,
-      };
-      return {
-        ...local_employee,
-      };
-    });
-    const ws = XLSX.utils.json_to_sheet(emplist);
-
-    XLSX.utils.book_append_sheet(wb, ws, "SalarySheet1");
-    XLSX.writeFile(wb, "MyExcel.xlsx");
-  };
-
-  const pdfExport = () => {
-    const pdf = new jsPDF("landscape");
-    autoTable(pdf, {
-      html: "table",
-      styles: {
-        fontSize: 8,
-      },
-    });
-    pdf.save("Employee payroll.pdf");
-  };
 
   useEffect(() => {
     if (salary.searching && salary.search_response)
       setEmployeeSalary(salary.search_response || []);
     else setEmployeeSalary(salary.employees || []);
   }, [salary.employees, salary.search_response]);
-
-  // Implementing year-month pagination
-  const start_year = 2022;
-  const end_year = 2024;
-  const years = Array.from(
-    { length: end_year - start_year + 1 },
-    (_, index) => start_year + index
-  );
-
-  const start_month = 1;
-  const end_month = 12;
-  const months = Array.from(
-    { length: end_month - start_month + 1 },
-    (_, index) => start_month + index
-  );
-
-  // Defining use effect to navigate if there is a change
-  useEffect(() => {
-    if (!curr_month && !curr_year) return;
-
-    !curr_year && changeYear(start_year);
-    !curr_month && changeMonth(start_month);
-    curr_year &&
-      curr_month &&
-      navigate(`/employees-salary/${curr_year}/${curr_month}`);
-  }, [curr_year, curr_month]);
 
   return (
     <SalaryContainer>
@@ -231,7 +153,11 @@ export const EmployeesSalaryPage = () => {
           />
         </SearchContainer>
 
-        <ExportButton onClick={handleExport}>
+        <ExportButton
+          onClick={() => {
+            handleExport(employeeSalary, allowanceTypes, deductionTypes);
+          }}
+        >
           <ExportIcon>
             <RiFileExcel2Line />
           </ExportIcon>
@@ -256,7 +182,7 @@ export const EmployeesSalaryPage = () => {
           }}
         >
           <Select
-            value={`${curr_year}`}
+            value={`${query_year || current_year}`}
             onChange={(e) => {
               changeYear(+e.target.value);
             }}
@@ -268,14 +194,14 @@ export const EmployeesSalaryPage = () => {
             ))}
           </Select>
           <Select
-            value={`${curr_month}`}
+            value={`${query_month || current_month}`}
             onChange={(e) => {
               changeMonth(+e.target.value);
             }}
           >
             {months.map(
               (month) =>
-                ((curr_year && curr_year < end_year) ||
+                ((query_year && query_year < current_year) ||
                   month <= new Date(Date.now()).getMonth() + 1) && (
                   <SelectOption key={month} value={`${month}`}>
                     {getNamedMonth(new Date(`${year}-${month}-01`))}
