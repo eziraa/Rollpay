@@ -19,7 +19,9 @@ class SalaryView(APIView):
 
     def get(self, request: Request, employee_id=None, year=None, curr_month=None):
         if employee_id:
-            payments = Payment.objects.filter(employee_id=employee_id)
+            now = datetime.datetime.now()
+            payments = Payment.objects.filter(
+                employee_id=employee_id, month__lt=month.Month(now.year, now.month + 1))
             if payments.exists():
                 if curr_month and year:
                     try:
