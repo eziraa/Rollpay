@@ -60,10 +60,14 @@ function* addAsset(action: PayloadAction<AddAssetParams>) {
   }
 }
 
-function* GetAssets() {
+function* GetAssets(action: PayloadAction<string>) {
   try {
-    const response: AssetResponse = yield call(AssetAPI.listAssets);
+    const response: AssetResponse = yield call(
+      AssetAPI.listAssets,
+      action.payload
+    );
     if (response.code === 200) {
+      console.log(response);
       yield put(listAssetDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";

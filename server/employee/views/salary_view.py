@@ -37,25 +37,25 @@ class SalaryView(APIView):
                 }
                 return Response(data)
             else:
-                employee = Employee.objects.get(pk=employee_id)
-                for year in range(2022, 2025):
-                    for curent_month in range(1, 13):
-                        curr_month = month.Month(year, curent_month)
-                        payment = Payment.objects.create(
-                            employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary,
-                        )
-                        payment.save()
-                payments = Payment.objects.filter(employee_id=employee_id)
-                if payments.exists():
-                    serializer = MonthlyPaymentSerializer(payments, many=True)
-                    data = {
-                        **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
-                        'payments': serializer.data,
+            #     employee = Employee.objects.get(pk=employee_id)
+            #     for year in range(2022, 2025):
+            #         for curent_month in range(1, 13):
+            #             curr_month = month.Month(year, curent_month)
+            #             payment = Payment.objects.create(
+            #                 employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary,
+            #             )
+            #             payment.save()
+            #     payments = Payment.objects.filter(employee_id=employee_id)
+            #     if payments.exists():
+            #         serializer = MonthlyPaymentSerializer(payments, many=True)
+            #         data = {
+            #             **EmployeeSerializer(Employee.objects.get(pk=employee_id)).data,
+            #             'payments': serializer.data,
 
-                    }
-                    return Response(data)
-                else:
-                    return JsonResponse({"error": "No payments found for the given employee ID"}, status=404)
+            #         }
+            #         return Response(data)
+            #     else:
+                 return JsonResponse({"error": "No payments found for the given employee ID"}, status=404)
 
         else:
             try:

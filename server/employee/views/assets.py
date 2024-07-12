@@ -10,6 +10,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from employee.serializers.asset import AssetSerializer
 from ..models import Employee, Asset
 from django.core.files.storage import default_storage
+from django.db.models import Q
+
 
 
 class EmployeeAssetView(APIView):
@@ -49,8 +51,8 @@ class EmployeeAssetView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class AssetList(APIView):
-    def get(self, request):
-        assets = Asset.objects.all()
+    def get(self, request, employee_id):
+        assets = Asset.objects.filter(Q(employee_id=employee_id))
         serializer = AssetSerializer(assets, many=True)
         return Response(serializer.data)
 
@@ -78,6 +80,7 @@ class AssetDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class AddAssetToEmployee(APIView):
+
     def post(self, request, employee_id):
         employee = get_object_or_404(Employee, pk=employee_id)
         data = request.data.copy()

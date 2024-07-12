@@ -23,6 +23,7 @@ import { AllowancePage } from "../../components/pages/allowances/allowances";
 import { DeductionPage } from "../../components/pages/deductions/deductions";
 import { OvertimePage } from "../../components/pages/overtimes/overtime";
 import { AddDocument } from "../../components/sections/add-document/add-document";
+import { EmployeeAsset } from "../../components/sections/employee-asset/asset";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const ClerkRouterConfig = () => (
   <Route path="/" element={<HomePage />}>
@@ -67,6 +68,9 @@ export const ClerkRouterConfig = () => (
         <Route path="add-allowance" element={<AddAllowanceToEmp />}>
           <Route path="add-new-allowance" element={<AddAllowance />} />
         </Route>
+      </Route>
+      <Route path="assets" element={<EmployeeAsset />}>
+        <Route path="add-asset" element={<AddDocument />} />
       </Route>
       <Route path="overtimes/:year/:month" element={<EmployeeOvertime />}>
         <Route path="add-overtime" element={<AddOvertimeToEmp />}>

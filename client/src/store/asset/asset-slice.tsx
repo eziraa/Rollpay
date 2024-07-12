@@ -38,7 +38,7 @@ const AssetSlice = createSlice({
     unfinishedAdd: (state, action: PayloadAction<string>) => {
       state.task_error = action.payload;
     },
-    listAssetsRequested: (state) => {
+    listAssetsRequested: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
     },
     taskUnfinished: (state, action: PayloadAction<string>) => {
