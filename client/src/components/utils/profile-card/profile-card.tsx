@@ -9,6 +9,7 @@ import {
 import { useAppDispatch } from "../../../utils/custom-hook";
 import UserAPI from "../../../services/user-api";
 import { changeProfileImage } from "../../../store/user/user-slice";
+import { useUser } from "../../../hooks/user-hook";
 
 export const ImageCard = ({
   picture,
@@ -20,16 +21,21 @@ export const ImageCard = ({
   // Getting necessary data
   const dispatcher = useAppDispatch();
   const { employee_id } = useParams();
+  const { user } = useUser();
   const saveProfileImage = async () => {
     if (employee_id) {
       const formData = new FormData();
       formData.append("profile_picture", picture);
-      const response: string = await UserAPI.updateProfile(
-        employee_id,
-        formData
-      );
-      dispatcher(changeProfileImage(response));
-      action();
+      console.log("*********************");
+      console.log(user);
+      if (user) {
+        const response: string = await UserAPI.updateProfile(
+          user?.user_id,
+          formData
+        );
+        dispatcher(changeProfileImage(response));
+        action();
+      }
     }
   };
 
