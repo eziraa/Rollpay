@@ -5,7 +5,6 @@ import {
   ProfileImage,
   WelcomeMessageContainer,
 } from "./header.style";
-import { baseURL } from "../../../config/api";
 import { useUser } from "../../../hooks/user-hook";
 import { BlurredText, MidBlurredText } from "../../utils/titles/titles";
 import { stringDay } from "../../utils/day/string-day";
@@ -14,6 +13,7 @@ import { DropDown } from "./profile-drop-down";
 import { HamburgerMenu } from "../../pages/home/home-page.style";
 import { HiMenu } from "react-icons/hi";
 import { useRefs } from "../../../hooks/refs-hook";
+import { baseURL } from "../../../config/api";
 
 export const Header = () => {
   const { user } = useUser();
@@ -40,7 +40,7 @@ export const Header = () => {
         </WelcomeMessageContainer>
         <ProfileContainer>
           <Notification />
-          <ProfileImage profile={baseURL + user?.employee.profile_picture} />
+          <ProfileImage profile={baseURL + user?.profile_picture} />
           <DropDown />
         </ProfileContainer>
       </HeaderContainer>
