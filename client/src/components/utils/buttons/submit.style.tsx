@@ -14,7 +14,6 @@ export const Button = styled.button<ThemeProps>`
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.colors.primary)};
-    color: ${({ theme }) => theme.backgrounds.primary};
     cursor: pointer;
   }
 `;

@@ -4,7 +4,7 @@ from employee.models import *
 from django.db import models
 from month import Month
 from employee.utils.salary_calculator import SalaryCalculator
-
+from employee.serializers.allowance import AllowanceItemSerializer
 
 class StatisticsSerializer(serializers.Serializer):
     total_employees = serializers.SerializerMethodField(read_only=True)
@@ -33,14 +33,10 @@ class StatisticsSerializer(serializers.Serializer):
         deductions_dict = {}
 
         for curr_month_payment in curr_month_payments:
-            salary = curr_month_payment
-            deductions = salary.deductions.values('id', 'deduction_type').annotate(
-                total_deduction=models.Sum('deduction_rate')
-            )
 
-            for deduction in deductions:
-                deduction_type = deduction['deduction_type']
-                total_deduction_rate = deduction['total_deduction'] or 0
+            for deduction in curr_month_payment.deductions.all():
+                deduction_type = deduction.deduction.deduction_type
+                total_deduction_rate = deduction.deduction.deduction_rate or 0
                 total_deduction_amount = (
                     total_deduction_rate / 100) * curr_month_payment.salary
 
@@ -66,19 +62,13 @@ class StatisticsSerializer(serializers.Serializer):
         )
 
         allowances_dict = {}
-
-        for curr_month_payment in curr_month_payments:
-            salary = curr_month_payment
-            allowances = salary.allowances.values('id', 'allowance_type').annotate(
-                total_allowance=models.Sum('allowance_rate')
-            )
-
-            for allowance in allowances:
-                allowance_id = allowance['id']
-                allowance_type = allowance['allowance_type']
-                total_allowance_rate = allowance['total_allowance'] or 0
+        for payment in curr_month_payments:
+            for allowance in payment.allowances.all():
+                allowance_id = allowance.allowance.id
+                allowance_type = allowance.allowance.allowance_type
+                total_allowance_rate = allowance.allowance.allowance_rate or 0
                 total_allowance_amount = (
-                    total_allowance_rate / 100) * curr_month_payment.salary
+                    total_allowance_rate / 100) * payment.salary
 
                 if allowance_id in allowances_dict:
                     allowances_dict[allowance_id]['amount'] += total_allowance_amount
@@ -103,14 +93,13 @@ class StatisticsSerializer(serializers.Serializer):
         now = datetime.datetime.now()
         curr_month_paymnets = Payment.objects.filter(
             month=Month(now.year, now.month))
-        allowances = []
+        allowance_list = []
         for curr_month_payment in curr_month_paymnets:
-            allowance = (curr_month_payment.allowances.aggregate(
-                allowance=models.Sum("allowance_rate")))
-            if allowance['allowance'] is not None:
-                allowances.append(
-                    allowance["allowance"] * curr_month_payment.salary)
-        return format(round(sum(allowances)/100,2),',')
+            allowances = curr_month_payment.allowances.all()
+            for allowance in allowances:
+                value = allowance.allowance.allowance_rate / 100 * curr_month_payment.salary
+            allowance_list.append(value)
+        return format(round(sum(allowance_list), 2), ',')
     def get_curr_month_tax(self, obj):
         now = datetime.datetime.now()
         curr_month_payments = Payment.objects.filter(
@@ -132,11 +121,9 @@ class StatisticsSerializer(serializers.Serializer):
             month=Month(now.year, now.month))
         deductions = []
         for curr_month_payment in curr_month_paymnets:
-            deduction = (curr_month_payment.deductions.aggregate(
-                deduction=models.Sum("deduction_rate")))
-            if deduction['deduction'] is not None:
+            for deduction in curr_month_payment.deductions.all():
                 deductions.append(
-                    deduction["deduction"] * curr_month_payment.salary)
+                    deduction.deduction.deduction_rate / 100 * curr_month_payment.salary)
         income_tax = self.get_curr_month_tax(curr_month_payment) 
         total_deduction = sum(deductions)/100
         total_deduction = float(total_deduction) + float(income_tax)

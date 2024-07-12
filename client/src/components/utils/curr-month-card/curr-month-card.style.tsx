@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const MonthCardContainer = styled.div`
   width: 100%;
@@ -8,10 +9,12 @@ export const MonthCardContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding: 2rem;
-  border: 0.1rem solid #ccc;
+  border: 0.1rem solid
+    ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
   border-radius: 0.5rem;
   cursor: pointer;
-  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.5rem 0
+    ${({ theme }) => addOpacityToColor(0.2, theme.colors.primary)};
   transition: background-color 0.3s ease;
   margin-right: 2rem;
 `;
@@ -49,7 +52,7 @@ export const MonthColumnTemplate = styled.div`
   width: fit-content;
   p {
     font-size: 1.2rem;
-    color: #666;
+    color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
   }
   @media (max-width: 768px) {
     flex-direction: column;
@@ -63,7 +66,8 @@ export const MonthCell = styled.div`
   font-size: 1.2rem;
   transition: background-color 0.3s ease;
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.9, theme.backgrounds.primary)};
   }
 `;
 
@@ -72,15 +76,17 @@ export const MonthCellCurrent = styled(MonthCell)`
 `;
 
 export const MonthCellDisabled = styled(MonthCell)`
-  color: #ccc;
+  color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
 `;
 
 export const MonthCellToday = styled(MonthCell)`
-  background-color: #f5f5f5;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.7, theme.backgrounds.primary)};
 `;
 
 export const MonthCellSelected = styled(MonthCell)`
-  background-color: #ddd;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.75, theme.backgrounds.primary)};
 `;
 
 export const MonthFooter = styled.div`
@@ -89,14 +95,17 @@ export const MonthFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  border-top: 0.1rem solid #ccc;
+  border-top: 0.1rem solid
+    ${({ theme }) => addOpacityToColor(0.2, theme.colors.primary)};
   font-size: 1.2rem;
-  color: #666;
+  color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.7, theme.backgrounds.primary)};
   }
   &:active {
-    background-color: #ddd;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.7, theme.backgrounds.primary)};
   }
   &:first-child {
     border-left: none;
@@ -108,14 +117,15 @@ export const MonthFooter = styled.div`
     padding: 0.5rem 1rem;
     border: none;
     background-color: transparent;
-    color: #666;
+    color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
     cursor: pointer;
     &:hover {
-      color: #000;
+      color: ${({ theme }) => addOpacityToColor(1, theme.colors.primary)};
+      cursor: pointer;
     }
   }
   button:disabled {
-    color: #ccc;
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
     cursor: not-allowed;
   }
   button:first-child {
@@ -125,25 +135,31 @@ export const MonthFooter = styled.div`
     border-radius: 0 0.5rem 0.5rem 0;
   }
   button:first-child:hover {
-    background-color: #ddd;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.8, theme.backgrounds.primary)};
   }
   button:last-child:hover {
-    background-color: #ddd;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.8, theme.backgrounds.primary)};
   }
   button:first-child:active {
-    background-color: #ddd;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.8, theme.backgrounds.primary)};
   }
   button:last-child:active {
-    background-color: #ddd;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.8, theme.backgrounds.primary)};
   }
   button:first-child:disabled {
-    background-color: #ddd;
-    color: #ccc;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.8, theme.backgrounds.primary)};
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
     cursor: not-allowed;
   }
   button:last-child:disabled {
-    background-color: #ddd;
-    color: #ccc;
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.8, theme.backgrounds.primary)};
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
     cursor: not-allowed;
   }
   button:first-child:focus {

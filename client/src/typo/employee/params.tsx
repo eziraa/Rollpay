@@ -43,3 +43,10 @@ export interface UpdateEmployementContract {
   employee_id: string;
   file_url: File;
 }
+
+export interface RemoveSalaryAssetParams {
+  asset_type: string;
+  employee_id: string;
+  asset_id: string;
+  qury_string: string;
+}

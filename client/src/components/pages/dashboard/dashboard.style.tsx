@@ -2,6 +2,7 @@ import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
 import styled from "styled-components";
 import { Label } from "../edit-employee/edit-employee.style";
 import { custom_vertical_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const DashboardContainer = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ export const DashboardContainer = styled.div`
 export const DashboardTitle = styled.h1`
   text-align: right;
   width: 100%;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 export const DashboardBody = styled.div`
@@ -46,32 +48,34 @@ export const StatContainer = styled.div`
   padding: 2rem 0;
   align-items: flex-start;
   grid-template-columns: repeat(4, 1fr);
-  jus h2 {
+  h2 {
     margin-bottom: 1rem;
   }
   p {
     font-size: 1.2rem;
-    color: #666;
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   }
 `;
 export const StatCard = styled.div`
   border-radius: 10px;
   padding: 2rem;
   margin-bottom: 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
+  box-shadow: 0 0 10px
+    ${({ theme }) => addOpacityToColor(0.3, theme.colors.primary)};
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.85, theme.backgrounds.primary)};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   font-size: 3.4rem;
+  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   h2 {
     margin-bottom: 0.5rem;
   }
   p {
     font-size: 1.2rem;
-    color: #666;
   }
 `;
 
@@ -91,7 +95,7 @@ export const CardColumnTemplate = styled.div`
   width: fit-content;
   p {
     font-size: 1.2rem;
-    color: #666;
+    color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   }
   @media (max-width: 768px) {
     flex-direction: column;
@@ -106,7 +110,7 @@ export const Text = styled(Label)`
 
 export const IncreaseIcon = styled(IoIosArrowRoundUp)`
   font-size: 2.4rem;
-  color: #05a75b;
+  color: #04874a;
 `;
 
 export const DecreaseIcon = styled(IoIosArrowRoundDown)`

@@ -2,19 +2,26 @@ import { CurrEmpPayments, PaymentEmployee } from "../payment/response";
 import { PaginatedBackEndResponse, PaginatedResponse } from "../utils/response";
 
 export interface Allowance {
+  id: string;
   allowance_type: string;
   allowance_rate: number;
+  date_of_given: string;
 }
 
 export interface Deduction {
+  id: string;
   deduction_type: string;
   deduction_rate: number;
+  date_of_given: string;
 }
 
 export interface Overtime {
+  id: string;
   overtime_type: string;
   overtime_rate: number;
-  length: number;
+  start_time: string;
+  end_time: string;
+  length_of_overtime: number;
 }
 
 export interface Salary {
