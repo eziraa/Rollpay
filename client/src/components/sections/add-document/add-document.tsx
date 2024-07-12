@@ -17,18 +17,19 @@ import {
 } from "./add-document.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useEmployee } from "../../../hooks/employee-hook";
-import EmployeeAPI from "../../../services/employee-api";
 import {
   closeEmployeeTask,
   resetEmployeeState,
 } from "../../../store/employee/employee-slice";
 import { FileInput } from "../../utils/profile/employee-profile.style";
 import { MdFileUpload } from "react-icons/md";
+import AssetAPI from "../../../services/asset-api";
+import { addAssetDone } from "../../../store/asset/asset-slice";
 export const AddDocument = () => {
   // Calling hooks and getting necessary information
   const dispatcher = useAppDispatch();
@@ -62,16 +63,18 @@ export const AddDocument = () => {
         return;
       }
       const formData = new FormData();
-      formData.append("employement_contract", selectedFile);
+      formData.append("asset_value", selectedFile);
+      formData.append("asset_name", asset_name);
 
-      EmployeeAPI.uploadDocument(employee.curr_emp?.id || "", formData)
-        .then(() => {
+      AssetAPI.addEmpAsset(employee.curr_emp?.id || "", formData)
+        .then((res) => {
           dispatcher(
             resetEmployeeState({
               ...employee,
               curr_emp: undefined,
             })
           );
+          dispatcher(addAssetDone(res.asset));
           dispatcher(
             setFlashMessage({
               type: "success",
@@ -81,6 +84,7 @@ export const AddDocument = () => {
               desc: "Document uploaded successfully",
             })
           );
+          navigate(-1);
         })
         .catch(() => {
           dispatcher(
