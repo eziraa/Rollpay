@@ -67,9 +67,9 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
           <>
             <MenuItem
               active={
-                item?.sub_menu_items
-                  ?.map((item) => item.path)
-                  .includes(pathname) || pathname === item.path
+                item?.sub_menu_items?.some((item) =>
+                  pathname.startsWith(item.path)
+                ) || pathname === item.path
                   ? true
                   : false
               }
@@ -93,7 +93,7 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
                 {item.sub_menu_items?.map(({ title, path }) => (
                   <SubMenuItem
                     key={title}
-                    active={pathname === path}
+                    active={pathname.startsWith(path)}
                     onClick={(e) => {
                       e.preventDefault();
                       navigate(path);
