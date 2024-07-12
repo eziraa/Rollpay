@@ -28,27 +28,28 @@ export const SeeEmployee = () => {
   const { employee_id } = useParams();
   const dispatcher = useAppDispatch();
   const {
-    year: curr_year,
-    month: curr_month,
+    year: query_year,
+    month: query_month,
     changeMonth,
     changeYear,
   } = useYearMonthPagination();
 
   // Implementing year-month pagination
+  const now = new Date(Date.now());
   const start_year = 2022;
-  const end_year = 2024;
+  const current_year = now.getFullYear();
+
   const years = Array.from(
-    { length: end_year - start_year + 1 },
+    { length: current_year - start_year + 1 },
     (_, index) => start_year + index
   );
 
   const start_month = 1;
-  const end_month = 12;
+  const current_month = now.getMonth() + 1;
   const months = Array.from(
-    { length: end_month - start_month + 1 },
+    { length: current_month - start_month + 1 },
     (_, index) => start_month + index
   );
-
   // Defining a useEffect to get the infomration of current employee
 
   useEffect(() => {
@@ -72,7 +73,7 @@ export const SeeEmployee = () => {
           }}
         >
           <Select
-            value={`${curr_year}`}
+            value={`${query_year || current_year}`}
             onChange={(e) => {
               changeYear(+e.target.value);
             }}
@@ -84,17 +85,17 @@ export const SeeEmployee = () => {
             ))}
           </Select>
           <Select
-            value={`${curr_month}`}
+            value={`${query_month || current_month}`}
             onChange={(e) => {
               changeMonth(+e.target.value);
             }}
           >
             {months.map(
               (month) =>
-                ((curr_year && curr_year < end_year) ||
-                  month <= new Date(Date.now()).getMonth() + 1) && (
+                ((query_year && query_year < current_year) ||
+                  month <= current_month) && (
                   <SelectOption key={month} value={`${month}`}>
-                    {getNamedMonth(new Date(`${curr_year}-${month}-01`))}
+                    {getNamedMonth(new Date(`${query_year}-${month}-01`))}
                   </SelectOption>
                 )
             )}
