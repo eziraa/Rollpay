@@ -23,16 +23,15 @@ export const ListHeader = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.table.header};
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 500;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
-  padding: 0.4rem 0.5rem;
+  grid-template-columns: 3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
 export const ListTitle = styled.h4<ThemeProps>`
-  padding: 1rem 1rem;
+  padding: 1rem 0;
   font-size: 1.4rem;
 `;
 
@@ -50,9 +49,9 @@ export const ListRow = styled.div<ThemeProps>`
     background-color: ${({ theme }) => theme.backgrounds.primary};
   }
   font-size: larger;
-  padding: 0.4rem 0.5rem;
+  padding: 0 0.5rem;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
+  grid-template-columns: 3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) =>
@@ -73,7 +72,6 @@ export const Data = styled.div<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
   padding: 1rem 1rem;
   text-align: left;
-  flex: 15rem;
   /* width: auto; */
 `;
 

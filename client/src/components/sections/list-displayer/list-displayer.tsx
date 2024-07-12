@@ -126,17 +126,6 @@ function EmployeeListDisplayer() {
           }}
         >
           <HeaderItem>
-            <ListTitle>Employee</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(0);
-              }}
-            >
-              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
             <ListTitle>ID</ListTitle>
             <SortBtn
               onClick={(e) => {
@@ -147,6 +136,18 @@ function EmployeeListDisplayer() {
               {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
             </SortBtn>
           </HeaderItem>
+          <HeaderItem>
+            <ListTitle>Employee</ListTitle>
+            <SortBtn
+              onClick={(e) => {
+                e.stopPropagation();
+                sortEmployee(0);
+              }}
+            >
+              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+            </SortBtn>
+          </HeaderItem>
+
           <HeaderItem>
             <ListTitle>Gender</ListTitle>
           </HeaderItem>
@@ -223,6 +224,7 @@ function EmployeeListDisplayer() {
                     gridTemplateColumns: getTableElements(emplists),
                   }}
                 >
+                  <Data> {emp.id} </Data>
                   <Data>
                     <RowTemplate>
                       <ProfileImage profile={baseURL + emp.profile_picture} />
@@ -231,7 +233,6 @@ function EmployeeListDisplayer() {
                       </ColumnTemplate>
                     </RowTemplate>
                   </Data>
-                  <Data> {emp.id} </Data>
                   <Data> {emp.gender} </Data>
                   <Data> {emp.email} </Data>
                   <Data> {emp.phone_number} </Data>

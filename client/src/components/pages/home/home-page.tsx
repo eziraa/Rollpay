@@ -10,8 +10,8 @@ import { useState } from "react";
 import { FaUsers } from "react-icons/fa6";
 
 export const HomePage = () => {
-  const [colapseEmployees, setColapseEmployees] = useState(true);
-  const [colapseSalary, setColapseSalary] = useState(true);
+  const [colapseEmployees, setColapseEmployees] = useState(false);
+  const [colapseSalary, setColapseSalary] = useState(false);
 
   const menuItems: MenuItemInterface[] = [
     {
