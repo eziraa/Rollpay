@@ -41,7 +41,7 @@ export const lightTheme: Theme = {
   },
   table: {
     tableRow: "#7aa09f",
-    tableRowHover: "#69a199",
+    tableRowHover: "#ACCFCA",
     header: "#7aa09f",
   },
   buttons: {
@@ -54,11 +54,11 @@ export const lightTheme: Theme = {
 
 export const darkTheme: Theme = {
   colors: {
-    primary: "#04ff00",
-    secondary: "#35b104",
+    primary: "#3CFF87",
+    secondary: "#3CFF87",
   },
   backgrounds: {
-    primary: "#0e0d0d",
+    primary: "#272625",
     secondary: "#4a4a4a",
   },
   fontSizes: {
@@ -72,8 +72,8 @@ export const darkTheme: Theme = {
     header: "#3b5e5d",
   },
   buttons: {
-    primary: "#04ff00",
-    secondary: "#1ed112",
+    primary: "#3CFF87",
+    secondary: "#1EFF74",
     primaryHover: "#1b1a1a",
     secondaryHover: "#0a0a0a26",
   },
