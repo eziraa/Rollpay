@@ -14,7 +14,6 @@ import { DropDown } from "./profile-drop-down";
 import { HamburgerMenu } from "../../pages/home/home-page.style";
 import { HiMenu } from "react-icons/hi";
 import { useRefs } from "../../../hooks/refs-hook";
-import { Toggle } from "../../utils/buttons/toggle";
 
 export const Header = () => {
   const { user } = useUser();
@@ -40,7 +39,6 @@ export const Header = () => {
           </MidBlurredText>
         </WelcomeMessageContainer>
         <ProfileContainer>
-          <Toggle />
           <Notification />
           <ProfileImage profile={baseURL + user?.employee.profile_picture} />
           <DropDown />
