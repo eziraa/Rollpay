@@ -26,11 +26,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
     def get_profile_picture(self, obj: Employee):
         user = obj.user
         if user:
+            if user.profile_pictures.all().last():
+                return user.profile_pictures.all().last().profile_picture.url
 
-            if user.profile_picture:
-                return user.profile_picture.profile_picture
-
-        return "photos/profile.png"
+        return "/media/photos/profile.png"
 
 
 class SalaryEmployeeSerializer(EmployeeSerializer):
