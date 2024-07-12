@@ -184,14 +184,14 @@ export const BarsContainer = styled.div<AxisProps>`
     .toast {
       display: flex;
     }
-    .data {
+    /* .data {
       ${({ colors }) => {
-        return colors.map(
-          (color, index) => `&:nth-child(${index + 1}){
+      return colors.map(
+        (color, index) => `&:nth-child(${index + 1}){
       background-image: linear-gradient(to top, white, ${color});}`
-        );
-      }}
-    }
+      );
+    }}
+    } */
   }
 `;
 
@@ -201,7 +201,8 @@ export const DataHorizontalAxis = styled.div`
   width: 100%;
   gap: 2rem;
   &:first-child {
-    border-bottom: 0.1rem solid #8b8b8b;
+    border-bottom: 0.1rem solid
+      ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
   }
 `;
 
@@ -216,9 +217,17 @@ export const GraphData = styled.div<DataProps>`
   height: ${({ height }) => height}rem;
   border-radius: 1rem 1rem 0 0;
 
-  background-image: linear-gradient(to top, white, #9f9f9f);
+  background-image: linear-gradient(
+    to top,
+    ${({ theme }) => theme.backgrounds.primary},
+    ${({ color }) => color}
+  );
   &:hover {
-    background-image: linear-gradient(to top, white, ${({ color }) => color});
+    background-image: linear-gradient(
+      to top,
+      ${({ theme }) => theme.backgrounds.primary},
+      ${({ color }) => color}
+    );
   }
 `;
 
@@ -245,8 +254,9 @@ export const ToastContainer = styled.div`
   ${column_template_js_center};
   align-items: flex-start;
   border-radius: 1rem;
-  background-color: #1b0f1e;
-  color: #e4e4e4 !important;
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.9, theme.colors.primary)};
+  color: ${({ theme }) => theme.backgrounds.primary} !important;
   position: absolute;
   left: 105%;
   bottom: 50%;
@@ -276,7 +286,7 @@ export const LimitContainer = styled.div`
 export const BrokenLine = styled.div`
   width: 100%;
   height: 3.2rem;
-  border-bottom: 1px #434343 dashed;
+  border-bottom: 1px #434343e7 dashed;
 `;
 
 

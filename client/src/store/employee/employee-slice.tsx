@@ -6,14 +6,12 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
+  RemoveSalaryAssetParams,
   UpdateEmployementContract,
   UpdateProfileParams,
 } from "../../typo/employee/params";
 import { EditEmployeeParams } from "../../services/employee-api";
-import {
-  Employee,
-  PaginatedEmpResponse,
-} from "../../typo/employee/response";
+import { Employee, PaginatedEmpResponse } from "../../typo/employee/response";
 import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
 
 const InitialEmpState: EmployeeState = {
@@ -116,6 +114,16 @@ const EmployeeSlice = createSlice({
       state.task_finished = true;
       state.task_error = undefined;
     },
+    removeSalaryAssetRequested: (
+      state,
+      _: PayloadAction<RemoveSalaryAssetParams>
+    ) => {
+      state.task_finished = false;
+    },
+    finishAddSalaryAllowanceDone: (state) => {
+      state.task_finished = true;
+      state.task_error = undefined;
+    },
     addEmpDeductionRequested: (
       state,
       _: PayloadAction<AddDeductionToEmployeesParams>
@@ -210,6 +218,8 @@ export const {
   errorOccurred,
   getCurrentEmployeeRequest,
   getCurrentEmployeeDone,
+  removeSalaryAssetRequested,
+  finishAddSalaryAllowanceDone,
 } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;

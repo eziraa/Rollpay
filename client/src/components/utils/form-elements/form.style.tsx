@@ -36,7 +36,7 @@ export const Button = styled.button<ThemeProps>`
   border-radius: 0.5rem;
   font-size: ${({ theme }) => theme.fontSizes.medium};
   background-color: ${({ theme }) => theme.buttons.primary};
-  color: #fff;
+  color: ${({ theme }) => addOpacityToColor(0.99, theme.backgrounds.primary)};
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};

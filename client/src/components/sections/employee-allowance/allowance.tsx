@@ -25,6 +25,8 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
+import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
+import { stringDay } from "../../utils/day/string-day";
 
 export const EmployeeAllowance = () => {
   //--- Calling hooks and getting necessary information ---
@@ -66,7 +68,7 @@ export const EmployeeAllowance = () => {
       <AllowanceHeader>
         <Outlet />
         <AllowanceTitle>Employee Allowance</AllowanceTitle>
-        {user?.role === "CLerk" && (
+        {user?.role === "Clerk" && (
           <AddButton
             onClick={(e) => {
               e.preventDefault();
@@ -85,7 +87,7 @@ export const EmployeeAllowance = () => {
             (payment) => payment.allowances.length === 0
           ) ? (
           <div>
-            <NoResult>No allowances found for all month</NoResult>
+            <NoResult>No allowances found </NoResult>
           </div>
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
@@ -101,6 +103,7 @@ export const EmployeeAllowance = () => {
                     <HeaderTitle>Allowance Name</HeaderTitle>
                     <HeaderTitle>Allowance Value</HeaderTitle>
                     <HeaderTitle>Date of Given</HeaderTitle>
+                    <HeaderTitle>Action</HeaderTitle>
                   </TableHeader>
                 </thead>
                 <TableBody>
@@ -108,8 +111,31 @@ export const EmployeeAllowance = () => {
                     return (
                       <TableRow key={index}>
                         <TableData>{allowance.allowance_type}</TableData>
-                        <TableData>{allowance.allowance_rate}</TableData>
-                        <TableData>{payment.payment_date}</TableData>
+                        <TableData className=" italic">
+                          {allowance.allowance_rate}%
+                        </TableData>
+                        <TableData className=" italic">
+                          {stringDay(new Date(allowance.date_of_given))}
+                        </TableData>
+                        <TableData>
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              dispatcher(
+                                removeSalaryAssetRequested({
+                                  employee_id: curr_emp.employee.id,
+                                  asset_type: "allowance",
+                                  asset_id: allowance.id,
+                                  qury_string: `?year=${
+                                    payment.month.split("-")[0]
+                                  }&month=${payment.month.split("-")[1]}`,
+                                })
+                              );
+                            }}
+                          >
+                            <span className="fail">Remove</span>
+                          </span>
+                        </TableData>
                       </TableRow>
                     );
                   })}

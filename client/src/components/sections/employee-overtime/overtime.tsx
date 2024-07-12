@@ -24,6 +24,8 @@ import { useEffect } from "react";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
+import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
+import { stringDay } from "../../utils/day/string-day";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information
@@ -66,7 +68,7 @@ export const EmployeeOvertime = () => {
       <OvertimeHeader>
         <Outlet />
         <OvertimeTitle>Employee Overtime</OvertimeTitle>
-        {user?.role === "CLerk" && (
+        {user?.role === "Clerk" && (
           <AddButton
             onClick={(e) => {
               e.preventDefault();
@@ -85,7 +87,7 @@ export const EmployeeOvertime = () => {
             (payment) => payment.overtimes.length === 0
           ) ? (
           <div>
-            <NoResult>No overtimes found for all month</NoResult>
+            <NoResult>No overtimes found </NoResult>
           </div>
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
@@ -100,8 +102,10 @@ export const EmployeeOvertime = () => {
                   <TableHeader>
                     <HeaderTitle>Overtime Name</HeaderTitle>
                     <HeaderTitle>Overtime Value</HeaderTitle>
+                    <HeaderTitle>Start at</HeaderTitle>
+                    <HeaderTitle>End at</HeaderTitle>
                     <HeaderTitle>Length of Time</HeaderTitle>
-                    <HeaderTitle>Date of Given</HeaderTitle>
+                    <HeaderTitle>Action</HeaderTitle>
                   </TableHeader>
                 </thead>
                 <TableBody>
@@ -109,10 +113,36 @@ export const EmployeeOvertime = () => {
                     return (
                       <TableRow key={index}>
                         <TableData>{overtime.overtime_type}</TableData>
-                        <TableData>{overtime.overtime_rate}</TableData>
-                        <TableData>{overtime.length}</TableData>
+                        <TableData className="center-text italic">
+                          {overtime.overtime_rate}%
+                        </TableData>
                         <TableData>
-                          {new Date(payment.payment_date).toLocaleDateString()}
+                          {stringDay(new Date(overtime.start_time))}
+                        </TableData>
+                        <TableData>
+                          {stringDay(new Date(overtime.end_time))}
+                        </TableData>
+                        <TableData className="center-text italic">
+                          {overtime.length_of_overtime} hour
+                        </TableData>
+                        <TableData>
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              dispatcher(
+                                removeSalaryAssetRequested({
+                                  employee_id: curr_emp.employee.id,
+                                  asset_type: "overtime",
+                                  asset_id: overtime.id,
+                                  qury_string: `?year=${
+                                    payment.month.split("-")[0]
+                                  }&month=${payment.month.split("-")[1]}`,
+                                })
+                              );
+                            }}
+                          >
+                            <span className="fail italic">Remove</span>
+                          </span>
                         </TableData>
                       </TableRow>
                     );

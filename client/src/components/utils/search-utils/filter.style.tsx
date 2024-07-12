@@ -62,14 +62,13 @@ export const FilterButton = styled.button`
   padding: 1rem 2.5rem;
   font-size: 1.2rem;
   background-color: ${({ theme }) => theme.buttons.primary};
-  color: #ffffff;
+  color: ${({ theme }) => theme.backgrounds.primary};
   border-radius: 0.5rem;
   border: none;
   cursor: pointer;
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};
-    color: #ffffff;
   }
   width: fit-content;
   justify-self: end;

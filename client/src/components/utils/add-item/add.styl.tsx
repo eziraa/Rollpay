@@ -31,7 +31,7 @@ export const add_btn = css`
   text-align: center;
   border: none;
   background-color: ${({ theme }) => theme.buttons.primary};
-  color: #ffffff;
+  color: ${({ theme }) => theme.backgrounds.primary};
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};

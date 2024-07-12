@@ -19,6 +19,7 @@ import {
   AddAllowanceToEmployeesParams,
   AddDeductionToEmployeesParams,
   AddEmpParams,
+  RemoveSalaryAssetParams,
   UpdateEmployementContract,
 } from "../../typo/employee/params";
 import {
@@ -186,6 +187,53 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
           status: true,
           title: "Adding overtime to employee",
           desc: "Deduction successfully added to employee",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(errorOccurred(response.error));
+    } else if (response.code === 403) {
+      yield put(errorOccurred(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "You are not allowed to add employee",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(errorOccurred(response.error));
+    }
+  } catch (e) {
+    yield put(errorOccurred("Cann't add overtime please try again later"));
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Add Employee",
+        desc: "Cann't add overtime please try again later",
+        duration: 3,
+      })
+    );
+  }
+}
+function* removeSalaryAsset(action: PayloadAction<RemoveSalaryAssetParams>) {
+  try {
+    const response: CurrentEmpPaymentsResponse = yield call(
+      EmployeeAPI.removeSalaryAsset,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(closeEmployeeTask());
+      yield put(currentEmpPaymentInfoDone(response));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: `Removing ${action.payload.asset_type} from employee`,
+          desc: `${action.payload.asset_type} successfully removed`,
           duration: 3,
         })
       );
@@ -585,6 +633,7 @@ export function* watchEmployeeRequests() {
   yield takeEvery("employee/loadPrevEmployeeListPage", loadPrevPage);
   yield takeEvery("employee/filterEmployeeRequest", filterEmployees);
   yield takeEvery("employee/getEmpNumRequested", GetEmpNum);
+  yield takeEvery("employee/removeSalaryAssetRequested", removeSalaryAsset);
 }
 export function* watchEditEmployee() {
   yield takeEvery("employee/editEmployeeRequested", editEmployee);

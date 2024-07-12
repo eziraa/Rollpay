@@ -52,6 +52,12 @@ body{
   .bold{
     font-weight: 700;
   }
+  .center-text{
+    text-align: center;
+  }
+  .right-text{
+    text-align: right;
+  }
 }
 
 .left-menu-modal{
@@ -73,8 +79,7 @@ body{
       z-index: 1010;
       position: absolute;
       width: 100vw;
-      height: 100vh;
-      background-color: #ebeaea36;
+      height: 100%;
 
       .close{
         display: block;
@@ -86,7 +91,6 @@ body{
       }
       .left-menu{
         width: max-content;
-        background-color: aliceblue;
       }
       /* &::before{
         content: "";
