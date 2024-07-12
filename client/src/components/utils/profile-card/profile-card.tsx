@@ -26,8 +26,7 @@ export const ImageCard = ({
     if (employee_id) {
       const formData = new FormData();
       formData.append("profile_picture", picture);
-      console.log("*********************");
-      console.log(user);
+
       if (user) {
         const response: string = await UserAPI.updateProfile(
           user?.user_id,
