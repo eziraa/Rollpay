@@ -38,3 +38,7 @@ export const ExtraLargeIcon = styled(LargeIcon)`
 export const RoundedExtraLargeIcon = styled(ExtraLargeIcon)`
   border-radius: 50%;
 `;
+
+export const NormalIcon = styled.span`
+  padding: 0.5rem;
+`;

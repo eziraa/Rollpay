@@ -3,7 +3,7 @@ import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const NoResultContainer = styled.div`
   width: 100%;
-  height: 50ch;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
