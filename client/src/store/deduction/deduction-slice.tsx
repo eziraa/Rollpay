@@ -12,6 +12,10 @@ import {
 } from "../../typo/deduction/params";
 
 const InitialEmpState: DeductionState = {
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
   deductions: [],
   curr_deduction: undefined,
   query_set: [],

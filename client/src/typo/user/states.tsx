@@ -1,6 +1,7 @@
+import { BaseState } from "../utils/state";
 import { UserResponse } from "./response";
 
-export type UserState = {
+export interface UserState extends BaseState {
   creating: boolean;
   task_finished: boolean;
   user: UserResponse | undefined;
@@ -10,7 +11,7 @@ export type UserState = {
   login_error: string | undefined;
   signup_error: string | undefined;
   acc_created: boolean;
-};
+}
 
 export interface CurrentUser {
   id: string;

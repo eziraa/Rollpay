@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { StatisticsState } from "../../typo/statistics/state";
 import { StatisticsResponse } from "../../typo/statistics/response";
 const initialState: StatisticsState = {
+  loading: false,
   task_error: undefined,
   task_finished: true,
   stat: {

@@ -9,12 +9,18 @@ const InitialEmpState: UserState = {
   creating: false,
   user: undefined,
   task_finished: false,
+  task_error: undefined,
+  searching: false,
   is_login: false,
   logging_in: false,
   logging_out: false,
   login_error: undefined,
   signup_error: undefined,
   acc_created: false,
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
 };
 const UserSlice = createSlice({
   name: "user",

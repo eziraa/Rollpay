@@ -15,6 +15,10 @@ import { Employee, PaginatedEmpResponse } from "../../typo/employee/response";
 import { AddOvertimeToEmpParams } from "../../typo/overtime/params";
 
 const InitialEmpState: EmployeeState = {
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
   employees: [],
   curr_emp: undefined,
   query_set: [],

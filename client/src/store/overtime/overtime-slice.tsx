@@ -19,6 +19,10 @@ const InitialEmpState: OvertimeState = {
   pagination: undefined,
   task_error: undefined,
   task_finished: true,
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
 };
 const OvertimeSlice = createSlice({
   name: "overtime",

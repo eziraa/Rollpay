@@ -8,6 +8,10 @@ import { PaginatedPositionResponse } from "../../services/position-api";
 import { EditPositionParams } from "../../typo/position/params";
 
 const InitialEmpState: PositionState = {
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
   positions: [],
   curr_position: undefined,
   query_set: [],

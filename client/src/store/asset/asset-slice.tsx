@@ -12,6 +12,10 @@ import {
 } from "../../typo/asset/params";
 
 const InitialAssetState: AssetState = {
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
   assets: [],
   curr_asset: undefined,
   searching: false,

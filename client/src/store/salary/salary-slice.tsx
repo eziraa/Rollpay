@@ -6,10 +6,14 @@ import {
   CurrentEmpPaymentsResponse,
   PaginatedPaymentResponse,
 } from "../../typo/salary/response";
-import { SearchParams } from "../../typo/salary/params";
+import { GetAssetParams, SearchParams } from "../../typo/salary/params";
 import { PaymentEmployee } from "../../typo/payment/response";
 
 const InitialState: PaymentState = {
+  adding: false,
+  deleting: false,
+  loading: false,
+  editing: false,
   employees: [],
   curr_emp: undefined,
   task_finished: true,
@@ -38,6 +42,10 @@ const SalarySlice = createSlice({
         page_size: state.pagination?.page_size ?? 10,
         type: "salary",
       };
+    },
+    getSalaryAssetsRequest: (state, _: PayloadAction<GetAssetParams>) => {
+      state.loading = true;
+      
     },
     getCurrEmpPaymentInfo: (state, _: PayloadAction<string>) => {
       state.task_finished = false;

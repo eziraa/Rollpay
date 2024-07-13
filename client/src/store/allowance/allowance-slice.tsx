@@ -12,6 +12,10 @@ import {
 } from "../../typo/allowance/params";
 
 const InitialEmpState: AllowanceState = {
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
   allowances: [],
   curr_allowance: undefined,
   query_set: [],
