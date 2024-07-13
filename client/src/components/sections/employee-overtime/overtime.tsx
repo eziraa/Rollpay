@@ -87,7 +87,7 @@ export const EmployeeOvertime = () => {
       </OvertimeHeader>
       <OvertimeBody>
         {!task_finished ? (
-          <ThreeDots size={2} />
+          <ThreeDots size={1} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.overtimes.length === 0
           ) ? (

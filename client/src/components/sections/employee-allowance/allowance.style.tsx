@@ -10,7 +10,8 @@ import { custom_vertical_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 
 export const AllowanceContainer = styled.div`
   ${container_css}
-  width: 58vw;
+  width: 100%;
+  height: 100%;
 `;
 
 export const AllowanceHeader = styled.div`
@@ -28,5 +29,6 @@ export const AddButton = styled.button`
 export const AllowanceBody = styled.div`
   ${body_css}
   ${custom_vertical_scroll_bar};
-  height: 60vh;
+  height: 100%;
+  width: 100%;
 `;

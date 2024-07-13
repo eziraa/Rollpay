@@ -27,10 +27,10 @@ import {
   listAssetsRequested,
 } from "../../../store/asset/asset-slice";
 import { useAsset } from "../../../hooks/asset-hook";
-import { NoResult } from "../../utils/no-result/no-result";
 
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { NoResult } from "../../utils/containers/containers.style";
 
 export const EmployeeAsset = () => {
   const navigate = useNavigate();
@@ -64,10 +64,10 @@ export const EmployeeAsset = () => {
       </AllowanceHeader>
       <AllowanceBody>
         {!task_finished ? (
-          <ThreeDots size={2} />
+          <ThreeDots size={1} />
         ) : assets.length === 0 ? (
           <div>
-            <NoResult text="No assets found" />
+            <NoResult>No assets found</NoResult>
           </div>
         ) : (
           <CustomTable>

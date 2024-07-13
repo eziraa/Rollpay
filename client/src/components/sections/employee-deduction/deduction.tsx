@@ -87,7 +87,7 @@ export const EmployeeDeduction = () => {
       </DeductionHeader>
       <DeductionBody>
         {!task_finished ? (
-          <ThreeDots size={2} />
+          <ThreeDots size={1} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.deductions.length === 0
           ) ? (

@@ -87,7 +87,7 @@ export const EmployeeAllowance = () => {
       </AllowanceHeader>
       <AllowanceBody>
         {!task_finished ? (
-          <ThreeDots size={2} />
+          <ThreeDots size={1} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.allowances.length === 0
           ) ? (

@@ -8,7 +8,6 @@ import {
 import { useUser } from "../../../hooks/user-hook";
 import { BlurredText, MidBlurredText } from "../../utils/titles/titles";
 import { stringDay } from "../../utils/day/string-day";
-import { Notification } from "./notification";
 import { DropDown } from "./profile-drop-down";
 import { HamburgerMenu } from "../../pages/home/home-page.style";
 import { HiMenu } from "react-icons/hi";
@@ -39,7 +38,6 @@ export const Header = () => {
           </MidBlurredText>
         </WelcomeMessageContainer>
         <ProfileContainer>
-          <Notification />
           <ProfileImage profile={baseURL + user?.profile_picture} />
           <DropDown />
         </ProfileContainer>

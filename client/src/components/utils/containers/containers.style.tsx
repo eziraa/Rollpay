@@ -66,7 +66,7 @@ export const NoResult = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 10rem;
+  height: 50%;
   color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
   letter-spacing: 0.1rem;
   font-size: 2rem;

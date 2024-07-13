@@ -25,6 +25,8 @@ export const ListHeader = styled.div<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
   width: 100%;
   display: grid;
+  padding: 1rem;
+  border-radius: 1rem;
   grid-template-columns: 3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
