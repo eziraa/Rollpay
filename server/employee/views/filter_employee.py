@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.views.generic import ListView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -33,12 +34,15 @@ class FilterEmployeeView(APIView):
         if date_to:
             queryset = queryset.filter(
                 date_of_hire__lte=date_to)
+        queryset = queryset.order_by(f'{order}{order_by}')
         if salary_min:
-            queryset = queryset.filter(
-                salary__basic_salary__gte=salary_min)
+            queryset = [
+                employee for employee in queryset if employee.salaries.all().last().basic_salary >= Decimal(salary_min)]
         if salary_max:
-            queryset = queryset.filter(
-                salary__basic_salary__lte=salary_max)
+            queryset = [
+                employee for employee in queryset if employee.salaries.all().last().basic_salary <= Decimal(salary_max)]
+
+
 
         # Apply search
         if filter_by:
@@ -61,7 +65,6 @@ class FilterEmployeeView(APIView):
                 name = self.request.GET.get('search_value')
                 queryset = queryset.filter(first_name__icontains=name)
         # Apply ordering
-        queryset = queryset.order_by(f'{order}{order_by}')
         paginator = StandardResultsSetPagination()
         paginator.page_size = request.query_params.get("page_size", 10)
         page = paginator.paginate_queryset(queryset, request)
