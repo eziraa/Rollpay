@@ -154,7 +154,7 @@ const deleteAllowance = async (empployee_id: string) => {
       return {
         success: "Allowance deleted successfully",
         code: res.status,
-        data: res.data,
+        allowance: res.data,
       };
     })
     .catch((err: AxiosError) => {

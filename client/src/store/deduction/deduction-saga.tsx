@@ -19,7 +19,6 @@ import {
   getDeductionDone,
   listDeductionDone,
   taskUnfinished,
-  unfinishedAdd,
 } from "./deduction-slice";
 function* addDeduction(action: PayloadAction<AddDeductionParams>) {
   try {
@@ -39,9 +38,9 @@ function* addDeduction(action: PayloadAction<AddDeductionParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -52,10 +51,10 @@ function* addDeduction(action: PayloadAction<AddDeductionParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd("Cann't add deduction please try again later"));
+    yield put(taskUnfinished("Cann't add deduction please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -276,7 +275,7 @@ function* DeleteDeduction(action: PayloadAction<string>) {
       DeductionAPI.deleteDeduction,
       action.payload
     );
-    if (response.code === 204) {
+    if (response.code === 200) {
       yield put(deleteDeductionDone(response.deduction));
       yield put(
         setFlashMessage({
@@ -352,7 +351,7 @@ function* editDeduction(action: PayloadAction<EditDeductionParams>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",

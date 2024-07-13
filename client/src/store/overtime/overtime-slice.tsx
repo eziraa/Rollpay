@@ -30,10 +30,14 @@ const OvertimeSlice = createSlice({
   reducers: {
     addOvertimeRequested: (state, _: PayloadAction<AddOvertimeParams>) => {
       state.task_finished = false;
+      state.adding = true;
     },
-    getOvertimeRequested: (__, _: PayloadAction<string>) => {},
+    getOvertimeRequested: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+    },
     getOvertimeDone: (state, action: PayloadAction<Overtime>) => {
       state.curr_overtime = action.payload;
+      state.loading = false;
     },
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
@@ -62,23 +66,25 @@ const OvertimeSlice = createSlice({
       state.task_error = undefined;
       state.overtimes.push(action.payload);
       state.curr_overtime = action.payload;
+      state.adding = false;
     },
-    unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.task_error = action.payload;
-    },
+
     listOvertimesRequested: (state) => {
       state.task_finished = false;
+      state.loading = true;
     },
     tryingToDelete: (state) => {
       state.task_finished = false;
     },
-    deleteOvertimeRequested: (__, _: PayloadAction<string>) => {},
-    addSearched: (state, action: PayloadAction<Overtime[]>) => {
-      state.query_set = action.payload;
+    deleteOvertimeRequested: (state, _: PayloadAction<string>) => {
+      state.deleting = true;
     },
     deleteOvertimeDone: (state, action: PayloadAction<Overtime>) => {
       state.task_finished = true;
-      state.overtimes.splice(state.overtimes.indexOf(action.payload), 1);
+      state.overtimes = state.overtimes.filter(
+        (overtime) => overtime.overtime_type !== action.payload.overtime_type
+      );
+      state.deleting = false;
     },
 
     listOvertimeDone: (
@@ -87,14 +93,11 @@ const OvertimeSlice = createSlice({
     ) => {
       state.overtimes = payload.payload.results;
       state.task_finished = true;
+      state.loading = false;
       state.pagination = {
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
       };
-    },
-    unfinishedList: (state) => {
-      state.task_finished = true;
-      state.overtimes = [];
     },
     loadNextPageRequested: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
@@ -106,33 +109,18 @@ const OvertimeSlice = createSlice({
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
     },
-    searching: (state, payload: PayloadAction<Overtime[]>) => {
-      state.query_set = payload.payload;
-      state.searching = true;
-    },
-    noSearchResult: (state) => {
-      state.searching = false;
-    },
-    setCurrentOvertime: (
-      state,
-      payload: PayloadAction<Overtime | undefined>
-    ) => {
-      state.curr_overtime = payload.payload;
-    },
+
     editOvertimeRequested: (state, _: PayloadAction<EditOvertimeParams>) => {
       state.task_finished = false;
+      state.editing = true;
     },
     editOvertimeDone: (state, action: PayloadAction<Overtime>) => {
       state.task_finished = true;
       state.overtimes = state.overtimes.map((overtime) =>
         overtime.id === action.payload.id ? action.payload : overtime
       );
+      state.editing = false;
     },
-    resetCurrEmployee: (state) => {
-      state.curr_overtime = undefined;
-      state.task_finished = true;
-    },
-
     closeOvertimeTask: (state) => {
       state.task_finished = true;
       state.task_error = undefined;
@@ -142,24 +130,21 @@ const OvertimeSlice = createSlice({
         ...action.payload,
       };
     },
+    taskUnfinished: (state, action: PayloadAction<string>) => {
+      state.task_error = action.payload;
+    },
   },
 });
 export const {
   listOvertimesRequested,
-  unfinishedAdd,
   listOvertimeDone,
-  unfinishedList,
   tryingToDelete,
   deleteOvertimeRequested,
   deleteOvertimeDone,
-  setCurrentOvertime,
   addOvertimeRequested,
   addOvertimeDone,
   editOvertimeRequested,
   editOvertimeDone,
-  resetCurrEmployee,
-  searching,
-  noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,
@@ -167,6 +152,7 @@ export const {
   resetOvertimeState,
   getOvertimeDone,
   getOvertimeRequested,
+  taskUnfinished,
 } = OvertimeSlice.actions;
 
 export default OvertimeSlice.reducer;

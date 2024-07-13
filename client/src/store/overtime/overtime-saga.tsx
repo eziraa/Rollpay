@@ -17,7 +17,7 @@ import {
   editOvertimeDone,
   getOvertimeDone,
   listOvertimeDone,
-  unfinishedAdd,
+  taskUnfinished,
 } from "./overtime-slice";
 function* addOvertime(action: PayloadAction<AddOvertimeParams>) {
   try {
@@ -38,9 +38,9 @@ function* addOvertime(action: PayloadAction<AddOvertimeParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -51,10 +51,10 @@ function* addOvertime(action: PayloadAction<AddOvertimeParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     }
   } catch (e) {
-    yield put(unfinishedAdd("Cann't add overtime please try again later"));
+    yield put(taskUnfinished("Cann't add overtime please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -164,7 +164,7 @@ function* DeleteOvertime(action: PayloadAction<string>) {
       OvertimeAPI.deleteOvertime,
       action.payload
     );
-    if (response.code === 204) {
+    if (response.code === 200) {
       yield put(deleteOvertimeDone(response.overtime));
       yield put(
         setFlashMessage({
@@ -240,7 +240,7 @@ function* editOvertime(action: PayloadAction<EditOvertimeParams>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",

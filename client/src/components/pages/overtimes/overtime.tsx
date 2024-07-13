@@ -8,7 +8,7 @@ import {
   PositionListHeader,
   Title,
 } from "../positions/position.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -33,15 +33,22 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
 export const OvertimePage = () => {
-  const employee = useAppSelector((state) => state.employee);
+  //Defing hokks and getting necessary informations
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
-  const { task_error, task_finished, overtimes } = useOvertime();
-  const DELETE = "delete";
-  const [action, setAction] = useState("");
+  const { overtimes, loading, deleting } = useOvertime();
+
+  // Defining state to set the current overtime responsible to action
+  const [actionId, setActionId] = useState("-1");
+  const [isDeleting, setIsDeleting] = useState(false);
   useEffect(() => {
     dispatcher(listOvertimesRequested());
   }, []);
+
+  useEffect(() => {
+    !deleting && setActionId("-1");
+    !deleting && setIsDeleting(false);
+  }, [deleting]);
   return (
     <MainContainer>
       <PositionListHeader>
@@ -51,7 +58,6 @@ export const OvertimePage = () => {
             e.preventDefault();
             e.stopPropagation();
             navigate("add-overtime");
-            dispatcher(listOvertimesRequested());
           }}
         >
           <IoAddOutline /> Add New
@@ -59,8 +65,8 @@ export const OvertimePage = () => {
       </PositionListHeader>
       <PositionListBody>
         <Outlet />
-        {!employee.task_finished ? (
-          <ThreeDots size={2} />
+        {loading ? (
+          <ThreeDots size={1} />
         ) : overtimes.length === 0 ? (
           <div>
             <NoResult text="No overtimes found" />
@@ -86,8 +92,8 @@ export const OvertimePage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
+                          setActionId(overtime.id);
                           navigate(`edit-overtime/${overtime.id}`);
-                          dispatcher(listOvertimesRequested());
                         }}
                       >
                         <MdOutlineEdit />
@@ -96,11 +102,12 @@ export const OvertimePage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          setAction(DELETE);
+                          setActionId(overtime.id);
+                          setIsDeleting(true);
                           dispatcher(deleteOvertimeRequested(overtime.id));
                         }}
                       >
-                        {action === DELETE && !task_error && !task_finished ? (
+                        {actionId === overtime.id && isDeleting && !deleting ? (
                           <SmallSpinner />
                         ) : (
                           <>

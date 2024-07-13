@@ -44,10 +44,16 @@ export const DeductionPage = () => {
   const EDIT = "edit";
 
   const [action, setAction] = useState("");
+  const [actionId, setActionId] = useState("-1");
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listDeductionsRequested());
   }, [curr_deduction]);
+
+  useEffect(() => {
+    !deleting && !editing && setAction("");
+    !deleting && !editing && setActionId("-1");
+  }, [deleting, editing]);
   return (
     <MainContainer>
       <PositionListHeader>
@@ -133,12 +139,13 @@ export const DeductionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(CLOSE);
+                          setActionId(deduction.id);
                           deduction.end_at
                             ? dispatcher(openDeductionRequested(deduction.id))
                             : dispatcher(closeDeductionRequested(deduction.id));
                         }}
                       >
-                        {action === CLOSE && !task_error && editing ? (
+                        {action === CLOSE && actionId == deduction.id ? (
                           <SmallSpinner />
                         ) : deduction.end_at ? (
                           <>
@@ -155,10 +162,13 @@ export const DeductionPage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(DELETE);
+                          setActionId(deduction.id);
                           dispatcher(deleteDeductionRequested(deduction.id));
                         }}
                       >
-                        {action === DELETE && !task_error && deleting ? (
+                        {action === DELETE &&
+                        deduction.id === actionId &&
+                        !task_error ? (
                           <SmallSpinner />
                         ) : (
                           <>

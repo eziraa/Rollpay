@@ -36,16 +36,42 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 
+/**
+ * This is a page to show list allowances
+ *
+ * @return {Component}
+ */
 export const AllowancePage = () => {
+  /**
+   * Calling hooks ang getting nucessary data redux store and context api
+   */
   const dispatcher = useAppDispatch();
-  const { task_error, allowances, editing, loading, deleting } = useAllowance();
+  const { allowances, editing, loading, deleting } = useAllowance();
   const DELETE = "delete";
   const CLOSE = "close";
-  const [action, setAction] = useState("");
   const navigate = useNavigate();
+
+  /**
+   * Defining state to set the action type and the allowance id responed to the currntt action
+   */
+  const [action, setAction] = useState("");
+  const [actionId, setActionId] = useState("-1");
+  /**
+   * Defining useEffect to get allowance list
+   */
   useEffect(() => {
-    !loading && dispatcher(listAllowancesRequested());
+    dispatcher(listAllowancesRequested());
   }, [dispatcher]);
+
+  /**
+   * Defining useEffect to to reset local states adter action finished
+   *
+   * */
+
+  useEffect(() => {
+    !editing && !deleting && setAction("");
+    !editing && !deleting && setActionId("-1");
+  }, [editing, deleting]);
 
   return (
     <MainContainer>
@@ -130,12 +156,15 @@ export const AllowancePage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(CLOSE);
+                          setActionId(allowance.id);
                           allowance.end_at
                             ? dispatcher(openAllowanceRequested(allowance.id))
                             : dispatcher(closeAllowanceRequested(allowance.id));
                         }}
                       >
-                        {action === CLOSE && !task_error && editing ? (
+                        {action === CLOSE &&
+                        !editing &&
+                        actionId === allowance.id ? (
                           <SmallSpinner />
                         ) : allowance.end_at ? (
                           <>
@@ -152,10 +181,13 @@ export const AllowancePage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           setAction(DELETE);
+                          setActionId(allowance.id);
                           dispatcher(deleteAllowanceRequested(allowance.id));
                         }}
                       >
-                        {action === DELETE && !task_error && deleting ? (
+                        {action === DELETE &&
+                        allowance.id === actionId &&
+                        deleting ? (
                           <SmallSpinner />
                         ) : (
                           <>

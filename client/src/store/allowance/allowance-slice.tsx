@@ -112,7 +112,10 @@ const AllowanceSlice = createSlice({
     deleteAllowanceDone: (state, action: PayloadAction<Allowance>) => {
       state.task_finished = true;
       state.deleting = false;
-      state.allowances.splice(state.allowances.indexOf(action.payload), 1);
+      state.allowances = state.allowances.filter(
+        (allowance) =>
+          allowance.allowance_type !== action.payload.allowance_type
+      );
     },
     listAllowanceDone: (
       state,

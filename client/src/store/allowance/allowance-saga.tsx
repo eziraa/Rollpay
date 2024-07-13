@@ -275,7 +275,7 @@ function* DeleteAllowance(action: PayloadAction<string>) {
       AllowanceAPI.deleteAllowance,
       action.payload
     );
-    if (response.code === 204) {
+    if (response.code === 200) {
       yield put(deleteAllowanceDone(response.allowance));
       yield put(
         setFlashMessage({
