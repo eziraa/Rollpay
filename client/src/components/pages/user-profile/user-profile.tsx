@@ -33,9 +33,7 @@ import { getNamedMonth } from "../salary/utils";
 const UserProfile = () => {
   const navigate = useNavigate();
   const employee = useSalary().curr_emp?.employee;
-  //Calling hooks and getting necessary information
-  // const employee = useEmployee().curr_emp;
-  const { employee_id } = useParams();
+  const { year: query_year, month: query_month, employee_id } = useParams();
   const dispatcher = useAppDispatch();
   const {
     year: curr_year,
@@ -44,18 +42,20 @@ const UserProfile = () => {
     changeYear,
   } = useYearMonthPagination();
 
+  // Getting current month and year
+  const now = new Date(Date.now());
   // Implementing year-month pagination
   const start_year = 2022;
-  const end_year = 2024;
+  const current_year = now.getFullYear();
   const years = Array.from(
-    { length: end_year - start_year + 1 },
+    { length: current_year - start_year + 1 },
     (_, index) => start_year + index
   );
 
   const start_month = 1;
-  const end_month = 12;
+  const current_month = now.getMonth() + 1;
   const months = Array.from(
-    { length: end_month - start_month + 1 },
+    { length: current_month - start_month + 1 },
     (_, index) => start_month + index
   );
 
@@ -63,10 +63,9 @@ const UserProfile = () => {
 
   useEffect(() => {
     employee_id && dispatcher(getCurrentEmployeeRequest(employee_id));
-  }, [employee_id]);
-  useEffect(() => {
     employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
   }, [employee_id]);
+
   return (
     <UserProfileBody>
       <UserProfileHeader>
@@ -97,7 +96,7 @@ const UserProfile = () => {
           }}
         >
           <Select
-            value={`${curr_year}`}
+            value={`${query_year || current_year}`}
             onChange={(e) => {
               changeYear(+e.target.value);
             }}
@@ -109,17 +108,23 @@ const UserProfile = () => {
             ))}
           </Select>
           <Select
-            value={`${curr_month}`}
+            value={`${query_month || curr_month}`}
             onChange={(e) => {
               changeMonth(+e.target.value);
             }}
           >
             {months.map(
               (month) =>
-                ((curr_year && curr_year < end_year) ||
+                ((curr_year && curr_year < current_year) ||
                   month <= new Date(Date.now()).getMonth() + 1) && (
                   <SelectOption key={month} value={`${month}`}>
-                    {getNamedMonth(new Date(`${curr_year}-${month}-01`))}
+                    {getNamedMonth(
+                      new Date(
+                        `${query_year || current_year}-${
+                          query_month || current_month
+                        }-01`
+                      )
+                    )}
                   </SelectOption>
                 )
             )}
