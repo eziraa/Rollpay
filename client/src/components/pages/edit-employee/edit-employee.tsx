@@ -8,7 +8,6 @@ import {
   SaveBtn,
   ButtonContainer,
   CancelBtn,
-  BackButton,
 } from "./edit-employee.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 
@@ -19,7 +18,6 @@ import { ErrorMessage } from "../sign-up/sign-up.style";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { MdArrowBackIos } from "react-icons/md";
 import { useEmployee } from "../../../hooks/employee-hook";
 
 export const EditEmployee = () => {
@@ -79,13 +77,7 @@ export const EditEmployee = () => {
       }}
       onSubmit={handleSubmit}
     >
-      <BackButton
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <MdArrowBackIos /> Back
-      </BackButton>
+
       <EditEmployeeBody>
         <Field
           style={{

@@ -9,7 +9,7 @@ import {
   SuspendButton,
   Title,
 } from "../positions/position.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -37,17 +37,16 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 
 export const AllowancePage = () => {
-  const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, allowances, curr_allowance } =
-    useAllowance();
+  const { task_error, allowances, editing, loading, deleting } = useAllowance();
   const DELETE = "delete";
   const CLOSE = "close";
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    dispatcher(listAllowancesRequested());
-  }, [curr_allowance]);
+    !loading && dispatcher(listAllowancesRequested());
+  }, [dispatcher]);
+
   return (
     <MainContainer>
       <PositionListHeader>
@@ -57,7 +56,6 @@ export const AllowancePage = () => {
             e.preventDefault();
             e.stopPropagation();
             navigate("add-allowance");
-            dispatcher(listAllowancesRequested());
           }}
         >
           <IoAddOutline /> Add New
@@ -65,8 +63,8 @@ export const AllowancePage = () => {
       </PositionListHeader>
       <PositionListBody>
         <Outlet />
-        {!employee.task_finished ? (
-          <ThreeDots size={2} />
+        {loading ? (
+          <ThreeDots size={1} />
         ) : allowances.length === 0 ? (
           <div>
             <NoResult text="No allowances found" />
@@ -123,7 +121,6 @@ export const AllowancePage = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           navigate(`edit-allowance/${allowance.id}`);
-                          dispatcher(listAllowancesRequested());
                         }}
                       >
                         <MdOutlineEdit />
@@ -138,7 +135,7 @@ export const AllowancePage = () => {
                             : dispatcher(closeAllowanceRequested(allowance.id));
                         }}
                       >
-                        {action === CLOSE && !task_error && !task_finished ? (
+                        {action === CLOSE && !task_error && editing ? (
                           <SmallSpinner />
                         ) : allowance.end_at ? (
                           <>
@@ -158,7 +155,7 @@ export const AllowancePage = () => {
                           dispatcher(deleteAllowanceRequested(allowance.id));
                         }}
                       >
-                        {action === DELETE && !task_error && !task_finished ? (
+                        {action === DELETE && !task_error && deleting ? (
                           <SmallSpinner />
                         ) : (
                           <>

@@ -110,7 +110,7 @@ const editAllowance = async (
 
 const closeAllowance = async (allowance_id: string) => {
   const response = await api
-    .put("/allowance/close/" + allowance_id)
+    .patch("/allowance/close/" + allowance_id)
     .then((res) => {
       return {
         success: "Allowance close successfully",

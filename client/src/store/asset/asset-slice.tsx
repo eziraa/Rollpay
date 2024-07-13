@@ -26,57 +26,57 @@ const AssetSlice = createSlice({
   name: "asset",
   initialState: InitialAssetState,
   reducers: {
-    getAssetRequested: (__, _: PayloadAction<string>) => {},
+    getAssetRequested: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+    },
     getAssetDone: (state, action: PayloadAction<Asset>) => {
       state.curr_asset = action.payload;
+      state.loading = false;
     },
     addAssetRequested: (state, _: PayloadAction<AddAssetParams>) => {
       state.task_finished = false;
+      state.adding = true;
+      state.task_error = undefined;
     },
     addAssetDone: (state, action: PayloadAction<Asset>) => {
       state.task_finished = true;
       state.task_error = undefined;
       state.assets.push(action.payload);
-      state.curr_asset = action.payload;
+      state.adding = false;
     },
-    unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.task_error = action.payload;
-    },
+
     listAssetsRequested: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
+      state.loading = true;
     },
     taskUnfinished: (state, action: PayloadAction<string>) => {
       state.task_error = action.payload;
     },
-    deleteAssetRequested: (__, _: PayloadAction<string>) => {},
+    deleteAssetRequested: (state, _: PayloadAction<string>) => {
+      state.deleting = true;
+      state.task_error = undefined;
+    },
     deleteAssetDone: (state, action: PayloadAction<Asset>) => {
       state.task_finished = true;
+      state.deleting =true;
       state.assets.splice(state.assets.indexOf(action.payload), 1);
     },
-    listAssetDone: (
-      state,
-      payload: PayloadAction<AssetResponse>
-    ) => {
+    listAssetDone: (state, payload: PayloadAction<AssetResponse>) => {
       state.assets = payload.payload.results;
       state.task_finished = true;
-      state.task_finished = true;
+      state.loading = false;
     },
-    unfinishedList: (state) => {
-      state.task_finished = true;
-      state.task_finished = true;
-      state.assets = [];
-    },
-    setCurrentAsset: (
-      state,
-      payload: PayloadAction<Asset | undefined>
-    ) => {
+    setCurrentAsset: (state, payload: PayloadAction<Asset | undefined>) => {
       state.curr_asset = payload.payload;
+      state.loading = false;
     },
     editAssetRequested: (state, _: PayloadAction<EditAssetParams>) => {
       state.task_finished = false;
+      state.editing = true;
     },
     editAssetDone: (state, action: PayloadAction<Asset>) => {
       state.task_finished = true;
+      state.editing = false;
       state.assets = state.assets.map((Asset) =>
         Asset.id === action.payload.id ? action.payload : Asset
       );
@@ -88,9 +88,7 @@ const AssetSlice = createSlice({
 });
 export const {
   listAssetsRequested,
-  unfinishedAdd,
   listAssetDone,
-  unfinishedList,
   deleteAssetRequested,
   deleteAssetDone,
   setCurrentAsset,

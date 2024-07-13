@@ -9,7 +9,7 @@ import {
   SuspendButton,
   Title,
 } from "../positions/position.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -36,12 +36,12 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 export const DeductionPage = () => {
-  const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, deductions, curr_deduction } =
+  const { task_error, deductions, editing, deleting, loading, curr_deduction } =
     useDeduction();
   const DELETE = "delete";
   const CLOSE = "close";
+  const EDIT = "edit";
 
   const [action, setAction] = useState("");
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ export const DeductionPage = () => {
       </PositionListHeader>
       <PositionListBody>
         <Outlet />
-        {!employee.task_finished ? (
+        {loading ? (
           <ThreeDots size={2} />
         ) : deductions.length === 0 ? (
           <div>
@@ -122,8 +122,8 @@ export const DeductionPage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
+                          setAction(EDIT);
                           navigate(`edit-deduction/${deduction.id}`);
-                          dispatcher(listDeductionsRequested());
                         }}
                       >
                         <MdOutlineEdit />
@@ -138,7 +138,7 @@ export const DeductionPage = () => {
                             : dispatcher(closeDeductionRequested(deduction.id));
                         }}
                       >
-                        {action === CLOSE && !task_error && !task_finished ? (
+                        {action === CLOSE && !task_error && editing ? (
                           <SmallSpinner />
                         ) : deduction.end_at ? (
                           <>
@@ -158,7 +158,7 @@ export const DeductionPage = () => {
                           dispatcher(deleteDeductionRequested(deduction.id));
                         }}
                       >
-                        {action === DELETE && !task_error && !task_finished ? (
+                        {action === DELETE && !task_error && deleting ? (
                           <SmallSpinner />
                         ) : (
                           <>

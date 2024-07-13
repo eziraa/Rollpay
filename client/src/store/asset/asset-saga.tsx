@@ -10,7 +10,7 @@ import {
   editAssetDone,
   getAssetDone,
   listAssetDone,
-  unfinishedAdd,
+  taskUnfinished,
 } from "./asset-slice";
 function* addAsset(action: PayloadAction<AddAssetParams>) {
   try {
@@ -31,9 +31,9 @@ function* addAsset(action: PayloadAction<AddAssetParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -44,10 +44,10 @@ function* addAsset(action: PayloadAction<AddAssetParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     }
   } catch (_) {
-    yield put(unfinishedAdd("Can't add asset please try again later"));
+    yield put(taskUnfinished("Can't add asset please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -236,7 +236,7 @@ function* editAsset(action: PayloadAction<EditAssetParams>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",

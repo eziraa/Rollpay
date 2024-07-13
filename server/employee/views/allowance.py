@@ -62,17 +62,27 @@ class AllowanceView (APIView):
             allowance = Allowance.objects.get(pk=allowance_id)
         except allowance.DoesNotExist:
             return Response({"error": "allowance not found"}, status=status.HTTP_404_NOT_FOUND)
-        allowance.end_at = (datetime.datetime.now())
-        allowance.save()
-        serializer = AllowanceSerializer(allowance)
+        try:
+            allowance_type = request.data["allowance_type"]
+            allowance_rate = request.data["allowance_rate"]
+            if allowance_type and allowance_rate:
+                allowance.allowance_type = allowance_type
+                allowance.allowance_rate = allowance_rate
+                allowance.save()
+                serializer = AllowanceSerializer(allowance)
+                return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"error": "Check your data to edit"}, status=status.HTTP_400_BAD_REQUEST)
+        except KeyError as e:
+            return Response({"error": "Checkyour data bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
-        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
     def patch(self, request, allowance_id):
         try:
             allowance = Allowance.objects.get(pk=allowance_id)
         except allowance.DoesNotExist:
             return Response({"error": "allowance not found"}, status=status.HTTP_404_NOT_FOUND)
-        allowance.end_at = None
+
+        allowance.end_at = None if allowance.end_at else datetime.datetime.now()
         allowance.save()
         serializer = AllowanceSerializer(allowance)
 

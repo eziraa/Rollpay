@@ -54,11 +54,11 @@ export const lightTheme: Theme = {
 
 export const darkTheme: Theme = {
   colors: {
-    primary: "#3CFF87",
-    secondary: "#3CFF87",
+    primary: "#d8d8d8",
+    secondary: "#a3a5a4",
   },
   backgrounds: {
-    primary: "#272625",
+    primary: "#252534",
     secondary: "#4a4a4a",
   },
   fontSizes: {

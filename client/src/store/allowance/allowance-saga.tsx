@@ -19,7 +19,6 @@ import {
   getAllowanceDone,
   listAllowanceDone,
   taskUnfinished,
-  unfinishedAdd,
 } from "./allowance-slice";
 function* addAllowance(action: PayloadAction<AddAllowanceParams>) {
   try {
@@ -40,9 +39,9 @@ function* addAllowance(action: PayloadAction<AddAllowanceParams>) {
         })
       );
     } else if (response.code === 401) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",
@@ -53,10 +52,10 @@ function* addAllowance(action: PayloadAction<AddAllowanceParams>) {
         })
       );
     } else {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
     }
   } catch (_) {
-    yield put(unfinishedAdd("Cann't add allowance please try again later"));
+    yield put(taskUnfinished("Cann't add allowance please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
@@ -353,7 +352,7 @@ function* editAllowance(action: PayloadAction<EditAllowanceParams>) {
         })
       );
     } else if (response.code === 403) {
-      yield put(unfinishedAdd(response.error));
+      yield put(taskUnfinished(response.error));
       yield put(
         setFlashMessage({
           type: "error",
