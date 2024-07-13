@@ -22,7 +22,7 @@ export const SignUpPage = styled.div`
 export const SignUpContainer = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
-  width: 23%;
+  width: fit-content;
   height: auto;
   box-shadow: 0px 0px 1rem
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
@@ -34,8 +34,6 @@ export const SignUpContainer = styled.div<ThemeProps>`
   position: relative;
   padding: 6rem 1rem;
   border-radius: 1rem;
-  /* border: 1px solid
-    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)}; */
 
   position: absolute;
   top: 50%;

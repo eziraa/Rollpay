@@ -143,7 +143,7 @@ const SignUp = () => {
         <LinkContainer>
           <Text>Have an account? </Text>
           <CustomLink>
-            <Link to="/"> Log in </Link>
+            <Link to="/login"> Log in </Link>
           </CustomLink>
         </LinkContainer>
       </SignUpContainer>

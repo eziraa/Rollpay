@@ -75,6 +75,9 @@ export const LoginPage = () => {
           onSubmit={(e) => {
             handleSubmit(e);
           }}
+          style={{
+            gap: "2rem",
+          }}
         >
           <InputContainer>
             <Label>User name</Label>

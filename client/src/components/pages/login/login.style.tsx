@@ -11,15 +11,15 @@ export const LoginContainer = styled.div<ThemeProps>`
 export const LoginSection = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
-  width: 23%;
-  height: 60%;
+  width: fit-content;
+  height: fit-content;
   box-shadow: 0 0 1rem
     ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -50,7 +50,7 @@ export const CheckboxContainer = styled.div`
   position: relative;
 `;
 
-export const CustomLink = styled.a`
+export const CustomLink = styled.p`
   color: ${({ theme }) => theme.colors.link};
   text-decoration: none;
   font-size: 1.2rem;
