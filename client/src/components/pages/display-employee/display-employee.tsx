@@ -45,8 +45,8 @@ export const EmployeesListPage = () => {
         </AddButton>
       </EmployeesListHeader>
       <Body>
-        <Outlet />
         <EmployeeListDisplayer />
+        <Outlet />
       </Body>
     </MainContainer>
   );
