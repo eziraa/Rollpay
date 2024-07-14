@@ -116,6 +116,7 @@ const EmployeeSlice = createSlice({
     },
     finishAddAllowanceDone: (state) => {
       state.task_finished = true;
+      state.adding = false;
       state.task_error = undefined;
     },
     removeSalaryAssetRequested: (
