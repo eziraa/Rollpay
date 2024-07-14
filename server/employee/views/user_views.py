@@ -98,7 +98,26 @@ class ProfilePictureView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-            
+
+@staticmethod
+def id_generator():
+    while True:
+        generated_id = generate_id()
+        if CustomUser.objects.filter(id=generated_id).exists():
+            continue
+        else:
+            break
+    return generated_id
+
+
+@staticmethod
+def generate_id():
+    numbers = [number for number in '0123456789']
+    generated_id = ""
+    for i in range(0, 9):
+        generated_id += random.choice(numbers)
+    return generated_id
+
 class AccountView(APIView):
     permission_classes = [AllowAny]
 
@@ -113,9 +132,9 @@ class AccountView(APIView):
                     return JsonResponse({'error': 'There is an other user registed in this ID Please check your ID '}, status=400)
 
                 user = CustomUser.objects.create_user(
+                    id=id_generator(),
                     username=data['username'], password=data['password'],
                 )
-                user.id = CustomUser.id_generator()
                 RoleManager.add_role(user, empoyee.position)
                 empoyee.user = user
                 user.save()
@@ -132,7 +151,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         data = super().post(request=request)
         user = CustomUser.objects.get(username=request.data['username'])
         employee = get_object_or_404(Employee, user=user)
-        print(user.id)
         profile_picture = user.profile_pictures.all().last()
         if employee:
             data.data['employee'] = EmployeeSerializer(employee).data

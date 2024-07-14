@@ -28,24 +28,7 @@ class CustomUser(BaseUser):
     #     super().__init__(*args, **kwargs)
     #     self.id = CustomUser.id_generator()
 
-    @staticmethod
-    def id_generator():
-        users = CustomUser.objects.all()
-        while True:
-            generated_id = CustomUser.generate_id()
-            if CustomUser.objects.filter(id=generated_id).exists():
-                continue
-            else:
-                break
-        return generated_id
 
-    @staticmethod
-    def generate_id():
-        numbers = [number for number in '0123456789']
-        generated_id = ""
-        for i in range(0, 9):
-            generated_id += random.choice(numbers)
-        return generated_id
 
 
 class ProfilePicture(models.Model):
