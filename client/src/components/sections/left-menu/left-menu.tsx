@@ -85,7 +85,7 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
               <MenuItemText>{item.title} </MenuItemText>
               {item.exapandItems && (
                 <ColapseExpand>
-                  {item.items_expanded ? <MdExpandMore /> : <MdExpandLess />}
+                  {item.items_expanded ? <MdExpandLess /> : <MdExpandMore />}
                 </ColapseExpand>
               )}
             </MenuItem>

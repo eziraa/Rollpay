@@ -39,7 +39,7 @@ function* addAsset(action: PayloadAction<AddAssetParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to add asset",
+          desc: "Not allowed to add asset",
           duration: 3,
         })
       );
@@ -47,13 +47,13 @@ function* addAsset(action: PayloadAction<AddAssetParams>) {
       yield put(taskUnfinished(response.error));
     }
   } catch (_) {
-    yield put(taskUnfinished("Can't add asset please try again later"));
+    yield put(taskUnfinished("Failed please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
         status: true,
         title: "Add Asset",
-        desc: "Can't add asset please try again later",
+        desc: "Failed please try again later",
         duration: 3,
       })
     );
@@ -86,7 +86,7 @@ function* GetAssets(action: PayloadAction<string>) {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view assets",
+          desc: "Not allowed to view assets",
           duration: 3,
         })
       );
@@ -132,7 +132,7 @@ function* GetAsset(action: PayloadAction<string>) {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view asset",
+          desc: "Not allowed to view asset",
           duration: 3,
         })
       );
@@ -185,7 +185,7 @@ function* DeleteAsset(action: PayloadAction<string>) {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to delete asset",
+          desc: "Not allowed to delete asset",
           duration: 3,
         })
       );
@@ -194,7 +194,7 @@ function* DeleteAsset(action: PayloadAction<string>) {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "Delete Asset",
+          title: "Deleting Asset",
           desc: response.error,
           duration: 3,
         })
@@ -229,8 +229,8 @@ function* editAsset(action: PayloadAction<EditAssetParams>) {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "Permition Denied",
-          desc: "You are not authorized to edit asset",
+          title: "Permision Denied",
+          desc: "Not authorized to edit asset",
           duration: 3,
         })
       );
@@ -241,7 +241,7 @@ function* editAsset(action: PayloadAction<EditAssetParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to edit asset",
+          desc: "Not allowed to edit asset",
           duration: 3,
         })
       );
@@ -253,7 +253,7 @@ function* editAsset(action: PayloadAction<EditAssetParams>) {
           title: "Edit asset",
           desc:
             response.error.length < 3
-              ? "Cannot edit asset please try again"
+              ? "Failed please try again"
               : response.error,
           duration: 3,
         })
