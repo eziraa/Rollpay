@@ -35,8 +35,10 @@ const SignUp = () => {
       initialValues,
       validationSchema: SignUpSchema,
       onSubmit: (values) => {
-        localStorage.removeItem(ACCESS_TOKEN);
-        dispatcher(signUpRequested(values));
+        if (!user.creating) {
+          localStorage.removeItem(ACCESS_TOKEN);
+          dispatcher(signUpRequested(values));
+        }
       },
     });
   useEffect(() => {
@@ -136,8 +138,7 @@ const SignUp = () => {
               cursor: user.creating ? "not-allowed" : "pointer",
             }}
           >
-            {" "}
-            Create{" "}
+            Create
           </Button>
         </Form>
         <LinkContainer>
