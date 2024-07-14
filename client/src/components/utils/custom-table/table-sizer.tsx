@@ -49,7 +49,6 @@ export const getTableElements = (data: Employee[]) => {
     });
   });
 
-  console.log(tableElements);
 
   let gridTamplates = "";
   tableElements = tableElements.map((elm, index, elements) => {

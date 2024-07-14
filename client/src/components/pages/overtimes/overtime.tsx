@@ -73,13 +73,17 @@ export const OvertimePage = () => {
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Overtimes</Caption>
-            <TableHeader>
-              <HeaderTitle>Overtime Name</HeaderTitle>
-              <HeaderTitle>Overtime Rate</HeaderTitle>
+            <thead>
+              <tr>
+                <Caption>List of Overtimes</Caption>
+              </tr>
+              <TableHeader>
+                <HeaderTitle>Overtime Name</HeaderTitle>
+                <HeaderTitle>Overtime Rate</HeaderTitle>
 
-              <HeaderTitle>Actions</HeaderTitle>
-            </TableHeader>
+                <HeaderTitle>Actions</HeaderTitle>
+              </TableHeader>
+            </thead>
             <TableBody>
               {overtimes.map((overtime, index) => {
                 return (
@@ -87,35 +91,39 @@ export const OvertimePage = () => {
                     <TableData>{overtime.overtime_type}</TableData>
                     <TableData>{overtime.overtime_rate}</TableData>
 
-                    <ActionBtnsContainer>
-                      <EditButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setActionId(overtime.id);
-                          navigate(`edit-overtime/${overtime.id}`);
-                        }}
-                      >
-                        <MdOutlineEdit />
-                      </EditButton>
-                      <DeleteButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setActionId(overtime.id);
-                          setIsDeleting(true);
-                          dispatcher(deleteOvertimeRequested(overtime.id));
-                        }}
-                      >
-                        {actionId === overtime.id && isDeleting && !deleting ? (
-                          <SmallSpinner />
-                        ) : (
-                          <>
-                            <RiDeleteBin6Line />
-                          </>
-                        )}
-                      </DeleteButton>
-                    </ActionBtnsContainer>
+                    <TableData>
+                      <ActionBtnsContainer>
+                        <EditButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setActionId(overtime.id);
+                            navigate(`edit-overtime/${overtime.id}`);
+                          }}
+                        >
+                          <MdOutlineEdit />
+                        </EditButton>
+                        <DeleteButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setActionId(overtime.id);
+                            setIsDeleting(true);
+                            dispatcher(deleteOvertimeRequested(overtime.id));
+                          }}
+                        >
+                          {actionId === overtime.id &&
+                          isDeleting &&
+                          !deleting ? (
+                            <SmallSpinner />
+                          ) : (
+                            <>
+                              <RiDeleteBin6Line />
+                            </>
+                          )}
+                        </DeleteButton>
+                      </ActionBtnsContainer>
+                    </TableData>
                   </TableRow>
                 );
               })}

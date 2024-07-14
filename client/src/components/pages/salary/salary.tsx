@@ -244,11 +244,15 @@ export const EmployeesSalaryPage = () => {
           </TableHeader>
           <TableHeader>
             {allowanceTypes.map((allowanceType) => {
-              return <HeaderTitle> {allowanceType} </HeaderTitle>;
+              return (
+                <HeaderTitle key={allowanceType}>{allowanceType}</HeaderTitle>
+              );
             })}
-            <HeaderTitle>Income Tax</HeaderTitle>
+            <HeaderTitle>Income Tax</HeaderTitle>;
             {deductionTypes.map((deductionType) => {
-              return <HeaderTitle> {deductionType} </HeaderTitle>;
+              return (
+                <HeaderTitle key={deductionType}>{deductionType}</HeaderTitle>
+              );
             })}
           </TableHeader>
           {employeeSalary
@@ -260,7 +264,7 @@ export const EmployeesSalaryPage = () => {
                 <TableData>{employee.basic_salary}</TableData>
                 {allowanceTypes.map((allowanceType) => {
                   return (
-                    <TableData>
+                    <TableData key={allowanceType}>
                       {getRate(
                         employee.allowances.find(
                           (alowance) =>
@@ -274,7 +278,7 @@ export const EmployeesSalaryPage = () => {
                 <TableData>{getSalary(employee.income_tax)}</TableData>
                 {deductionTypes.map((deductionType) => {
                   return (
-                    <TableData>
+                    <TableData key={deductionType}>
                       {getRate(
                         employee.deductions.find(
                           (deduction) =>

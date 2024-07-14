@@ -79,16 +79,20 @@ export const DeductionPage = () => {
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Deductions</Caption>
-            <TableHeader>
-              <HeaderTitle>Deduction Name</HeaderTitle>
-              <HeaderTitle>Deduction Rate</HeaderTitle>
-              <HeaderTitle>Date of Start</HeaderTitle>
-              <HeaderTitle>Status</HeaderTitle>
+            <thead>
+              <tr>
+                <Caption>List of Deductions</Caption>
+              </tr>
+              <TableHeader>
+                <HeaderTitle>Deduction Name</HeaderTitle>
+                <HeaderTitle>Deduction Rate</HeaderTitle>
+                <HeaderTitle>Date of Start</HeaderTitle>
+                <HeaderTitle>Status</HeaderTitle>
 
-              <HeaderTitle>Date of End</HeaderTitle>
-              <HeaderTitle>Actions</HeaderTitle>
-            </TableHeader>
+                <HeaderTitle>Date of End</HeaderTitle>
+                <HeaderTitle>Actions</HeaderTitle>
+              </TableHeader>
+            </thead>
             <TableBody>
               {deductions.map((deduction, index) => {
                 return (
@@ -123,60 +127,64 @@ export const DeductionPage = () => {
                       <TableData>Not ended</TableData>
                     )}
 
-                    <ActionBtnsContainer>
-                      <EditButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(EDIT);
-                          navigate(`edit-deduction/${deduction.id}`);
-                        }}
-                      >
-                        <MdOutlineEdit />
-                      </EditButton>
-                      <SuspendButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(CLOSE);
-                          setActionId(deduction.id);
-                          deduction.end_at
-                            ? dispatcher(openDeductionRequested(deduction.id))
-                            : dispatcher(closeDeductionRequested(deduction.id));
-                        }}
-                      >
-                        {action === CLOSE && actionId == deduction.id ? (
-                          <SmallSpinner />
-                        ) : deduction.end_at ? (
-                          <>
-                            <IoOpenOutline />
-                          </>
-                        ) : (
-                          <>
-                            <MdOutlineClose />
-                          </>
-                        )}
-                      </SuspendButton>
-                      <DeleteButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(DELETE);
-                          setActionId(deduction.id);
-                          dispatcher(deleteDeductionRequested(deduction.id));
-                        }}
-                      >
-                        {action === DELETE &&
-                        deduction.id === actionId &&
-                        !task_error ? (
-                          <SmallSpinner />
-                        ) : (
-                          <>
-                            <RiDeleteBin6Line />
-                          </>
-                        )}
-                      </DeleteButton>
-                    </ActionBtnsContainer>
+                    <TableData>
+                      <ActionBtnsContainer>
+                        <EditButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(EDIT);
+                            navigate(`edit-deduction/${deduction.id}`);
+                          }}
+                        >
+                          <MdOutlineEdit />
+                        </EditButton>
+                        <SuspendButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(CLOSE);
+                            setActionId(deduction.id);
+                            deduction.end_at
+                              ? dispatcher(openDeductionRequested(deduction.id))
+                              : dispatcher(
+                                  closeDeductionRequested(deduction.id)
+                                );
+                          }}
+                        >
+                          {action === CLOSE && actionId == deduction.id ? (
+                            <SmallSpinner />
+                          ) : deduction.end_at ? (
+                            <>
+                              <IoOpenOutline />
+                            </>
+                          ) : (
+                            <>
+                              <MdOutlineClose />
+                            </>
+                          )}
+                        </SuspendButton>
+                        <DeleteButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(DELETE);
+                            setActionId(deduction.id);
+                            dispatcher(deleteDeductionRequested(deduction.id));
+                          }}
+                        >
+                          {action === DELETE &&
+                          deduction.id === actionId &&
+                          !task_error ? (
+                            <SmallSpinner />
+                          ) : (
+                            <>
+                              <RiDeleteBin6Line />
+                            </>
+                          )}
+                        </DeleteButton>
+                      </ActionBtnsContainer>
+                    </TableData>
                   </TableRow>
                 );
               })}

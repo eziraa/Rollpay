@@ -97,16 +97,21 @@ export const AllowancePage = () => {
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Allowances</Caption>
-            <TableHeader>
-              <HeaderTitle>Allowance Name</HeaderTitle>
-              <HeaderTitle>Allowance Rate</HeaderTitle>
-              <HeaderTitle>Date of Start</HeaderTitle>
-              <HeaderTitle>Status</HeaderTitle>
+            <thead>
+              <tr>
+                <Caption>List of Allowances</Caption>
+              </tr>
 
-              <HeaderTitle>Date of End</HeaderTitle>
-              <HeaderTitle>Actions</HeaderTitle>
-            </TableHeader>
+              <TableHeader>
+                <HeaderTitle>Allowance Name</HeaderTitle>
+                <HeaderTitle>Allowance Rate</HeaderTitle>
+                <HeaderTitle>Date of Start</HeaderTitle>
+                <HeaderTitle>Status</HeaderTitle>
+
+                <HeaderTitle>Date of End</HeaderTitle>
+                <HeaderTitle>Actions</HeaderTitle>
+              </TableHeader>
+            </thead>
             <TableBody>
               {allowances.map((allowance, index) => {
                 return (
@@ -141,61 +146,65 @@ export const AllowancePage = () => {
                       <TableData>Not ended</TableData>
                     )}
 
-                    <ActionBtnsContainer>
-                      <EditButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          navigate(`edit-allowance/${allowance.id}`);
-                        }}
-                      >
-                        <MdOutlineEdit />
-                      </EditButton>
-                      <SuspendButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(CLOSE);
-                          setActionId(allowance.id);
-                          allowance.end_at
-                            ? dispatcher(openAllowanceRequested(allowance.id))
-                            : dispatcher(closeAllowanceRequested(allowance.id));
-                        }}
-                      >
-                        {action === CLOSE &&
-                        !editing &&
-                        actionId === allowance.id ? (
-                          <SmallSpinner />
-                        ) : allowance.end_at ? (
-                          <>
-                            <IoOpenOutline />
-                          </>
-                        ) : (
-                          <>
-                            <MdOutlineClose />
-                          </>
-                        )}
-                      </SuspendButton>
-                      <DeleteButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(DELETE);
-                          setActionId(allowance.id);
-                          dispatcher(deleteAllowanceRequested(allowance.id));
-                        }}
-                      >
-                        {action === DELETE &&
-                        allowance.id === actionId &&
-                        deleting ? (
-                          <SmallSpinner />
-                        ) : (
-                          <>
-                            <RiDeleteBin6Line />
-                          </>
-                        )}
-                      </DeleteButton>
-                    </ActionBtnsContainer>
+                    <TableData>
+                      <ActionBtnsContainer>
+                        <EditButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigate(`edit-allowance/${allowance.id}`);
+                          }}
+                        >
+                          <MdOutlineEdit />
+                        </EditButton>
+                        <SuspendButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(CLOSE);
+                            setActionId(allowance.id);
+                            allowance.end_at
+                              ? dispatcher(openAllowanceRequested(allowance.id))
+                              : dispatcher(
+                                  closeAllowanceRequested(allowance.id)
+                                );
+                          }}
+                        >
+                          {action === CLOSE &&
+                          !editing &&
+                          actionId === allowance.id ? (
+                            <SmallSpinner />
+                          ) : allowance.end_at ? (
+                            <>
+                              <IoOpenOutline />
+                            </>
+                          ) : (
+                            <>
+                              <MdOutlineClose />
+                            </>
+                          )}
+                        </SuspendButton>
+                        <DeleteButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(DELETE);
+                            setActionId(allowance.id);
+                            dispatcher(deleteAllowanceRequested(allowance.id));
+                          }}
+                        >
+                          {action === DELETE &&
+                          allowance.id === actionId &&
+                          deleting ? (
+                            <SmallSpinner />
+                          ) : (
+                            <>
+                              <RiDeleteBin6Line />
+                            </>
+                          )}
+                        </DeleteButton>
+                      </ActionBtnsContainer>
+                    </TableData>
                   </TableRow>
                 );
               })}

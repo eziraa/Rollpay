@@ -7,7 +7,7 @@ export const FlasheMessageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30rem;
+  width: fit-content;
   position: absolute;
   top: 1rem;
   right: 10rem;
@@ -37,16 +37,18 @@ export const FlashMessageBody = styled.div`
 `;
 
 export const FlashMessageTitle = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};
-  font-weight: bold;
+  font-weight: 600;
+  letter-spacing: 0.15rem;
   text-align: left;
 `;
 
 export const FlashMessageText = styled.p`
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   text-align: left;
-  color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
+  letter-spacing: 0.13rem;
+  color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
 `;
 
 export const FlashMessageIcon = styled.div`
@@ -61,12 +63,12 @@ export const FlashMessageIcon = styled.div`
 `;
 
 export const CloseIcon = styled(RiCloseFill)`
-  color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
+  color: ${({ theme }) => addOpacityToColor(0.6, theme.backgrounds.primary)};
   border: none;
   font-size: 3.4rem;
   cursor: pointer;
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.backgrounds.primary};
   }
   justify-self: end;
   flex: 0.7;

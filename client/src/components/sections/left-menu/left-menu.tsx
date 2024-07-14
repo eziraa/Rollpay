@@ -64,8 +64,9 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
           </Title>
         </LogoContainer>
         {menu_items.map((item) => (
-          <>
+          <div key={item.path}>
             <MenuItem
+              key={item.path}
               active={
                 item?.sub_menu_items?.some((item) =>
                   pathname.startsWith(item.path)
@@ -104,7 +105,7 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
                 ))}
               </SubMenuContainer>
             )}
-          </>
+          </div>
         ))}
       </LeftMenuContainer>
     </div>

@@ -50,6 +50,7 @@ function* userLogout() {
 
   if (response.code === 200) {
     yield put(logout());
+
     yield put(
       setFlashMessage({
         type: "success",

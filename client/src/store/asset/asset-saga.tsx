@@ -67,7 +67,6 @@ function* GetAssets(action: PayloadAction<string>) {
       action.payload
     );
     if (response.code === 200) {
-      console.log(response);
       yield put(listAssetDone(response));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";

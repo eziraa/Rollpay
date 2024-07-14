@@ -68,7 +68,6 @@ const login = async (values: LoginParams) => {
         code: err.response?.status,
       } as { error: string; code: number };
     });
-  console.log(response);
   return response;
 };
 

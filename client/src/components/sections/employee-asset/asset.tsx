@@ -71,11 +71,12 @@ export const EmployeeAsset = () => {
           </div>
         ) : (
           <CustomTable>
-            <TableHeader>
-              <HeaderTitle>Asset name</HeaderTitle>
-              <HeaderTitle>Action</HeaderTitle>
-            </TableHeader>
-
+            <thead>
+              <TableHeader>
+                <HeaderTitle>Asset name</HeaderTitle>
+                <HeaderTitle>Action</HeaderTitle>
+              </TableHeader>
+            </thead>
             <TableBody>
               {assets.map((asset, index) => {
                 return (

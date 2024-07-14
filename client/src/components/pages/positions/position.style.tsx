@@ -50,7 +50,7 @@ export const AddButton = styled(Button)`
   display: block;
 `;
 
-export const ActionBtnsContainer = styled.td`
+export const ActionBtnsContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: flex-start;

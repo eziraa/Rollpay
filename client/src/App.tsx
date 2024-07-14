@@ -48,7 +48,7 @@ function App() {
                       <YearMonthPaginationProvider>
                         <ThemeProvider theme={theme}>
                           <FlashMessage />
-                          <RouterConfig />
+                          <RouterConfig pathname={window.location.pathname} />
                           <ModalStore />
                         </ThemeProvider>
                       </YearMonthPaginationProvider>
