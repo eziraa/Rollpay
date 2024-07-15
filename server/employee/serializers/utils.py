@@ -149,7 +149,8 @@ class StatisticsCalculator:
             allowances = curr_month_payment.allowances.all()
             for allowance in allowances:
                 value = allowance.allowance.allowance_rate / 100 * curr_month_payment.salary
-            allowance_list.append(value)
+                allowance_list.append(value)
+
         return format(round(sum(allowance_list), 2), ',')
 
     @staticmethod
@@ -171,7 +172,7 @@ class StatisticsCalculator:
                 time_length = length_in_hour + length_in_minute / 60
                 value = overtime.overtime.overtime_rate / 100 * \
                     curr_month_payment.salary * Decimal(time_length)
-            overtime_list.append(value)
+                overtime_list.append(value)
         return format(round(sum(overtime_list), 2), ',')
 
     @staticmethod
