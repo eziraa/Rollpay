@@ -12,6 +12,7 @@ function DropDown() {
   return (
     <DropDownContainer
       name="page"
+      value={pagination.per_page || 10}
       onChange={(e) => {
         setPageSize(parseInt(e.currentTarget.value));
         pagination.type === "employee" &&
@@ -31,21 +32,11 @@ function DropDown() {
           );
       }}
     >
-      <SelectOption value="10" selected={pagination?.per_page === 10}>
-        10
-      </SelectOption>
-      <SelectOption value="20" selected={pagination?.per_page === 20}>
-        20
-      </SelectOption>
-      <SelectOption value="30" selected={pagination?.per_page === 30}>
-        30
-      </SelectOption>
-      <SelectOption value="40" selected={pagination?.per_page === 40}>
-        40
-      </SelectOption>
-      <SelectOption value="50" selected={pagination?.per_page === 50}>
-        50
-      </SelectOption>
+      <SelectOption value="10">10</SelectOption>
+      <SelectOption value="20">20</SelectOption>
+      <SelectOption value="30">30</SelectOption>
+      <SelectOption value="40">40</SelectOption>
+      <SelectOption value="50">50</SelectOption>
     </DropDownContainer>
   );
 }
