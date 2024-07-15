@@ -24,8 +24,6 @@ const getPaymentStatistics = async () => {
   const employees = await api
     .post("/stat/payment")
     .then((res) => {
-      console.log(res.data);
-
       return {
         stat: res.data,
         code: res.status,
