@@ -2,6 +2,7 @@ from django.urls import path
 from employee.views.user_views import UserView, AccountView, ProfilePictureView
 urlpatterns = [
     path("register", AccountView.as_view(), name='__user_registration__'),
+    path('list', UserView.as_view(), name='__get_users__'),
     path("logout", UserView.as_view(), name='__user_logout__'),
     # path("profile", UserView.as_view(), name='__user_profile__'),
     path("update", UserView.as_view(), name='__user_update__'),
