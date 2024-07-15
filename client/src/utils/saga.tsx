@@ -9,6 +9,7 @@ import { watchAllowanceRequest } from "../store/allowance/allowance-saga";
 import { watchOvertimeRequest } from "../store/overtime/overtime-saga";
 import { watchStatisticsRequest } from "../store/statistics/statistics-saga";
 import { watchAssetRequest } from "../store/asset/asset-saga";
+import { watchAdminRequest } from "../store/admin/admin-saga";
 
 export function* rootSaga() {
   yield all([
@@ -22,5 +23,6 @@ export function* rootSaga() {
     watchOvertimeRequest(),
     watchStatisticsRequest(),
     watchAssetRequest(),
+    watchAdminRequest(),
   ]);
 }
