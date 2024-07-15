@@ -3,9 +3,9 @@ import { addOpacityToColor } from "../../../../utils/convertor/add-opacity-color
 export const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   padding: 1rem;
-  height: 85%;
+  height: 100%;
   border: 0.2rem solid
     ${({ theme }) => addOpacityToColor(0.1, theme.colors.primary)};
 `;
