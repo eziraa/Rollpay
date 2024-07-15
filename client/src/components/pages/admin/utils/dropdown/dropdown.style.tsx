@@ -3,6 +3,7 @@ import { addOpacityToColor } from "../../../../utils/convertor/add-opacity-color
 
 export const Select = styled.select`
   width: fit-content;
+  min-width: 20rem;
   padding: 0.5rem;
   border-radius: 0.25rem;
   border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
