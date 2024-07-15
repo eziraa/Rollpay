@@ -8,7 +8,7 @@ import {
   AddItemLabel,
   AddItemTitle,
   InputContainer,
-} from "../add-item/add-item.style";
+} from "../utils/add-item/add-item.style";
 
 export const AddGroup = () => {
   return (

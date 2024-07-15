@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { addOpacityToColor } from "../../../utils/convertor/add-opacity-color";
+import { addOpacityToColor } from "../../../../utils/convertor/add-opacity-color";
 
 export const AddItemContainer = styled.div`
   display: flex;
