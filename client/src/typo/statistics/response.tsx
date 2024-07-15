@@ -31,6 +31,9 @@ export interface StatisticsResponse {
 export interface StatResponse extends BaseResponse {
   stat: StatisticsResponse;
 }
+export interface PaymnentStatResponse extends BaseResponse {
+  stat: PaymentStatisticeResponse[];
+}
 
 export interface PaymentStatisticeResponse {
   total_amount_of_payment: number;
