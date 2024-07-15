@@ -17,5 +17,5 @@ class PaymentStatisticsSerilizer:
             'total_allowances_payment': StatisticsCalculator.total_expense_of_allowances_in_a_month(month),
             'total_overtimes_payment': StatisticsCalculator.total_expense_of_overtimes_in_a_month(month),
             'payment_date': Payment.objects.filter(month=month).first().payment_date,
-            'month': month.last_day}
+            'month': month.datestring()}
         return data
