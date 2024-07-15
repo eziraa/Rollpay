@@ -27,5 +27,5 @@ export const AddButton = styled.button`
 export const DeductionBody = styled.div`
   ${body_css};
   ${custom_vertical_scroll_bar};
-  height: 60vh;
+  height: 100%;
 `;

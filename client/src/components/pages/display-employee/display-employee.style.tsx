@@ -49,6 +49,8 @@ export const EmployeesListHeader = styled.div`
 export const Body = styled.div<ThemeProps>`
   padding: 0rem;
   margin-right: 2rem;
+  width: 100%;
+  height: 100%;
 `;
 
 export const AddButton = styled(Button)`

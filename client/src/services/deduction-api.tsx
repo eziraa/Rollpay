@@ -130,7 +130,7 @@ const openDeduction = async (deduction_id: string) => {
 
 const closeDeduction = async (deduction_id: string) => {
   const response = await api
-    .put("/deduction/close/" + deduction_id)
+    .patch("/deduction/close/" + deduction_id)
     .then((res) => {
       return {
         success: "Deduction closed successfully",
@@ -155,7 +155,7 @@ const deleteDeduction = async (empployee_id: string) => {
       return {
         success: "Deduction deleted successfully",
         code: res.status,
-        data: res.data,
+        deduction: res.data,
       };
     })
     .catch((err: AxiosError) => {

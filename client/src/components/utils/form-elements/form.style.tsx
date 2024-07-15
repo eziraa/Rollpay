@@ -5,7 +5,7 @@ import { addOpacityToColor } from "../convertor/add-opacity-color";
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;

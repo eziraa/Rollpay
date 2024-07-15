@@ -20,7 +20,6 @@ import {
   addAllowanceRequested,
   closeAllowanceTask,
   editAllowanceRequested,
-  getAllowanceRequested,
   resetAllowanceState,
 } from "../../../store/allowance/allowance-slice";
 import { useEffect } from "react";
@@ -35,17 +34,11 @@ export const AddAllowance = () => {
   const allowance = useAllowance();
   const navigate = useNavigate();
   const { allowance_id } = useParams();
-
-  useEffect(() => {
-    allowance_id && dispatcher(getAllowanceRequested(allowance_id));
-  }, []);
-  useEffect(() => {
-    if (allowance.curr_allowance && allowance_id) {
-      setFieldValue("allowance_type", allowance.curr_allowance.allowance_type);
-      setFieldValue("allowance_rate", allowance.curr_allowance.allowance_rate);
-    }
-  }, [allowance.curr_allowance]);
-  // initializing formik instance
+  let editable_allowance;
+  if (allowance_id)
+    editable_allowance = allowance.allowances
+      .slice(0)
+      .find((a) => a.id == allowance_id);
   const {
     values,
     handleChange,
@@ -54,11 +47,14 @@ export const AddAllowance = () => {
     dirty,
     touched,
     isSubmitting,
-    setFieldValue
   } = useFormik({
-    initialValues:{
-      allowance_type: "",
-      allowance_rate: "",
+    initialValues: {
+      allowance_type: editable_allowance
+        ? editable_allowance.allowance_type
+        : "",
+      allowance_rate: editable_allowance
+        ? editable_allowance.allowance_rate
+        : "",
     },
     validationSchema: AddAllowanceSchema,
     onSubmit(values) {
@@ -89,7 +85,7 @@ export const AddAllowance = () => {
   // Writing use effect to close modal after succefully adding allowance
 
   useEffect(() => {
-    if (isSubmitting && allowance.task_finished) {
+    if (isSubmitting && !allowance.deleting && !allowance.editing) {
       dispatcher(resetAllowanceState({ ...allowance, task_error: undefined }));
       navigate(-1);
     }
@@ -98,6 +94,7 @@ export const AddAllowance = () => {
   const clearTask = () => {
     dispatcher(closeAllowanceTask());
   };
+  if (allowance_id && allowance.loading) return;
   return (
     <Modal closeAction={clearTask}>
       <AllowanceContainer>

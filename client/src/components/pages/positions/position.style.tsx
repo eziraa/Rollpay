@@ -50,7 +50,7 @@ export const AddButton = styled(Button)`
   display: block;
 `;
 
-export const ActionBtnsContainer = styled.td`
+export const ActionBtnsContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: flex-start;
@@ -74,7 +74,7 @@ export const ActionButton = styled.button`
   /* flex: 1; */
   color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   &:hover {
-    background-color: #2f8236;
+    background-color: ${({ theme }) => theme.table.tableRowHover};
     color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   }
 `;

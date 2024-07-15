@@ -27,7 +27,7 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
-import { Outlet, useNavigate, useParams } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { AddAllowanceToEmpSchema } from "../../../schema/add-allowance-schema";
 /**
  * Renders a modal for adding an allowance to an employee.
@@ -39,6 +39,7 @@ export const AddAllowanceToEmp = () => {
   const { allowances, curr_allowance } = useAllowance();
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { year, month, employee_id } = useParams();
   const { curr_emp } = useSalary();
   const employee = useEmployee();
@@ -52,11 +53,6 @@ export const AddAllowanceToEmp = () => {
    *
    * @returns {void}
    */
-  useEffect(() => {
-    if (curr_allowance) {
-      dispatcher(listAllowancesRequested());
-    }
-  }, [curr_allowance, dispatcher]);
 
   /**
    * This effect hook listens for changes in the `curr_allowance` state.
@@ -68,7 +64,7 @@ export const AddAllowanceToEmp = () => {
    * @returns {void}
    */
   useEffect(() => {
-    dispatcher(listAllowancesRequested());
+    allowances.length == 0 && dispatcher(listAllowancesRequested());
   }, []);
 
   /**
@@ -76,7 +72,15 @@ export const AddAllowanceToEmp = () => {
    *
    * @returns An object containing the Formik instance properties: errors, touched, handleChange, handleSubmit, and values.
    */
-  const { errors, touched, handleChange, handleSubmit, values } = useFormik({
+  const {
+    errors,
+    touched,
+    handleChange,
+    handleSubmit,
+    values,
+    isSubmitting,
+    resetForm,
+  } = useFormik({
     initialValues: {
       allowance_type: curr_allowance?.allowance_type || "",
       employee_id: employee_id || "",
@@ -93,6 +97,21 @@ export const AddAllowanceToEmp = () => {
       dispatcher(addEmpAllowanceRequested(values));
     },
   });
+
+  useEffect(() => {
+    if (!employee.adding && isSubmitting) {
+      resetForm({
+        values: {
+          allowance_type: "",
+          employee_id: employee_id || "",
+          query_string: `?year=${year}&month=${month}`,
+        },
+      });
+      navigate(pathname.slice(0, pathname.lastIndexOf("/") + 1));
+      clearTask();
+      // alert(pathname.slice(0, pathname.lastIndexOf("/") + 1));
+    }
+  }, []);
 
   //Adding a method to close modal  properly
   /**

@@ -19,7 +19,6 @@ import {
   addDeductionRequested,
   closeDeductionTask,
   editDeductionRequested,
-  getDeductionRequested,
   resetDeductionState,
 } from "../../../store/deduction/deduction-slice";
 import { useEffect } from "react";
@@ -29,22 +28,20 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
+import { closeAllowanceTask } from "../../../store/allowance/allowance-slice";
 export const AddDeduction = () => {
+  // Defing hooks and getting informarmation
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished } = useDeduction();
   const navigate = useNavigate();
   const deduction = useDeduction();
   const { deduction_id } = useParams();
 
-  useEffect(() => {
-    deduction_id && dispatcher(getDeductionRequested(deduction_id));
-  }, [deduction_id]);
-  useEffect(() => {
-    if (deduction.curr_deduction && deduction_id) {
-      setFieldValue("deduction_type", deduction.curr_deduction.deduction_type);
-      setFieldValue("deduction_rate", deduction.curr_deduction.deduction_rate);
-    }
-  }, [deduction.curr_deduction]);
+  // Getting editable deduction
+  const editable_deduction = deduction.deductions.find(
+    (deduction) => deduction.id == deduction_id
+  );
+
+  //Defing formik intstance
   const {
     values,
     isSubmitting,
@@ -52,12 +49,15 @@ export const AddDeduction = () => {
     handleSubmit,
     errors,
     touched,
-    setFieldValue,
     dirty,
   } = useFormik({
     initialValues: {
-      deduction_type: "",
-      deduction_rate: "",
+      deduction_type: editable_deduction
+        ? editable_deduction.deduction_type
+        : "",
+      deduction_rate: editable_deduction
+        ? editable_deduction?.deduction_rate
+        : "",
     },
     validationSchema: AddDeductionSchema,
     onSubmit(values) {
@@ -85,21 +85,21 @@ export const AddDeduction = () => {
     },
   });
   useEffect(() => {
-    if (isSubmitting && deduction.task_finished) {
+    if (isSubmitting && !deduction.deleting && !deduction.editing) {
       dispatcher(resetDeductionState({ ...deduction, task_error: undefined }));
       navigate(-1);
     }
   }, [deduction.task_finished]);
 
   const clearAction = () => {
-    dispatcher(closeDeductionTask());
+    dispatcher(closeAllowanceTask());
   };
 
   return (
     <Modal closeAction={clearAction}>
       <DeductionContainer>
         <DeductionBody>
-          <Title>{deduction_id ? 'Edit' : 'Add'} Deduction</Title>
+          <Title>{deduction_id ? "Edit" : "Add"} Deduction</Title>
           <DeductionForm onSubmit={handleSubmit}>
             <InputContainer>
               <Label>Deduction Name</Label>
@@ -125,17 +125,19 @@ export const AddDeduction = () => {
                 <FormError> {errors.deduction_rate} </FormError>
               )}
             </InputContainer>
-            {task_error && (
+            {deduction.task_error && (
               <FormError
                 style={{
                   fontSize: "1.5rem",
                 }}
               >
-                {task_error}
+                {deduction.task_error}
               </FormError>
             )}
             <AddBtn type="submit">
-              {!task_finished && !task_error ? (
+              {!deduction.editing &&
+              deduction.adding &&
+              !deduction.task_error ? (
                 <SmallSpinner />
               ) : deduction_id ? (
                 "Save"

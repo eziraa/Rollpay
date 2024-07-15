@@ -9,12 +9,18 @@ const InitialEmpState: UserState = {
   creating: false,
   user: undefined,
   task_finished: false,
+  task_error: undefined,
+  searching: false,
   is_login: false,
   logging_in: false,
   logging_out: false,
   login_error: undefined,
   signup_error: undefined,
   acc_created: false,
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
 };
 const UserSlice = createSlice({
   name: "user",
@@ -43,10 +49,11 @@ const UserSlice = createSlice({
       state.logging_in = true;
       state.login_error = undefined;
     },
-    loginFinished: (state) => {
+    loginFinished: (state, action: PayloadAction<UserResponse>) => {
       state.logging_in = false;
       state.is_login = true;
       state.login_error = undefined;
+      state.user = action.payload;
     },
     logoutRequested: (state) => {
       state.logging_out = true;
@@ -67,7 +74,7 @@ const UserSlice = createSlice({
       state.user = action.payload;
     },
     changeProfileImage: (state, action: PayloadAction<string>) => {
-      if (state.user) state.user.employee.profile_picture = action.payload;
+      if (state.user) state.user.profile_picture = action.payload;
     },
   },
 });

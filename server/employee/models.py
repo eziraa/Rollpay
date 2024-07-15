@@ -18,41 +18,25 @@ class Role(models.Model):
     groups = models.ManyToManyField(Group, blank=False)
 
 
-class ProfilePicture(models.Model):
-    created_at = models.DateTimeField(auto_now=True)
-    profile_picture = models.ImageField(
-        upload_to=upload_to, default="photos/profile.png")
 
 
 class CustomUser(BaseUser):
     role = models.ForeignKey(
         Role, on_delete=models.DO_NOTHING, null=True, blank=True)
-    profile_picture = models.OneToOneField(
-        ProfilePicture, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.id = CustomUser.id_generator()
+    # def __init__(self, *args: Any, **kwargs: Any) -> None:
+    #     super().__init__(*args, **kwargs)
+    #     self.id = CustomUser.id_generator()
 
-    @staticmethod
-    def id_generator():
-        users = CustomUser.objects.all()
-        while True:
-            generated_id = CustomUser.generate_id()
-            if CustomUser.objects.filter(id=generated_id).exists():
-                continue
-            else:
-                break
-        return generated_id
 
-    @staticmethod
-    def generate_id():
-        numbers = [number for number in '0123456789']
-        generated_id = ""
-        for i in range(0, 9):
-            generated_id += random.choice(numbers)
-        return generated_id
 
+
+class ProfilePicture(models.Model):
+    created_at = models.DateTimeField(auto_now=True)
+    profile_picture = models.ImageField(
+        upload_to=upload_to, default="photos/profile.png")
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="profile_pictures")
 
 
 class Allowance(models.Model):
@@ -81,8 +65,8 @@ class Deduction(models.Model):
     deduction_type = models.CharField(max_length=255, null=False)
     deduction_rate = models.DecimalField(
         max_digits=7, decimal_places=2, null=False)
-    start_at = models.DateField(auto_now_add=True)
-    end_at = models.DateField(blank=True, null=True)
+    start_at = models.DateTimeField(auto_now_add=True)
+    end_at = models.DateTimeField(blank=True, null=True)
     def __str__(self):
         return self.deduction_type
 

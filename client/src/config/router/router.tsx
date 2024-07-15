@@ -7,17 +7,19 @@ import NotFoundPage from "../../components/pages/4_0_4/404";
 import AccessDenied from "../../components/pages/access-denied/access-denied";
 import { ChangePassword } from "../../components/pages/change-password/change-password";
 import { MainPage } from "../../components/pages/main/main";
-export const RouterConfig = () => (
-  <Router>
-    <Routes>
-      <Route path="/" element={<MainPage />}>
-        {ProtectedRoute()}
-      </Route>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/access-denied" element={<AccessDenied />} />
-      <Route path="/change-password" element={<ChangePassword />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  </Router>
-);
+export const RouterConfig = ({ pathname }: { pathname: string }) => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/access-denied" element={<AccessDenied />} />
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/" element={<MainPage />}>
+          {ProtectedRoute(pathname)}
+        </Route>
+        {<Route path="*" element={<NotFoundPage />} />}
+      </Routes>
+    </Router>
+  );
+};

@@ -21,19 +21,20 @@ export const ListBody = styled.div`
 `;
 export const ListHeader = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.table.header};
+  background-color: #d1d0d0;
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.3rem;
-  font-weight: 600;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
-  padding: 0.4rem 0.5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  grid-template-columns: 3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr;
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
-export const ListTitle = styled.h4<ThemeProps>`
-  padding: 1rem 1rem;
+export const ListTitle = styled.p<ThemeProps>`
+  padding: 1rem 0;
   font-size: 1.4rem;
+  letter-spacing: 2px;
 `;
 
 export const HeaderItem = styled.div`
@@ -45,35 +46,35 @@ export const HeaderItem = styled.div`
 `;
 
 export const ListRow = styled.div<ThemeProps>`
-  background-color: ${({ theme }) => theme.backgrounds.secondary};
-  &:nth-child(even) {
-    background-color: ${({ theme }) => theme.backgrounds.primary};
-  }
+  background-color: ${({ theme }) => theme.backgrounds.primary};
   font-size: larger;
-  padding: 0.4rem 0.5rem;
+  padding: 0 0.5rem;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2.5fr 1.5fr 1.7fr 2.5fr 1.5fr 1fr 1fr 0.5fr;
+  grid-template-columns: 3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) =>
+  border: 2px solid #3434342b;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  /* background-color: ${({ theme }) =>
     addOpacityToColor(0.4, theme.table.tableRow)};
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.backgrounds.primary};
-  }
+  } */
 
   &:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
   }
-  &:last-child {
+  /* &:last-child {
     border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
-  }
+  } */
 `;
 
 export const Data = styled.div<ThemeProps>`
   color: ${({ theme }) => theme.colors.primary};
-  padding: 1rem 1rem;
+  padding: 0.5rem 1rem;
   text-align: left;
-  flex: 15rem;
   /* width: auto; */
 `;
 
@@ -102,4 +103,19 @@ export const ColumnTemplate = styled.div`
   flex-direction: column;
   align-items: center;
   justify-self: center;
+`;
+
+export const ViewBtn = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: #0033ff;
+  text-decoration: underline;
+  gap: 0;
+  &:hover {
+    background-color: ${({ theme }) => theme.buttons.primary};
+  }
 `;

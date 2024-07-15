@@ -26,6 +26,31 @@ function* getStatistics() {
   }
 }
 
+function* getPaymentStat() {
+  try {
+    const response: StatResponse = yield call(
+      StatisticsAPI.getPaymentStatistics
+    );
+    if (response.code === 200) {
+      yield put(getStatDone(response.stat));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    }
+  } catch (e) {
+    // TODO: Handle
+  }
+}
+
 export function* watchStatisticsRequest() {
   yield takeEvery("statistics/getStatRequest", getStatistics);
+  yield takeEvery("statistics/getPaymentStatRequest", getPaymentStat);
 }

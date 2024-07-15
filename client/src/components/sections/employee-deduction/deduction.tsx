@@ -34,35 +34,40 @@ export const EmployeeDeduction = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { year, month, changeYear, changeMonth } = useYearMonthPagination();
-  const { year: curr_year, month: curr_month, employee_id } = useParams();
+  const { year: query_year, month: query_month, employee_id } = useParams();
   const { user } = useUser();
+
+  //Getting current monthand year
+  const now = new Date(Date.now());
+  const current_year = now.getFullYear();
+  const current_month = now.getMonth() + 1;
   // Getting necessary information
-  const baseUrl = curr_year
-    ? pathname.slice(0, pathname.indexOf("/" + curr_year + "/"))
+  const baseUrl = query_year
+    ? pathname.slice(0, pathname.indexOf("/" + query_year + "/"))
     : pathname;
   // Defining use effect to navigate when there is chnage in the year and month
   useEffect(() => {
     if (!year && !month) return;
-    !year && changeYear(2022);
-    !month && changeMonth(1);
+    !year && changeYear(current_year);
+    !month && changeMonth(current_month);
     year && month && navigate(`${baseUrl}/${year}/${month}`);
   }, [year, month]);
 
   // Defining use effect to fetch employee information when there is chnage in the year and month
   useEffect(() => {
-    if (curr_year && curr_month) {
+    if (query_year && query_month) {
       dispatcher(
-        getCurrEmpPaymentInfo(`${employee_id}/${curr_year}/${curr_month}`)
+        getCurrEmpPaymentInfo(`${employee_id}/${query_year}/${query_month}`)
       );
     } else {
       employee_id &&
         dispatcher(
           getCurrEmpPaymentInfo(
-            `${employee_id}/${2024}/${new Date(Date.now()).getMonth()}`
+            `${employee_id}/${current_year}/${current_month}`
           )
         );
     }
-  }, [curr_year, curr_month]);
+  }, [query_year, query_month]);
   return (
     <DeductionContainer>
       <Outlet />
@@ -82,7 +87,7 @@ export const EmployeeDeduction = () => {
       </DeductionHeader>
       <DeductionBody>
         {!task_finished ? (
-          <ThreeDots size={2} />
+          <ThreeDots size={1} />
         ) : curr_emp?.employee.payments.every(
             (payment) => payment.deductions.length === 0
           ) ? (

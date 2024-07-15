@@ -53,7 +53,7 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to add employee",
+          desc: "Not allowed to add employee",
           duration: 3,
         })
       );
@@ -61,13 +61,13 @@ function* AddEmployee(action: PayloadAction<AddEmpParams>) {
       yield put(errorOccurred(response.error));
     }
   } catch (e) {
-    yield put(errorOccurred("Cann't add employee please try again later"));
+    yield put(errorOccurred("Failed please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
         status: true,
         title: "Add Employee",
-        desc: "Cann't add employee please try again later",
+        desc: " Failed please try again later",
         duration: 3,
       })
     );
@@ -88,8 +88,8 @@ function* addAllowance(action: PayloadAction<AddAllowanceToEmployeesParams>) {
         setFlashMessage({
           type: "success",
           status: true,
-          title: "Adding allowance to employee",
-          desc: "Allowance successfully added to employee",
+          title: "Adding allowance ",
+          desc: "Allowance added  successfully ",
           duration: 3,
         })
       );
@@ -102,7 +102,7 @@ function* addAllowance(action: PayloadAction<AddAllowanceToEmployeesParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to add employee",
+          desc: "Not allowed to add employee",
           duration: 3,
         })
       );
@@ -110,13 +110,13 @@ function* addAllowance(action: PayloadAction<AddAllowanceToEmployeesParams>) {
       yield put(errorOccurred(response.error));
     }
   } catch (e) {
-    yield put(errorOccurred("Cann't add allowance please try again later"));
+    yield put(errorOccurred("Failed please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
         status: true,
         title: "Add Employee",
-        desc: "Cann't add allowance please try again later",
+        desc: "Failed please try again later",
         duration: 3,
       })
     );
@@ -137,8 +137,8 @@ function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
         setFlashMessage({
           type: "success",
           status: true,
-          title: "Adding allowance to employee",
-          desc: "Deduction successfully added to employee",
+          title: "Adding allowance",
+          desc: "Deduction added successfully",
           duration: 3,
         })
       );
@@ -151,7 +151,7 @@ function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to add employee",
+          desc: "Not allowed to add employee",
           duration: 3,
         })
       );
@@ -159,13 +159,13 @@ function* addDeduction(action: PayloadAction<AddDeductionToEmployeesParams>) {
       yield put(errorOccurred(response.error));
     }
   } catch (e) {
-    yield put(errorOccurred("Cann't add allowance please try again later"));
+    yield put(errorOccurred("Failed please try again later"));
     yield put(
       setFlashMessage({
         type: "error",
         status: true,
         title: "Add Employee",
-        desc: "Cann't add allowance please try again later",
+        desc: "Failed please try again later",
         duration: 3,
       })
     );
@@ -185,8 +185,8 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
         setFlashMessage({
           type: "success",
           status: true,
-          title: "Adding overtime to employee",
-          desc: "Deduction successfully added to employee",
+          title: "Adding overtime",
+          desc: "Deduction added successfully ",
           duration: 3,
         })
       );
@@ -199,7 +199,7 @@ function* addOvertime(action: PayloadAction<AddOvertimeToEmpParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to add employee",
+          desc: "Not allowed to add employee",
           duration: 3,
         })
       );
@@ -232,7 +232,7 @@ function* removeSalaryAsset(action: PayloadAction<RemoveSalaryAssetParams>) {
         setFlashMessage({
           type: "success",
           status: true,
-          title: `Removing ${action.payload.asset_type} from employee`,
+          title: `Removing ${action.payload.asset_type}`,
           desc: `${action.payload.asset_type} successfully removed`,
           duration: 3,
         })
@@ -246,7 +246,7 @@ function* removeSalaryAsset(action: PayloadAction<RemoveSalaryAssetParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to add employee",
+          desc: "Not allowed to add employee",
           duration: 3,
         })
       );
@@ -259,8 +259,8 @@ function* removeSalaryAsset(action: PayloadAction<RemoveSalaryAssetParams>) {
       setFlashMessage({
         type: "error",
         status: true,
-        title: "Add Employee",
-        desc: "Cann't add overtime please try again later",
+        title: "Adding overtime",
+        desc: "Adding failed please try again later",
         duration: 3,
       })
     );
@@ -289,7 +289,7 @@ function* GetEmployees() {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view employees",
+          desc: "Not allowed to view employees",
           duration: 3,
         })
       );
@@ -335,7 +335,7 @@ function* GetEmployee(action: PayloadAction<string>) {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view employee",
+          desc: "Not allowed to view employee",
           duration: 3,
         })
       );
@@ -392,7 +392,7 @@ function* DeleteEmployee(action: PayloadAction<string>) {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to delete employees",
+          desc: "Not allowed to delete employees",
           duration: 3,
         })
       );
@@ -401,7 +401,7 @@ function* DeleteEmployee(action: PayloadAction<string>) {
         setFlashMessage({
           type: "error",
           status: true,
-          title: "Delete Employee",
+          title: "Deleting Employee",
           desc: response.error,
           duration: 3,
         })
@@ -484,7 +484,7 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
           type: "error",
           status: true,
           title: "Permition Denied",
-          desc: "You are not authorized to edit employee",
+          desc: "Not authorized to edit employee",
           duration: 3,
         })
       );
@@ -495,7 +495,7 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
           type: "error",
           status: true,
           title: "Forbidden",
-          desc: "You are not allowed to edit employee",
+          desc: "Not allowed to edit employee",
           duration: 3,
         })
       );
@@ -507,7 +507,7 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
           title: "Edit Employee",
           desc:
             response.error.length < 3
-              ? "Cannot edit employee please try again"
+              ? "Failed please try again"
               : response.error,
           duration: 3,
         })
@@ -519,7 +519,7 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
         type: "error",
         status: true,
         title: "Edit Employee",
-        desc: "Cannot edit employee please try again",
+        desc: "Failed please try again",
         duration: 3,
       })
     );
@@ -551,7 +551,7 @@ function* filterEmployees(action: PayloadAction<string>) {
         type: "error",
         status: true,
         title: "Access Denied",
-        desc: "You are not allowed to view employees",
+        desc: "Not allowed to view employees",
         duration: 3,
       })
     );
@@ -570,7 +570,7 @@ function* updateContract(action: PayloadAction<UpdateEmployementContract>) {
         type: "error",
         status: true,
         title: "Update Employement Contract",
-        desc: "Cannot upload employement conatract. Please try again",
+        desc: "Failed. Please try again",
         duration: 3,
       })
     );
@@ -600,7 +600,7 @@ function* GetEmpNum() {
           type: "error",
           status: true,
           title: "Access Denied",
-          desc: "You are not allowed to view dashboard",
+          desc: "Not allowed to view dashboard",
           duration: 3,
         })
       );
@@ -616,7 +616,7 @@ function* GetEmpNum() {
       );
     }
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 }
 

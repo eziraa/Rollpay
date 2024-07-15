@@ -9,7 +9,7 @@ import {
   SuspendButton,
   Title,
 } from "../positions/position.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -36,18 +36,43 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 
+/**
+ * This is a page to show list allowances
+ *
+ * @return {Component}
+ */
 export const AllowancePage = () => {
-  const employee = useAppSelector((state) => state.employee);
+  /**
+   * Calling hooks ang getting nucessary data redux store and context api
+   */
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, allowances, curr_allowance } =
-    useAllowance();
+  const { allowances, editing, loading, deleting } = useAllowance();
   const DELETE = "delete";
   const CLOSE = "close";
-  const [action, setAction] = useState("");
   const navigate = useNavigate();
+
+  /**
+   * Defining state to set the action type and the allowance id responed to the currntt action
+   */
+  const [action, setAction] = useState("");
+  const [actionId, setActionId] = useState("-1");
+  /**
+   * Defining useEffect to get allowance list
+   */
   useEffect(() => {
     dispatcher(listAllowancesRequested());
-  }, [curr_allowance]);
+  }, [dispatcher]);
+
+  /**
+   * Defining useEffect to to reset local states adter action finished
+   *
+   * */
+
+  useEffect(() => {
+    !editing && !deleting && setAction("");
+    !editing && !deleting && setActionId("-1");
+  }, [editing, deleting]);
+
   return (
     <MainContainer>
       <PositionListHeader>
@@ -57,7 +82,6 @@ export const AllowancePage = () => {
             e.preventDefault();
             e.stopPropagation();
             navigate("add-allowance");
-            dispatcher(listAllowancesRequested());
           }}
         >
           <IoAddOutline /> Add New
@@ -65,24 +89,29 @@ export const AllowancePage = () => {
       </PositionListHeader>
       <PositionListBody>
         <Outlet />
-        {!employee.task_finished ? (
-          <ThreeDots size={2} />
+        {loading ? (
+          <ThreeDots size={1} />
         ) : allowances.length === 0 ? (
           <div>
             <NoResult text="No allowances found" />
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Allowances</Caption>
-            <TableHeader>
-              <HeaderTitle>Allowance Name</HeaderTitle>
-              <HeaderTitle>Allowance Rate</HeaderTitle>
-              <HeaderTitle>Date of Start</HeaderTitle>
-              <HeaderTitle>Status</HeaderTitle>
+            <thead>
+              <tr>
+                <Caption>List of Allowances</Caption>
+              </tr>
 
-              <HeaderTitle>Date of End</HeaderTitle>
-              <HeaderTitle>Actions</HeaderTitle>
-            </TableHeader>
+              <TableHeader>
+                <HeaderTitle>Allowance Name</HeaderTitle>
+                <HeaderTitle>Allowance Rate</HeaderTitle>
+                <HeaderTitle>Date of Start</HeaderTitle>
+                <HeaderTitle>Status</HeaderTitle>
+
+                <HeaderTitle>Date of End</HeaderTitle>
+                <HeaderTitle>Actions</HeaderTitle>
+              </TableHeader>
+            </thead>
             <TableBody>
               {allowances.map((allowance, index) => {
                 return (
@@ -117,56 +146,65 @@ export const AllowancePage = () => {
                       <TableData>Not ended</TableData>
                     )}
 
-                    <ActionBtnsContainer>
-                      <EditButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          navigate(`edit-allowance/${allowance.id}`);
-                          dispatcher(listAllowancesRequested());
-                        }}
-                      >
-                        <MdOutlineEdit />
-                      </EditButton>
-                      <SuspendButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(CLOSE);
-                          allowance.end_at
-                            ? dispatcher(openAllowanceRequested(allowance.id))
-                            : dispatcher(closeAllowanceRequested(allowance.id));
-                        }}
-                      >
-                        {action === CLOSE && !task_error && !task_finished ? (
-                          <SmallSpinner />
-                        ) : allowance.end_at ? (
-                          <>
-                            <IoOpenOutline />
-                          </>
-                        ) : (
-                          <>
-                            <MdOutlineClose />
-                          </>
-                        )}
-                      </SuspendButton>
-                      <DeleteButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(DELETE);
-                          dispatcher(deleteAllowanceRequested(allowance.id));
-                        }}
-                      >
-                        {action === DELETE && !task_error && !task_finished ? (
-                          <SmallSpinner />
-                        ) : (
-                          <>
-                            <RiDeleteBin6Line />
-                          </>
-                        )}
-                      </DeleteButton>
-                    </ActionBtnsContainer>
+                    <TableData>
+                      <ActionBtnsContainer>
+                        <EditButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigate(`edit-allowance/${allowance.id}`);
+                          }}
+                        >
+                          <MdOutlineEdit />
+                        </EditButton>
+                        <SuspendButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(CLOSE);
+                            setActionId(allowance.id);
+                            allowance.end_at
+                              ? dispatcher(openAllowanceRequested(allowance.id))
+                              : dispatcher(
+                                  closeAllowanceRequested(allowance.id)
+                                );
+                          }}
+                        >
+                          {action === CLOSE &&
+                          !editing &&
+                          actionId === allowance.id ? (
+                            <SmallSpinner />
+                          ) : allowance.end_at ? (
+                            <>
+                              <IoOpenOutline />
+                            </>
+                          ) : (
+                            <>
+                              <MdOutlineClose />
+                            </>
+                          )}
+                        </SuspendButton>
+                        <DeleteButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(DELETE);
+                            setActionId(allowance.id);
+                            dispatcher(deleteAllowanceRequested(allowance.id));
+                          }}
+                        >
+                          {action === DELETE &&
+                          allowance.id === actionId &&
+                          deleting ? (
+                            <SmallSpinner />
+                          ) : (
+                            <>
+                              <RiDeleteBin6Line />
+                            </>
+                          )}
+                        </DeleteButton>
+                      </ActionBtnsContainer>
+                    </TableData>
                   </TableRow>
                 );
               })}

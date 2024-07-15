@@ -25,18 +25,18 @@ export const FlashMessage = () => {
           key={index}
           style={{
             borderColor:
-              flashMessage.type === "success" ? "#04b97f" : "#f9ba46",
+              flashMessage.type === "success" ? "#00af78" : "#f9ba46",
             backgroundColor:
               flashMessage.type === "success"
-                ? addOpacityToColor(1, "#a2d9c8")
-                : addOpacityToColor(0.9, "#fcd5b5"),
+                ? addOpacityToColor(1, "#f8f8f8")
+                : addOpacityToColor(1, "#f8f8f8"),
           }}
         >
           <FlashMessageIcon>
             {flashMessage.type === "success" ? (
               <FaCheckCircle
                 style={{
-                  color: "#04b97f",
+                  color: "#00af78",
                 }}
               />
             ) : (
@@ -48,10 +48,19 @@ export const FlashMessage = () => {
             )}
           </FlashMessageIcon>
           <FlashMessageBody>
-            <FlashMessageTitle>{flashMessage.title}</FlashMessageTitle>
+            <FlashMessageTitle
+              style={{
+                color: flashMessage.type === "success" ? "#00af78" : "#f9ba46",
+              }}
+            >
+              {flashMessage.title}
+            </FlashMessageTitle>
             <FlashMessageText>{flashMessage.desc}</FlashMessageText>
           </FlashMessageBody>
           <CloseIcon
+            style={{
+              color: flashMessage.type === "success" ? "#00af78" : "#f9ba46",
+            }}
             onClick={(e) => {
               e.stopPropagation();
               dispatcher(hideFlashMessage(flashMessage));

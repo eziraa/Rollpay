@@ -9,7 +9,7 @@ import {
   SuspendButton,
   Title,
 } from "../positions/position.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -36,18 +36,24 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 export const DeductionPage = () => {
-  const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, deductions, curr_deduction } =
+  const { task_error, deductions, editing, deleting, loading, curr_deduction } =
     useDeduction();
   const DELETE = "delete";
   const CLOSE = "close";
+  const EDIT = "edit";
 
   const [action, setAction] = useState("");
+  const [actionId, setActionId] = useState("-1");
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listDeductionsRequested());
   }, [curr_deduction]);
+
+  useEffect(() => {
+    !deleting && !editing && setAction("");
+    !deleting && !editing && setActionId("-1");
+  }, [deleting, editing]);
   return (
     <MainContainer>
       <PositionListHeader>
@@ -65,7 +71,7 @@ export const DeductionPage = () => {
       </PositionListHeader>
       <PositionListBody>
         <Outlet />
-        {!employee.task_finished ? (
+        {loading ? (
           <ThreeDots size={2} />
         ) : deductions.length === 0 ? (
           <div>
@@ -73,16 +79,20 @@ export const DeductionPage = () => {
           </div>
         ) : (
           <CustomTable>
-            <Caption>List of Deductions</Caption>
-            <TableHeader>
-              <HeaderTitle>Deduction Name</HeaderTitle>
-              <HeaderTitle>Deduction Rate</HeaderTitle>
-              <HeaderTitle>Date of Start</HeaderTitle>
-              <HeaderTitle>Status</HeaderTitle>
+            <thead>
+              <tr>
+                <Caption>List of Deductions</Caption>
+              </tr>
+              <TableHeader>
+                <HeaderTitle>Deduction Name</HeaderTitle>
+                <HeaderTitle>Deduction Rate</HeaderTitle>
+                <HeaderTitle>Date of Start</HeaderTitle>
+                <HeaderTitle>Status</HeaderTitle>
 
-              <HeaderTitle>Date of End</HeaderTitle>
-              <HeaderTitle>Actions</HeaderTitle>
-            </TableHeader>
+                <HeaderTitle>Date of End</HeaderTitle>
+                <HeaderTitle>Actions</HeaderTitle>
+              </TableHeader>
+            </thead>
             <TableBody>
               {deductions.map((deduction, index) => {
                 return (
@@ -117,56 +127,64 @@ export const DeductionPage = () => {
                       <TableData>Not ended</TableData>
                     )}
 
-                    <ActionBtnsContainer>
-                      <EditButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          navigate(`edit-deduction/${deduction.id}`);
-                          dispatcher(listDeductionsRequested());
-                        }}
-                      >
-                        <MdOutlineEdit />
-                      </EditButton>
-                      <SuspendButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(CLOSE);
-                          deduction.end_at
-                            ? dispatcher(openDeductionRequested(deduction.id))
-                            : dispatcher(closeDeductionRequested(deduction.id));
-                        }}
-                      >
-                        {action === CLOSE && !task_error && !task_finished ? (
-                          <SmallSpinner />
-                        ) : deduction.end_at ? (
-                          <>
-                            <IoOpenOutline />
-                          </>
-                        ) : (
-                          <>
-                            <MdOutlineClose />
-                          </>
-                        )}
-                      </SuspendButton>
-                      <DeleteButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAction(DELETE);
-                          dispatcher(deleteDeductionRequested(deduction.id));
-                        }}
-                      >
-                        {action === DELETE && !task_error && !task_finished ? (
-                          <SmallSpinner />
-                        ) : (
-                          <>
-                            <RiDeleteBin6Line />
-                          </>
-                        )}
-                      </DeleteButton>
-                    </ActionBtnsContainer>
+                    <TableData>
+                      <ActionBtnsContainer>
+                        <EditButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(EDIT);
+                            navigate(`edit-deduction/${deduction.id}`);
+                          }}
+                        >
+                          <MdOutlineEdit />
+                        </EditButton>
+                        <SuspendButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(CLOSE);
+                            setActionId(deduction.id);
+                            deduction.end_at
+                              ? dispatcher(openDeductionRequested(deduction.id))
+                              : dispatcher(
+                                  closeDeductionRequested(deduction.id)
+                                );
+                          }}
+                        >
+                          {action === CLOSE && actionId == deduction.id ? (
+                            <SmallSpinner />
+                          ) : deduction.end_at ? (
+                            <>
+                              <IoOpenOutline />
+                            </>
+                          ) : (
+                            <>
+                              <MdOutlineClose />
+                            </>
+                          )}
+                        </SuspendButton>
+                        <DeleteButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAction(DELETE);
+                            setActionId(deduction.id);
+                            dispatcher(deleteDeductionRequested(deduction.id));
+                          }}
+                        >
+                          {action === DELETE &&
+                          deduction.id === actionId &&
+                          !task_error ? (
+                            <SmallSpinner />
+                          ) : (
+                            <>
+                              <RiDeleteBin6Line />
+                            </>
+                          )}
+                        </DeleteButton>
+                      </ActionBtnsContainer>
+                    </TableData>
                   </TableRow>
                 );
               })}

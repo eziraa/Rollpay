@@ -23,18 +23,21 @@ from employee.models import *
 class UserView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request: Request, user_id: None, *args, **kwargs):
+    def get(self, request: Request, user_id=None, *args, **kwargs):
         if user_id:
             try:
-                user = request.user
-                employee = Employee.objects.get(user=user)
+                employee = Employee.objects.get(user_id=user_id)
                 serializer = EmployeeSerializer(employee)
-
+                profile_picture = employee.user.profile_pictures.all().last()
+                user = employee.user
                 data = {
-                    "employee": serializer.data,
+                    'employee': serializer.data,
+                    'username': user.username,
+                    "role": user.role.name,
+                    "profile_picture": profile_picture.profile_picture.url if profile_picture else "/media/photos/profile.png",
                     "employee_id": employee.id,
-                    "username": user.username,
-                    "role": employee.user.role.name
+                    "user_id": user.id,
+                    "error": "No profile picture uploaded"
                 }
                 return Response(data, status=status.HTTP_200_OK)
             except Employee.DoesNotExist:
@@ -59,29 +62,32 @@ class UserView(APIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class ProfilePicture(APIView):
+
+class ProfilePictureView(APIView):
     permission_classes = [AllowAny]
     parser_classes = [MultiPartParser, FormParser]
 
-    def put(self, request, employee_id, format=None):
+    def put(self, request, user_id, format=None):
         try:
-            employee = Employee.objects.get(pk=employee_id)
-        except Employee.DoesNotExist:
+            user = CustomUser.objects.get(pk=user_id)
+        except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         profile_picture = request.data.get('profile_picture')
         if profile_picture:
-            if employee.profile_picture:
-                if default_storage.exists(employee.profile_picture.name):
-                    default_storage.delete(employee.profile_picture.name)
-
-            employee.profile_picture = profile_picture
-
-        serializer = EmployeeSerializer(employee, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            profile_picture = ProfilePicture.objects.create(
+                profile_picture=profile_picture, user=user)
+            profile_picture.save()
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "No profile picture uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+        employee = get_object_or_404(Employee, user=user)
+        return Response(data={
+            "employee": EmployeeSerializer(employee).data if EmployeeSerializer(employee).data is not None else {},
+            "username": user.username,
+            "role": user.role.name,
+            "profile_picture": profile_picture.profile_picture.url if profile_picture.profile_picture else "/media/photos/profile.png",
+            "employee_id": employee.id,
+            "error": "No profile picture uploaded"
+        }, status=status.HTTP_200_OK)
     def get(self, request, employee_id, format=None):
         try:
             employee = Employee.objects.get(pk=employee_id)
@@ -92,7 +98,26 @@ class ProfilePicture(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-            
+
+@staticmethod
+def id_generator():
+    while True:
+        generated_id = generate_id()
+        if CustomUser.objects.filter(id=generated_id).exists():
+            continue
+        else:
+            break
+    return generated_id
+
+
+@staticmethod
+def generate_id():
+    numbers = [number for number in '0123456789']
+    generated_id = ""
+    for i in range(0, 9):
+        generated_id += random.choice(numbers)
+    return generated_id
+
 class AccountView(APIView):
     permission_classes = [AllowAny]
 
@@ -107,6 +132,7 @@ class AccountView(APIView):
                     return JsonResponse({'error': 'There is an other user registed in this ID Please check your ID '}, status=400)
 
                 user = CustomUser.objects.create_user(
+                    id=id_generator(),
                     username=data['username'], password=data['password'],
                 )
                 RoleManager.add_role(user, empoyee.position)
@@ -125,11 +151,17 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         data = super().post(request=request)
         user = CustomUser.objects.get(username=request.data['username'])
         employee = get_object_or_404(Employee, user=user)
+        profile_picture = user.profile_pictures.all().last()
         if employee:
             data.data['employee'] = EmployeeSerializer(employee).data
             data.data['username'] = user.username
+            data.data["role"] = user.role.name,
+            data.data["profile_picture"] = profile_picture.profile_picture.url if profile_picture else "http://127.0.0.1:8000/media/photos/profile.png",
+            data.data["employee_id"] = employee.id,
+            data.data["user_id"] = user.id,
+            data.data["error"] = "No profile picture uploaded"
         else:
-            pass
+            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
         return Response(data=data.data, status=status.HTTP_200_OK)
 
 

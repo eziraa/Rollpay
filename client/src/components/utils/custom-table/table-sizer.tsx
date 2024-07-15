@@ -14,6 +14,14 @@ export const getTableElements = (data: Employee[]) => {
   data.forEach((employee) => {
     Object.entries(employee).forEach(([key, value]) => {
       if (
+        key === "profile_picture" ||
+        key === "employement_contract" ||
+        key === "role" ||
+        key === "date_of_birth" ||
+        key === "assets"
+      )
+        return;
+      if (
         key === "gender" &&
         tableElements.every((element) => element.name !== key)
       ) {
@@ -35,11 +43,12 @@ export const getTableElements = (data: Employee[]) => {
       } else {
         tableElements.push({
           name: key,
-          max_length: getValidValue(value),
+          max_length: getValidValue(value.toString().length),
         });
       }
     });
   });
+
 
   let gridTamplates = "";
   tableElements = tableElements.map((elm, index, elements) => {
@@ -62,5 +71,5 @@ export const getTableElements = (data: Employee[]) => {
     gridTamplates += element.max_length + "fr ";
   });
 
-  return gridTamplates + " 6fr 6fr";
+  return gridTamplates + "8fr";
 };

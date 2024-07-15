@@ -1,19 +1,26 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { StatisticsState } from "../../typo/statistics/state";
-import { StatisticsResponse } from "../../typo/statistics/response";
+import {
+  PaymentStatisticeResponse,
+  StatisticsResponse,
+} from "../../typo/statistics/response";
 const initialState: StatisticsState = {
+  loading: false,
   task_error: undefined,
   task_finished: true,
+  payment_stat: undefined,
   stat: {
     total_employees: 0,
     total_positions: 0,
     curr_month_tax: 0,
     curr_month_allowances: 0,
     curr_month_deductions: 0,
+    curr_month_overtimes: 0,
     curr_month_payment_amount: 0,
     avg_basic_salary: 0,
     curr_month_allowance: [],
     curr_month_deduction: [],
+    curr_month_overtime: [],
   },
 };
 
@@ -30,6 +37,16 @@ const StatisticsSlice = createSlice({
       state.stat = action.payload;
       state.task_finished = true;
     },
+    getPaymentStatRequest: (state) => {
+      state.loading = true;
+    },
+    getPaymentStatDone: (
+      state,
+      action: PayloadAction<PaymentStatisticeResponse>
+    ) => {
+      state.loading = false;
+      state.payment_stat = action.payload;
+    },
     raiseError: (state, action: PayloadAction<string>): void => {
       state.task_error = action.payload;
       state.task_finished = true;
@@ -37,5 +54,11 @@ const StatisticsSlice = createSlice({
   },
 });
 
-export const { getStatDone, getStatRequest } = StatisticsSlice.actions;
+export const {
+  getStatDone,
+  getStatRequest,
+  raiseError,
+  getPaymentStatDone,
+  getPaymentStatRequest,
+} = StatisticsSlice.actions;
 export default StatisticsSlice.reducer;

@@ -112,7 +112,7 @@ const deleteOvertime = async (empployee_id: string) => {
       return {
         success: "Overtime deleted successfully",
         code: res.status,
-        data: res.data,
+        overtime: res.data,
       };
     })
     .catch((err: AxiosError) => {

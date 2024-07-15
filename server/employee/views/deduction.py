@@ -53,7 +53,7 @@ class DeductionView (APIView):
         try:
             serializer = DeductionSerializer(deduction)
             deduction.delete()
-            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -62,17 +62,27 @@ class DeductionView (APIView):
             deduction = Deduction.objects.get(pk=deduction_id)
         except deduction.DoesNotExist:
             return Response({"error": "deduction not found"}, status=status.HTTP_404_NOT_FOUND)
-        deduction.end_at = (datetime.datetime.now().date())
-        deduction.save()
-        serializer = DeductionSerializer(deduction)
+        deduction_type = request.data["deduction_type"]
+        deduction_rate = request.data["deduction_rate"]
+        try:
+            if deduction_type and deduction_rate:
+                deduction.deduction_type = deduction_type
+                deduction.deduction_rate = deduction_rate
+                deduction.save()
+                serializer = DeductionSerializer(deduction)
 
-        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+                return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"error": "Check your data to edit"}, status=status.HTTP_400_BAD_REQUEST)
+        except KeyError as e:
+            return Response({"error": "Checkyour data bad request"}, status=status.HTTP_400_BAD_REQUEST)
+
     def patch(self, request, deduction_id):
         try:
             deduction = Deduction.objects.get(pk=deduction_id)
         except deduction.DoesNotExist:
             return Response({"error": "deduction not found"}, status=status.HTTP_404_NOT_FOUND)
-        deduction.end_at = None
+        deduction.end_at = None if deduction.end_at else datetime.datetime.today()
         deduction.save()
         serializer = DeductionSerializer(deduction)
 

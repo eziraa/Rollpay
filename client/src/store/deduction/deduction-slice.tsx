@@ -12,6 +12,10 @@ import {
 } from "../../typo/deduction/params";
 
 const InitialEmpState: DeductionState = {
+  adding: false,
+  deleting: false,
+  editing: false,
+  loading: false,
   deductions: [],
   curr_deduction: undefined,
   query_set: [],
@@ -26,10 +30,14 @@ const DeductionSlice = createSlice({
   reducers: {
     addDeductionRequested: (state, _: PayloadAction<AddDeductionParams>) => {
       state.task_finished = false;
+      state.adding = true;
     },
-    getDeductionRequested: (__, _: PayloadAction<string>) => {},
+    getDeductionRequested: (state, _: PayloadAction<string>) => {
+      state.loading = true;
+    },
     getDeductionDone: (state, action: PayloadAction<Deduction>) => {
       state.curr_deduction = action.payload;
+      state.loading = false;
     },
     setPagesize: (state, size: PayloadAction<number>) => {
       let page = 1;
@@ -58,34 +66,43 @@ const DeductionSlice = createSlice({
       state.task_error = undefined;
       state.deductions.push(action.payload);
       state.curr_deduction = action.payload;
+      state.adding = false;
     },
-    unfinishedAdd: (state, action: PayloadAction<string>) => {
-      state.task_error = action.payload;
-    },
+
     listDeductionsRequested: (state) => {
       state.task_finished = false;
+      state.loading = true;
     },
     tryingToDelete: (state) => {
       state.task_finished = false;
     },
-    deleteDeductionRequested: (__, _: PayloadAction<string>) => {},
-    addSearched: (state, action: PayloadAction<Deduction[]>) => {
-      state.query_set = action.payload;
+    deleteDeductionRequested: (state, _: PayloadAction<string>) => {
+      state.deleting = true;
     },
     deleteDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.deleting = false;
       state.task_finished = true;
-      state.deductions.splice(state.deductions.indexOf(action.payload), 1);
+      state.deductions = state.deductions.filter(
+        (deduction) =>
+          deduction.deduction_type !== action.payload.deduction_type
+      );
     },
-    closeDeductionRequested: (__, _: PayloadAction<string>) => {},
+    closeDeductionRequested: (state, _: PayloadAction<string>) => {
+      state.editing = true;
+    },
     closeDeductionDone: (state, action: PayloadAction<Deduction>) => {
       state.task_finished = true;
+      state.editing = false;
       state.task_error = "";
       state.deductions = state.deductions.map((deduction) =>
         deduction.id === action.payload.id ? action.payload : deduction
       );
     },
-    openDeductionRequested: (__, _: PayloadAction<string>) => {},
+    openDeductionRequested: (state, _: PayloadAction<string>) => {
+      state.editing = true;
+    },
     openDeductionDone: (state, action: PayloadAction<Deduction>) => {
+      state.editing = false;
       state.task_finished = true;
       state.task_error = "";
       state.deductions = state.deductions.map((deduction) =>
@@ -101,14 +118,11 @@ const DeductionSlice = createSlice({
     ) => {
       state.deductions = payload.payload.results;
       state.task_finished = true;
-      state.task_finished = true;
+      state.loading = false;
       state.pagination = {
         ...payload.payload.pagination,
         page_size: state.pagination?.page_size ?? 10,
       };
-    },
-    unfinishedList: (state) => {
-      state.deductions = [];
     },
     loadNextPageRequested: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
@@ -120,24 +134,13 @@ const DeductionSlice = createSlice({
       if (state.pagination?.current_page) state.pagination.current_page--;
       else if (state.pagination) state.pagination.current_page = 1;
     },
-    searching: (state, payload: PayloadAction<Deduction[]>) => {
-      state.query_set = payload.payload;
-      state.searching = true;
-    },
-    noSearchResult: (state) => {
-      state.searching = false;
-    },
-    setCurrentDeduction: (
-      state,
-      payload: PayloadAction<Deduction | undefined>
-    ) => {
-      state.curr_deduction = payload.payload;
-    },
     editDeductionRequested: (state, _: PayloadAction<EditDeductionParams>) => {
       state.task_finished = false;
+      state.editing = true;
     },
     editDeductionDone: (state, action: PayloadAction<Deduction>) => {
       state.task_finished = true;
+      state.editing = false;
       state.deductions = state.deductions.map((deduction) =>
         deduction.id === action.payload.id ? action.payload : deduction
       );
@@ -157,20 +160,15 @@ const DeductionSlice = createSlice({
 });
 export const {
   listDeductionsRequested,
-  unfinishedAdd,
   listDeductionDone,
-  unfinishedList,
   tryingToDelete,
   deleteDeductionRequested,
   deleteDeductionDone,
-  setCurrentDeduction,
   addDeductionRequested,
   addDeductionDone,
   editDeductionRequested,
   editDeductionDone,
   resetCurrEmployee,
-  searching,
-  noSearchResult,
   loadNextPageRequested,
   loadPrevPageRequested,
   setPagesize,

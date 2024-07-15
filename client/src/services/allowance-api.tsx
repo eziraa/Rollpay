@@ -110,7 +110,7 @@ const editAllowance = async (
 
 const closeAllowance = async (allowance_id: string) => {
   const response = await api
-    .put("/allowance/close/" + allowance_id)
+    .patch("/allowance/close/" + allowance_id)
     .then((res) => {
       return {
         success: "Allowance close successfully",
@@ -154,7 +154,7 @@ const deleteAllowance = async (empployee_id: string) => {
       return {
         success: "Allowance deleted successfully",
         code: res.status,
-        data: res.data,
+        allowance: res.data,
       };
     })
     .catch((err: AxiosError) => {

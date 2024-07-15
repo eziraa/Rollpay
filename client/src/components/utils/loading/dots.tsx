@@ -32,16 +32,27 @@ export const DotsContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
-  height: 60vh;
-  width: 80vw;
+  height: 100%;
+  width: 100%;
+  position: relative;
+`;
+
+const Center = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
 `;
 
 export const ThreeDots = ({ size }: { size: number }) => {
   return (
     <DotsContainer>
-      <Dot size={size} />
-      <Dot size={size} />
-      <Dot size={size} />
+      <Center>
+        <Dot size={size} />
+        <Dot size={size} />
+        <Dot size={size} />
+      </Center>
     </DotsContainer>
   );
 };

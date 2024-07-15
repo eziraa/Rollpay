@@ -12,21 +12,22 @@ import {
   ListTitle,
   RowTemplate,
   SortBtn,
+  ViewBtn,
 } from "./list-displayer.style";
 import { ScrollBar } from "../../utils/scroll-bar/scroll-bar";
 
-import { GoArrowDown, GoArrowUp } from "react-icons/go";
+import { GoArrowDown, GoArrowRight, GoArrowUp } from "react-icons/go";
 import { getTableElements } from "../../utils/custom-table/table-sizer";
 import { NoResult } from "../../utils/no-result/no-result";
 import { DisplayContext } from "../../../contexts/display-context";
 import { useNavigate } from "react-router";
 
-import DownloadPDF from "../../utils/download/download";
 import { ThreeDots } from "../../utils/loading/dots";
 import Pagination from "../pagination/pagination";
 import { usePagination } from "../../../hooks/use-pagination";
 import { ProfileImage } from "../header/header.style";
 import { baseURL } from "../../../config/api";
+import { NormalIcon } from "../../utils/icons/icons.style";
 
 interface EmployeeOrderType {
   name: string;
@@ -68,6 +69,11 @@ const initialOrder: EmployeeOrderType[] = [
 ];
 
 function EmployeeListDisplayer() {
+  /**
+   *
+   * Calling hooks and getting necessary informations
+   * */
+
   const employee = useAppSelector((state) => state.employee);
   const navigate = useNavigate();
   const [order, setOrder] = useState(initialOrder);
@@ -103,10 +109,8 @@ function EmployeeListDisplayer() {
     setEmpList([...sorted]);
   };
 
-  if (!employee.task_finished) return <ThreeDots size={1} />;
+  if (employee.loading) return <ThreeDots size={1} />;
 
-  if (display.search_employee && employee.query_set.length < 1)
-    return <NoResult text=" No Serch Results" />;
   return (
     <div
       style={{
@@ -114,154 +118,155 @@ function EmployeeListDisplayer() {
         marginTop: "1rem",
         display: "flex",
         flexDirection: "column",
+        width: "100%",
+        height: "100%",
       }}
     >
-      <ListContainer>
-        <ListHeader
-          style={{
-            gridTemplateColumns:
-              emp_list.length > 0
-                ? getTableElements(emp_list)
-                : "3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr  ",
-          }}
-        >
-          <HeaderItem>
-            <ListTitle>Employee</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(0);
-              }}
-            >
-              {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>ID</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(1);
-              }}
-            >
-              {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Gender</ListTitle>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Email</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(2);
-              }}
-            >
-              {order[2].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Phone</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(3);
-              }}
-            >
-              {order[3].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Hired Date</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(4);
-              }}
-            >
-              {order[4].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Position</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(6);
-              }}
-            >
-              {order[6].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Salary</ListTitle>
-            <SortBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                sortEmployee(7);
-              }}
-            >
-              {order[7].isAscending ? <GoArrowUp /> : <GoArrowDown />}
-            </SortBtn>
-          </HeaderItem>
+      {!employee.loading && employee.employees.length == 0 ? (
+        <NoResult text=" No  Results" />
+      ) : (
+        <ListContainer>
+          <ListHeader
+            style={{
+              gridTemplateColumns:
+                emp_list.length > 0
+                  ? getTableElements(emp_list)
+                  : "3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr  ",
+            }}
+          >
+            <HeaderItem>
+              <ListTitle>ID</ListTitle>
+              <SortBtn
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sortEmployee(1);
+                }}
+              >
+                {order[1].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+              </SortBtn>
+            </HeaderItem>
+            <HeaderItem>
+              <ListTitle>Employee</ListTitle>
+              <SortBtn
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sortEmployee(0);
+                }}
+              >
+                {order[0].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+              </SortBtn>
+            </HeaderItem>
 
-          <HeaderItem>
-            <ListTitle>Actions</ListTitle>
-          </HeaderItem>
-          <HeaderItem>
-            <ListTitle>Employement Contract</ListTitle>
-          </HeaderItem>
-        </ListHeader>
-        <ListBody>
-          <ScrollBar>
-            {emp_list.map((emp, index, emplists) => {
-              return (
-                <ListRow
-                  key={index}
-                  style={{
-                    gridTemplateColumns: getTableElements(emplists),
-                  }}
-                >
-                  <Data>
-                    <RowTemplate>
-                      <ProfileImage profile={baseURL + emp.profile_picture} />
-                      <ColumnTemplate>
-                        {emp.first_name + " " + emp.last_name}
-                      </ColumnTemplate>
-                    </RowTemplate>
-                  </Data>
-                  <Data> {emp.id} </Data>
-                  <Data> {emp.gender} </Data>
-                  <Data> {emp.email} </Data>
-                  <Data> {emp.phone_number} </Data>
-                  <Data> {emp.date_of_hire} </Data>
-                  {/* <Data> {emp.date_of_birth} </Data> */}
-                  <Data> {emp.position} </Data>
-                  <Data>{emp.salary}</Data>
-                  <Data
+            <HeaderItem>
+              <ListTitle>Gender</ListTitle>
+            </HeaderItem>
+            <HeaderItem>
+              <ListTitle>Email</ListTitle>
+              <SortBtn
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sortEmployee(2);
+                }}
+              >
+                {order[2].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+              </SortBtn>
+            </HeaderItem>
+            <HeaderItem>
+              <ListTitle>Phone</ListTitle>
+              <SortBtn
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sortEmployee(3);
+                }}
+              >
+                {order[3].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+              </SortBtn>
+            </HeaderItem>
+            <HeaderItem>
+              <ListTitle>Hired Date</ListTitle>
+              <SortBtn
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sortEmployee(4);
+                }}
+              >
+                {order[4].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+              </SortBtn>
+            </HeaderItem>
+            <HeaderItem>
+              <ListTitle>Position</ListTitle>
+              <SortBtn
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sortEmployee(6);
+                }}
+              >
+                {order[6].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+              </SortBtn>
+            </HeaderItem>
+            <HeaderItem>
+              <ListTitle>Salary</ListTitle>
+              <SortBtn
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sortEmployee(7);
+                }}
+              >
+                {order[7].isAscending ? <GoArrowUp /> : <GoArrowDown />}
+              </SortBtn>
+            </HeaderItem>
+
+            <HeaderItem>
+              <ListTitle>Actions</ListTitle>
+            </HeaderItem>
+          </ListHeader>
+          <ListBody>
+            <ScrollBar>
+              {emp_list.map((emp, index, emplists) => {
+                return (
+                  <ListRow
+                    key={index}
                     style={{
-                      fontSize: "1.2rem",
-                      color: "blue",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      localStorage.setItem("curr_emp_id", emp.id);
-                      navigate("/employees/employee/" + emp.id);
+                      gridTemplateColumns: getTableElements(emplists),
                     }}
                   >
-                    View
-                  </Data>
-                  <DownloadPDF url={emp.employement_contract} />
-                </ListRow>
-              );
-            })}
-          </ScrollBar>
-        </ListBody>
-        <Pagination pagination={pagination} />
-      </ListContainer>
+                    <Data> {emp.id} </Data>
+                    <Data>
+                      <RowTemplate>
+                        <ProfileImage profile={baseURL + emp.profile_picture} />
+                        <ColumnTemplate>
+                          {emp.first_name + " " + emp.last_name}
+                        </ColumnTemplate>
+                      </RowTemplate>
+                    </Data>
+                    <Data> {emp.gender} </Data>
+                    <Data> {emp.email} </Data>
+                    <Data> {emp.phone_number} </Data>
+                    <Data> {emp.date_of_hire} </Data>
+                    {/* <Data> {emp.date_of_birth} </Data> */}
+                    <Data> {emp.position} </Data>
+                    <Data>{emp.salary}</Data>
+                    <Data>
+                      <ViewBtn
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate("/employees/employee/" + emp.id);
+                        }}
+                      >
+                        View
+                        <NormalIcon>
+                          <GoArrowRight />
+                        </NormalIcon>
+                      </ViewBtn>
+                    </Data>
+                  </ListRow>
+                );
+              })}
+            </ScrollBar>
+          </ListBody>
+          <Pagination pagination={pagination} />
+        </ListContainer>
+      )}
     </div>
   );
 }

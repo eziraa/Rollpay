@@ -16,6 +16,7 @@ import React from "react";
 import {
   AllowanceResponse,
   DeductionResponse,
+  OvertimeResponse,
 } from "../../../typo/statistics/response";
 
 interface Props {
@@ -37,10 +38,11 @@ export const MonthCard = ({ statType }: Props) => {
     series: [],
     labels: [],
   });
+  const [overtimetData, setOvertimeData] = useState<ChartData>({
+    series: [],
+    labels: [],
+  });
 
-  useEffect(() => {
-    dispatcher(getStatRequest());
-  }, [dispatcher]);
   const colors = [
     "#c24949",
     "#00df7f",
@@ -83,6 +85,21 @@ export const MonthCard = ({ statType }: Props) => {
     }
   }, [stat.curr_month_deduction]);
 
+  useEffect(() => {
+    if (stat.curr_month_overtime) {
+      const series = stat.curr_month_overtime.map(
+        (overtime: OvertimeResponse) => overtime.amount || 0
+      );
+      const labels = stat.curr_month_overtime.map(
+        (overtime: OvertimeResponse) => overtime.overtime_type
+      );
+
+      setOvertimeData({
+        series: series,
+        labels: labels,
+      });
+    }
+  }, [stat.curr_month_overtime]);
   useEffect(() => {
     dispatcher(getStatRequest());
   }, [dispatcher]);
@@ -147,6 +164,33 @@ export const MonthCard = ({ statType }: Props) => {
           </React.Fragment>{" "}
         </MonthCardBody>
         <LargeText>Total: {stat.curr_month_deductions} ETB</LargeText>
+      </MonthCardContainer>
+    );
+  } else if (statType === "overtime") {
+    return (
+      <MonthCardContainer>
+        <MonthHeader>
+          <LargeText>Overtime of {currentMonth}</LargeText>
+        </MonthHeader>
+        <MonthCardBody>
+          <React.Fragment>
+            <div className="container-fluid mb-3">
+              <Chart
+                type="pie"
+                width={350}
+                height={350}
+                series={overtimetData.series}
+                options={{
+                  title: { text: "Deduction PieChart" },
+                  noData: { text: "Empty Data" },
+                  colors: colors.slice(0, overtimetData.series.length),
+                  labels: overtimetData.labels,
+                }}
+              ></Chart>
+            </div>
+          </React.Fragment>{" "}
+        </MonthCardBody>
+        <LargeText>Total: {stat.curr_month_overtimes} ETB</LargeText>
       </MonthCardContainer>
     );
   }

@@ -14,7 +14,10 @@ import {
   Text,
 } from "./dashboard.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { getStatRequest } from "../../../store/statistics/statistics-slice";
+import {
+  getPaymentStatRequest,
+  getStatRequest,
+} from "../../../store/statistics/statistics-slice";
 import { FaDollarSign, FaUsers } from "react-icons/fa";
 import { IoBriefcase } from "react-icons/io5";
 
@@ -24,6 +27,7 @@ export const DashBoard = () => {
 
   useEffect(() => {
     dispatcher(getStatRequest());
+    dispatcher(getPaymentStatRequest());
   }, []);
   return (
     <DashboardContainer>
@@ -81,7 +85,7 @@ export const DashBoard = () => {
         <DashboardBodyRow>
           <MonthCard statType="allowance" />
           <MonthCard statType="deduction" />
-          <MonthCard statType="allowance" />
+          <MonthCard statType="overtime" />
         </DashboardBodyRow>
         <DashboardBodyRow>
           <PaymentCard />

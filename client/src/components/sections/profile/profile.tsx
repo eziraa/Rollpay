@@ -14,19 +14,17 @@ import { logoutRequested } from "../../../store/user/user-slice";
 import { MdLogout } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
-import { CURRENT_USER } from "../../../constants/token-constants";
 const Profile = ({ close }: { close: () => void }) => {
   // Calling hooks anf getting necessary information
   const dispatcher = useAppDispatch();
   const user = useAppSelector((state) => state.user);
 
-  const employee_id = JSON.parse(
-    localStorage.getItem(CURRENT_USER) || "[]"
-  )?.id;
-
   useEffect(() => {
-    if (user.is_login) window.location.href = "/login";
-  }, [user]);
+    if (!user.is_login) {
+      localStorage.clear();
+      window.location.href = "/login";
+    }
+  }, []);
 
   const handleClick = () => {
     dispatcher(logoutRequested());
@@ -50,7 +48,7 @@ const Profile = ({ close }: { close: () => void }) => {
                 close();
               }}
             >
-              <Link to={`/user-profile/${employee_id}`}>Profile</Link>
+              <Link to={`/user-profile/${user.user?.user_id}`}>Profile</Link>
             </Label>
           </ResetLink>
         </ItemContainer>

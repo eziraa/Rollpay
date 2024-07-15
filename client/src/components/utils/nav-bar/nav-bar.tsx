@@ -33,6 +33,15 @@ export const NavigationBar = () => {
       >
         Deductions
       </NavItem>
+      <NavItem
+        active={location.pathname.includes("/assets")}
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("assets");
+        }}
+      >
+        Assets
+      </NavItem>
     </NavBar>
   );
 };

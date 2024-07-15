@@ -1,11 +1,10 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import { AddAssetParams, EditAssetParams } from "../typo/asset/params";
-import { AddAssetResponse, AssetResponse } from "../typo/asset/response";
+import { AddAssetResponse } from "../typo/asset/response";
 
-const addEmpAsset = async (values: AddAssetParams) => {
+const addEmpAsset = async (employee_id: string, formData: FormData) => {
   const response = await api
-    .post("/asset/" + values.employee_id + "/add", values)
+    .post("/asset/" + employee_id + "/add", formData)
     .then((res) => {
       return {
         success: "Asset added successfully",
@@ -23,14 +22,14 @@ const addEmpAsset = async (values: AddAssetParams) => {
   return response;
 };
 
-const listAssets = async () => {
-  const endpoint = "/asset/list";
+const listAssets = async (employee_id: string) => {
+  const endpoint = "/asset/" + employee_id;
 
   const assets = await api
-    .get<AssetResponse>(endpoint)
+    .get(endpoint)
     .then((res) => {
       return {
-        results: res.data.results,
+        results: res.data,
         code: res.status,
         success: "Successfully returned assets",
       };
@@ -69,9 +68,9 @@ const getAsset = async (asset_id: string) => {
   return asset;
 };
 
-const editAsset = async (asset_id: string, values: EditAssetParams) => {
+const editAsset = async (asset_id: string, formData: FormData) => {
   const response = await api
-    .put<AddAssetResponse[]>("/asset/" + asset_id, values)
+    .put<AddAssetResponse[]>("/asset/edit" + asset_id, formData)
     .then((res) => {
       return {
         success: "Asset updated successfully",
@@ -93,7 +92,7 @@ const editAsset = async (asset_id: string, values: EditAssetParams) => {
 
 const deleteAsset = async (asset_id: string) => {
   const response = await api
-    .delete("/asset/" + asset_id)
+    .delete("/asset/delete/" + asset_id)
     .then((res) => {
       return {
         success: "Asset deleted successfully",

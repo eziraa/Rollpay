@@ -35,7 +35,8 @@ function* userLogin(action: PayloadAction<LoginParams>) {
     const response: SignUpResponse = yield call(UserAPI.login, action.payload);
 
     if (response.code === 200) {
-      yield put(loginFinished());
+
+      yield put(loginFinished(response.data));
     } else {
       yield put(wrongLogin(response.error));
     }
@@ -49,6 +50,7 @@ function* userLogout() {
 
   if (response.code === 200) {
     yield put(logout());
+
     yield put(
       setFlashMessage({
         type: "success",
