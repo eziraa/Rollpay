@@ -215,88 +215,94 @@ export const EmployeesSalaryPage = () => {
         <LoadingSpinner />
       ) : (
         <SalaryTable id="table">
-          <TableHeader>
-            <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Basic Salary</HeaderTitle>
-            <HeaderTitle
-              style={{
-                textAlign: "center",
-              }}
-              colSpan={allowanceTypes.length}
-            >
-              Allowance
-            </HeaderTitle>
-            <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
-            <HeaderTitle
-              style={{
-                textAlign: "center",
-              }}
-              colSpan={deductionTypes.length + 1}
-            >
-              Deduction
-            </HeaderTitle>
-            <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Month</HeaderTitle>
-            <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
-            <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
-          </TableHeader>
-          <TableHeader>
-            {allowanceTypes.map((allowanceType) => {
-              return (
-                <HeaderTitle key={allowanceType}>{allowanceType}</HeaderTitle>
-              );
-            })}
-            <HeaderTitle>Income Tax</HeaderTitle>;
-            {deductionTypes.map((deductionType) => {
-              return (
-                <HeaderTitle key={deductionType}>{deductionType}</HeaderTitle>
-              );
-            })}
-          </TableHeader>
-          {employeeSalary
-            .filter((employee) => employee)
-            .map((employee) => (
-              <TableRow key={employee.employee_id}>
-                <TableData>{employee.employee_id}</TableData>
-                <TableData>{employee.employee_name}</TableData>
-                <TableData>{employee.basic_salary}</TableData>
-                {allowanceTypes.map((allowanceType) => {
-                  return (
-                    <TableData key={allowanceType}>
-                      {getRate(
-                        employee.allowances.find(
-                          (alowance) =>
-                            alowance.allowance_type === allowanceType
-                        )?.allowance_rate
-                      )}
-                    </TableData>
-                  );
-                })}
-                <TableData>{getSalary(employee.gross_salary)}</TableData>
-                <TableData>{getSalary(employee.income_tax)}</TableData>
-                {deductionTypes.map((deductionType) => {
-                  return (
-                    <TableData key={deductionType}>
-                      {getRate(
-                        employee.deductions.find(
-                          (deduction) =>
-                            deduction.deduction_type === deductionType
-                        )?.deduction_rate
-                      )}
-                    </TableData>
-                  );
-                })}
-                <TableData>{employee.total_deduction}</TableData>
-                <TableData>{employee.net_salary}</TableData>
-                <TableData>
-                  {getFormattedMonth(new Date(employee.month)).split("-")[0]}
-                </TableData>
-                <TableData>{!employee.payment_status && "Not"} Paid </TableData>
-                <TableData> {employee.payment_date} </TableData>
-              </TableRow>
-            ))}
+          <thead>
+            <TableHeader>
+              <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Basic Salary</HeaderTitle>
+              <HeaderTitle
+                style={{
+                  textAlign: "center",
+                }}
+                colSpan={allowanceTypes.length}
+              >
+                Allowance
+              </HeaderTitle>
+              <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
+              <HeaderTitle
+                style={{
+                  textAlign: "center",
+                }}
+                colSpan={deductionTypes.length + 1}
+              >
+                Deduction
+              </HeaderTitle>
+              <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Month</HeaderTitle>
+              <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
+              <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
+            </TableHeader>
+            <TableHeader>
+              {allowanceTypes.map((allowanceType) => {
+                return (
+                  <HeaderTitle key={allowanceType}>{allowanceType}</HeaderTitle>
+                );
+              })}
+              <HeaderTitle>Income Tax</HeaderTitle>
+              {deductionTypes.map((deductionType) => {
+                return (
+                  <HeaderTitle key={deductionType}>{deductionType}</HeaderTitle>
+                );
+              })}
+            </TableHeader>
+          </thead>
+          <tbody>
+            {employeeSalary
+              .filter((employee) => employee)
+              .map((employee) => (
+                <TableRow key={employee.employee_id}>
+                  <TableData>{employee.employee_id}</TableData>
+                  <TableData>{employee.employee_name}</TableData>
+                  <TableData>{employee.basic_salary}</TableData>
+                  {allowanceTypes.map((allowanceType) => {
+                    return (
+                      <TableData key={allowanceType}>
+                        {getRate(
+                          employee.allowances.find(
+                            (alowance) =>
+                              alowance.allowance_type === allowanceType
+                          )?.allowance_rate
+                        )}
+                      </TableData>
+                    );
+                  })}
+                  <TableData>{getSalary(employee.gross_salary)}</TableData>
+                  <TableData>{getSalary(employee.income_tax)}</TableData>
+                  {deductionTypes.map((deductionType) => {
+                    return (
+                      <TableData key={deductionType}>
+                        {getRate(
+                          employee.deductions.find(
+                            (deduction) =>
+                              deduction.deduction_type === deductionType
+                          )?.deduction_rate
+                        )}
+                      </TableData>
+                    );
+                  })}
+                  <TableData>{employee.total_deduction}</TableData>
+                  <TableData>{employee.net_salary}</TableData>
+                  <TableData>
+                    {getFormattedMonth(new Date(employee.month)).split("-")[0]}
+                  </TableData>
+                  <TableData>
+                    {!employee.payment_status && "Not"} Paid{" "}
+                  </TableData>
+                  <TableData> {employee.payment_date} </TableData>
+                </TableRow>
+              ))}
+          </tbody>
         </SalaryTable>
       )}
       <Pagination pagination={pagination} />
