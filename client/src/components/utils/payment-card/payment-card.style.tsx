@@ -5,7 +5,7 @@ import { custom_vertical_scroll_bar } from "../scroll-bar/scroll-bar";
 export const PaymentCardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 50%;
+  max-width: 80%;
   gap: 1rem;
   border-radius: 1rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
@@ -33,7 +33,7 @@ export const PaymentTable = styled.div`
 export const PaymentRow = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr repeat(2, 1fr) 2fr 1fr;
+  grid-template-columns: 2fr repeat(5, 1fr) 2fr 1fr;
   padding: 0.5rem 0;
   margin: 0;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.secondary};
