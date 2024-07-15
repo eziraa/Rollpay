@@ -6,7 +6,7 @@ import NotFoundPage from "../../components/pages/4_0_4/404";
 import AccessDenied from "../../components/pages/access-denied/access-denied";
 import { ChangePassword } from "../../components/pages/change-password/change-password";
 import { MainPage } from "../../components/pages/main/main";
-import { AdminRouterConfig } from "./admin-router";
+import ProtectedRoute from "../utils/protected_route";
 export const RouterConfig = () => {
   return (
     <Router>
@@ -16,7 +16,7 @@ export const RouterConfig = () => {
         <Route path="/access-denied" element={<AccessDenied />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/" element={<MainPage />}>
-          {AdminRouterConfig()}
+          {ProtectedRoute()}
         </Route>
         {<Route path="*" element={<NotFoundPage />} />}
       </Routes>
