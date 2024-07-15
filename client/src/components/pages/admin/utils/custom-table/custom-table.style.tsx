@@ -25,4 +25,13 @@ export const CustomTable = styled.table`
     background-color: ${({ theme }) =>
       addOpacityToColor(0.095, theme.colors.primary)};
   }
+
+  tr {
+    &:not(:first-child) {
+      &:hover {
+        background-color: aliceblue;
+        cursor: pointer;
+      }
+    }
+  }
 `;
