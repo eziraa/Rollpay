@@ -4,17 +4,14 @@ import { LeftMenuContainer } from "./leftmenu.style";
 
 const menu_items = [
   {
-    title: "Dashboard",
-    path: "",
+    title: "Users",
+    path: "/users",
   },
   {
     title: "Groups",
     path: "/groups",
   },
-  {
-    title: "Users",
-    path: "/users",
-  },
+
   {
     title: "Roles",
     path: "/roles",

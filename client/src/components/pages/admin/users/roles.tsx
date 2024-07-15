@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { PageBody } from "../utils/body/page-body";
 
-export const GroupsPage = () => {
+export const UserPage = () => {
   return (
     <PageBody>
       <Outlet />

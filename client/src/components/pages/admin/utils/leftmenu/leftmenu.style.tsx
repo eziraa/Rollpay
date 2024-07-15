@@ -7,6 +7,7 @@ export const LeftMenuContainer = styled.div`
   width: fit-content;
   padding: 1rem;
   height: 100%;
+  min-height: 40rem;
   border: 0.2rem solid
     ${({ theme }) => addOpacityToColor(0.1, theme.colors.primary)};
 `;

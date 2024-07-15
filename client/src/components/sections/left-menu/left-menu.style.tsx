@@ -62,7 +62,9 @@ export const MenuItem = styled.div<MenuItemProps>`
     active ? theme.backgrounds.primary : theme.colors.primary};
   cursor: pointer;
   &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.76, theme.buttons.primary)};
+    color: ${({ theme }) => theme.backgrounds.primary};
   }
   border-bottom: 0.4rem solid transparent;
   background-color: ${({ active, theme }) =>
