@@ -6,7 +6,6 @@ import {
   PermissionFilter,
   PermissionGroup,
   PermissionHeader,
-  PermissionItem,
   PermissionList,
   BlurredText,
   Header,
@@ -16,6 +15,7 @@ import {
 import { permission_mock_data } from "./permissions_mock_data";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { SortBtn } from "../../../../sections/list-displayer/list-displayer.style";
+import { Select } from "../dropdown/dropdown.style";
 
 export const DisplayPermissions = () => {
   return (
@@ -39,11 +39,16 @@ export const DisplayPermissions = () => {
           </BlurredIcon>
           <FilterInput placeholder="filter" />
         </PermissionFilter>
-        <PermissionList>
+        <Select
+          style={{
+            width: "100%",
+          }}
+          multiple
+        >
           {permission_mock_data.map((permission_mock) => (
-            <PermissionItem>{permission_mock}</PermissionItem>
+            <option>{permission_mock}</option>
           ))}
-        </PermissionList>
+        </Select>
         <ChooseBtn>Choose All</ChooseBtn>
       </PermissionGroup>
       <Adder>
@@ -69,9 +74,16 @@ export const DisplayPermissions = () => {
           <FilterInput placeholder="filter" />
         </PermissionFilter>
         <PermissionList>
-          {permission_mock_data.splice(-5).map((permission_mock) => (
-            <PermissionItem>{permission_mock}</PermissionItem>
-          ))}
+          <Select
+            style={{
+              width: "100%",
+            }}
+            multiple
+          >
+            {permission_mock_data.splice(-5).map((permission_mock) => (
+              <option>{permission_mock}</option>
+            ))}
+          </Select>
         </PermissionList>
         <ChooseBtn>Remove All</ChooseBtn>
       </PermissionGroup>
