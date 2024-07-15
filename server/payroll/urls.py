@@ -20,6 +20,7 @@ urlpatterns = [
     path('group/', include('employee.urls.group')),
     path('permission/', include('employee.urls.permission')),
     path('stat/', include('employee.urls.stat')),
+    path('role/', include('employee.urls.role')),
     path('asset/', include('employee.urls.asset')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
