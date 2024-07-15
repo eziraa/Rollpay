@@ -47,6 +47,7 @@ import { TbFileTypePdf } from "react-icons/tb";
 import { RiFileExcel2Line } from "react-icons/ri";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 import { handleExport, pdfExport } from "./export";
+import { ThreeDots } from "../../utils/loading/dots";
 
 export const EmployeesSalaryPage = () => {
   // Calling  hooks and  Getting necessary information
@@ -211,8 +212,8 @@ export const EmployeesSalaryPage = () => {
           </Select>
         </Label>
       </EmpsDisplayerHeader>
-      {!salary.task_finished ? (
-        <LoadingSpinner />
+      {salary.loading ? (
+        <ThreeDots size={1} />
       ) : (
         <SalaryTable id="table">
           <thead>

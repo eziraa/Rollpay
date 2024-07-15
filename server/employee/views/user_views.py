@@ -17,6 +17,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from employee.serializers.employee import EmployeeSerializer
+from employee.serializers.user import UserSerializer
 from employee.models import *
 
 
@@ -42,8 +43,9 @@ class UserView(APIView):
                 return Response(data, status=status.HTTP_200_OK)
             except Employee.DoesNotExist:
                 return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        user = CustomUser.objects.get(id=request.user.id)
-        return Response({"username": user.username, "email": user.email}, status=status.HTTP_200_OK)
+        users = CustomUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         logout(request)
@@ -133,10 +135,15 @@ class AccountView(APIView):
 
                 user = CustomUser.objects.create_user(
                     id=id_generator(),
-                    username=data['username'], password=data['password'],
+                    first_name=empoyee.first_name,
+                    last_name=empoyee.last_name,
+                    email=empoyee.email,
+                    username=data['username'],
+                    password=data['password'],
                 )
                 RoleManager.add_role(user, empoyee.position)
                 empoyee.user = user
+                user.first_name
                 user.save()
                 empoyee.save()
                 return JsonResponse({'message': 'User registered successfully'}, status=201)

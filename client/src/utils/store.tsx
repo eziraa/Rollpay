@@ -12,6 +12,7 @@ import deductionSlice from "../store/deduction/deduction-slice";
 import overtimeSlice from "../store/overtime/overtime-slice";
 import statisticsSlice from "../store/statistics/statistics-slice";
 import assetSlice from "../store/asset/asset-slice";
+import adminSlice from "../store/admin/admin-slice";
 // import modalSlice from "../store/modal/modal-slice";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -31,6 +32,7 @@ const store = configureStore({
     overtime: overtimeSlice,
     statistics: statisticsSlice,
     asset: assetSlice,
+    admin: adminSlice,
     // modal: modalSlice,
   },
   middleware: (getDefaultMiddleware) =>

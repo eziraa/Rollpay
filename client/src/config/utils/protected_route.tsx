@@ -1,11 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { jwtDecode } from "jwt-decode";
 import api from "../api";
-import {
-  REFRESH_TOKEN,
-  ACCESS_TOKEN,
-  LOGGED_IN_USERS,
-} from "../../constants/token-constants";
+import { REFRESH_TOKEN, ACCESS_TOKEN } from "../../constants/token-constants";
 import { useState, useEffect } from "react";
 import { useAppDispatch } from "../../utils/custom-hook";
 import { getCurrentUserRequest } from "../../store/user/user-slice";
@@ -13,12 +10,13 @@ import { useUser } from "../../hooks/user-hook";
 import { ClerkRouterConfig } from "../router/clerk-router";
 import { UserRouterConfig } from "../router/user-router";
 import { Navigate, Route } from "react-router-dom";
+import { AdminRouterConfig } from "../router/admin-router";
 
-function ProtectedRoute(path: string) {
-  const [isAuthorized, setIsAuthorized] = useState(false);
+function ProtectedRoute() {
+  const [_, setIsAuthorized] = useState(false);
   const dispatcher = useAppDispatch();
   const { user } = useUser();
-
+  const path = window.location.pathname;
   useEffect(() => {
     auth().catch(() => {
       setIsAuthorized(false);
@@ -70,7 +68,11 @@ function ProtectedRoute(path: string) {
     }
   };
 
-  return user?.role === "Clerk" ? ClerkRouterConfig() : UserRouterConfig();
+  return user?.role === "Clerk"
+    ? ClerkRouterConfig()
+    : user?.role === "sys_admin"
+    ? AdminRouterConfig()
+    : UserRouterConfig();
 }
 
 export default ProtectedRoute;

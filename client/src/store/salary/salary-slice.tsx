@@ -29,12 +29,14 @@ const SalarySlice = createSlice({
   reducers: {
     getSalariesRequested: (state) => {
       state.task_finished = false;
+      state.loading = true;
     },
     getSalariesDone: (
       state,
       action: PayloadAction<PaginatedPaymentResponse>
     ) => {
       state.task_finished = true;
+      state.loading = false;
       state.employees = action.payload.results;
       state.searching = false;
       state.pagination = {

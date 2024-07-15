@@ -32,7 +32,7 @@ export const InputContainer = styled.div`
 
 export const Button = styled.button<ThemeProps>`
   width: 100%;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: ${({ theme }) => theme.fontSizes.medium};
   background-color: ${({ theme }) => theme.buttons.primary};
