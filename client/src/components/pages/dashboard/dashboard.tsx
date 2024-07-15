@@ -89,7 +89,6 @@ export const DashBoard = () => {
         </DashboardBodyRow>
         <DashboardBodyRow>
           <PaymentCard />
-          <PaymentCard />
         </DashboardBodyRow>
       </DashboardBody>
     </DashboardContainer>
