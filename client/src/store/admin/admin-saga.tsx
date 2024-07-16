@@ -4,6 +4,8 @@ import AdminAPI from "../../services/admin-api";
 import {
   getGroupsDone,
   getGroupsRequest,
+  getPermissionDone,
+  getPermissionsRequest,
   getRolesDone,
   getRolesRequest,
   getUsersDone,
@@ -140,8 +142,52 @@ function* getRoles() {
   }
 }
 
+function* getPermissions() {
+  try {
+    const response: AdminResponse = yield call(AdminAPI.getPermissions);
+    if (response.code === 200) {
+      yield put(getPermissionDone(response.permissions));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "Not allowed to view permissions",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Allowance",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (error) {
+    // TODO:
+  }
+}
+
 export function* watchAdminRequest() {
   yield takeEvery(getUsersRequest.type, getUsers);
   yield takeEvery(getGroupsRequest.type, getGroups);
   yield takeEvery(getRolesRequest.type, getRoles);
+  yield takeEvery(getPermissionsRequest.type, getPermissions);
 }
