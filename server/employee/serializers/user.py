@@ -14,8 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
                   "first_name",
                   "last_name",
                   "email",
-                  "is_staff",
-                  "date_joined",
                   "role")
 
     def get_role(self, user: CustomUser):

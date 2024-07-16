@@ -29,4 +29,9 @@ export interface AdminResponse extends BaseResponse {
   users: User[];
   groups: Group[];
   roles: Role[];
+  permissions: Permission[];
+}
+
+export interface AddGroupResponse extends BaseResponse {
+  group: Group;
 }

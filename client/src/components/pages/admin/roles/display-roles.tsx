@@ -71,31 +71,35 @@ export const DisplayRoles = () => {
           <DropDown />
           <ActionButton>Apply</ActionButton>
         </ActionContainer>
-        <CustomTable>
-          <tr>
-            {Object.keys(roles[0]).map((key) => (
-              <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
-            ))}
-          </tr>
-          {roles.map((user) => (
+        <CustomTable keys={Object.keys(roles[0]).length}>
+          <thead>
             <tr>
-              {Object.entries(user).map(([key, value]) => (
-                <td>
-                  {key === "groups" ? (
-                    <Select multiple>
-                      {value.map((value: Group) => (
-                        <option selected={true} value={value.name}>
-                          {value.name}
-                        </option>
-                      ))}
-                    </Select>
-                  ) : (
-                    value
-                  )}
-                </td>
+              {Object.keys(roles[0]).map((key) => (
+                <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
               ))}
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {roles.map((user) => (
+              <tr>
+                {Object.entries(user).map(([key, value]) => (
+                  <td>
+                    {key === "groups" ? (
+                      <Select multiple size={5}>
+                        {value.map((value: Group) => (
+                          <option selected={true} value={value.name}>
+                            {value.name}
+                          </option>
+                        ))}
+                      </Select>
+                    ) : (
+                      value
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </CustomTable>
       </ItemBody>
     </ItemContainer>
