@@ -31,6 +31,7 @@ import { useAsset } from "../../../hooks/asset-hook";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { NoResult } from "../../utils/containers/containers.style";
+import DownloadPDF from "../../utils/download/download";
 
 export const EmployeeAsset = () => {
   const navigate = useNavigate();
@@ -102,6 +103,10 @@ export const EmployeeAsset = () => {
                             </>
                           )}
                         </DeleteButton>
+                        <DownloadPDF
+                          file_url={asset.asset_value}
+                          file_name={asset.asset_name}
+                        />
                       </ActionBtnsContainer>
                     </TableData>
                   </TableRow>
