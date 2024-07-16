@@ -8,7 +8,7 @@ import {
   UserIcon,
 } from "../left-menu/left-menu.style";
 import { useLocation, useNavigate } from "react-router";
-import Image from "../../../assets/logo.jpg";
+import Image from "../../../assets/logo.png";
 import { Title } from "../add_employee/add-employee.style";
 import { useUser } from "../../../hooks/user-hook";
 
@@ -21,13 +21,13 @@ function UserMenu() {
       <LogoContainer>
         <LogoImage src={Image} />
         <Title>
-          Ethio
+          Pay
           <span
             style={{
-              color: "red",
+              color: "#1e8054",
             }}
           >
-            Den
+            roll
           </span>
         </Title>
       </LogoContainer>
