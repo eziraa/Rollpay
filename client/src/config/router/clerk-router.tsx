@@ -24,7 +24,7 @@ import { DeductionPage } from "../../components/pages/deductions/deductions";
 import { OvertimePage } from "../../components/pages/overtimes/overtime";
 import { AddDocument } from "../../components/sections/add-document/add-document";
 import { EmployeeAsset } from "../../components/sections/employee-asset/asset";
-import { RaiseSalary } from "../../components/sections/raise-salary/add-overtime";
+import { RaiseSalary } from "../../components/sections/raise-salary/raise-salary";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const ClerkRouterConfig = () => (
   <Route path="/" element={<HomePage />}>
