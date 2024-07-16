@@ -42,7 +42,7 @@ import {
 import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
 import { usePagination } from "../../../hooks/use-pagination";
-import { useNavigate, useParams } from "react-router";
+import { Outlet, useNavigate, useParams } from "react-router";
 
 import { TbFileTypePdf } from "react-icons/tb";
 import { RiFileExcel2Line } from "react-icons/ri";
@@ -164,7 +164,14 @@ export const EmployeesSalaryPage = () => {
           </ExportIcon>
           PDF
         </ExportButton>
-        <StartPaymentBtn>Rise Salary</StartPaymentBtn>
+        <StartPaymentBtn
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("raise");
+          }}
+        >
+          Raise Salary
+        </StartPaymentBtn>
 
         <Label
           style={{
@@ -327,7 +334,8 @@ export const EmployeesSalaryPage = () => {
           </tbody>
         </SalaryTable>
       )}
-      <Pagination pagination={pagination} />
+      <Outlet />
+      {/* <Pagination pagination={pagination} /> */}
     </SalaryContainer>
   );
 };
