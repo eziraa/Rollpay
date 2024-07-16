@@ -6,18 +6,34 @@ import {
   PermissionFilter,
   PermissionGroup,
   PermissionHeader,
-  PermissionList,
   BlurredText,
   Header,
   Adder,
   ChooseBtn,
 } from "./permission.style";
-import { permission_mock_data } from "./permissions_mock_data";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { SortBtn } from "../../../../sections/list-displayer/list-displayer.style";
 import { Select } from "../dropdown/dropdown.style";
+import { Permission } from "../../../../../typo/admin/response";
+import { useEffect, useState } from "react";
 
-export const DisplayPermissions = () => {
+interface PermissionProps {
+  all_permissions: Permission[];
+  selected_permissions: Permission[];
+}
+export const DisplayPermissions = ({
+  permission,
+}: {
+  permission: PermissionProps;
+}) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]); // Step 2
+  const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>(
+    []
+  ); //
+
+  useEffect(() => {
+    setSelectedPermissions(permission.selected_permissions);
+  }, []);
   return (
     <PermissionContainer>
       <Header>
@@ -44,15 +60,35 @@ export const DisplayPermissions = () => {
             width: "100%",
           }}
           multiple
+          size={5}
+          onChange={(event) => {
+            const { options } = event.target;
+            const value: string[] = [];
+            for (let i = 0, len = options.length; i < len; i++) {
+              if (options[i].selected) {
+                value.push(options[i].value);
+              }
+            }
+
+            setSelectedOptions(value);
+          }}
         >
-          {permission_mock_data.map((permission_mock) => (
-            <option>{permission_mock}</option>
+          {permission.all_permissions.map((permission) => (
+            <option value={permission.codename}>{permission.name}</option>
           ))}
         </Select>
         <ChooseBtn>Choose All</ChooseBtn>
       </PermissionGroup>
       <Adder>
-        <SortBtn>
+        <SortBtn
+          onClick={() => {
+            setSelectedPermissions(
+              permission.all_permissions.filter((permission) =>
+                selectedOptions.includes(permission.codename)
+              )
+            );
+          }}
+        >
           <BlurredIcon>
             <GoArrowRight />
           </BlurredIcon>
@@ -65,7 +101,7 @@ export const DisplayPermissions = () => {
       </Adder>
       <PermissionGroup>
         <PermissionHeader>
-          <BlurredText>Selectted Permissions</BlurredText>
+          <BlurredText>Selected Permissions</BlurredText>
         </PermissionHeader>
         <PermissionFilter>
           <BlurredIcon>
@@ -73,19 +109,18 @@ export const DisplayPermissions = () => {
           </BlurredIcon>
           <FilterInput placeholder="filter" />
         </PermissionFilter>
-        <PermissionList>
-          <Select
-            style={{
-              width: "100%",
-            }}
-            multiple
-          >
-            {permission_mock_data.splice(-5).map((permission_mock) => (
-              <option>{permission_mock}</option>
-            ))}
-          </Select>
-        </PermissionList>
-        <ChooseBtn>Remove All</ChooseBtn>
+        <Select
+          style={{
+            width: "100%",
+          }}
+          multiple
+          size={5}
+        >
+          {selectedPermissions.map((permission) => (
+            <option>{permission.name}</option>
+          ))}
+        </Select>
+        <ChooseBtn>Choose All</ChooseBtn>
       </PermissionGroup>
     </PermissionContainer>
   );
