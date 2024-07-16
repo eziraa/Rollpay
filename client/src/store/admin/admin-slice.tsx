@@ -2,12 +2,19 @@
 /* eslint-disable react-refresh/only-export-components */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AdminState } from "../../typo/admin/states";
-import { Group, Permission, Role, User } from "../../typo/admin/response";
+import {
+  AddGroupResponse,
+  Group,
+  Permission,
+  Role,
+  User,
+} from "../../typo/admin/response";
 
 const InitialEmpState: AdminState = {
   users: [],
   roles: [],
   groups: [],
+  group: undefined,
   permissions: [],
   task_error: undefined,
   task_finished: true,
@@ -49,6 +56,16 @@ const AdminSlice = createSlice({
       state.loading = false;
       state.permissions = action.payload;
     },
+    addGroupRequest: (state, _) => {
+      state.task_finished = false;
+      state.adding = true;
+    },
+    addGroupDone: (state, action: PayloadAction<Group>) => {
+      state.task_finished = true;
+      state.adding = false;
+      state.group = action.payload;
+      // Add new group to the list
+    },
     raiseError: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.task_error = action.payload;
@@ -65,6 +82,8 @@ export const {
   getRolesDone,
   getPermissionsRequest,
   getPermissionDone,
+  addGroupRequest,
+  addGroupDone,
   raiseError,
 } = AdminSlice.actions;
 export default AdminSlice.reducer;
