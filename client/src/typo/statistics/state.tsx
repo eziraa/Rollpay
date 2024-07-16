@@ -6,4 +6,5 @@ export interface StatisticsState {
   task_finished: boolean;
   task_error: string | undefined;
   loading: boolean;
+  loadding_payment_stat: boolean;
 }

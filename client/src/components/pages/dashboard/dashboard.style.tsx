@@ -31,11 +31,11 @@ export const DashboardBody = styled.div`
 `;
 
 export const DashboardBodyRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
   width: 100%;
+  column-gap: 1rem;
   padding: 0rem;
   margin-bottom: 2rem;
 `;

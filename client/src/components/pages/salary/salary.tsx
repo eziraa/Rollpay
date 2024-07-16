@@ -227,7 +227,7 @@ export const EmployeesSalaryPage = () => {
                 style={{
                   textAlign: "center",
                 }}
-                colSpan={allowanceTypes.length}
+                colSpan={allowanceTypes.length || 2}
               >
                 Allowance
               </HeaderTitle>
@@ -236,7 +236,7 @@ export const EmployeesSalaryPage = () => {
                   textAlign: "center",
                   borderLeft: "0.5rem solid transparent",
                 }}
-                colSpan={overtimesTypes.length}
+                colSpan={overtimesTypes.length || 2}
               >
                 Overtime
               </HeaderTitle>
