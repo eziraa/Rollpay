@@ -15,6 +15,7 @@ import {
   taskUnfinished,
   closePositionDone,
   getPositionDone,
+  openPositionDone,
 } from "./position-slice";
 import {
   AddPositionParams,
@@ -176,15 +177,6 @@ function* GetPosition(action: PayloadAction<string>) {
     );
     if (response.code === 200) {
       yield put(getPositionDone(response.position));
-      yield put(
-        setFlashMessage({
-          type: "success",
-          status: true,
-          title: "Getting Position",
-          desc: response.success,
-          duration: 3,
-        })
-      );
     } else if (response.code === 401) {
       yield put(taskUnfinished(response.error || "Cann't get position"));
       yield put(
@@ -287,7 +279,7 @@ function* OpenPosition(action: PayloadAction<string>) {
       action.payload
     );
     if (response.code === 201) {
-      yield put(closePositionDone(response.position));
+      yield put(openPositionDone(response.position));
       yield put(
         setFlashMessage({
           type: "success",
