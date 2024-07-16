@@ -53,7 +53,7 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
         <LogoContainer>
           <LogoImage src={Image} />
           <Title>
-            Payroll
+            Pay
             <span
               style={{
                 color: "#1e8054",
