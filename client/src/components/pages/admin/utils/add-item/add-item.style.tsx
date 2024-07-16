@@ -54,4 +54,5 @@ export const ActionContainer = styled.div`
   padding: 1rem;
   width: 100%;
   height: fit-content;
+  gap: 2rem;
 `;
