@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 import json
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -11,6 +12,7 @@ from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerial
 from employee.views.employee import StandardResultsSetPagination
 from ..models import *
 import month
+from .util import SalaryManager
 
 
 class SalaryView(APIView):
@@ -97,6 +99,8 @@ class SalaryView(APIView):
                 #             else:
                 #                 break
                 queryset = Payment.objects.all().order_by("month")
+                for query in queryset:
+                    print(query.salary)
                 if curr_month and year:
                     try:
                         queryset = queryset.filter(
@@ -115,3 +119,46 @@ class SalaryView(APIView):
 
             except Exception as e:
                 return JsonResponse({"error": str(e)}, status=400)
+
+    def post(self, request, employee_id=None, rate=None, *args, **kwargs):
+        now = datetime.datetime.now()
+        curr_month = month.Month(month=now.month, year=now.year)
+        if rate is not None:
+            if employee_id:
+                employee = Employee.objects.filter(id=employee_id)
+                if (not employee.exists()):
+                    return Response({"error": "Employee not found"}, status=404)
+                else:
+                    employee = employee.first()
+                    payment = Payment.objects.filter(
+                        month=curr_month, employee=employee)
+                    if payment.exists():
+                        SalaryManager.raise_salary(
+                            employee=employee, rate=Decimal(rate), month=curr_month)
+                    else:
+                        payment = Payment.objects.create(
+                            employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary)
+                        SalaryManager.raise_salary(
+                            employee=employee, month=curr_month, rate=Decimal(rate))
+
+            else:
+                employees = Employee.objects.all()
+                for employee in employees:
+                    SalaryManager.raise_salary(
+                        employee=employee, month=curr_month, rate=Decimal(rate))
+        else:
+            if employee_id is not None:
+                employee = Employee.objects.filter(id=employee_id)
+                if (not employee.exists()):
+                    return Response({"error": "Employee not found"}, status=404)
+                else:
+                    employee = employee.first()
+                    rate = Position.objects.get(
+                        position_name=employee.position).raise_rate
+                    SalaryManager.raise_salary(
+                        employee=employee, month=curr_month, rate=rate)
+            else:
+                SalaryManager.common_raise()
+            payments = Payment.objects.filter(month=curr_month)
+            serializer = PaymentSerializer(payments, many=True)
+        return Response(data=serializer.data, status=200)
