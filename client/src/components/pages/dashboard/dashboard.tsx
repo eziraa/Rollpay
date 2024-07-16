@@ -20,9 +20,10 @@ import {
 } from "../../../store/statistics/statistics-slice";
 import { FaDollarSign, FaUsers } from "react-icons/fa";
 import { IoBriefcase } from "react-icons/io5";
+import { ThreeDots } from "../../utils/loading/dots";
 
 export const DashBoard = () => {
-  const { stat } = useStatistics();
+  const { stat, loading } = useStatistics();
   const dispatcher = useAppDispatch();
 
   useEffect(() => {
@@ -31,65 +32,67 @@ export const DashBoard = () => {
   }, []);
   return (
     <DashboardContainer>
-      <StatContainer className="state-card-container">
-        <StatCard>
-          <CardRowTemplate>
-            <CardColumnTemplate>
-              <LargeText>Total Employees</LargeText>
-              <Text>{stat.total_employees}</Text>
-            </CardColumnTemplate>
-            {<FaUsers />}
-          </CardRowTemplate>
-          <CardRowTemplate>
-            <CardColumnTemplate></CardColumnTemplate>
-          </CardRowTemplate>
-        </StatCard>
-        <StatCard>
-          <CardRowTemplate>
-            <CardColumnTemplate>
-              <LargeText>Total Positions</LargeText>
-              <Text>{stat.total_positions}</Text>
-            </CardColumnTemplate>
-            {<IoBriefcase />}
-          </CardRowTemplate>
-          <CardRowTemplate>
-            <CardColumnTemplate></CardColumnTemplate>
-          </CardRowTemplate>
-        </StatCard>
-        <StatCard>
-          <CardRowTemplate>
-            <CardColumnTemplate>
-              <LargeText>Average Salary</LargeText>
-              <Text>{stat.avg_basic_salary} ETB</Text>
-            </CardColumnTemplate>
-            {<FaDollarSign />}
-          </CardRowTemplate>
-          <CardRowTemplate>
-            <CardColumnTemplate></CardColumnTemplate>
-          </CardRowTemplate>
-        </StatCard>
-        <StatCard>
-          <CardRowTemplate>
-            <CardColumnTemplate>
-              <LargeText>Income Tax</LargeText>
-              <Text>{stat.curr_month_tax} ETB</Text>
-            </CardColumnTemplate>
-            {<FaDollarSign />}
-          </CardRowTemplate>
-          <CardRowTemplate>
-            <CardColumnTemplate></CardColumnTemplate>
-          </CardRowTemplate>
-        </StatCard>
-      </StatContainer>
+      {loading ? (
+        <ThreeDots size={1} />
+      ) : (
+        <StatContainer className="state-card-container">
+          <StatCard>
+            <CardRowTemplate>
+              <CardColumnTemplate>
+                <LargeText>Total Employees</LargeText>
+                <Text>{stat.total_employees}</Text>
+              </CardColumnTemplate>
+              {<FaUsers />}
+            </CardRowTemplate>
+            <CardRowTemplate>
+              <CardColumnTemplate></CardColumnTemplate>
+            </CardRowTemplate>
+          </StatCard>
+          <StatCard>
+            <CardRowTemplate>
+              <CardColumnTemplate>
+                <LargeText>Total Positions</LargeText>
+                <Text>{stat.total_positions}</Text>
+              </CardColumnTemplate>
+              {<IoBriefcase />}
+            </CardRowTemplate>
+            <CardRowTemplate>
+              <CardColumnTemplate></CardColumnTemplate>
+            </CardRowTemplate>
+          </StatCard>
+          <StatCard>
+            <CardRowTemplate>
+              <CardColumnTemplate>
+                <LargeText>Average Salary</LargeText>
+                <Text>{stat.avg_basic_salary} ETB</Text>
+              </CardColumnTemplate>
+              {<FaDollarSign />}
+            </CardRowTemplate>
+            <CardRowTemplate>
+              <CardColumnTemplate></CardColumnTemplate>
+            </CardRowTemplate>
+          </StatCard>
+          <StatCard>
+            <CardRowTemplate>
+              <CardColumnTemplate>
+                <LargeText>Income Tax</LargeText>
+                <Text>{stat.curr_month_tax} ETB</Text>
+              </CardColumnTemplate>
+              {<FaDollarSign />}
+            </CardRowTemplate>
+            <CardRowTemplate>
+              <CardColumnTemplate></CardColumnTemplate>
+            </CardRowTemplate>
+          </StatCard>
+        </StatContainer>
+      )}
       <DashboardBody>
         <DashboardBodyRow>
           <MonthCard statType="allowance" />
           <MonthCard statType="deduction" />
           <MonthCard statType="overtime" />
         </DashboardBodyRow>
-        <DashboardBodyRow>
-          <PaymentCard />
-        </DashboardBodyRow>
+        <PaymentCard />
       </DashboardBody>
     </DashboardContainer>
   );

@@ -18,6 +18,7 @@ import {
   DeductionResponse,
   OvertimeResponse,
 } from "../../../typo/statistics/response";
+import { ThreeDots } from "../loading/dots";
 
 interface Props {
   statType: string;
@@ -28,7 +29,7 @@ interface ChartData {
 }
 export const MonthCard = ({ statType }: Props) => {
   const [currentMonth, setCurrentMonth] = useState("");
-  const { stat } = useStatistics();
+  const { stat, loading } = useStatistics();
   const dispatcher = useAppDispatch();
   const [allowanceData, setAllowanceData] = useState<ChartData>({
     series: [],
@@ -113,7 +114,9 @@ export const MonthCard = ({ statType }: Props) => {
     setCurrentMonth(monthYear);
   }, []);
   if (statType === "allowance") {
-    return (
+    return loading ? (
+      <ThreeDots size={1} />
+    ) : (
       <MonthCardContainer>
         <MonthHeader>
           <LargeText>Allowance of {currentMonth}</LargeText>
