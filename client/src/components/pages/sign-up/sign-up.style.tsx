@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
 import "react-phone-input-2/lib/style.css";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+import { LinkContainer } from "../login/login.style";
 
 
 const Text = css`
@@ -54,3 +55,7 @@ export const ErrorMessage = styled.p`
   padding-left: 1rem;
   color: #ef3131;
 `;
+
+export const LogInLink = styled(LinkContainer)`
+  margin-bottom: 0rem;
+`
