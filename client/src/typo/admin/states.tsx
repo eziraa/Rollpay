@@ -6,4 +6,5 @@ export interface AdminState extends BaseState {
   roles: Role[];
   users: User[];
   permissions: Permission[];
+  group: Group | undefined;
 }
