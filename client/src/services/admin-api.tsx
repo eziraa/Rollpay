@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
+import { AddGroupParams } from "../typo/admin/params";
 
 /**
  * @returns a list of usrs
@@ -88,9 +89,9 @@ const getPermissions = async () => {
   return groups;
 };
 
-const addGroup = async () => {
+const addGroup = async (values: AddGroupParams) => {
   const groups = await api
-    .get("group/add")
+    .post("/group/add", values)
     .then((res) => {
       return {
         group: res.data,
