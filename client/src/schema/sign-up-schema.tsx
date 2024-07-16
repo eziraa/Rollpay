@@ -5,10 +5,10 @@ const pattern = RegExp(
 
 export const SignUpSchema = Yup.object({
   username: Yup.string()
-    .required("Please Enter username")
+    .required("Please enter username")
     .min(3, "Username should be at least 3 characters"),
   empID: Yup.string()
-    .required("Please Enter Emplyee ID")
+    .required("Please enter Emplyee ID")
     .matches(/^ED\d{4}$/, "Employee ID must start with 'ED' followed by a 4-digit number"),
   password: Yup.string()
     .min(8, "Password should be atleast 8 characters")
@@ -16,7 +16,7 @@ export const SignUpSchema = Yup.object({
       pattern,
       "Password should be a mixture of uppercase, lowercase letters, numbers, and special character"
     )
-    .required("Please Enter password"),
+    .required("Please enter password"),
   confirmPassword: Yup.string().oneOf(
     [Yup.ref("password")],
     "Password does not match"
