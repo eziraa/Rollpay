@@ -31,3 +31,7 @@ export interface AdminResponse extends BaseResponse {
   roles: Role[];
   permissions: Permission[];
 }
+
+export interface AddGroupResponse extends BaseResponse {
+  group: Group;
+}
