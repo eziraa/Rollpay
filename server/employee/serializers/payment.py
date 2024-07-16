@@ -38,7 +38,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         return obj.employee.first_name + " " + obj.employee.last_name
 
     def get_basic_salary(self, obj: Payment):
-        return obj.salary
+        return round(obj.salary, 2)
 
     def get_salary(self, obj):
         return SalarySerializer(obj.salary).data
@@ -61,22 +61,22 @@ class PaymentSerializer(serializers.ModelSerializer):
     def get_net_salary(self, obj: Payment):
         calculator = SalaryCalculator(obj)
         calculator.calc_net_salary()
-        return calculator.net_salary
+        return round(calculator.net_salary, 2)
 
     def get_total_deduction(self, obj: Payment) -> float:
         calculator = SalaryCalculator(obj)
         calculator.calc_total_deduction()
-        return calculator.total_deduction
+        return round(calculator.total_deduction, 2)
 
     def get_gross_salary(self, obj: Payment) -> float:
         calculator = SalaryCalculator(obj)
         calculator.calc_gross_salary()
-        return calculator.gross_salary
+        return round(calculator.gross_salary, 2)
 
     def get_income_tax(self, obj: Payment) -> Decimal:
         calculator = SalaryCalculator(obj)
         calculator.calc_income_tax()
-        return calculator.income_tax
+        return round(calculator.income_tax, 2)
 
 
 class MonthlyPaymentSerializer(PaymentSerializer):
