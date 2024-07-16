@@ -21,8 +21,16 @@ class OvertimeItemSerializer(serializers.ModelSerializer):
     def get_overtime_type(self, obj):
         return obj.overtime.overtime_type
 
-    def get_overtime_rate(self, obj):
-        return obj.overtime.overtime_rate
+    def get_overtime_rate(self, obj: OvertimeItem):
+        length_in_hour = obj.end_time.hour - obj.start_time.hour
+        length_in_minute = obj.end_time.minute - obj.start_time.minute
+        if length_in_hour > 0:
+            time_length = length_in_hour + length_in_minute / 60
+            return str(round(time_length)) + " hour"
+        elif length_in_minute > 0:
+            return str(length_in_minute) + " minutes"
+        else:
+            return ""
 
     def get_date_of_overtime(self, obj: OvertimeItem):
         return obj.start_time.strftime("%Y-%m-%d")
