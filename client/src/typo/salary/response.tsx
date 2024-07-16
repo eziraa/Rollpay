@@ -18,7 +18,7 @@ export interface Deduction {
 export interface Overtime {
   id: string;
   overtime_type: string;
-  overtime_rate: number;
+  overtime_rate: string;
   start_time: string;
   end_time: string;
   length_of_overtime: number;
