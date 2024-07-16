@@ -47,7 +47,6 @@ const SalarySlice = createSlice({
     },
     getSalaryAssetsRequest: (state, _: PayloadAction<GetAssetParams>) => {
       state.loading = true;
-      
     },
     getCurrEmpPaymentInfo: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
@@ -86,6 +85,24 @@ const SalarySlice = createSlice({
       if (state.curr_emp)
         state.curr_emp.employee.profile_picture = action.payload;
     },
+    raiseError: (state, action: PayloadAction<string>) => {
+      state.task_error = action.payload;
+    },
+    raiseSalaryRequest: (state, _: PayloadAction<number>) => {
+      state.adding = true;
+    },
+    raiseSalaryDone: (state, action: PayloadAction<PaymentEmployee[]>) => {
+      state.task_finished = true;
+      state.loading = false;
+      state.adding = false;
+      state.employees = action.payload;
+    },
+    resetSalaryState: (state, action: PayloadAction<PaymentState>) => {
+      state = {
+        ...action.payload,
+      }
+
+    }
   },
 });
 export const {
@@ -100,6 +117,10 @@ export const {
   loadNextPaymentListPage,
   loadPrevPaymentListPage,
   setProfilePicture,
+  raiseSalaryRequest,
+  raiseSalaryDone,
+  raiseError,
+  resetSalaryState,
 } = SalarySlice.actions;
 
 export default SalarySlice.reducer;

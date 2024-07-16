@@ -27,12 +27,7 @@ export const SeeEmployee = () => {
   const employee = useEmployee().curr_emp;
   const { employee_id } = useParams();
   const dispatcher = useAppDispatch();
-  const {
-    year: query_year,
-    month: query_month,
-    changeMonth,
-    changeYear,
-  } = useYearMonthPagination();
+  const { year, month, changeMonth, changeYear } = useYearMonthPagination();
 
   // Implementing year-month pagination
   const now = new Date(Date.now());
@@ -44,12 +39,9 @@ export const SeeEmployee = () => {
     (_, index) => start_year + index
   );
 
-  const start_month = 1;
   const current_month = now.getMonth() + 1;
-  const months = Array.from(
-    { length: current_month - start_month + 1 },
-    (_, index) => start_month + index
-  );
+  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
   // Defining a useEffect to get the infomration of current employee
 
   useEffect(() => {
@@ -73,7 +65,7 @@ export const SeeEmployee = () => {
           }}
         >
           <Select
-            value={`${query_year || current_year}`}
+            value={`${year || current_year}`}
             onChange={(e) => {
               changeYear(+e.target.value);
             }}
@@ -85,17 +77,16 @@ export const SeeEmployee = () => {
             ))}
           </Select>
           <Select
-            value={`${query_month || current_month}`}
+            value={`${month || current_month}`}
             onChange={(e) => {
               changeMonth(+e.target.value);
             }}
           >
             {months.map(
               (month) =>
-                ((query_year && query_year < current_year) ||
-                  month <= current_month) && (
+                ((year && year < current_year) || month <= current_month) && (
                   <SelectOption key={month} value={`${month}`}>
-                    {getNamedMonth(new Date(`${query_year}-${month}-01`))}
+                    {getNamedMonth(new Date(`${year}-${month}-01`))}
                   </SelectOption>
                 )
             )}

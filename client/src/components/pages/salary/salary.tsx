@@ -35,13 +35,14 @@ import {
   getDeductionTypes,
   getFormattedMonth,
   getNamedMonth,
+  getOvertimeTypes,
   getRate,
   getSalary,
 } from "./utils";
 import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
 import { usePagination } from "../../../hooks/use-pagination";
-import { useNavigate, useParams } from "react-router";
+import { Outlet, useNavigate, useParams } from "react-router";
 
 import { TbFileTypePdf } from "react-icons/tb";
 import { RiFileExcel2Line } from "react-icons/ri";
@@ -57,21 +58,19 @@ export const EmployeesSalaryPage = () => {
   const { pagination, setPagination } = usePagination();
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
+  const [overtimesTypes, setOvertimeTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
   const navigate = useNavigate();
 
-  const {
-    year: query_year,
-    month: query_month,
-    changeMonth,
-    changeYear,
-  } = useYearMonthPagination();
-  const { year, month } = useParams();
+  const { year, month, changeMonth, changeYear } = useYearMonthPagination();
+  const { year: query_year, month: query_month } = useParams();
   useEffect(() => {
-    if (year && month) {
+    if (query_year && query_month) {
       dispatcher(
-        loadNextPaymentListPage(`employee/salary/get/${year}/${month}`)
+        loadNextPaymentListPage(
+          `employee/salary/get/${query_year}/${query_month}`
+        )
       );
     } else {
       dispatcher(
@@ -80,7 +79,7 @@ export const EmployeesSalaryPage = () => {
         )
       );
     }
-  }, [year, month]);
+  }, [query_year, query_month]);
 
   // Implementing year-month pagination
   const now = new Date(Date.now());
@@ -92,22 +91,16 @@ export const EmployeesSalaryPage = () => {
     (_, index) => start_year + index
   );
 
-  const start_month = 1;
   const current_month = now.getMonth() + 1;
-  const months = Array.from(
-    { length: current_month - start_month + 1 },
-    (_, index) => start_month + index
-  );
+  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   // Defining use effect to navigate if there is a change
   useEffect(() => {
-    if (!query_month && !query_year) return;
-    !query_year && changeYear(current_year);
-    !query_month && changeMonth(current_month);
-    query_year &&
-      query_month &&
-      navigate(`/employees-salary/${query_year}/${query_month}`);
-  }, [query_year, query_month]);
+    if (!month && !year) return;
+    !year && changeYear(current_year);
+    !month && changeMonth(current_month);
+    year && month && navigate(`/employees-salary/${year}/${month}`);
+  }, [month, year]);
 
   useEffect(() => {
     salary.pagination && setPagination(salary.pagination);
@@ -128,6 +121,7 @@ export const EmployeesSalaryPage = () => {
   useEffect(() => {
     setAllowanceTypes(Array.from(getAllowancesTypes(employees)));
     setDeductionTypes(Array.from(getDeductionTypes(employees)));
+    setOvertimeTypes(Array.from(getOvertimeTypes(employees)));
   }, [employees]);
 
   const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
@@ -170,7 +164,14 @@ export const EmployeesSalaryPage = () => {
           </ExportIcon>
           PDF
         </ExportButton>
-        <StartPaymentBtn>Rise Salary</StartPaymentBtn>
+        <StartPaymentBtn
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("raise");
+          }}
+        >
+          Raise Salary
+        </StartPaymentBtn>
 
         <Label
           style={{
@@ -200,15 +201,16 @@ export const EmployeesSalaryPage = () => {
               changeMonth(+e.target.value);
             }}
           >
-            {months.map(
-              (month) =>
-                ((query_year && query_year < current_year) ||
-                  month <= new Date(Date.now()).getMonth() + 1) && (
-                  <SelectOption key={month} value={`${month}`}>
-                    {getNamedMonth(new Date(`${year}-${month}-01`))}
-                  </SelectOption>
-                )
-            )}
+            {months
+              .filter(
+                (month) =>
+                  (year && year < current_year) || month <= current_month
+              )
+              .map((month) => (
+                <SelectOption key={month} value={`${month}`}>
+                  {getNamedMonth(new Date(`${year}-${month}-01`))}
+                </SelectOption>
+              ))}
           </Select>
         </Label>
       </EmpsDisplayerHeader>
@@ -229,6 +231,15 @@ export const EmployeesSalaryPage = () => {
               >
                 Allowance
               </HeaderTitle>
+              <HeaderTitle
+                style={{
+                  textAlign: "center",
+                  borderLeft: "0.5rem solid transparent",
+                }}
+                colSpan={overtimesTypes.length}
+              >
+                Overtime
+              </HeaderTitle>
               <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
               <HeaderTitle
                 style={{
@@ -248,6 +259,11 @@ export const EmployeesSalaryPage = () => {
               {allowanceTypes.map((allowanceType) => {
                 return (
                   <HeaderTitle key={allowanceType}>{allowanceType}</HeaderTitle>
+                );
+              })}
+              {overtimesTypes.map((overtimeType) => {
+                return (
+                  <HeaderTitle key={overtimeType}>{overtimeType}</HeaderTitle>
                 );
               })}
               <HeaderTitle>Income Tax</HeaderTitle>
@@ -275,6 +291,18 @@ export const EmployeesSalaryPage = () => {
                               alowance.allowance_type === allowanceType
                           )?.allowance_rate
                         )}
+                      </TableData>
+                    );
+                  })}
+                  {overtimesTypes.map((overtimeType) => {
+                    return (
+                      <TableData className="italic" key={overtimeType}>
+                        {
+                          employee.overtimes.find(
+                            (overtime) =>
+                              overtime.overtime_type === overtimeType
+                          )?.overtime_rate
+                        }
                       </TableData>
                     );
                   })}
@@ -306,7 +334,8 @@ export const EmployeesSalaryPage = () => {
           </tbody>
         </SalaryTable>
       )}
-      <Pagination pagination={pagination} />
+      <Outlet />
+      {/* <Pagination pagination={pagination} /> */}
     </SalaryContainer>
   );
 };

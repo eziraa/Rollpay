@@ -99,8 +99,6 @@ class SalaryView(APIView):
                 #             else:
                 #                 break
                 queryset = Payment.objects.all().order_by("month")
-                for query in queryset:
-                    print(query.salary)
                 if curr_month and year:
                     try:
                         queryset = queryset.filter(
@@ -138,9 +136,6 @@ class SalaryView(APIView):
                     else:
                         payment = Payment.objects.create(
                             employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary)
-                        SalaryManager.raise_salary(
-                            employee=employee, month=curr_month, rate=Decimal(rate))
-
             else:
                 employees = Employee.objects.all()
                 for employee in employees:
@@ -159,6 +154,6 @@ class SalaryView(APIView):
                         employee=employee, month=curr_month, rate=rate)
             else:
                 SalaryManager.common_raise()
-            payments = Payment.objects.filter(month=curr_month)
-            serializer = PaymentSerializer(payments, many=True)
+        payments = Payment.objects.filter(month=curr_month)
+        serializer = PaymentSerializer(payments, many=True)
         return Response(data=serializer.data, status=200)

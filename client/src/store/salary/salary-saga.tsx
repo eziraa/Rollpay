@@ -3,10 +3,17 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
 
 import SalaryAPI from "../../services/salary-api";
-import { currentEmpPaymentInfoDone, getSalariesDone } from "./salary-slice";
+import {
+  currentEmpPaymentInfoDone,
+  getSalariesDone,
+  raiseError,
+  raiseSalaryDone,
+  raiseSalaryRequest,
+} from "./salary-slice";
 import {
   CurrentEmpPaymentsResponse,
   PaginatedPaymentResponse,
+  RaiseSalaryResponse,
   SalaryEmpResponse,
 } from "../../typo/salary/response";
 
@@ -177,10 +184,59 @@ function* loadPrevPage(action: PayloadAction<string>) {
     // TODO:
   }
 }
+
+function* raiseSalary(action: PayloadAction<number>) {
+  try {
+    const response: RaiseSalaryResponse = yield call(
+      SalaryAPI.raiseSalary,
+      action.payload
+    );
+
+    if (response.code === 200) {
+      yield put(raiseSalaryDone(response.employees));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Adding Group",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(raiseError(response.error));
+    } else if (response.code === 403) {
+      yield put(raiseError(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "Not allowed to add allowance",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(raiseError(response.error));
+    }
+  } catch (_) {
+    yield put(raiseError("Failed please try again later"));
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Add Group",
+        desc: "Failed please try again later",
+        duration: 3,
+      })
+    );
+  }
+}
 export function* watchGetEmployeeSalary() {
   yield takeEvery("salary/getSalariesRequested", GetEmployeeSalary);
   yield takeEvery("salary/searchEmployeeRequested", searchEmployee);
   yield takeEvery("salary/getCurrEmpPaymentInfo", getEmpSalaryInfo);
   yield takeEvery("salary/loadNextPaymentListPage", loadNextPage);
   yield takeEvery("salary/loadNextPaymentListPage", loadPrevPage);
+  yield takeEvery(raiseSalaryRequest.type, raiseSalary);
 }
