@@ -15,11 +15,12 @@ import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { SortBtn } from "../../../../sections/list-displayer/list-displayer.style";
 import { Select } from "../dropdown/dropdown.style";
 import { Permission } from "../../../../../typo/admin/response";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface PermissionProps {
   all_permissions: Permission[];
   selected_permissions: Permission[];
+  selectHandler: (permissions: Permission[]) => void;
 }
 export const DisplayPermissions = ({
   permission,
@@ -27,13 +28,9 @@ export const DisplayPermissions = ({
   permission: PermissionProps;
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]); // Step 2
-  const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>(
-    []
-  ); //
 
-  useEffect(() => {
-    setSelectedPermissions(permission.selected_permissions);
-  }, []);
+  //
+
   return (
     <PermissionContainer>
       <Header>
@@ -82,7 +79,7 @@ export const DisplayPermissions = ({
       <Adder>
         <SortBtn
           onClick={() => {
-            setSelectedPermissions(
+            permission.selectHandler(
               permission.all_permissions.filter((permission) =>
                 selectedOptions.includes(permission.codename)
               )
@@ -116,11 +113,11 @@ export const DisplayPermissions = ({
           multiple
           size={5}
         >
-          {selectedPermissions.map((permission) => (
+          {permission.selected_permissions.map((permission) => (
             <option>{permission.name}</option>
           ))}
         </Select>
-        <ChooseBtn>Choose All</ChooseBtn>
+        <ChooseBtn>Remove All</ChooseBtn>
       </PermissionGroup>
     </PermissionContainer>
   );
