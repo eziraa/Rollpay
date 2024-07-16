@@ -24,6 +24,7 @@ import { DeductionPage } from "../../components/pages/deductions/deductions";
 import { OvertimePage } from "../../components/pages/overtimes/overtime";
 import { AddDocument } from "../../components/sections/add-document/add-document";
 import { EmployeeAsset } from "../../components/sections/employee-asset/asset";
+import { RaiseSalary } from "../../components/sections/raise-salary/add-overtime";
 // import UserProfile from "../../components/pages/user-profile/user-profile";
 export const ClerkRouterConfig = () => (
   <Route path="/" element={<HomePage />}>
@@ -52,7 +53,9 @@ export const ClerkRouterConfig = () => (
     </Route>
     <Route path="/employees/employee/delete" element={<CheckFlashMessage />} />
 
-    <Route path="/employees-salary" element={<EmployeesSalaryPage />} />
+    <Route path="/employees-salary" element={<EmployeesSalaryPage />}>
+      <Route path="raise" element={<RaiseSalary />} />
+    </Route>
     <Route
       path="/employees-salary/:year/:month"
       element={<EmployeesSalaryPage />}
