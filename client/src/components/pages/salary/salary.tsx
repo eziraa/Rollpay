@@ -61,17 +61,14 @@ export const EmployeesSalaryPage = () => {
   const [search_val, setSearchVal] = useState<string>("");
   const navigate = useNavigate();
 
-  const {
-    year: query_year,
-    month: query_month,
-    changeMonth,
-    changeYear,
-  } = useYearMonthPagination();
-  const { year, month } = useParams();
+  const { year, month, changeMonth, changeYear } = useYearMonthPagination();
+  const { year: query_year, month: query_month } = useParams();
   useEffect(() => {
-    if (year && month) {
+    if (query_year && query_month) {
       dispatcher(
-        loadNextPaymentListPage(`employee/salary/get/${year}/${month}`)
+        loadNextPaymentListPage(
+          `employee/salary/get/${query_year}/${query_month}`
+        )
       );
     } else {
       dispatcher(
@@ -80,7 +77,7 @@ export const EmployeesSalaryPage = () => {
         )
       );
     }
-  }, [year, month]);
+  }, [query_year, query_month]);
 
   // Implementing year-month pagination
   const now = new Date(Date.now());
@@ -92,22 +89,16 @@ export const EmployeesSalaryPage = () => {
     (_, index) => start_year + index
   );
 
-  const start_month = 1;
   const current_month = now.getMonth() + 1;
-  const months = Array.from(
-    { length: current_month - start_month + 1 },
-    (_, index) => start_month + index
-  );
+  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   // Defining use effect to navigate if there is a change
   useEffect(() => {
-    if (!query_month && !query_year) return;
-    !query_year && changeYear(current_year);
-    !query_month && changeMonth(current_month);
-    query_year &&
-      query_month &&
-      navigate(`/employees-salary/${query_year}/${query_month}`);
-  }, [query_year, query_month]);
+    if (!month && !year) return;
+    !year && changeYear(current_year);
+    !month && changeMonth(current_month);
+    year && month && navigate(`/employees-salary/${year}/${month}`);
+  }, [month, year]);
 
   useEffect(() => {
     salary.pagination && setPagination(salary.pagination);
@@ -200,15 +191,16 @@ export const EmployeesSalaryPage = () => {
               changeMonth(+e.target.value);
             }}
           >
-            {months.map(
-              (month) =>
-                ((query_year && query_year < current_year) ||
-                  month <= new Date(Date.now()).getMonth() + 1) && (
-                  <SelectOption key={month} value={`${month}`}>
-                    {getNamedMonth(new Date(`${year}-${month}-01`))}
-                  </SelectOption>
-                )
-            )}
+            {months
+              .filter(
+                (month) =>
+                  (year && year < current_year) || month <= current_month
+              )
+              .map((month) => (
+                <SelectOption key={month} value={`${month}`}>
+                  {getNamedMonth(new Date(`${year}-${month}-01`))}
+                </SelectOption>
+              ))}
           </Select>
         </Label>
       </EmpsDisplayerHeader>
