@@ -32,7 +32,10 @@ export const Header = () => {
           <HiMenu />
         </HamburgerMenu>
         <WelcomeMessageContainer>
-          <BlurredText>Welcome, Mr. {user?.employee.first_name}</BlurredText>
+          <BlurredText>
+            Welcome,{user?.employee.gender === "F" ? " Ms" : " Mr"}.{" "}
+            {user?.employee.first_name}
+          </BlurredText>
           <MidBlurredText>
             Today is {stringDay(new Date(Date.now()))}
           </MidBlurredText>
