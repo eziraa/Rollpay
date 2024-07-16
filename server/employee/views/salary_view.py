@@ -138,8 +138,6 @@ class SalaryView(APIView):
                     else:
                         payment = Payment.objects.create(
                             employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary)
-                        SalaryManager.raise_salary(
-                            employee=employee, month=curr_month, rate=Decimal(rate))
 
             else:
                 employees = Employee.objects.all()
