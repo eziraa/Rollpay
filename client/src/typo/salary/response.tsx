@@ -1,5 +1,9 @@
 import { CurrEmpPayments, PaymentEmployee } from "../payment/response";
-import { PaginatedBackEndResponse, PaginatedResponse } from "../utils/response";
+import {
+  BaseResponse,
+  PaginatedBackEndResponse,
+  PaginatedResponse,
+} from "../utils/response";
 
 export interface Allowance {
   id: string;
@@ -68,4 +72,8 @@ export interface PaginatedPaymentResponse extends PaginatedResponse {
 
 export interface PaginatedPayBackEndResponse extends PaginatedBackEndResponse {
   results: PaymentEmployee[];
+}
+
+export interface RaiseSalaryResponse extends BaseResponse {
+  employees: PaymentEmployee[];
 }
