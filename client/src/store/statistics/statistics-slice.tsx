@@ -9,6 +9,7 @@ const initialState: StatisticsState = {
   task_error: undefined,
   task_finished: true,
   payment_stat: [],
+  loadding_payment_stat: false,
   stat: {
     total_employees: 0,
     total_positions: 0,
@@ -38,13 +39,13 @@ const StatisticsSlice = createSlice({
       state.task_finished = true;
     },
     getPaymentStatRequest: (state) => {
-      state.loading = true;
+      state.loadding_payment_stat = true;
     },
     getPaymentStatDone: (
       state,
       action: PayloadAction<PaymentStatisticeResponse[]>
     ) => {
-      state.loading = false;
+      state.loadding_payment_stat = false;
       state.payment_stat = action.payload;
     },
     raiseError: (state, action: PayloadAction<string>): void => {
