@@ -36,7 +36,9 @@ export const DashBoard = () => {
           <CardRowTemplate>
             <CardColumnTemplate>
               <LargeText>Total Employees</LargeText>
-              <Text>{stat.total_employees}</Text>
+              <Text>
+                {stat.total_employees} <LargeText>employees</LargeText>
+              </Text>
             </CardColumnTemplate>
             {<FaUsers />}
           </CardRowTemplate>
@@ -48,7 +50,9 @@ export const DashBoard = () => {
           <CardRowTemplate>
             <CardColumnTemplate>
               <LargeText>Total Positions</LargeText>
-              <Text>{stat.total_positions}</Text>
+              <Text>
+                {stat.total_positions} <LargeText>positions</LargeText>
+              </Text>
             </CardColumnTemplate>
             {<IoBriefcase />}
           </CardRowTemplate>
