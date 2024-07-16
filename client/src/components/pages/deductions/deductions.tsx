@@ -122,7 +122,7 @@ export const DeductionPage = () => {
                       )}{" "}
                     </TableData>
                     {deduction.end_at ? (
-                      <TableData>{deduction.end_at}</TableData>
+                      <TableData>{deduction.end_at.split("T")[0]}</TableData>
                     ) : (
                       <TableData>Not ended</TableData>
                     )}
