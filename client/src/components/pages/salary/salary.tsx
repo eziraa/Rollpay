@@ -289,13 +289,13 @@ export const EmployeesSalaryPage = () => {
                   })}
                   {overtimesTypes.map((overtimeType) => {
                     return (
-                      <TableData key={overtimeType}>
-                        {getRate(
+                      <TableData className="italic" key={overtimeType}>
+                        {
                           employee.overtimes.find(
                             (overtime) =>
                               overtime.overtime_type === overtimeType
                           )?.overtime_rate
-                        )}
+                        }
                       </TableData>
                     );
                   })}
