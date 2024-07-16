@@ -8,31 +8,25 @@ import {
   ItemContainer,
   HorizontalLine,
 } from "./profile.style";
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { logoutRequested } from "../../../store/user/user-slice";
 import { MdLogout } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
 const Profile = ({ close }: { close: () => void }) => {
-  // Calling hooks anf getting necessary information
   const dispatcher = useAppDispatch();
   const user = useAppSelector((state) => state.user);
 
-  useEffect(() => {
-    if (!user.is_login) {
-      localStorage.clear();
-      window.location.href = "/login";
-    }
-  }, []);
-
   const handleClick = () => {
     dispatcher(logoutRequested());
+    localStorage.clear();
+    window.location.href = "/login";
   };
 
   return (
     <ModalContainer
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         close();
       }}
     >
@@ -48,7 +42,7 @@ const Profile = ({ close }: { close: () => void }) => {
                 close();
               }}
             >
-              <Link to={`/user-profile/${user.user?.user_id}`}>Profile</Link>
+              <Link to={`/user-profile/${user.user?.employeeId}`}>Profile</Link>
             </Label>
           </ResetLink>
         </ItemContainer>
@@ -67,7 +61,14 @@ const Profile = ({ close }: { close: () => void }) => {
           <IconContainer>
             <MdLogout />
           </IconContainer>
-          <Label onClick={handleClick}>Log out</Label>
+          <Label
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick();
+            }}
+          >
+            Log out
+          </Label>
         </ItemContainer>
       </Modal>
     </ModalContainer>
