@@ -99,8 +99,6 @@ class SalaryView(APIView):
                 #             else:
                 #                 break
                 queryset = Payment.objects.all().order_by("month")
-                for query in queryset:
-                    print(query.salary)
                 if curr_month and year:
                     try:
                         queryset = queryset.filter(

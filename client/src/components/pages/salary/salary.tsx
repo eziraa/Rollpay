@@ -35,6 +35,7 @@ import {
   getDeductionTypes,
   getFormattedMonth,
   getNamedMonth,
+  getOvertimeTypes,
   getRate,
   getSalary,
 } from "./utils";
@@ -57,6 +58,7 @@ export const EmployeesSalaryPage = () => {
   const { pagination, setPagination } = usePagination();
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
+  const [overtimesTypes, setOvertimeTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
   const navigate = useNavigate();
@@ -119,6 +121,7 @@ export const EmployeesSalaryPage = () => {
   useEffect(() => {
     setAllowanceTypes(Array.from(getAllowancesTypes(employees)));
     setDeductionTypes(Array.from(getDeductionTypes(employees)));
+    setOvertimeTypes(Array.from(getOvertimeTypes(employees)));
   }, [employees]);
 
   const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
@@ -221,6 +224,15 @@ export const EmployeesSalaryPage = () => {
               >
                 Allowance
               </HeaderTitle>
+              <HeaderTitle
+                style={{
+                  textAlign: "center",
+                  borderLeft: "0.5rem solid transparent",
+                }}
+                colSpan={overtimesTypes.length}
+              >
+                Overtime
+              </HeaderTitle>
               <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
               <HeaderTitle
                 style={{
@@ -240,6 +252,11 @@ export const EmployeesSalaryPage = () => {
               {allowanceTypes.map((allowanceType) => {
                 return (
                   <HeaderTitle key={allowanceType}>{allowanceType}</HeaderTitle>
+                );
+              })}
+              {overtimesTypes.map((overtimeType) => {
+                return (
+                  <HeaderTitle key={overtimeType}>{overtimeType}</HeaderTitle>
                 );
               })}
               <HeaderTitle>Income Tax</HeaderTitle>
@@ -266,6 +283,18 @@ export const EmployeesSalaryPage = () => {
                             (alowance) =>
                               alowance.allowance_type === allowanceType
                           )?.allowance_rate
+                        )}
+                      </TableData>
+                    );
+                  })}
+                  {overtimesTypes.map((overtimeType) => {
+                    return (
+                      <TableData key={overtimeType}>
+                        {getRate(
+                          employee.overtimes.find(
+                            (overtime) =>
+                              overtime.overtime_type === overtimeType
+                          )?.overtime_rate
                         )}
                       </TableData>
                     );

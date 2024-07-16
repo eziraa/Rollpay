@@ -59,3 +59,15 @@ export const getDeductionTypes = (employees: PaymentEmployee[]) => {
 
   return tempDeductionTypes;
 };
+
+
+export const getOvertimeTypes = (employees: PaymentEmployee[]) => {
+  const tempOvertimeTypes = new Set<string>();
+
+  employees.forEach((employee) => {
+    employee.overtimes.forEach((overtime) => {
+      tempOvertimeTypes.add(overtime.overtime_type);
+    });
+  });
+  return tempOvertimeTypes;
+};
