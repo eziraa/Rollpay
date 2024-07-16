@@ -57,26 +57,35 @@ class PositionView (APIView):
         except Exception as e:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, position_id):
-        try:
-            position = Position.objects.get(pk=position_id)
-        except Position.DoesNotExist:
-            return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
-        position.end_date = (datetime.datetime.now().date())
-        position.save()
-        serializer = PositionSerializer(position)
-
-        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
     def patch(self, request, position_id):
         try:
             position = Position.objects.get(pk=position_id)
         except Position.DoesNotExist:
             return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
-        position.end_date = None
+        position.end_date = None if position.end_date else datetime.datetime.now()
         position.save()
         serializer = PositionSerializer(position)
 
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, position_id):
+        try:
+            position = Position.objects.get(pk=position_id)
+        except Position.DoesNotExist:
+            return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            position_name = request.data["position_name"]
+            basic_salary = request.data["basic_salary"]
+            if position_name and basic_salary:
+                position.position_name = position_name
+                position.basic_salary = basic_salary
+                position.save()
+                serializer = PositionSerializer(position)
+                return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"error": "Check your data to edit"}, status=status.HTTP_400_BAD_REQUEST)
+        except KeyError as e:
+            return Response({"error": "Checkyour data bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
     
 class PositionNumber(APIView):
