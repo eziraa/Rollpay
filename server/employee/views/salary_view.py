@@ -136,7 +136,6 @@ class SalaryView(APIView):
                     else:
                         payment = Payment.objects.create(
                             employee=employee, month=curr_month, salary=employee.salaries.all().last().basic_salary)
-
             else:
                 employees = Employee.objects.all()
                 for employee in employees:
@@ -155,6 +154,6 @@ class SalaryView(APIView):
                         employee=employee, month=curr_month, rate=rate)
             else:
                 SalaryManager.common_raise()
-            payments = Payment.objects.filter(month=curr_month)
-            serializer = PaymentSerializer(payments, many=True)
+        payments = Payment.objects.filter(month=curr_month)
+        serializer = PaymentSerializer(payments, many=True)
         return Response(data=serializer.data, status=200)
