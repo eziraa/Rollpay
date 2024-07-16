@@ -141,7 +141,7 @@ export const AllowancePage = () => {
                       )}{" "}
                     </TableData>
                     {allowance.end_at ? (
-                      <TableData>{allowance.end_at}</TableData>
+                      <TableData>{allowance.end_at.split("T")[0]}</TableData>
                     ) : (
                       <TableData>Not ended</TableData>
                     )}
