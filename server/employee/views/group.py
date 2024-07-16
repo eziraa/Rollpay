@@ -12,18 +12,19 @@ class GroupView(APIView):
         return Response(data=data, status=200)
 
     def post(self, request: Request, *args, **kwargs):
-        group_name = request.POST.get('group_name', None)
+        group_name = request.data['name']
         if group_name is None:
-            return Response({'error': 'Group name not specified'}, status=404)
+            return Response({'error': 'Group name not specified'}, status=400)
         else:
             group = Group.objects.filter(name=group_name)
             if group.exists():
-                return Response({'error': 'Group name not specified'}, status=404)
+                return Response({'error': 'Group aleady exist '}, status=400)
             else:
                 group = Group.objects.create(name=group_name)
-                permissions = request.POST.get('permissions')
+                permissions = request.data['permissions']
                 permissions = Permission.objects.filter(
                     codename__in=permissions)
-                permissions = PermissionSerializer(permissions, many=True)
+                group.permissions.set(permissions)
                 group.save()
-                return Response(permissions.data, status=200)
+                serrializer = GroupSerializer(group)
+                return Response(serrializer.data, status=201)
