@@ -92,6 +92,7 @@ export const ExportButton = styled.div`
   margin-right: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  cursor: pointer;
 `;
 export const ExportLabel = styled(Label)`
   font-size: 1.5rem;
@@ -108,10 +109,11 @@ export const ExportIcon = styled(Icon)`
 `;
 
 export const StartPaymentBtn = styled.button`
-  padding: 0.7rem 1rem;
+  padding: 0.65rem 1rem;
   border-radius: 0.6rem;
   font-size: 1.6rem;
   background-color: ${({ theme }) => theme.buttons.primary};
   border: none;
   color: ${({ theme }) => theme.backgrounds.primary};
+  cursor: pointer;
 `;
