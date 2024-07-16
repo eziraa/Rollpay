@@ -11,11 +11,9 @@ import {
 import { PasswordVisible } from "../../utils/password-visiblity/password.style";
 import {
   Text,
-  CheckboxContainer,
   CustomLink,
   LoginContainer,
   LinkContainer,
-  Checkbox,
   ActionsContainer,
   LoginSection,
 } from "./login.style";
@@ -111,9 +109,6 @@ export const LoginPage = () => {
             {login_error && <ErrorMessage>{login_error} </ErrorMessage>}
           </InputContainer>
           <ActionsContainer>
-            <CheckboxContainer>
-              <Checkbox type="checkbox" /> <Text> Remember me</Text>
-            </CheckboxContainer>
             <CustomLink>
               <Link to="/forgot_password">Frogot Password?</Link>
             </CustomLink>
