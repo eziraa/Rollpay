@@ -166,8 +166,8 @@ class Position(models.Model):
         max_length=255, null=False, unique=True)
     basic_salary = models.DecimalField(
         max_digits=12, decimal_places=2, null=False)
-    start_date = models.DateField(auto_now=True)
-    end_date = models.DateField(null=True, blank=True)
+    start_date = models.DateTimeField(auto_now=True)
+    end_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.position_name
