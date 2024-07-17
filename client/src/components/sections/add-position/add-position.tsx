@@ -24,7 +24,7 @@ import {
   resetPositionState,
 } from "../../../store/position/position-slice";
 import { AddPositionSchema } from "../../../schema/add-position-schema";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { usePosition } from "../../../hooks/position-hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
@@ -42,7 +42,7 @@ export const AddPosition = () => {
   }, []);
   useEffect(() => {
     if (position.curr_position && position_id) {
-      setFieldValue("posit", position.curr_position.position_name);
+      setFieldValue("position_name", position.curr_position.position_name);
       setFieldValue("basic_salary", position.curr_position.basic_salary);
     }
   }, [position.curr_position]);

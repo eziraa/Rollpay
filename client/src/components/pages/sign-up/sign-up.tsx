@@ -1,4 +1,4 @@
-import { SignUpContainer, ErrorMessage } from "./sign-up.style";
+import { SignUpContainer, ErrorMessage, LogInLink } from "./sign-up.style";
 import { useFormik } from "formik";
 import { SignUpSchema } from "../../../schema/sign-up-schema";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -17,7 +17,7 @@ import {
 import { PasswordVisible } from "../../utils/password-visiblity/password.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { signUpRequested } from "../../../store/user/user-slice";
-import { CustomLink, LinkContainer, Text } from "../login/login.style";
+import { CustomLink,  Text } from "../login/login.style";
 import { Link } from "react-router-dom";
 import { ACCESS_TOKEN } from "../../../constants/token-constants";
 
@@ -141,12 +141,12 @@ const SignUp = () => {
             Create
           </Button>
         </Form>
-        <LinkContainer>
+        <LogInLink>
           <Text>Have an account? </Text>
           <CustomLink>
             <Link to="/login"> Log in </Link>
           </CustomLink>
-        </LinkContainer>
+        </LogInLink>
       </SignUpContainer>
     </SignUpPage>
   );

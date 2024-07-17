@@ -97,7 +97,7 @@ export const AddOvertime = () => {
     <Modal closeAction={clearAction}>
       <OvertimeContainer>
         <OvertimeBody>
-          <Title>{overtime_id ? 'Edit' : 'Add'} Overtime</Title>
+          <Title>{overtime_id ? "Edit" : "Add"} Overtime</Title>
           <OvertimeForm
             onSubmit={(e) => {
               e.preventDefault();
@@ -129,12 +129,12 @@ export const AddOvertime = () => {
             </InputContainer>
 
             <FormError>
-              {touched.overtime_type && errors.overtime_type && (
-                <div>{errors.overtime_type}</div>
+              {touched.overtime_rate && errors.overtime_rate && (
+                <div>{errors.overtime_rate}</div>
               )}
             </FormError>
             <FormError>{task_error && <div>{task_error}</div>}</FormError>
-            <AddBtn type="submit">{overtime_id ? 'Save':'Add'}</AddBtn>
+            <AddBtn type="submit">{overtime_id ? "Save" : "Add"}</AddBtn>
           </OvertimeForm>
         </OvertimeBody>
       </OvertimeContainer>

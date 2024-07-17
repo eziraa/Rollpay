@@ -129,18 +129,21 @@ class EmployeeView (APIView):
             employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+        
         try:
             serializer = EmployeeSerializer(employee)
+            employee_data = serializer.data  
             employee.delete()
-            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+            return Response(employee_data, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, employee_id, asset_type=None, asset_id=None):
         try:
             employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+        
         if asset_type:
             year = request.query_params['year']
             curr_month = request.query_params['month']
@@ -206,8 +209,14 @@ class EmployeeView (APIView):
                     return Response({"error": "No payment found for this month"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({"error": "Please have year and month to remove "}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({"error": "Please have year and month to remove "}, status=status.HTTP_400_BAD_REQUEST)
+        else:        
+            serializer = EmployeeSerializer(employee, request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+          
 
 
 

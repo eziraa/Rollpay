@@ -25,10 +25,10 @@ export const PaymentCard = () => {
           <PaymentTable>
             <PaymentRow>
               <PaymentCell>Payment Date</PaymentCell>
-              <PaymentCell>Net Payment</PaymentCell>
-              <PaymentCell>Allowance expense </PaymentCell>
-              <PaymentCell>Overtome expense</PaymentCell>
-              <PaymentCell>Deduction</PaymentCell>
+              <PaymentCell>Total Net Payment</PaymentCell>
+              <PaymentCell>Total Allowance</PaymentCell>
+              <PaymentCell>Total Overtime</PaymentCell>
+              <PaymentCell>Toal Deduction</PaymentCell>
               <PaymentCell>Month</PaymentCell>
               <PaymentCell>Payment Status</PaymentCell>
               <PaymentCell>Is approved</PaymentCell>

@@ -27,7 +27,7 @@ import {
   resetEmployeeState,
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { usePosition } from "../../../hooks/position-hook";
@@ -80,10 +80,7 @@ export const AddEmployee = () => {
   });
 
   useEffect(() => {
-    !task_error &&
-      task_finished &&
-      formHandler.isSubmitting &&
-      navigate("/employees/upload-document");
+    !task_error && task_finished && formHandler.isSubmitting && navigate(-1);
   }, [task_finished]);
 
   const clearTask = () => {

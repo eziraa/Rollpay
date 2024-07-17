@@ -144,7 +144,7 @@ const deletePosition = async (position_id: string) => {
 
 const closePosition = async (position_id: string) => {
   const response = await api
-    .put("/position/close/" + position_id)
+    .patch("/position/close/" + position_id)
     .then((res) => {
       return {
         success: "Position close successfully",

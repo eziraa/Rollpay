@@ -112,7 +112,7 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
           <DataValue>{employee?.phone_number}</DataValue>
         </EmployeeData>
         <EmployeeData>
-          <DataLabel>Role</DataLabel>
+          <DataLabel>Position</DataLabel>
           <DataValue>{employee?.position}</DataValue>
         </EmployeeData>
         <EmployeeData>

@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Input, Form } from "../../utils/form-elements/form.style";
+import {
+  Input,
+  Form,
+  Select,
+  SelectOption,
+} from "../../utils/form-elements/form.style";
 import {
   Label,
   EditEmployeeBody,
@@ -11,7 +16,10 @@ import {
 } from "./edit-employee.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 
-import { editEmployeeRequested } from "../../../store/employee/employee-slice";
+import {
+  editEmployeeRequested,
+  resetEmployeeState,
+} from "../../../store/employee/employee-slice";
 import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
@@ -19,29 +27,50 @@ import { setFlashMessage } from "../../../store/notification/flash-messsage-slic
 import { useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useEmployee } from "../../../hooks/employee-hook";
+import { listPositionsRequested } from "../../../store/position/position-slice";
+import { usePosition } from "../../../hooks/position-hook";
 
 export const EditEmployee = () => {
-  const { curr_emp: employee, task_finished } = useEmployee();
+  const { curr_emp, task_finished } = useEmployee();
+  const employee = useEmployee();
+
   const dispatcher = useAppDispatch();
 
   const initialValues = {
-    id: employee?.id ?? "",
-    first_name: employee?.first_name ?? "",
-    last_name: employee?.last_name ?? "",
-    gender: employee?.gender ?? "",
-    email: employee?.email ?? "",
-    position: employee?.position ?? "",
-    phone_number: employee?.phone_number ?? "",
-    date_of_birth: employee?.date_of_birth ?? "",
-    date_of_hire: employee?.date_of_hire ?? "",
-    salary: employee?.salary ?? 0, // Default to 0 if salary is undefined
+    id: curr_emp?.id ?? "",
+    first_name: curr_emp?.first_name ?? "",
+    last_name: curr_emp?.last_name ?? "",
+    gender: curr_emp?.gender ?? "",
+    email: curr_emp?.email ?? "",
+    position: curr_emp?.position ?? "",
+    phone_number: curr_emp?.phone_number ?? "",
+    date_of_birth: curr_emp?.date_of_birth ?? "",
+    date_of_hire: curr_emp?.date_of_hire ?? "",
+    salary: curr_emp?.salary ?? 0, // Default to 0 if salary is undefined
   };
+  const { positions, curr_position } = usePosition();
+
+  useEffect(() => {
+    dispatcher(listPositionsRequested());
+    dispatcher(
+      resetEmployeeState({
+        ...employee,
+        curr_emp: undefined,
+        task_error: undefined,
+      })
+    );
+  }, []);
+  useEffect(() => {
+    if (curr_position) {
+      dispatcher(listPositionsRequested());
+    }
+  }, [curr_position, dispatcher]);
 
   useEffect(() => {
     resetForm({
       values: initialValues,
     });
-  }, [employee]);
+  }, [curr_emp]);
   const {
     resetForm,
     dirty,
@@ -77,7 +106,6 @@ export const EditEmployee = () => {
       }}
       onSubmit={handleSubmit}
     >
-
       <EditEmployeeBody>
         <Field
           style={{
@@ -191,14 +219,30 @@ export const EditEmployee = () => {
             gap: "3rem",
           }}
         >
-          <Label>Role</Label>
-          <Input
-            type="text"
-            name="position"
-            required
-            value={values.position}
-            onChange={handleChange}
-          />
+          <Label>Position</Label>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              gap: "1rem",
+            }}
+          >
+            <Select style={{ flex: 2 }} name="position" onChange={handleChange}>
+              {positions.map(
+                (position) =>
+                  position && (
+                    <SelectOption
+                      selected={position.id === curr_position?.id}
+                      value={position.position_name}
+                    >
+                      {position.position_name}
+                    </SelectOption>
+                  )
+              )}
+            </Select>
+          </div>
           {touched.position && errors.position && (
             <ErrorMessage>{errors.position}</ErrorMessage>
           )}
@@ -235,23 +279,6 @@ export const EditEmployee = () => {
           />
           {touched.date_of_hire && errors.date_of_hire && (
             <ErrorMessage>{errors.date_of_hire}</ErrorMessage>
-          )}
-        </Field>
-        <Field
-          style={{
-            gap: "3rem",
-          }}
-        >
-          <Label>Salary</Label>
-          <Input
-            type="text"
-            name="salary"
-            required
-            value={values.salary}
-            onChange={handleChange}
-          />
-          {touched.salary && errors.salary && (
-            <ErrorMessage>{errors.salary}</ErrorMessage>
           )}
         </Field>
         <ButtonContainer>

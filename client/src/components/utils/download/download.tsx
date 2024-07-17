@@ -1,39 +1,34 @@
 // import { useState } from "react";
 import styled from "styled-components";
 import { baseURL } from "../../../config/api";
-import { addOpacityToColor } from "../convertor/add-opacity-color";
 import { ThemeProps } from "../../../typo/theme/theme";
 import { MdFileDownload } from "react-icons/md";
 
 export const DownloadButton = styled.button<ThemeProps>`
-  font-size: 1.5rem;
-  color: ${({ theme }) => addOpacityToColor(0.99, theme.backgrounds.primary)};
+  font-size: 2rem;
+  color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
-  padding: 0.25rem;
-  margin: 0.5rem;
-  border-radius: 0.5rem;
-  height: fit-content;
-  background-color: ${({ theme }) => theme.buttons.primary};
+  margin-top: 0.4rem;
+  background-color: transparent;
   border: none;
   &:hover {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.75, theme.buttons.primary)};
+    background-color: ${({ theme }) => theme.table.tableRowHover};
+    color: ${({ theme }) => theme.backgrounds.primary};
   }
 `;
+interface Props {
+  file_url: string;
+  file_name: string;
+}
 
-const DownloadPDF = ({ url }: { url: string }) => {
-  // const [buttonText, setButtonText] = useState("Download");
-  // const [downloading, setDownloading] = useState(false);
-
+const DownloadPDF = ({ file_url, file_name }: Props) => {
   const handleDownload = async () => {
-    // setDownloading(true);
-    const response = await fetch(baseURL + url);
+    const response = await fetch(baseURL + file_url);
     if (response) {
       const reader = response.body?.getReader();
-      // const contentLength = +(response.headers?.get("Content-Length") || 0);
 
-      let receivedLength = 0; // received that many bytes at the moment
-      const chunks = []; // array of received binary chunks (comprises the body)
+      let receivedLength = 0;
+      const chunks = [];
       while (reader) {
         const { done, value } = await reader.read();
 
@@ -43,18 +38,7 @@ const DownloadPDF = ({ url }: { url: string }) => {
 
         chunks.push(value);
         receivedLength += value.length;
-
-        // setButtonText(
-        //   `Downloading... ${((receivedLength / contentLength) * 100).toFixed(
-        //     0
-        //   )}%`
-        // );
       }
-
-      // setButtonText("Download");
-      // setDownloading(false);
-
-      // Concatenate chunks into single Uint8Array
       const chunksAll = new Uint8Array(receivedLength);
       let position = 0;
       for (const chunk of chunks) {
@@ -64,15 +48,15 @@ const DownloadPDF = ({ url }: { url: string }) => {
 
       // Create a blob from the chunks
       const blob = new Blob([chunksAll]);
-      const url = window.URL.createObjectURL(blob);
+      const download_url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = url;
-      link.download = "downloaded_file.pdf";
+      link.href = download_url;
+      link.download = file_name + ".pdf";
       document.body.appendChild(link);
       link.click();
 
       // Cleanup
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(download_url);
       document.body.removeChild(link);
     }
   };

@@ -53,7 +53,7 @@ export const AddButton = styled(Button)`
 export const ActionBtnsContainer = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: flex-start;
+  align-items: center;
   margin: 0.5rem 0rem;
   justify-content: flex-start;
   width: 80%;

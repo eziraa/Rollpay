@@ -91,7 +91,10 @@ export const PositionPage = () => {
                   <TableRow key={index}>
                     <TableData>{position.position_name}</TableData>
                     <TableData>{position.basic_salary}</TableData>
-                    <TableData> {position.start_date} </TableData>
+                    <TableData>
+                      {" "}
+                      {position.start_date?.split("T")[0]}{" "}
+                    </TableData>
                     <TableData>
                       {position.end_date ? (
                         <span
@@ -115,7 +118,7 @@ export const PositionPage = () => {
                     </TableData>
                     <TableData>
                       {position.end_date ? (
-                        position.end_date
+                        position.end_date.split("T")[0]
                       ) : (
                         <i>Not Endded</i>
                       )}
@@ -162,7 +165,9 @@ export const PositionPage = () => {
                             dispatcher(deletePositionRequested(position.id));
                           }}
                         >
-                          {action === DELETE && !task_error && !task_finished ? (
+                          {action === DELETE &&
+                          !task_error &&
+                          !task_finished ? (
                             <SmallSpinner />
                           ) : (
                             <>
