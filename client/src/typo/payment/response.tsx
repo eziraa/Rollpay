@@ -1,5 +1,10 @@
 import { Employee } from "../employee/response";
 import { Allowance, Deduction, Overtime } from "../salary/response";
+export interface SalaryHistory {
+  salary: number;
+  from: string;
+  to: string;
+}
 
 export interface Payment {
   basic_salary: number;
@@ -13,6 +18,7 @@ export interface Payment {
   payment_date: string;
   payment_status: boolean;
   month: string;
+  salary_history: SalaryHistory[];
 }
 
 export interface PaymentEmployee extends Payment {
