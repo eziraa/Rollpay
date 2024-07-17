@@ -1,6 +1,4 @@
-import { FaMoneyBill } from "react-icons/fa";
 import { SmallDot } from "../../../utils/dots/dots";
-import { MediumIcon } from "../../../utils/icons/icons.style";
 import {
   MidBlurredText,
   NormalBlurredText,
@@ -39,9 +37,6 @@ export const AllowanceStat = () => {
         <BarGraphContent>
           <BarGraphHeader>
             <MidBlurredText>Your annual allowance stat</MidBlurredText>
-            <MediumIcon>
-              <FaMoneyBill />
-            </MediumIcon>
           </BarGraphHeader>
           <GrpahKeyContainer>
             {employee?.payments

@@ -1,6 +1,4 @@
-import { FaMoneyBill } from "react-icons/fa";
 import { SmallDot } from "../../../utils/dots/dots";
-import { MediumIcon } from "../../../utils/icons/icons.style";
 import {
   MidBlurredText,
   NormalBlurredText,
@@ -34,16 +32,13 @@ export const OvertimeStat = () => {
       <BarGraphContent>
         <BarGraphHeader>
           <MidBlurredText>Your annual overtime stat</MidBlurredText>
-          <MediumIcon>
-            <FaMoneyBill />
-          </MediumIcon>
         </BarGraphHeader>
         <GrpahKeyContainer>
           {employee?.payments
             .slice(-12)
             .sort((a, b) => -a.overtimes.length + b.overtimes.length)[0]
             .overtimes.slice(0)
-            .sort((a, b) => b.overtime_rate - a.overtime_rate)
+            .sort((a, b) => b.length_of_overtime - a.length_of_overtime)
             .map((overtime, index) => (
               <GraphKey>
                 <SmallDot color={colors[index]} />
@@ -68,14 +63,17 @@ export const OvertimeStat = () => {
                   <BarsContainer colors={colors}>
                     {payment?.overtimes
                       .slice(0)
-                      .sort((a, b) => b.overtime_rate - a.overtime_rate)
+                      .sort(
+                        (a, b) => b.length_of_overtime - a.length_of_overtime
+                      )
                       .map((overtime, index) => {
                         return (
                           <GraphData
                             className="data"
                             color={colors[index]}
                             height={
-                              (overtime.overtime_rate * employee.salary) / 30000
+                              (overtime.length_of_overtime * employee.salary) /
+                              30000
                             }
                           />
                         );
@@ -83,13 +81,16 @@ export const OvertimeStat = () => {
                     <ToastContainer className="toast">
                       {payment.overtimes
                         .slice(0)
-                        .sort((a, b) => b.overtime_rate - a.overtime_rate)
+                        .sort(
+                          (a, b) => b.length_of_overtime - a.length_of_overtime
+                        )
                         .map((overtime, index) => (
                           <ToastRow>
                             <SmallDot color={colors[index]} />
                             <span className="italic">
                               {overtime.overtime_type}{" "}
-                              {(overtime.overtime_rate * employee.salary) / 100}
+                              {(overtime.length_of_overtime * employee.salary) /
+                                100}
                             </span>
                           </ToastRow>
                         ))}
