@@ -2,12 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import {
-  HeaderTitle,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
+
 import {
   SalaryContainer,
   SalaryTable,
@@ -16,6 +11,12 @@ import {
   ExportButton,
   ExportIcon,
   StartPaymentBtn,
+  TableContainer,
+  TableHeader,
+  HeaderTitle,
+  Vertical,
+  TableRow,
+  TableData,
   // ExportLabel,
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
@@ -28,16 +29,11 @@ import {
   loadNextPaymentListPage,
   searchPaymentRequested,
 } from "../../../store/salary/salary-slice";
-import Pagination from "../../sections/pagination/pagination";
-import LoadingSpinner from "../../utils/spinner/spinner";
 import {
   getAllowancesTypes,
   getDeductionTypes,
-  getFormattedMonth,
   getNamedMonth,
   getOvertimeTypes,
-  getRate,
-  getSalary,
 } from "./utils";
 import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
@@ -50,6 +46,37 @@ import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hoo
 import { handleExport, pdfExport } from "./export";
 import { ThreeDots } from "../../utils/loading/dots";
 
+const getNestValue = (
+  key: string,
+  value: string,
+  employee: PaymentEmployee
+) => {
+  if (key === "overtimes") {
+    const res: string | undefined = employee.overtimes.find(
+      (overtime) => overtime.overtime_type === value
+    )?.overtime_rate;
+    return res ? res : "-";
+  }
+
+  if (key === "allowances") {
+    const res: number | undefined = employee.allowances.find(
+      (allowance) => allowance.allowance_type === value
+    )?.allowance_rate;
+    return res ? res + "%" : "-";
+  }
+  if (key === "deductions") {
+    const res: number | undefined = employee.deductions.find(
+      (deduction) => deduction.deduction_type === value
+    )?.deduction_rate;
+    return res ? res + "%" : "-";
+  }
+};
+
+export interface ColumnInterface {
+  key: string;
+  value: string;
+  sub_columns?: ColumnInterface[];
+}
 export const EmployeesSalaryPage = () => {
   // Calling  hooks and  Getting necessary information
   const dispatcher = useAppDispatch();
@@ -58,9 +85,9 @@ export const EmployeesSalaryPage = () => {
   const { pagination, setPagination } = usePagination();
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
-  const [overtimesTypes, setOvertimeTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
   const [search_val, setSearchVal] = useState<string>("");
+  const [table_col, setColumns] = useState<ColumnInterface[]>([]);
   const navigate = useNavigate();
 
   const { year, month, changeMonth, changeYear } = useYearMonthPagination();
@@ -117,11 +144,107 @@ export const EmployeesSalaryPage = () => {
 
     return () => clearTimeout(loadEmployee);
   }, [search_val]);
-
   useEffect(() => {
     setAllowanceTypes(Array.from(getAllowancesTypes(employees)));
     setDeductionTypes(Array.from(getDeductionTypes(employees)));
-    setOvertimeTypes(Array.from(getOvertimeTypes(employees)));
+    let column: ColumnInterface[] = [];
+    if (employees.length > 0)
+      column = Object.entries(employees[0])
+        .filter(([key]) => key !== "salary_history")
+        .map(([key, value]) => {
+          if (key === "payment_date") {
+            return {
+              key: "payment_date",
+              value: key
+                .split("_")
+                .map((item) => item[0].toUpperCase() + item.slice(1))
+                .join(" "),
+            };
+          }
+          if (key === "overtimes") {
+            return {
+              key: key,
+              value: key
+                .split("_")
+                .map((item) => item[0].toUpperCase() + item.slice(1))
+                .join(" "),
+              sub_columns: Array.from(getOvertimeTypes(employees)).map(
+                (key) => {
+                  return {
+                    key: key
+                      .split(" ")
+                      .map((item) => item[0].toLowerCase() + item.slice(1))
+                      .join(" "),
+                    value: key
+                      .split("_")
+                      .map((item) => item[0].toUpperCase() + item.slice(1))
+                      .join(" "),
+                  };
+                }
+              ),
+            };
+          } else if (key === "deductions") {
+            return {
+              key: key,
+              value: key
+                .split("_")
+                .map((item) => item[0].toUpperCase() + item.slice(1))
+                .join(" "),
+              sub_columns: Array.from(getDeductionTypes(employees)).map(
+                (key) => {
+                  return {
+                    key: key
+                      .split(" ")
+                      .map((item) => item[0].toLowerCase() + item.slice(1))
+                      .join("_"),
+                    value: key
+                      .split("_")
+                      .map((item) => item[0].toUpperCase() + item.slice(1))
+                      .join(" "),
+                  };
+                }
+              ),
+            };
+          } else if (key === "allowances") {
+            return {
+              key: key,
+              value: key
+                .split("_")
+                .map((item) => item[0].toUpperCase() + item.slice(1))
+                .join("_"),
+              sub_columns: Array.from(getAllowancesTypes(employees)).map(
+                (key) => {
+                  return {
+                    key: key
+                      .split(" ")
+                      .map((item) => item[0].toLowerCase() + item.slice(1))
+                      .join("_"),
+                    value: key
+                      .split("_")
+                      .map((item) => item[0].toUpperCase() + item.slice(1))
+                      .join(" "),
+                  };
+                }
+              ),
+            };
+          }
+          if (["string", "number", "boolean"].includes(typeof value)) {
+            return {
+              key: key,
+              value: key
+                .split("_")
+                .map((item) => item[0].toUpperCase() + item.slice(1))
+                .join(" "),
+            };
+          }
+          return {
+            key: "",
+            value: "",
+          };
+        });
+
+    console.log(column);
+    column && setColumns(column);
   }, [employees]);
 
   const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
@@ -217,122 +340,98 @@ export const EmployeesSalaryPage = () => {
       {salary.loading ? (
         <ThreeDots size={1} />
       ) : (
-        <SalaryTable id="table">
-          <thead>
-            <TableHeader>
-              <HeaderTitle rowSpan={2}>Employee ID</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Employee Name</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Basic Salary</HeaderTitle>
-              <HeaderTitle
-                style={{
-                  textAlign: "center",
-                }}
-                colSpan={allowanceTypes.length || 2}
-              >
-                Allowance
-              </HeaderTitle>
-              <HeaderTitle
-                style={{
-                  textAlign: "center",
-                  borderLeft: "0.5rem solid transparent",
-                }}
-                colSpan={overtimesTypes.length || 2}
-              >
-                Overtime
-              </HeaderTitle>
-              <HeaderTitle rowSpan={2}>Gross Sallary</HeaderTitle>
-              <HeaderTitle
-                style={{
-                  textAlign: "center",
-                }}
-                colSpan={deductionTypes.length + 1}
-              >
-                Deduction
-              </HeaderTitle>
-              <HeaderTitle rowSpan={2}>Total Deduction</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Net Pay</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Month</HeaderTitle>
-              <HeaderTitle rowSpan={2}>Payment</HeaderTitle>
-              <HeaderTitle rowSpan={2}> Payment Date</HeaderTitle>
+        <TableContainer>
+          <SalaryTable id="table">
+            <TableHeader
+              style={{
+                width: "150rem",
+              }}
+            >
+              {table_col.length > 0 &&
+                table_col.map((column) => {
+                  if (!column.sub_columns) {
+                    return (
+                      <HeaderTitle
+                        style={{
+                          flex:
+                            column.key === "month"
+                              ? column.key.length * 2
+                              : `${column.key.length}`,
+                        }}
+                      >
+                        {column.value}
+                      </HeaderTitle>
+                    );
+                  } else {
+                    return (
+                      <Vertical>
+                        <HeaderTitle
+                          style={{
+                            flex: column.sub_columns.reduce(
+                              (acc, column) => acc + column.value.length,
+                              0
+                            ),
+                          }}
+                        >
+                          {" "}
+                          {column.value}{" "}
+                        </HeaderTitle>
+                        {
+                          <TableHeader>
+                            {column.sub_columns?.map((value) => (
+                              <HeaderTitle
+                                style={{
+                                  flex: value.key ? `${value.key.length}` : "7",
+                                }}
+                              >
+                                {value.value}
+                              </HeaderTitle>
+                            ))}
+                          </TableHeader>
+                        }
+                      </Vertical>
+                    );
+                  }
+                })}
             </TableHeader>
-            <TableHeader>
-              {allowanceTypes.map((allowanceType) => {
-                return (
-                  <HeaderTitle key={allowanceType}>{allowanceType}</HeaderTitle>
-                );
-              })}
-              {overtimesTypes.map((overtimeType) => {
-                return (
-                  <HeaderTitle key={overtimeType}>{overtimeType}</HeaderTitle>
-                );
-              })}
-              <HeaderTitle>Income Tax</HeaderTitle>
-              {deductionTypes.map((deductionType) => {
-                return (
-                  <HeaderTitle key={deductionType}>{deductionType}</HeaderTitle>
-                );
-              })}
-            </TableHeader>
-          </thead>
-          <tbody>
             {employeeSalary
               .filter((employee) => employee)
               .map((employee) => (
                 <TableRow key={employee.employee_id}>
-                  <TableData>{employee.employee_id}</TableData>
-                  <TableData>{employee.employee_name}</TableData>
-                  <TableData>{employee.basic_salary}</TableData>
-                  {allowanceTypes.map((allowanceType) => {
-                    return (
-                      <TableData key={allowanceType}>
-                        {getRate(
-                          employee.allowances.find(
-                            (alowance) =>
-                              alowance.allowance_type === allowanceType
-                          )?.allowance_rate
-                        )}
-                      </TableData>
-                    );
-                  })}
-                  {overtimesTypes.map((overtimeType) => {
-                    return (
-                      <TableData className="italic" key={overtimeType}>
-                        {
-                          employee.overtimes.find(
-                            (overtime) =>
-                              overtime.overtime_type === overtimeType
-                          )?.overtime_rate
-                        }
-                      </TableData>
-                    );
-                  })}
-                  <TableData>{getSalary(employee.gross_salary)}</TableData>
-                  <TableData>{getSalary(employee.income_tax)}</TableData>
-                  {deductionTypes.map((deductionType) => {
-                    return (
-                      <TableData key={deductionType}>
-                        {getRate(
-                          employee.deductions.find(
-                            (deduction) =>
-                              deduction.deduction_type === deductionType
-                          )?.deduction_rate
-                        )}
-                      </TableData>
-                    );
-                  })}
-                  <TableData>{employee.total_deduction}</TableData>
-                  <TableData>{employee.net_salary}</TableData>
-                  <TableData>
-                    {getFormattedMonth(new Date(employee.month)).split("-")[0]}
-                  </TableData>
-                  <TableData>
-                    {!employee.payment_status && "Not"} Paid{" "}
-                  </TableData>
-                  <TableData> {employee.payment_date} </TableData>
+                  {table_col.length > 0 &&
+                    table_col.map((column) => {
+                      if (!column.sub_columns) {
+                        return (
+                          <TableData
+                            style={{
+                              flex:
+                                column.key === "month"
+                                  ? column.key.length * 2
+                                  : `${column.key.length}`,
+                            }}
+                          >
+                            {employee[column.key]}
+                          </TableData>
+                        );
+                      } else {
+                        return column.sub_columns?.map((value) => (
+                          <TableData
+                            style={{
+                              flex: value.key ? `${value.key.length}` : "7",
+                            }}
+                            className="center-text"
+                          >
+                            <span className="center-text">
+                              {getNestValue(column.key, value.value, employee)}
+                            </span>
+                          </TableData>
+                        ));
+                      }
+                    })}
                 </TableRow>
               ))}
-          </tbody>
-        </SalaryTable>
+          </SalaryTable>
+        </TableContainer>
       )}
       <Outlet />
       {/* <Pagination pagination={pagination} /> */}

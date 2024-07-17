@@ -2,9 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { GoSearch } from "react-icons/go";
 import { ThemeProps } from "../../../typo/theme/theme";
-import { Input} from "../../utils/form-elements/form.style";
-import { CustomTable } from "../../utils/custom-table/custom-table";
-import { custom_vertical_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
+import { Input } from "../../utils/form-elements/form.style";
 import {
   MainContainer,
   body,
@@ -29,7 +27,6 @@ export const SalaryContainer = styled(MainContainer)`
   position: relative;
   padding: 2rem;
   width: auto;
-  overflow-x: scroll;
 `;
 
 export const SalaryTitle = styled.h1`
@@ -74,11 +71,10 @@ export const SearchIcon = styled(GoSearch)`
   cursor: pointer;
 `;
 
-export const SalaryTable = styled(CustomTable)`
-  ${custom_vertical_scroll_bar};
+export const SalaryTable = styled.div`
   width: fit-content;
-  padding: 7px;
-  height: 62vh;
+  padding: 0.7rem;
+  height: 40rem;
   display: block;
   margin-right: 1rem;
 `;
@@ -116,4 +112,100 @@ export const StartPaymentBtn = styled.button`
   border: none;
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
+`;
+
+export const TableContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: scroll;
+`;
+
+export const CustomTable = styled.table`
+  /* display: flex;
+  flex-direction: column;
+  align-items: start; */
+  border-collapse: collapse;
+  border: none;
+  width: 100%;
+  width: 120rem;
+  margin: 0;
+`;
+
+export const Caption = styled.th`
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: ${({ theme }) => addOpacityToColor(0.8, theme.colors.primary)};
+  text-align: left;
+  padding: 1rem;
+  width: 15rem;
+  border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
+`;
+
+export const TableHeader = styled.tr<ThemeProps>`
+  width: fit-content;
+  font-size: 1.4rem;
+  background-color: ${({ theme }) => theme.table.header};
+  color: ${({ theme }) => theme.colors.primary};
+  /* font-size: 1.4rem; */
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
+`;
+
+export const HeaderTitle = styled.th`
+  /* font-size: 1.4rem; */
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.primary};
+  text-align: left;
+  display: flex;
+  padding: 1rem;
+  width: fit-content;
+  justify-self: center;
+`;
+
+export const Vertical = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const TableBody = styled.tbody`
+  width: 100%;
+`;
+
+export const TableRow = styled.tr<ThemeProps>`
+  color: ${({ theme }) => theme.colors.primary};
+  text-align: left;
+  cursor: pointer;
+  font-size: 1.2rem;
+  width: 100%;
+  display: flex;
+  background-color: ${({ theme }) => theme.backgrounds.primary};
+  &:nth-child(even) {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.4, theme.table.tableRow)};
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.table.tableRowHover};
+  }
+  &:last-child {
+    border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+export const TableData = styled.td`
+  /* font-size: 1.4rem; */
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.primary};
+  text-align: left;
+  padding-left: 0.5rem;
+  line-height: 2.5;
 `;
