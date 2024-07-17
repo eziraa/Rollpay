@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   ActionBtnsContainer,
-  AddButton,
   DeleteButton,
   EditButton,
   PositionListBody,
@@ -32,6 +31,7 @@ import {
 } from "../../../store/overtime/overtime-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
+import { AddButton } from "../../sections/employee-allowance/allowance.style";
 export const OvertimePage = () => {
   //Defing hokks and getting necessary informations
   const dispatcher = useAppDispatch();
