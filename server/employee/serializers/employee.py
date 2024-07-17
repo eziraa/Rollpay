@@ -7,8 +7,8 @@ from ..models import Employee, Asset
 class EmployeeSerializer(serializers.ModelSerializer):
     id = serializers.CharField(read_only=True)
     salary = serializers.SerializerMethodField(read_only=True)
+    position = serializers.SerializerMethodField(read_only=True)
     profile_picture = serializers.SerializerMethodField(read_only=True)
-
     assets = AssetSerializer(many=True, read_only=True)
 
 
@@ -20,6 +20,12 @@ class EmployeeSerializer(serializers.ModelSerializer):
     def get_salary(self, obj: Employee):
         if obj.salaries.all():
          return obj.salaries.all().last().basic_salary
+        else:
+            return 0
+
+    def get_position(self, obj: Employee):
+        if obj.position.all():
+         return obj.position.all().last().position_name
         else:
             return 0
 
