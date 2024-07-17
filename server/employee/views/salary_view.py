@@ -98,6 +98,11 @@ class SalaryView(APIView):
                 #                     deduction.save()
                 #             else:
                 #                 break
+                # Payment.objects.all().delete()
+                # for curr_month in range(1, 8):
+                #     curr_month = month.Month(year=2024, month=curr_month)
+                #     for employee in Employee.objects.all():
+                #         Payment.objects.create(employee=employee, month=curr_month, salary=SalaryManager.get_basic_salary(employee=employee))
                 queryset = Payment.objects.all().order_by("month")
                 if curr_month and year:
                     try:

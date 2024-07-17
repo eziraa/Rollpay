@@ -44,7 +44,7 @@ class SalaryCalculator:
             length_in_hour = overtime.end_time.hour - overtime.start_time.hour
             length_in_minute = overtime.end_time.minute - overtime.start_time.minute
             time_length = length_in_hour + length_in_minute / 60
-            value = self.payment.salary / (8 * 28) * Decimal(time_length)
+            value = self.payment.salary / (8 * 20) * Decimal(time_length)
             overtime_list.append(value)
         total = float(sum(overtime_list)) + \
             float(allowances_sum) + float(self.payment.salary)

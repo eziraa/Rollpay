@@ -108,7 +108,9 @@ export const EmployeeDeduction = () => {
                     <HeaderTitle>Deduction Name</HeaderTitle>
                     <HeaderTitle>Deduction Value</HeaderTitle>
                     <HeaderTitle>Date of Given</HeaderTitle>
-                    <HeaderTitle>Action</HeaderTitle>
+                    {user?.employee.position === "Clerk" && (
+                      <HeaderTitle>Action</HeaderTitle>
+                    )}
                   </TableHeader>
                 </thead>
                 <TableBody>
@@ -123,23 +125,25 @@ export const EmployeeDeduction = () => {
                           {stringDay(new Date(deduction.date_of_given))}
                         </TableData>
                         <TableData>
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              dispatcher(
-                                removeSalaryAssetRequested({
-                                  employee_id: curr_emp.employee.id,
-                                  asset_type: "deduction",
-                                  asset_id: deduction.id,
-                                  qury_string: `?year=${
-                                    payment.month.split("-")[0]
-                                  }&month=${payment.month.split("-")[1]}`,
-                                })
-                              );
-                            }}
-                          >
-                            <span className="fail">Remove</span>
-                          </span>
+                          {user?.employee.position === "Clerk" && (
+                            <span
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                dispatcher(
+                                  removeSalaryAssetRequested({
+                                    employee_id: curr_emp.employee.id,
+                                    asset_type: "deduction",
+                                    asset_id: deduction.id,
+                                    qury_string: `?year=${
+                                      payment.month.split("-")[0]
+                                    }&month=${payment.month.split("-")[1]}`,
+                                  })
+                                );
+                              }}
+                            >
+                              <span className="fail">Remove</span>
+                            </span>
+                          )}
                         </TableData>
                       </TableRow>
                     );

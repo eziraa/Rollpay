@@ -1,14 +1,20 @@
 
 from decimal import Decimal
+from django.db.models import Min, Max
 from rest_framework import serializers
+from month import Month
 from employee.serializers.allowance import AllowanceItemSerializer
 from employee.serializers.salary import SalarySerializer
 from employee.serializers.deduction import DeductionItemSerializer
 from employee.serializers.overtime import OvertimeItemSerializer
 from employee.utils.salary_calculator import SalaryCalculator
-from ..models import Payment
+from ..models import Payment, Salary
 from .employee import *
-
+import datetime 
+class MonthSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Month
+        fields =( "year", 'month')
 
 class PaymentSerializer(serializers.ModelSerializer):
     employee_id = serializers.SerializerMethodField(read_only=True)
@@ -23,16 +29,37 @@ class PaymentSerializer(serializers.ModelSerializer):
         read_only=True)
     income_tax = serializers.SerializerMethodField(read_only=True)
     gross_salary = serializers.SerializerMethodField(read_only=True)
+    salary_history = serializers.SerializerMethodField(read_only=True)
+
 
     class Meta:
         model = Payment
         fields = ('employee_id', 'employee_name', 'payment_status', 'payment_date',
                   'month', 'basic_salary', 'gross_salary',
                   "allowances", "deductions", "overtimes",
-                  'total_deduction', "income_tax", "net_salary")
+                  'total_deduction', "income_tax", "net_salary", 
+                  'salary_history'
+                  )
 
     def get_employee_id(self, obj):
         return obj.employee.id
+    def get_salary_history(self, obj:Employee):
+            employee = obj.employee
+            salaries = Salary.objects.filter(employee=employee)
+            formatted_salary_history = []
+            if salaries.exists():
+                for salary in salaries:
+                    payment_list = Payment.objects.filter(employee=employee, salary=salary.basic_salary)
+                    if payment_list.exists():
+                        formatted_salary_history.append (
+                            {
+                                'salary': salary.basic_salary,
+                                'from': str(payment_list.first().month),
+                                'to':str (payment_list.last().month),
+                            }
+                        )
+                return formatted_salary_history
+            return []
 
     def get_employee_name(self, obj):
         return obj.employee.first_name + " " + obj.employee.last_name
@@ -85,4 +112,6 @@ class MonthlyPaymentSerializer(PaymentSerializer):
         fields = ('payment_status', 'payment_date',
                   'month', 'basic_salary', 'gross_salary',
                   "allowances", "deductions", "overtimes",
-                  'total_deduction', "income_tax", "net_salary")
+                  'total_deduction', "income_tax", "net_salary", 
+                  'salary_history'
+                  )

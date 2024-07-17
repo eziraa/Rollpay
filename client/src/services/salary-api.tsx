@@ -8,7 +8,6 @@ const listEmployeeSalary = async (pageUrl?: string) => {
   const employees = await api
     .get<PaginatedPayBackEndResponse>(endpoint)
     .then((res) => {
-      console.log(res.data);
       return {
         results: res.data.results,
         pagination: {

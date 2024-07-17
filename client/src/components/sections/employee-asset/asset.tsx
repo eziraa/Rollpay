@@ -75,6 +75,7 @@ export const EmployeeAsset = () => {
             <thead>
               <TableHeader>
                 <HeaderTitle>Asset name</HeaderTitle>
+
                 <HeaderTitle>Action</HeaderTitle>
               </TableHeader>
             </thead>
@@ -85,24 +86,27 @@ export const EmployeeAsset = () => {
                     <TableData>{asset.asset_name}</TableData>
                     <TableData>
                       <ActionBtnsContainer>
-                        <DeleteButton
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setAction(DELETE);
-                            dispatcher(deleteAssetRequested(asset.id));
-                          }}
-                        >
-                          {action === DELETE &&
-                          !task_error &&
-                          !task_finished ? (
-                            <SmallSpinner />
-                          ) : (
-                            <>
-                              <RiDeleteBin6Line />
-                            </>
-                          )}
-                        </DeleteButton>
+                        {user?.employee.position === "Clerk" && (
+                          <DeleteButton
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setAction(DELETE);
+                              dispatcher(deleteAssetRequested(asset.id));
+                            }}
+                          >
+                            {action === DELETE &&
+                            !task_error &&
+                            !task_finished ? (
+                              <SmallSpinner />
+                            ) : (
+                              <>
+                                <RiDeleteBin6Line />
+                              </>
+                            )}
+                          </DeleteButton>
+                        )}
+
                         <DownloadPDF
                           file_url={asset.asset_value}
                           file_name={asset.asset_name}
