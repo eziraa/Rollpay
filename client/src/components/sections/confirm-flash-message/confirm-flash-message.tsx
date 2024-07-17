@@ -16,15 +16,16 @@ import {
   deleteEmpRequested,
   closeEmployeeTask,
 } from "../../../store/employee/employee-slice";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export const CheckFlashMessage = () => {
-  const { task_finished, curr_emp: current_employee } = useAppSelector(
-    (state) => state.employee
-  );
+  const { task_finished } = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
+  const { employee_id } = useParams();
   const navigate = useNavigate();
-  if (task_finished) return null;
+  if (task_finished) {
+    navigate("/employees");
+  }
   return (
     <ModalContainer
       style={{
@@ -70,7 +71,7 @@ export const CheckFlashMessage = () => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              dispatcher(deleteEmpRequested(current_employee?.id || ""));
+              employee_id && dispatcher(deleteEmpRequested(employee_id));
             }}
           >
             Done
