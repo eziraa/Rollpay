@@ -281,6 +281,23 @@ export const EditEmployee = () => {
             <ErrorMessage>{errors.date_of_hire}</ErrorMessage>
           )}
         </Field>
+        <Field
+          style={{
+            gap: "3rem",
+          }}
+        >
+          <Label>Salary</Label>
+          <Input
+            type="text"
+            name="salary"
+            required
+            value={values.salary}
+            onChange={handleChange}
+          />
+          {touched.salary && errors.salary && (
+            <ErrorMessage>{errors.salary}</ErrorMessage>
+          )}
+        </Field>
         <ButtonContainer>
           <CancelBtn
             onClick={(e) => {
