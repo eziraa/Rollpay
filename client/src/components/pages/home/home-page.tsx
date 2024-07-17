@@ -82,3 +82,11 @@ export const HomePage = () => {
     </HomeContainer>
   );
 };
+
+export const ClerkPage = () => {
+  return (
+    <HomeContainer>
+      <Outlet />
+    </HomeContainer>
+  );
+};
