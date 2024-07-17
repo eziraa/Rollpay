@@ -188,7 +188,7 @@ class StatisticsCalculator:
             calculator = SalaryCalculator(curr_month_payment)
             calculator.calc_income_tax()
             total_income_tax += calculator.income_tax
-        return total_income_tax
+        return (round(total_income_tax, 2))
 
     @staticmethod
     def total_expense_of_deductions_in_a_month(month: Month):

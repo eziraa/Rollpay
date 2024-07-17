@@ -23,7 +23,6 @@ class StatisticsView(APIView):
         lastPayment = Payment.objects.filter().order_by('month').last()
         last_12_months = [Month(year=lastPayment.month.year-1, month=i)
                           for i in range(lastPayment.month.month+1, 13)]
-        print(last_12_months)
         for i in range(1, lastPayment.month.month+1):
             last_12_months.append(
                 Month(year=lastPayment.month.year, month=i))

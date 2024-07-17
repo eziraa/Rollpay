@@ -77,4 +77,5 @@ class SalaryCalculator:
 
 
     def calc_net_salary(self):
-        self.net_salary = self.gross_salary - float(self.total_deduction)
+        self.net_salary = round(
+            self.gross_salary - float(self.total_deduction), 2)
