@@ -34,10 +34,10 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ('employee_id', 'employee_name', 'payment_status', 'payment_date',
-                  'month', 'basic_salary', 'gross_salary',
-                  "allowances", "deductions", "overtimes",
-                  'total_deduction', "income_tax", "net_salary", 
+        fields = ('employee_id', 'employee_name',  'basic_salary',
+                  "allowances", "overtimes", 'gross_salary', "deductions",
+                  'total_deduction', "income_tax", "net_salary", 'month', 'payment_status', 'payment_date',
+
                   'salary_history'
                   )
 
