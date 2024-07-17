@@ -71,6 +71,19 @@ class Deduction(models.Model):
         return self.deduction_type
 
 
+class Position(models.Model):
+    id = models.AutoField(primary_key=True)
+    position_name = models.CharField(
+        max_length=255, null=False, unique=True)
+    basic_salary = models.DecimalField(
+        max_digits=12, decimal_places=2, null=False)
+    start_date = models.DateField(auto_now=True)
+    end_date = models.DateField(null=True, blank=True)
+    raise_rate = models.DecimalField(
+        max_digits=6, decimal_places=2, default=5.0)
+
+    def __str__(self):
+        return self.position_name
 
 
 
@@ -92,7 +105,7 @@ class Employee(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=False)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_hire = models.DateField(auto_now_add=True, null=False)
-    position = models.CharField(max_length=100, null=False)
+    position = models.ManyToManyField(Position, related_name="employees")
     user = models.OneToOneField(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
 
@@ -160,25 +173,12 @@ class DeductionItem(models.Model):
     deduction = models.ForeignKey(
         Deduction, null=False, blank=False, on_delete=models.CASCADE)
 
-class Position(models.Model):
-    id = models.AutoField(primary_key=True)
-    position_name = models.CharField(
-        max_length=255, null=False, unique=True)
-    basic_salary = models.DecimalField(
-        max_digits=12, decimal_places=2, null=False)
-    start_date = models.DateField(auto_now=True)
-    end_date = models.DateField(null=True, blank=True)
-    raise_rate = models.DecimalField(
-        max_digits=6, decimal_places=2, default=5.0)
-
-    def __str__(self):
-        return self.position_name
 
 
 class Asset(models.Model):
     id = models.AutoField(primary_key=True)
     employee = models.ForeignKey(
-        Employee, related_name='assets', blank=True, on_delete=models.PROTECT)
+        Employee, related_name='assets', blank=True, on_delete=models.CASCADE)
     asset_name = models.CharField(max_length=255, null=False)
     asset_value = models.FileField(upload_to=upload_file)
 
