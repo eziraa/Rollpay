@@ -25,7 +25,7 @@ import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hoo
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
 import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
-import { stringDay } from "../../utils/day/string-day";
+import { stringDatetine } from "../../utils/day/string-day";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information
@@ -106,11 +106,12 @@ export const EmployeeOvertime = () => {
                   </tr>
                   <TableHeader>
                     <HeaderTitle>Overtime Name</HeaderTitle>
-                    <HeaderTitle>Overtime Value</HeaderTitle>
+                    <HeaderTitle>Length of Time</HeaderTitle>
                     <HeaderTitle>Start at</HeaderTitle>
                     <HeaderTitle>End at</HeaderTitle>
-                    <HeaderTitle>Length of Time</HeaderTitle>
-                    <HeaderTitle>Action</HeaderTitle>
+                    {user?.employee.position === "Clerk" && (
+                      <HeaderTitle>Action</HeaderTitle>
+                    )}
                   </TableHeader>
                 </thead>
                 <TableBody>
@@ -119,35 +120,34 @@ export const EmployeeOvertime = () => {
                       <TableRow key={index}>
                         <TableData>{overtime.overtime_type}</TableData>
                         <TableData className="center-text italic">
-                          {overtime.overtime_rate}%
+                          {overtime.overtime_rate}
                         </TableData>
                         <TableData>
-                          {stringDay(new Date(overtime.start_time))}
+                          {stringDatetine(new Date(overtime.start_time))}
                         </TableData>
                         <TableData>
-                          {stringDay(new Date(overtime.end_time))}
-                        </TableData>
-                        <TableData className="center-text italic">
-                          {overtime.length_of_overtime} hour
+                          {stringDatetine(new Date(overtime.end_time))}
                         </TableData>
                         <TableData>
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              dispatcher(
-                                removeSalaryAssetRequested({
-                                  employee_id: curr_emp.employee.id,
-                                  asset_type: "overtime",
-                                  asset_id: overtime.id,
-                                  qury_string: `?year=${
-                                    payment.month.split("-")[0]
-                                  }&month=${payment.month.split("-")[1]}`,
-                                })
-                              );
-                            }}
-                          >
-                            <span className="fail italic">Remove</span>
-                          </span>
+                          {user?.employee.position === "Clerk" && (
+                            <span
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                dispatcher(
+                                  removeSalaryAssetRequested({
+                                    employee_id: curr_emp.employee.id,
+                                    asset_type: "overtime",
+                                    asset_id: overtime.id,
+                                    qury_string: `?year=${
+                                      payment.month.split("-")[0]
+                                    }&month=${payment.month.split("-")[1]}`,
+                                  })
+                                );
+                              }}
+                            >
+                              <span className="fail italic">Remove</span>
+                            </span>
+                          )}
                         </TableData>
                       </TableRow>
                     );
