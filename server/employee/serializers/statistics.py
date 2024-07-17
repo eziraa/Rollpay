@@ -61,7 +61,7 @@ class StatisticsSerializer(serializers.Serializer):
         '''
         return StatisticsCalculator.total_expense_of_overtimes_in_a_month(month=current_month)
     def get_curr_month_tax(self, obj):
-        return StatisticsCalculator.total_tax_expense_in_a_month(month=current_month)
+        return format(StatisticsCalculator.total_tax_expense_in_a_month(month=current_month), ",")
 
     def get_curr_month_deductions(self, obj):
 
