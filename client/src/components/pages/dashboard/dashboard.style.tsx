@@ -6,9 +6,11 @@ import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const DashboardContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: repeat(1, 1fr);
   flex: 1;
   width: 100%;
+  row-gap: 2rem;
   padding: 3rem;
   align-items: flex-start;
   ${custom_vertical_scroll_bar};

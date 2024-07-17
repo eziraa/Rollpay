@@ -104,7 +104,8 @@ export const BarGraphContainer = styled.div`
   background-color: ${({ theme }) =>
     addOpacityToColor(0.02, theme.colors.primary)};
   margin: 1rem;
-  padding: 1rem;
+  padding: 1rem 6rem;
+  height: 100%;
 `;
 
 export const BarGraphContent = styled.div`
@@ -141,6 +142,7 @@ export const GraphContainer = styled.div`
   gap: 2.5rem;
   color: ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
   position: relative;
+  width: 100%;
 `;
 
 export const VerticalAxis = styled.div`
