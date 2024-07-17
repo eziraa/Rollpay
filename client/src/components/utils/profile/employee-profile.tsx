@@ -19,7 +19,7 @@ import { RiPencilLine } from "react-icons/ri";
 import { ImageCard } from "../profile-card/profile-card";
 import { baseURL } from "../../../config/api";
 import { CURRENT_USER } from "../../../constants/token-constants";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useUser } from "../../../hooks/user-hook";
 import { setProfilePicture as changeProfile } from "../../../store/salary/salary-slice";
 import UpdateEmployee from "../../pages/see-employee/update-employee";
@@ -28,6 +28,7 @@ import { Employee } from "../../../typo/employee/response";
 export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
   const { user } = useUser();
   const dispatcher = useAppDispatch();
+  const { pathname } = useLocation();
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const curr_user_id = JSON.parse(
@@ -128,7 +129,9 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
           <DataValue>{employee?.date_of_hire}</DataValue>
         </EmployeeData>
       </EmployeeInfoContainer>
-      {user?.employee.position === "Clerk" && <UpdateEmployee />}
+      {user?.employee.position === "Clerk" && !pathname.startsWith("/me") && (
+        <UpdateEmployee />
+      )}
     </EmployeeeProfileContainer>
   );
 };
