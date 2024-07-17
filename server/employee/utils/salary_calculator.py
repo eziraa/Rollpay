@@ -1,3 +1,4 @@
+from decimal import Decimal
 from ..models import Salary, Payment
 from django.utils import timezone
 
@@ -38,8 +39,18 @@ class SalaryCalculator:
     def calc_gross_salary(self):
         allowances_sum = sum(
             [allowance.allowance.allowance_rate for allowance in self.payment.allowances.all()])
-        self.gross_salary = float(
-            self.payment.salary + allowances_sum * self.payment.salary / 100)
+        overtime_list = []
+        for overtime in self.payment.overtimes.all():
+            length_in_hour = overtime.end_time.hour - overtime.start_time.hour
+            length_in_minute = overtime.end_time.minute - overtime.start_time.minute
+            time_length = length_in_hour + length_in_minute / 60
+            value = self.payment.salary / (8 * 28) * Decimal(time_length)
+            overtime_list.append(value)
+        total = float(sum(overtime_list)) + \
+            float(allowances_sum) + float(self.payment.salary)
+        self.gross_salary = round(total, 2)
+        return float(self.gross_salary)
+
 
     def calc_total_deduction(self):
         self.total_deduction = 0

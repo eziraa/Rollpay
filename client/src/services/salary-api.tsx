@@ -8,6 +8,7 @@ const listEmployeeSalary = async (pageUrl?: string) => {
   const employees = await api
     .get<PaginatedPayBackEndResponse>(endpoint)
     .then((res) => {
+      console.log(res.data);
       return {
         results: res.data.results,
         pagination: {
@@ -75,9 +76,31 @@ const getEmployeeSalary = async (pageUrl: string) => {
   return response;
 };
 
+
+const raiseSalary = async (value: number) => {
+  const response = await api
+    .post(`/employee/salary/raise/${value}`)
+    .then((res) => {
+      return {
+        employees: res.data,
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+  return response;
+};
+
 const SalaryAPI = {
   listEmployeeSalary,
   searchEmployeeSalary,
   getEmployeeSalary,
+  raiseSalary,
 };
 export default SalaryAPI;

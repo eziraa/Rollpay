@@ -13,7 +13,7 @@ import { Navigate, Route } from "react-router-dom";
 import { AdminRouterConfig } from "../router/admin-router";
 
 function ProtectedRoute() {
-  const [_, setIsAuthorized] = useState(false);
+  const [isAuthorised, setIsAuthorized] = useState(false);
   const dispatcher = useAppDispatch();
   const { user } = useUser();
   const path = window.location.pathname;
@@ -51,9 +51,7 @@ function ProtectedRoute() {
     };
     if (!token) {
       setIsAuthorized(false);
-      return (
-        <Route path={path} element={<Navigate to="/access-denied" replace />} />
-      );
+      return <Route path={path} element={<Navigate to="/login" replace />} />;
     } else {
       decoded = jwtDecode(token);
       const tokenExpiration = decoded.exp;
@@ -67,12 +65,17 @@ function ProtectedRoute() {
         }
     }
   };
-
-  return user?.role === "Clerk"
-    ? ClerkRouterConfig()
-    : user?.role === "sys_admin"
-    ? AdminRouterConfig()
-    : UserRouterConfig();
+  if (isAuthorised) {
+    return user?.role === "Clerk"
+      ? ClerkRouterConfig()
+      : user?.role === "sys_admin"
+      ? AdminRouterConfig()
+      : user?.role === "user"
+      ? UserRouterConfig()
+      : undefined;
+  } else {
+    return;
+  }
 }
 
 export default ProtectedRoute;

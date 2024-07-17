@@ -69,29 +69,33 @@ export const DisplayGroups = () => {
           <ActionButton>Apply</ActionButton>
         </ActionContainer>
 
-        <CustomTable>
-          <tr>
-            {Object.keys(groups[0]).map((key) => (
-              <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
-            ))}
-          </tr>
-          {groups.map((group) => (
+        <CustomTable keys={Object.keys(groups[0]).length}>
+          <thead>
             <tr>
-              {Object.entries(group).map(([key, value]) => (
-                <td>
-                  {key === "permissions" ? (
-                    <Select multiple>
-                      {value.map((value: Permission) => (
-                        <option value={value.codename}>{value.name}</option>
-                      ))}
-                    </Select>
-                  ) : (
-                    value
-                  )}
-                </td>
+              {Object.keys(groups[0]).map((key) => (
+                <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
               ))}
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {groups.map((group) => (
+              <tr>
+                {Object.entries(group).map(([key, value]) => (
+                  <td>
+                    {key === "permissions" ? (
+                      <Select multiple size={5}>
+                        {value.map((value: Permission) => (
+                          <option value={value.codename}>{value.name}</option>
+                        ))}
+                      </Select>
+                    ) : (
+                      value
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </CustomTable>
       </ItemBody>
     </ItemContainer>

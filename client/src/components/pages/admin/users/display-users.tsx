@@ -68,19 +68,23 @@ export const DisplayUsers = () => {
           <ActionButton>Apply</ActionButton>
         </ActionContainer>
 
-        <CustomTable>
-          <tr>
-            {Object.keys(users[0]).map((key) => (
-              <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
-            ))}
-          </tr>
-          {users.map((user) => (
+        <CustomTable keys={Object.keys(users[0]).length}>
+          <thead>
             <tr>
-              {Object.values(user).map((value) => (
-                <td>{typeof value === "string" ? value : value["name"]}</td>
+              {Object.keys(users[0]).map((key) => (
+                <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
               ))}
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr>
+                {Object.values(user).map((value) => (
+                  <td>{typeof value === "string" ? value : value["name"]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </CustomTable>
       </ItemBody>
     </ItemContainer>

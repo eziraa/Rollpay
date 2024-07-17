@@ -91,7 +91,7 @@ class Employee(models.Model):
     email = models.EmailField(max_length=255, null=False)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=False)
     date_of_birth = models.DateField(null=True, blank=True)
-    date_of_hire = models.DateField(auto_now=True, null=False)
+    date_of_hire = models.DateField(auto_now_add=True, null=False)
     position = models.CharField(max_length=100, null=False)
     user = models.OneToOneField(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
@@ -166,8 +166,10 @@ class Position(models.Model):
         max_length=255, null=False, unique=True)
     basic_salary = models.DecimalField(
         max_digits=12, decimal_places=2, null=False)
-    start_date = models.DateTimeField(auto_now=True)
-    end_date = models.DateTimeField(null=True, blank=True)
+    start_date = models.DateField(auto_now=True)
+    end_date = models.DateField(null=True, blank=True)
+    raise_rate = models.DecimalField(
+        max_digits=6, decimal_places=2, default=5.0)
 
     def __str__(self):
         return self.position_name

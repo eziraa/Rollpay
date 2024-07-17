@@ -1,7 +1,7 @@
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { getNamedMonth } from "../../pages/salary/utils";
-import { NoResult } from "../containers/containers.style";
 import { stringDay } from "../day/string-day";
+import { ThreeDots } from "../loading/dots";
 import { BlurredText } from "../titles/titles";
 import {
   PaymentCell,
@@ -14,13 +14,13 @@ import {
 } from "./payment-card.style";
 
 export const PaymentCard = () => {
-  const { payment_stat } = useStatistics();
+  const { loadding_payment_stat, payment_stat } = useStatistics();
   return (
     <PaymentCardContainer>
       <PaymentCardHeader>
         <BlurredText>Payment statistics</BlurredText>
       </PaymentCardHeader>
-      {payment_stat ? (
+      {!loadding_payment_stat ? (
         <>
           <PaymentTable>
             <PaymentRow>
@@ -76,7 +76,7 @@ export const PaymentCard = () => {
           </PaymentTable>
         </>
       ) : (
-        <NoResult>No Result found</NoResult>
+        <ThreeDots size={1} />
       )}
     </PaymentCardContainer>
   );

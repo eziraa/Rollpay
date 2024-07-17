@@ -17,7 +17,7 @@ import {
   ActionsContainer,
   LoginSection,
 } from "./login.style";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
@@ -32,17 +32,18 @@ import { useUser } from "../../../hooks/user-hook";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-  const { is_login, login_error, logging_in } = useUser();
+  const navigate = useNavigate();
+  const { login_error, logging_in, user } = useUser();
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
 
   useEffect(() => {
-    if (is_login) {
-      window.location.href = "/";
+    if (user?.role) {
+      navigate("/");
     }
-  }, [is_login]);
+  }, [user]);
 
   const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
     useFormik({
