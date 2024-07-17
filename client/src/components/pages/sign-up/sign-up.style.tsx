@@ -54,6 +54,7 @@ export const ErrorMessage = styled.p`
   font-weight: 400;
   padding-left: 1rem;
   color: #ef3131;
+  max-width: 20rem;
 `;
 
 export const LogInLink = styled(LinkContainer)`
