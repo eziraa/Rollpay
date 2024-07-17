@@ -62,7 +62,14 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
     <ThreeDots size={1} />
   ) : (
     <EmployeeeProfileContainer>
-      <ProfileContainer profile={baseURL + user?.profile_picture}>
+      <ProfileContainer
+        profile={
+          baseURL +
+          (pathname.startsWith("/employees")
+            ? employee?.profile_picture
+            : user?.profile_picture)
+        }
+      >
         {curr_user_id === employee_id && (
           <form onSubmit={() => {}}>
             <Label>
