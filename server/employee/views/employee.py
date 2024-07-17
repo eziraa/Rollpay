@@ -27,6 +27,25 @@ class EmployeeView (APIView):
 
     def get(self, request: Request, employee_id=None, format=None):
         try:
+            # employees = Employee.objects.all()
+            # for employee in employees:
+            #     employee.position.clear()
+            #     if employee.user:
+            #         if employee.user.role.name == 'Clerk':
+            #             employee.position.add(
+            #                 random.choice(Position.objects.filter(position_name="Clerk")))
+            #             employee.save()
+            #         elif employee.user.role.name == 'sys_admin':
+            #             employee.position.add(
+            #                 random.choice(Position.objects.filter(position_name="System Administrator")))
+            #             employee.save()
+            #         employee.position.add(
+            #             random.choice(Position.objects.exclude(position_name="System Administrator").exclude(position_name="Clerk")))
+            #         employee.save()
+            #     else:
+            #         employee.position.add(
+            #             random.choice(Position.objects.exclude(position_name="System Administrator").exclude(position_name="Clerk")))
+            #         employee.save()
             if employee_id:
                 employee = Employee.objects.get(id=employee_id)
                 serializer = EmployeeSerializer(employee)
@@ -58,7 +77,9 @@ class EmployeeView (APIView):
             if not Position.objects.filter(position_name=data['position']).exists():
                 return JsonResponse({'error': 'Position does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             position = Position.objects.get(position_name=data['position'])
+            data.pop('position')
             employee = Employee.objects.create(**data)
+            employee.position.add(position)
             employee.save()
             salary = Salary.objects.create(
                 basic_salary=position.basic_salary, employee=employee)
