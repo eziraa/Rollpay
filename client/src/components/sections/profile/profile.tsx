@@ -8,14 +8,15 @@ import {
   ItemContainer,
   HorizontalLine,
 } from "./profile.style";
-import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
+import { useAppDispatch } from "../../../utils/custom-hook";
 import { logoutRequested } from "../../../store/user/user-slice";
 import { MdLogout } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
+import { useUser } from "../../../hooks/user-hook";
 const Profile = ({ close }: { close: () => void }) => {
   const dispatcher = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
+  const user = useUser();
 
   const handleClick = () => {
     dispatcher(logoutRequested());
@@ -42,7 +43,7 @@ const Profile = ({ close }: { close: () => void }) => {
                 close();
               }}
             >
-              <Link to={`/user-profile/${user.user?.employeeId}`}>Profile</Link>
+              <Link to={`/${user.user?.role !== "user" && "me"}`}>Profile</Link>
             </Label>
           </ResetLink>
         </ItemContainer>
