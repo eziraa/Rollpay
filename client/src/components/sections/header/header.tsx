@@ -69,13 +69,13 @@ export const Header = () => {
             Today is {date && stringDay(date)}
             <span className="success">
               {date &&
-                ` ${date.getHours().toString().padStart(2, "0")}:${date
+                ` ${(date.getHours() % 12).toString().padStart(2, "0")}:${date
                   .getMinutes()
                   .toString()
                   .padStart(2, "0")}:${date
                   .getSeconds()
                   .toString()
-                  .padStart(2, "0")}`}
+                  .padStart(2, "0")}  ${date.getHours() > 12 ? "PM" : "AM"}`}
             </span>
           </MidBlurredText>
         </WelcomeMessageContainer>
