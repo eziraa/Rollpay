@@ -5,6 +5,8 @@ import UserProfile from "../../components/pages/user-profile/user-profile";
 import { EmployeeAllowance } from "../../components/sections/employee-allowance/allowance";
 import { EmployeeOvertime } from "../../components/sections/employee-overtime/overtime";
 import { EmployeeDeduction } from "../../components/sections/employee-deduction/deduction";
+import { EmployeeAsset } from "../../components/sections/employee-asset/asset";
+import { EmployeeSalary } from "../../components/sections/employee-salary/employee-salary";
 export const UserRouterConfig = () => (
   <Route path="/" element={<UserHomePage />}>
     <Route path="/" element={<UserDashboard />} />
@@ -16,6 +18,9 @@ export const UserRouterConfig = () => (
       <Route path="overtimes/:year/:month" element={<EmployeeOvertime />} />
       <Route path="deductions" element={<EmployeeDeduction />} />
       <Route path="deductions/:year/:month" element={<EmployeeDeduction />} />
+      <Route path="assets" element={<EmployeeAsset />} />
+      <Route path="salary-history" element={<EmployeeSalary />} />
+
     </Route>
   </Route>
 );
