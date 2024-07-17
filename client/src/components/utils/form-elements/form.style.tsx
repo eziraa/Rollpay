@@ -82,6 +82,7 @@ export const FormError = styled.span({
   display: "block",
   color: "red",
   fontSize: "1rem",
+  maxWidth: "15rem",
 });
 
 export const Select = styled.select`

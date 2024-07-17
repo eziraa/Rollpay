@@ -6,6 +6,7 @@ import {
   LogoContainer,
   LogoImage,
   UserIcon,
+  UsersIcon,
 } from "../left-menu/left-menu.style";
 import { useLocation, useNavigate } from "react-router";
 import Image from "../../../assets/logo.png";
@@ -40,16 +41,30 @@ function UserMenu() {
           navigate("/");
         }}
       >
-        <HomeIcon />
-        <MenuItemText>Home</MenuItemText>
+        {user?.role === "user" ? <HomeIcon /> : <UsersIcon />}
+        <MenuItemText>Dashboard</MenuItemText>
       </MenuItem>
+      {user?.role === "Clerk" && (
+        <MenuItem
+          active={pathname === "/me"}
+          onClick={(e) => {
+            if (!task_finished) return;
+            e.preventDefault();
+            e.stopPropagation();
+            navigate("/me");
+          }}
+        >
+          <HomeIcon />
+          <MenuItemText> Home</MenuItemText>
+        </MenuItem>
+      )}
       <MenuItem
-        active={pathname.endsWith("/employees")}
+        active={pathname.includes("user-profile")}
         onClick={(e) => {
           if (!task_finished) return;
           e.preventDefault();
           e.stopPropagation();
-          navigate("/user-profile/" + user?.employee.id);
+          navigate("user-profile/" + user?.employee.id);
         }}
       >
         <UserIcon />
