@@ -53,7 +53,8 @@ class SalaryManager:
 
     @staticmethod
     def get_position_rate(employee: Employee):
-        position = Position.objects.get(position_name=employee.position)
+        position = Position.objects.get(
+            position_name=employee.position.all().last().position_name)
         if position:
             return position.raise_rate
         else:
@@ -61,6 +62,6 @@ class SalaryManager:
 
     @staticmethod
     def get_basic_salary(employee: Employee):
-        basic_salary = Position.objects.get(
-            position_name=employee.position).basic_salary
+        basic_salary = position = Position.objects.get(
+            position_name=employee.position.all().last().position_name).basic_salary
         return basic_salary
