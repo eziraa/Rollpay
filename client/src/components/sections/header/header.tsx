@@ -20,22 +20,33 @@ export const Header = () => {
   const { user } = useUser();
   const leftMenuRef = useRefs().refs?.leftMenuRef;
   const [date, setDate] = useState<Date | null>(null);
-  const initializeTimer = (serverTime: Date) => {
-    setInterval(function () {
-      // Increment the serverTime by 1 second
-      serverTime.setSeconds(serverTime.getSeconds() + 1);
-      setDate(serverTime);
-    }, 1000);
-  };
   useEffect(() => {
     UserAPI.getServerTime().then((res) => {
       if (res.status === 200) {
         initializeTimer(new Date(res.data.server_time));
       } else {
-        initializeTimer(new Date(Date.now()));
+        initializeTimer(new Date());
       }
     });
-  }, []);
+
+    // Store the interval ID
+    let intervalId: string | number | NodeJS.Timeout | undefined;
+
+    const initializeTimer = (serverTime: Date) => {
+      intervalId = setInterval(function () {
+        const newTime = new Date(serverTime.getTime() + 1000);
+        serverTime = newTime;
+        setDate(newTime);
+      }, 1000);
+    };
+
+    // Cleanup function to clear the interval
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, []); // Ensure this effect runs only once upon mounting
   return (
     <>
       <HeaderContainer>
