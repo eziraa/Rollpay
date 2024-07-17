@@ -130,7 +130,7 @@ export const ClerkRouterConfig = () => {
           {deleteRoute}
         </Route>
       </Route>
-      {UserRouterConfig({ base_end_point: "me" })}
+      {UserRouterConfig("me")}
     </Route>
   );
 };

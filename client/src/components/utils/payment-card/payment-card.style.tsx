@@ -30,18 +30,25 @@ export const PaymentTable = styled.div`
   padding: 0 1rem;
   max-height: 40vh;
   ${custom_vertical_scroll_bar}
+  .header {
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.1, theme.colors.primary)};
+  }
 `;
 
 export const PaymentRow = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr repeat(5, 1fr) 2fr 1fr;
+  grid-template-columns: repeat(7, 1fr);
   padding: 0.5rem 0;
   margin: 0;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.secondary};
+  cursor: pointer;
+
   &:last-child {
     border-bottom: none;
   }
+
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.06, theme.colors.primary)};

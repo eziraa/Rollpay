@@ -42,6 +42,7 @@ export const LoginPage = () => {
   useEffect(() => {
     if (user?.role) {
       navigate("/");
+      window.location.reload();
     }
   }, [user]);
 

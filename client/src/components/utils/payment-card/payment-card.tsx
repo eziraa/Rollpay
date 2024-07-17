@@ -23,7 +23,7 @@ export const PaymentCard = () => {
       {!loadding_payment_stat ? (
         <>
           <PaymentTable>
-            <PaymentRow>
+            <PaymentRow className="header">
               <PaymentCell>Payment Date</PaymentCell>
               <PaymentCell>Total Net Payment</PaymentCell>
               <PaymentCell>Total Allowance</PaymentCell>
@@ -31,7 +31,6 @@ export const PaymentCard = () => {
               <PaymentCell>Toal Deduction</PaymentCell>
               <PaymentCell>Month</PaymentCell>
               <PaymentCell>Payment Status</PaymentCell>
-              <PaymentCell>Is approved</PaymentCell>
             </PaymentRow>
           </PaymentTable>
           <PaymentTable>
@@ -39,7 +38,11 @@ export const PaymentCard = () => {
               return (
                 <PaymentRow key={index}>
                   <PaymentCell>
-                    {stringDay(new Date(payment.payment_date))}
+                    {payment.payment_date ? (
+                      stringDay(new Date(payment.payment_date))
+                    ) : (
+                      <span className="italic">Not paid</span>
+                    )}
                   </PaymentCell>
                   <PaymentCell className="blue">
                     {payment.total_amount_of_payment} ETB
@@ -61,13 +64,6 @@ export const PaymentCard = () => {
                       <PostiveText>Paid</PostiveText>
                     ) : (
                       <NegativeText>Not Paid</NegativeText>
-                    )}
-                  </PaymentCell>
-                  <PaymentCell>
-                    {payment.payment_date ? (
-                      <PostiveText>Approved</PostiveText>
-                    ) : (
-                      <NegativeText>Not approved</NegativeText>
                     )}
                   </PaymentCell>
                 </PaymentRow>

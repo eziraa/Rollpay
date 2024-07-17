@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   ActionBtnsContainer,
-  AddButton,
   DeleteButton,
   EditButton,
   PositionListBody,
@@ -35,6 +34,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
+import { AddButton } from "../../sections/add_employee/add-employee.style";
 
 export const PositionPage = () => {
   const employee = useAppSelector((state) => state.employee);
@@ -59,7 +59,7 @@ export const PositionPage = () => {
             dispatcher(listPositionsRequested());
           }}
         >
-          <IoAddOutline /> Add New
+          <IoAddOutline /> New
         </AddButton>
       </PositionListHeader>
       <PositionListBody>

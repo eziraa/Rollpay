@@ -2,6 +2,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { useUser } from "../../../hooks/user-hook";
 import {
+  AddButton,
   AllowanceBody,
   AllowanceContainer,
   AllowanceHeader,
@@ -9,7 +10,6 @@ import {
 } from "../employee-allowance/allowance.style";
 import {
   ActionBtnsContainer,
-  AddButton,
   DeleteButton,
 } from "../../pages/positions/position.style";
 import { ThreeDots } from "../../utils/loading/dots";
@@ -32,6 +32,7 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { NoResult } from "../../utils/containers/containers.style";
 import DownloadPDF from "../../utils/download/download";
+import { IoAddOutline } from "react-icons/io5";
 
 export const EmployeeAsset = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ export const EmployeeAsset = () => {
               if (employee_id) dispatcher(listAssetsRequested(employee_id));
             }}
           >
-            Add
+            <IoAddOutline /> New
           </AddButton>
         )}
       </AllowanceHeader>
