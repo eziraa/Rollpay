@@ -3,16 +3,12 @@ import { DeleteButton } from "../../utils/profile/employee-profile.style";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdModeEditOutline } from "react-icons/md";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import {
-  deleteEmpRequested,
-  tryingToDelete,
-} from "../../../store/employee/employee-slice";
-import { useNavigate, useParams } from "react-router-dom";
+import { tryingToDelete } from "../../../store/employee/employee-slice";
+import { useNavigate } from "react-router-dom";
 
 const UpdateEmployee = () => {
   const dispatcher = useAppDispatch();
   const navigator = useNavigate();
-  const { employee_id } = useParams();
 
   return (
     <div
@@ -32,8 +28,7 @@ const UpdateEmployee = () => {
             e.preventDefault();
             e.stopPropagation();
             dispatcher(tryingToDelete());
-            if (employee_id) dispatcher(deleteEmpRequested(employee_id));
-            navigator(-1)
+            navigator("delete");
           }}
         >
           <RiDeleteBin6Line /> Delete
