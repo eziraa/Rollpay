@@ -28,3 +28,46 @@ class GroupView(APIView):
                 group.save()
                 serrializer = GroupSerializer(group)
                 return Response(serrializer.data, status=201)
+
+    def delete(self, request: Request, group_id=None, *args, **kwargs):
+        if group_id is not None:
+            group = Group.objects.filter(id=group_id)
+            if group.exists():
+                group.delete()
+                return Response({'message': 'Group deleted'}, status=200)
+            else:
+                return Response({'error': 'Group not found'}, status=404)
+        else:
+            data = json.loads(request.body)
+            groups_id = data.get('groups', [])
+            if groups_id is not None:
+                groups = Group.objects.filter(id__in=groups_id)
+                if groups.exists():
+                    groups.delete()
+                    return Response(GroupSerializer(Group.objects.all(), many=True).data, status=200)
+                else:
+                    return Response({'error': 'Group not found'}, status=404)
+
+            return Response({'error': 'Group id not provided'}, status=400)
+
+    def put(self, request: Request, *args, **kwargs):
+        group_id = request.data.get('id')
+        group_name = request.data.get('name')
+        group_permissions = request.data.get(
+            'permissions')
+        if not group_id:
+            return Response({'error': 'Group name not specified'}, status=400)
+        try:
+            group = Group.objects.get(id=group_id)
+        except Group.DoesNotExist:
+            return Response({'error': 'Group not found'}, status=404)
+
+        # Use request.data directly
+        group.name = group_name
+        permissions = Permission.objects.filter(
+            codename__in=group_permissions)
+        for permission in permissions:
+            group.permissions.add(permission)
+        group.save()
+        serializer = GroupSerializer(group)
+        return Response(serializer.data, status=200)

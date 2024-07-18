@@ -299,6 +299,7 @@ export const adminRoutes = [
         sub_routes: [
           { path: "", element: <DisplayGroups /> },
           { path: "add-group", element: <AddGroup /> },
+          { path: ":group_id/edit", element: <AddGroup /> },
         ],
       },
       {

@@ -9,6 +9,7 @@ import {
   Role,
   User,
 } from "../../typo/admin/response";
+import { EditGroupParams } from "../../typo/admin/params";
 
 const InitialEmpState: AdminState = {
   users: [],
@@ -66,6 +67,30 @@ const AdminSlice = createSlice({
       state.group = action.payload;
       // Add new group to the list
     },
+    deleteGroupRequest: (state, _: PayloadAction<string[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+    },
+    deleteGroupDone: (state, action: PayloadAction<Group[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+      state.groups = action.payload;
+    },
+    editGroupRequest: (state, _: PayloadAction<EditGroupParams>) => {
+      state.task_finished = false;
+      state.editing = true;
+    },
+    editGroupDone: (state, action: PayloadAction<Group>) => {
+      state.task_finished = false;
+      state.editing = true;
+      state.groups = state.groups.map((group) =>
+        group.id === action.payload.id ? action.payload : group
+      );
+    },
+    setCurrentGroup: (state, action: PayloadAction<Group>) => {
+      state.group = action.payload;
+      state.loading = false;
+    },
     raiseError: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.task_error = action.payload;
@@ -84,6 +109,10 @@ export const {
   getPermissionDone,
   addGroupRequest,
   addGroupDone,
+  deleteGroupDone,
+  deleteGroupRequest,
+  editGroupDone,
+  editGroupRequest,
   raiseError,
 } = AdminSlice.actions;
 export default AdminSlice.reducer;

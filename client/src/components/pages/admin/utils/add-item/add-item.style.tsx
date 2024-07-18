@@ -11,6 +11,12 @@ export const AddItemContainer = styled.div`
   gap: 1rem;
 `;
 
+export const CheckBox = styled.input`
+  margin-right: 1rem;
+  height: 20px;
+`;
+
+
 export const AddItemTitle = styled.p`
   font-size: 2.1rem;
   height: fit-content;

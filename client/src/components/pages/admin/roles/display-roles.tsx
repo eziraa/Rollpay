@@ -85,7 +85,10 @@ export const DisplayRoles = () => {
                 {Object.entries(user).map(([key, value]) => (
                   <td>
                     {key === "groups" ? (
-                      <Select multiple size={5}>
+                      <Select
+                        multiple
+                        size={Math.min(user.groups.length + 1, 2)}
+                      >
                         {value.map((value: Group) => (
                           <option selected={true} value={value.name}>
                             {value.name}
