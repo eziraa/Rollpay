@@ -23,6 +23,8 @@ export interface User {
   username: string;
   email: string;
   role: Role;
+  first_name: string;
+  last_name: string;
 }
 
 export interface AdminResponse extends BaseResponse {
@@ -34,4 +36,8 @@ export interface AdminResponse extends BaseResponse {
 
 export interface AddGroupResponse extends BaseResponse {
   group: Group;
+}
+
+export interface AddUserResponse extends BaseResponse {
+  user: User;
 }
