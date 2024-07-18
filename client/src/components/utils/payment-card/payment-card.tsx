@@ -63,7 +63,7 @@ export const PaymentCard = () => {
                     {payment.payment_date ? (
                       <PostiveText>Paid</PostiveText>
                     ) : (
-                      <NegativeText>Not Paid</NegativeText>
+                      <NegativeText>Unpaid</NegativeText>
                     )}
                   </PaymentCell>
                 </PaymentRow>
