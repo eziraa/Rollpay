@@ -9,12 +9,14 @@ import {
   Role,
   User,
 } from "../../typo/admin/response";
-import { EditGroupParams } from "../../typo/admin/params";
+import { EditGroupParams, EditUserParams } from "../../typo/admin/params";
 
 const InitialEmpState: AdminState = {
   users: [],
   roles: [],
   groups: [],
+  user: undefined,
+  role: undefined,
   group: undefined,
   permissions: [],
   task_error: undefined,
@@ -95,6 +97,40 @@ const AdminSlice = createSlice({
       state.loading = false;
       state.task_error = action.payload;
     },
+    addUserRequest: (state, _) => {
+      state.task_finished = false;
+      state.adding = true;
+    },
+    addUserDone: (state, action: PayloadAction<User>) => {
+      state.task_finished = true;
+      state.adding = false;
+      state.user = action.payload;
+      // Add new group to the list
+    },
+    deleteUserRequest: (state, _: PayloadAction<string[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+    },
+    deleteUserDone: (state, action: PayloadAction<User[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+      state.users = action.payload;
+    },
+    editUserRequest: (state, _: PayloadAction<EditUserParams>) => {
+      state.task_finished = false;
+      state.editing = true;
+    },
+    editUserDone: (state, action: PayloadAction<User>) => {
+      state.task_finished = false;
+      state.editing = true;
+      state.users = state.users.map((user) =>
+        user.id === action.payload.id ? action.payload : user
+      );
+    },
+    setCurrentUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.loading = false;
+    },
   },
 });
 
@@ -113,6 +149,14 @@ export const {
   deleteGroupRequest,
   editGroupDone,
   editGroupRequest,
+  setCurrentGroup,
+  setCurrentUser,
+  addUserRequest,
+  addUserDone,
+  deleteUserDone,
+  deleteUserRequest,
+  editUserDone,
+  editUserRequest,
   raiseError,
 } = AdminSlice.actions;
 export default AdminSlice.reducer;
