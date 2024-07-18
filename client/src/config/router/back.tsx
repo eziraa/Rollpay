@@ -135,12 +135,12 @@ export const clerk_routes: CustomRoute[] = [
             element: <CheckFlashMessage />,
           },
           {
-            path: "/employees-salary",
+            path: "/payroll",
             element: <EmployeesSalaryPage />,
             sub_routes: [{ path: "raise", element: <RaiseSalary /> }],
           },
           {
-            path: "/employees-salary/:year/:month",
+            path: "/payroll/:year/:month",
             element: <EmployeesSalaryPage />,
           },
           {
