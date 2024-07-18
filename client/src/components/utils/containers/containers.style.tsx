@@ -34,10 +34,10 @@ export const title_css = css`
 `;
 
 export const btn_css = css`
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
-  padding: 1rem 2rem;
+  padding: 0.71rem 1rem;
   border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.buttons.primary};
   border: none;

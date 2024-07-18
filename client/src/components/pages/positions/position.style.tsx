@@ -1,5 +1,4 @@
 import { ThemeProps } from "../../../typo/theme/theme";
-import { Button } from "../../utils/form-elements/form.style";
 import styled from "styled-components";
 
 import { container } from "../../utils/pages-utils/containers.style";
@@ -45,10 +44,6 @@ export const PositionListHeader = styled.div`
   justify-content: space-between;
 `;
 
-export const AddButton = styled(Button)`
-  width: fit-content;
-  display: block;
-`;
 
 export const ActionBtnsContainer = styled.div`
   display: flex;

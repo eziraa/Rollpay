@@ -26,6 +26,7 @@ import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
 import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
 import { stringDatetine } from "../../utils/day/string-day";
+import { IoAddOutline } from "react-icons/io5";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information
@@ -81,7 +82,7 @@ export const EmployeeOvertime = () => {
               navigate("add-overtime");
             }}
           >
-            Add
+            <IoAddOutline /> New
           </AddButton>
         )}
       </OvertimeHeader>

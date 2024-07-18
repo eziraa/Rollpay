@@ -27,6 +27,7 @@ import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useUser } from "../../../hooks/user-hook";
 import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
 import { stringDay } from "../../utils/day/string-day";
+import { IoAddOutline } from "react-icons/io5";
 
 export const EmployeeAllowance = () => {
   //--- Calling hooks and getting necessary information ---
@@ -81,7 +82,7 @@ export const EmployeeAllowance = () => {
               navigate("add-allowance");
             }}
           >
-            Add
+            <IoAddOutline /> New
           </AddButton>
         )}
       </AllowanceHeader>
