@@ -20,7 +20,6 @@ import { useAppDispatch } from "../../utils/custom-hook";
 import { getCurrentUserRequest } from "../../store/user/user-slice";
 import { useUser } from "../../hooks/user-hook";
 import { useAuth } from "../../hooks/auth-hook";
-import { asyncThunkCreator } from "@reduxjs/toolkit";
 
 export const RouterConfig = () => {
   const authenticator = useAuth();
