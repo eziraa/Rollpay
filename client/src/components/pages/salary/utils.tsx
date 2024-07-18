@@ -60,7 +60,6 @@ export const getDeductionTypes = (employees: PaymentEmployee[]) => {
   return tempDeductionTypes;
 };
 
-
 export const getOvertimeTypes = (employees: PaymentEmployee[]) => {
   const tempOvertimeTypes = new Set<string>();
 
@@ -70,4 +69,17 @@ export const getOvertimeTypes = (employees: PaymentEmployee[]) => {
     });
   });
   return tempOvertimeTypes;
+};
+
+export const getColumns = (keys: string[]) => {
+  const value = keys.map((key) => {
+    return {
+      key: key,
+      value: key
+        .split("_")
+        .map((item) => item[0].toUpperCase() + item.slice(1))
+        .join(" "),
+    };
+  });
+  return value;
 };

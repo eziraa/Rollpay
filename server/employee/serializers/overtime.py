@@ -29,7 +29,7 @@ class OvertimeItemSerializer(serializers.ModelSerializer):
         minutes = (total_seconds % 3600) // 60
 
         if hours > 0:
-            return f"{int(hours)} hour{'s' if hours != 1 else ''} {int(minutes)} minute{'s' if minutes != 1 else ''}"
+            return f"{int(hours)} hour{'s' if hours != 1 else ''}"
         elif minutes > 0:
             return f"{int(minutes)} minute{'s' if minutes != 1 else ''}"
         else:

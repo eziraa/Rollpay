@@ -1,8 +1,8 @@
-import { CurrentUser } from "../user/states";
+import { UserResponse } from "../user/response";
 
 export interface Auth {
-  curr_user: CurrentUser;
+  curr_user: UserResponse;
   isAuthenticated: boolean;
   setIsAuthenticated: (value: boolean) => void;
-  setCurrUser: (user: CurrentUser) => void;
+  setCurrUser: (user: UserResponse) => void;
 }

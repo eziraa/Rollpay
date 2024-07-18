@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "@types/react-router-dom": "^5.3.3",
     "apexcharts": "^3.49.2",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",

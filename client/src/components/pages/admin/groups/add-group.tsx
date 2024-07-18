@@ -60,11 +60,8 @@ export const AddGroup = () => {
                 permissions: selectedOptions.map(
                   (permission) => permission.codename
                 ), // Step 3: Pass selected permissions to the request action creator.
-                onSuccess: () => {
-                  alert("Success");
-                },
+                onSuccess: () => {},
                 onError: () => {
-                  alert("Error");
                   // Handle error if request fails
                 },
               })
