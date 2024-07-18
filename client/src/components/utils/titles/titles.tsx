@@ -15,8 +15,8 @@ export const MidBlurredText = styled(BlurredText)`
 
 export const NormalBlurredText = styled.h1`
   font-size: 1.2rem;
-  color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
   letter-spacing: 0.1rem;
+
 `;
 
 export const SmallBlurredText = styled.h1`
