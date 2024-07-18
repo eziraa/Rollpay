@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import { AddGroupParams, EditGroupParams } from "../typo/admin/params";
+import { AddGroupParams, AddUserParams, EditGroupParams, EditUserParams } from "../typo/admin/params";
 
 /**
  * @returns a list of usrs
@@ -152,6 +152,70 @@ const deleteGroup = async (values: string[]) => {
   return groups;
 };
 
+
+const addUser = async (values: AddUserParams) => {
+  const groups = await api
+    .post("/group/add", values)
+    .then((res) => {
+      return {
+        group: res.data,
+        code: res.status,
+        success: "Success adding group",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return groups;
+};
+
+const editUser = async (values: EditUserParams) => {
+  const groups = await api
+    .put("/group/edit", values)
+    .then((res) => {
+      return {
+        group: res.data,
+        code: res.status,
+        success: "Edit User Success",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return groups;
+};
+
+const deleteUser = async (values: string[]) => {
+  const groups = await api
+    .delete("/group/delete", { data: { groups: values } })
+    .then((res) => {
+      return {
+        groups: res.data,
+        code: res.status,
+        success: "User deleted successfully",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return groups;
+};
+
 const AdminAPI = {
   getRoles,
   getUsers,
@@ -160,6 +224,9 @@ const AdminAPI = {
   addGroup,
   deleteGroup,
   editGroup,
+  addUser,
+  deleteUser,
+  editUser,
 };
 
 export default AdminAPI;
