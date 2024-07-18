@@ -6,7 +6,7 @@ import { Button } from "../../utils/form-elements/form.style";
 export const ModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
-  top: 0vh;
+  top: 1.5vh;
   left: 0;
   position: absolute;
   z-index: 200;
@@ -23,6 +23,7 @@ export const Modal = styled.div<ThemeProps>`
   display: flex;
   flex-direction: column;
   justify-content: first baseline;
+
   border-radius: 0.5rem;
   box-shadow: 0.5rem 0 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
     -0.5rem 0 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
@@ -77,11 +78,13 @@ export const IconContainer = styled.div<ThemeProps>`
   margin-right: 1rem;
   color: ${({ theme }) => theme.colors.primary};
   font-size: 2rem;
+  align-items: baseline;
 `;
 export const ItemContainer = styled.div`
   display: flex;
   margin: 0.2rem;
-  align-items: center;
+  /* align-items: center; */
+  
 `;
 
 export const HorizontalLine = styled.hr`
