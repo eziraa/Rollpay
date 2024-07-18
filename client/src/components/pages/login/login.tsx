@@ -32,13 +32,13 @@ import { useUser } from "../../../hooks/user-hook";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-  const navigate = useNavigate();
   const { login_error, logging_in, user } = useUser();
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (user?.role) {
       navigate("/");
