@@ -84,8 +84,8 @@ export const SubMenuContainer = styled.div`
   border-radius: 0.5rem;
 
   transition: all 0.5s ease;
-  border-left: 0.3rem solid
-    ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+  border-left: 0.2rem solid
+    ${({ theme }) => addOpacityToColor(0.7, theme.buttons.primary)};
 `;
 
 interface SubMenuItemProps extends ThemeProps {
@@ -100,14 +100,18 @@ export const SubMenuItem = styled.div<SubMenuItemProps>`
   padding: 0.5rem 1rem;
   text-align: left;
   font-size: 1.6rem;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ active, theme }) =>
+    active ? theme.buttons.primary : theme.colors.primary};
 
-  background-color: ${({ active }) => (active ? "#8b8b8b78 " : "transparent")};
+  background-color: ${({ active, theme }) =>
+    active ? addOpacityToColor(0.1, theme.buttons.primary) : "transparent"};
 
   cursor: pointer;
   transition: all 0.5s ease;
   &:hover {
-    background-color: #a2a2a278;
+    color: ${({ theme }) => theme.buttons.primary};
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.1, theme.buttons.primary)};
   }
 `;
 export const MenuItemText = styled.h1`
