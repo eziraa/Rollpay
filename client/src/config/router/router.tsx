@@ -2,7 +2,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  redirect,
   Navigate,
 } from "react-router-dom";
 import SignUp from "../../components/pages/sign-up/sign-up";
@@ -20,17 +19,19 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../utils/custom-hook";
 import { getCurrentUserRequest } from "../../store/user/user-slice";
 import { useUser } from "../../hooks/user-hook";
+import { useAuth } from "../../hooks/auth-hook";
+import { asyncThunkCreator } from "@reduxjs/toolkit";
 
 export const RouterConfig = () => {
-  const [isAuthorised, setIsAuthorized] = useState<boolean>(false);
+  const authenticator = useAuth();
   const dispatcher = useAppDispatch();
   const user = useUser();
   const [routing_elements, setRoutingElements] = useState<
     JSX.Element | JSX.Element[]
   >([]);
-  // useEffect(() => {
-  //   auth();
-  // }, []);
+  useEffect(() => {
+    auth();
+  }, []);
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     try {
@@ -40,12 +41,12 @@ export const RouterConfig = () => {
       if (res.status === 200) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        setIsAuthorized(true);
+        authenticator.setIsAuthenticated(true);
       } else {
-        setIsAuthorized(false);
+        authenticator.setIsAuthenticated(false);
       }
     } catch (error) {
-      setIsAuthorized(false);
+      authenticator.setIsAuthenticated(false);
     }
   };
 
@@ -56,7 +57,7 @@ export const RouterConfig = () => {
       user_id: string;
     };
     if (!token) {
-      throw redirect("/login");
+      authenticator.setIsAuthenticated(false);
     } else {
       decoded = await jwtDecode(token);
       const tokenExpiration = decoded.exp;
@@ -65,21 +66,23 @@ export const RouterConfig = () => {
         if (tokenExpiration < now) {
           await refreshToken();
         } else {
-          setIsAuthorized(true);
+          authenticator.setIsAuthenticated(true);
           dispatcher(getCurrentUserRequest(decoded.user_id));
         }
     }
     return user;
   };
   useEffect(() => {
-    if (user.user) {
-      user.user && setRoutingElements(ProtectedRoute(isAuthorised, user.user));
+    if (authenticator.curr_user) {
+      setRoutingElements(
+        ProtectedRoute(authenticator.isAuthenticated, authenticator.curr_user)
+      );
     } else {
       setRoutingElements(
         <Route path="*" element={<Navigate to="/access-denied" />} />
       );
     }
-  }, [user]);
+  }, [authenticator.curr_user]);
   useEffect(() => {
     auth();
   }, []);
@@ -91,9 +94,20 @@ export const RouterConfig = () => {
         <Route path="/access-denied" element={<AccessDenied />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/" element={<MainPage />}>
-          {isAuthorised && routing_elements}
+          {authenticator.isAuthenticated && routing_elements}
         </Route>
-        {<Route path="*" element={<NotFoundPage />} />}
+        {<Route path="not-found" element={<NotFoundPage />} />}
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to="/logimn"
+              state={{
+                from: window.location.pathname,
+              }}
+            />
+          }
+        />
       </Routes>
     </Router>
   );

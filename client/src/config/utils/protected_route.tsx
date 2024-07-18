@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { jwtDecode } from "jwt-decode";
-import api from "../api";
-import { REFRESH_TOKEN, ACCESS_TOKEN } from "../../constants/token-constants";
-import { useState, useEffect } from "react";
-import { useAppDispatch } from "../../utils/custom-hook";
-import { getCurrentUserRequest } from "../../store/user/user-slice";
-import { useUser } from "../../hooks/user-hook";
+
 import { Navigate, Route } from "react-router-dom";
 import {
   adminRoutes,

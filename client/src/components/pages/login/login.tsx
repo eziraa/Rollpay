@@ -17,7 +17,7 @@ import {
   ActionsContainer,
   LoginSection,
 } from "./login.style";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
@@ -29,22 +29,28 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 import { Toggle } from "../../utils/buttons/toggle";
 import { EmpsDisplayerHeader as Header } from "../display-employee/display-employee.style";
 import { useUser } from "../../../hooks/user-hook";
+import { useAuth } from "../../../hooks/auth-hook";
 
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
-  const { login_error, logging_in, user } = useUser();
+  const auth = useAuth();
+  const pathname = useLocation();
+  const user = useUser();
+  const { login_error, logging_in } = useUser();
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const togglePasswordVisiblity = () => {
     setPasswordVisible(!passwordVisible);
   };
-
   const navigate = useNavigate();
   useEffect(() => {
-    if (user?.role) {
-      navigate("/");
-      window.location.reload();
+    if (auth.curr_user.role) {
+      if (pathname.pathname !== "/login") {
+        navigate("/");
+      } else {
+        navigate("/");
+      }
     }
-  }, [user]);
+  }, [auth.curr_user]);
 
   const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
     useFormik({
@@ -54,9 +60,15 @@ export const LoginPage = () => {
       },
       validationSchema: LogInSchema,
       onSubmit: async (values) => {
-        await dispatcher(loginRequested(values));
+        dispatcher(loginRequested(values));
       },
     });
+
+  useEffect(() => {
+    if (user.user) {
+      user.user && auth.setCurrUser(user.user);
+    }
+  }, [user.user]);
 
   return (
     <LoginContainer>

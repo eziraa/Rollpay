@@ -7,11 +7,7 @@ import { EmployeeOvertime } from "../../components/sections/employee-overtime/ov
 import { EmployeeDeduction } from "../../components/sections/employee-deduction/deduction";
 import { EmployeeAsset } from "../../components/sections/employee-asset/asset";
 import { EmployeeSalary } from "../../components/sections/employee-salary/employee-salary";
-export const UserRouterConfig = ({
-  base_end_point,
-}: {
-  base_end_point: string | undefined;
-}) => (
+export const UserRouterConfig = (base_end_point: string | undefined) => (
   <Route path={base_end_point || ""} element={<UserHomePage />}>
     <Route path={""} element={<UserDashboard />} />
     <Route path="user-profile/:employee_id" element={<UserProfile />}>
