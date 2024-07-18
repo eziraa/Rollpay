@@ -1,9 +1,12 @@
 // export const CustomTable =
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAdmin } from "../../../../hooks/admin-hook";
 import { useAppDispatch } from "../../../../utils/custom-hook";
-import { getGroupsRequest } from "../../../../store/admin/admin-slice";
+import {
+  deleteGroupRequest,
+  getGroupsRequest,
+} from "../../../../store/admin/admin-slice";
 import { ThreeDots } from "../../../utils/loading/dots";
 import { NoResult } from "../../../utils/containers/containers.style";
 import { CustomTable } from "../utils/custom-table/custom-table.style";
@@ -22,9 +25,10 @@ import { AddBtn } from "../../../sections/add_employee/add-employee.style";
 import { useNavigate } from "react-router";
 import { BlurredIcon } from "../utils/icons/icons.style";
 import { FaSearch } from "react-icons/fa";
-import { Label, Select } from "../utils/dropdown/dropdown.style";
-import { DropDown } from "../utils/dropdown/dropdown";
+import { Label, Select, Option } from "../utils/dropdown/dropdown.style";
 import { Permission } from "../../../../typo/admin/response";
+import { CheckBox } from "../utils/add-item/add-item.style";
+import { setFlashMessage } from "../../../../store/notification/flash-messsage-slice";
 
 export const DisplayGroups = () => {
   /**
@@ -33,7 +37,17 @@ export const DisplayGroups = () => {
   const dispacher = useAppDispatch();
   const navigate = useNavigate();
   const { groups, loading } = useAdmin();
-
+  const [checkedGroups, setCheckedGroups] = useState<string[]>([]);
+  const [action, setAction] = useState<string>("");
+  // Handle checkbox change
+  const handleCheckboxChange = (groupId: string) => {
+    setCheckedGroups(
+      (currentChecked: string[]) =>
+        currentChecked.includes(groupId)
+          ? currentChecked.filter((id) => id !== groupId) // Uncheck
+          : [...currentChecked, groupId] // Check
+    );
+  };
   useEffect(() => {
     dispacher(getGroupsRequest());
   }, []);
@@ -65,13 +79,74 @@ export const DisplayGroups = () => {
         </SearchContainer>
         <ActionContainer>
           <Label>Action:</Label>
-          <DropDown />
-          <ActionButton>Apply</ActionButton>
+          <Select
+            value={action}
+            onChange={(e) => {
+              e.target.value && setAction(e.target.value);
+            }}
+          >
+            <Option value="" disabled>
+              Select Action
+            </Option>
+            <Option value="delete">Delete</Option>
+            <Option value="edit">Edit</Option>
+          </Select>
+          <ActionButton
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              if (checkedGroups.length < 1) {
+                dispacher(
+                  setFlashMessage({
+                    title: "Reminder",
+                    desc: "Please select a group",
+                    status: true,
+                    duration: 5,
+                    type: "error",
+                  })
+                );
+                return;
+              }
+              if (action === "delete") {
+                dispacher(deleteGroupRequest(checkedGroups));
+              } else if (action === "edit") {
+                if (checkedGroups.length > 1) {
+                  dispacher(
+                    setFlashMessage({
+                      title: "Reminder",
+                      desc: "Please select only one group to edit",
+                      status: true,
+                      duration: 5,
+                      type: "error",
+                    })
+                  );
+                  return;
+                }
+                navigate(`${checkedGroups[0]}/edit`);
+              } else {
+                dispacher(
+                  setFlashMessage({
+                    title: "Reminder",
+                    desc: "Please select an action",
+                    status: true,
+                    duration: 5,
+                    type: "error",
+                  })
+                );
+                return;
+              }
+              setAction("");
+              setCheckedGroups([]);
+            }}
+          >
+            Apply
+          </ActionButton>
         </ActionContainer>
 
         <CustomTable keys={Object.keys(groups[0]).length}>
           <thead>
             <tr>
+              <th>Action</th>
               {Object.keys(groups[0]).map((key) => (
                 <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
               ))}
@@ -79,7 +154,15 @@ export const DisplayGroups = () => {
           </thead>
           <tbody>
             {groups.map((group) => (
-              <tr>
+              <tr key={group.id}>
+                <td>
+                  <CheckBox
+                    type="checkbox"
+                    value={group.id}
+                    checked={checkedGroups.includes(group.id)}
+                    onChange={() => handleCheckboxChange(group.id)}
+                  />
+                </td>
                 {Object.entries(group).map(([key, value]) => (
                   <td>
                     {key === "permissions" ? (
