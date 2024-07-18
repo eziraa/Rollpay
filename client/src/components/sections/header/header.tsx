@@ -61,7 +61,11 @@ export const Header = () => {
           <HiMenu />
         </HamburgerMenu>
         <WelcomeMessageContainer>
-          <BlurredText>
+          <BlurredText
+            style={{
+              fontSize: "2rem",
+            }}
+          >
             Welcome,{user?.employee.gender === "F" ? " Ms" : " Mr"}.{" "}
             {user?.employee.first_name}
           </BlurredText>
