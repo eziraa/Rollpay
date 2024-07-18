@@ -15,12 +15,13 @@ export const custom_vertical_scroll_bar = css`
 export const custom_horizontal_scroll_bar = css`
   overflow-x: scroll;
   &::-webkit-scrollbar {
+    height: 0.1rem; 
     width: 0.2rem;
   }
 
   &::-webkit-scrollbar-thumb {
     background: #888;
-    border-radius: 0.4rem;
+    border-radius: 0.2rem;
   }
 `;
 export const ScrollBar = styled.div`

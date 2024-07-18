@@ -75,7 +75,6 @@ const getEmployeeSalary = async (pageUrl: string) => {
   return response;
 };
 
-
 const raiseSalary = async (value: number) => {
   const response = await api
     .post(`/employee/salary/raise/${value}`)
@@ -96,10 +95,39 @@ const raiseSalary = async (value: number) => {
   return response;
 };
 
+const paySalary = async (month: string) => {
+  const response = await api
+    .patch("/employee/pay/" + month)
+    .then((res) => {
+      console.log(res.data.results);
+      return {
+        results: res.data.results,
+        pagination: {
+          next: res.data.next,
+          previous: res.data.previous,
+          count: res.data.count,
+        },
+        code: res.status,
+        success: "Success returned employees",
+      };
+    })
+    .catch((err: AxiosError) => {
+      for (const value of Object.values(
+        (err.response?.data as { [key: string]: unknown }) || {}
+      ))
+        return {
+          error: value,
+          code: err.response?.status,
+        } as { error: string; code: number };
+    });
+  return response;
+};
+
 const SalaryAPI = {
   listEmployeeSalary,
   searchEmployeeSalary,
   getEmployeeSalary,
   raiseSalary,
+  paySalary,
 };
 export default SalaryAPI;

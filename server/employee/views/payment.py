@@ -1,5 +1,5 @@
 from datetime import date
-import json
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
@@ -11,8 +11,7 @@ from employee.serializers.payment import PaymentSerializer, MonthlyPaymentSerial
 from employee.views.employee import StandardResultsSetPagination
 from ..models import Employee, Payment, Salary
 import month
-
-
+import datetime
 class PaymentView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
@@ -53,7 +52,25 @@ class PaymentView(APIView):
                     for year in range(2022, 2025):
                         for curr_month in range(1, 13):
                             self.create_payment(employee, month=curr_month)
-
+    def patch(self, request, month):
+        try:
+            payments = Payment.objects.filter(month=month)
+        except payments.DoesNotExist:
+            return Response({"error": "payment not found"}, status=status.HTTP_404_NOT_FOUND)
+      
+        for payment in payments:
+            if payment.payment_date == None : payment.payment_date = datetime.datetime.now()
+            payment.save()
+        queryset = payments
+        paginator = StandardResultsSetPagination()
+        paginator.page_size = request.query_params.get(
+            "page_size", 10)
+        page = paginator.paginate_queryset(queryset, request)
+        if page is not None:
+            serializer = PaymentSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        serializer = PaymentSerializer(queryset, many=True)
+        return Response(data=serializer.data, safe=False)
     def create_payment(self, employee: Employee, month: month.Month):
         if Payment.objects.filter(employee=employee, month=month).exists():
             return False

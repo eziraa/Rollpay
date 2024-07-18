@@ -41,7 +41,7 @@ export const PaymentCard = () => {
                     {payment.payment_date ? (
                       stringDay(new Date(payment.payment_date))
                     ) : (
-                      <span className="italic">Not paid</span>
+                      <span className="italic">-</span>
                     )}
                   </PaymentCell>
                   <PaymentCell className="blue">
@@ -63,7 +63,7 @@ export const PaymentCard = () => {
                     {payment.payment_date ? (
                       <PostiveText>Paid</PostiveText>
                     ) : (
-                      <NegativeText>Not Paid</NegativeText>
+                      <NegativeText>Unpaid</NegativeText>
                     )}
                   </PaymentCell>
                 </PaymentRow>
