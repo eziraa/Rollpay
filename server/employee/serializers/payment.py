@@ -30,19 +30,23 @@ class PaymentSerializer(serializers.ModelSerializer):
     income_tax = serializers.SerializerMethodField(read_only=True)
     gross_salary = serializers.SerializerMethodField(read_only=True)
     salary_history = serializers.SerializerMethodField(read_only=True)
+    payment_date = serializers.SerializerMethodField(read_only=True)
 
 
     class Meta:
         model = Payment
         fields = ('employee_id', 'employee_name',  'basic_salary',
                   "allowances", "overtimes", 'gross_salary', "deductions",
-                  'total_deduction', "income_tax", "net_salary", 'month', 'payment_status', 'payment_date',
-
+                 "income_tax",  'total_deduction', "net_salary", 'month', 'payment_status', 'payment_date',
                   'salary_history'
                   )
 
     def get_employee_id(self, obj):
         return obj.employee.id
+    def get_payment_date(self, obj):
+        if(obj.payment_date):
+            return obj.payment_date.strftime('%Y-%m-%d')
+        return obj.payment_date
     def get_salary_history(self, obj:Employee):
             employee = obj.employee
             salaries = Salary.objects.filter(employee=employee)
