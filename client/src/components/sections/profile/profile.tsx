@@ -6,7 +6,6 @@ import {
   ModalContainer,
   IconContainer,
   ItemContainer,
-  HorizontalLine,
 } from "./profile.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { logoutRequested } from "../../../store/user/user-slice";
@@ -57,7 +56,6 @@ const Profile = ({ close }: { close: () => void }) => {
           </ResetLink>
         </ItemContainer>
 
-        <HorizontalLine />
         <ItemContainer>
           <IconContainer>
             <MdLogout />
