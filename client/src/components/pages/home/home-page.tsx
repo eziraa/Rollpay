@@ -48,7 +48,7 @@ export const HomePage = () => {
       sub_menu_items: [
         {
           title: "Employees Payroll",
-          path: "/employees-salary",
+          path: "/payroll",
           icon: <SalaryIcon />,
         },
         {
