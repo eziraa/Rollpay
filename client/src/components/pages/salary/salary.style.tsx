@@ -10,6 +10,7 @@ import {
 } from "../../utils/pages-utils/containers.style";
 import { Label } from "../../sections/profile/profile.style";
 import { Icon } from "../../utils/profile/employee-profile.style";
+import { custom_horizontal_scroll_bar} from "../../utils/scroll-bar/scroll-bar";
 
 export const EmployeesSalaryContainer = styled.div<ThemeProps>`
   ${container}
@@ -112,6 +113,12 @@ export const StartPaymentBtn = styled.button`
   border: none;
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
+  margin-right: 0.5rem;
+`;
+
+export const ButtonLabel = styled.p`
+  margin-left: 0.5rem;
+  display: inline;
 `;
 
 export const TableContainer = styled.div`
@@ -121,7 +128,7 @@ export const TableContainer = styled.div`
   justify-content: start;
   width: fit-content;
   max-width: 100%;
-  overflow-x: scroll;
+  ${custom_horizontal_scroll_bar}
 `;
 
 export const CustomTable = styled.table`
