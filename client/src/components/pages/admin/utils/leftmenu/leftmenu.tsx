@@ -1,5 +1,8 @@
 import { useLocation, useNavigate } from "react-router";
-import { MenuItem } from "../../../../sections/left-menu/left-menu.style";
+import {
+  MenuItem,
+  MenuItemText,
+} from "../../../../sections/left-menu/left-menu.style";
 import { LeftMenuContainer } from "./leftmenu.style";
 
 const menu_items = [
@@ -32,7 +35,7 @@ export const LeftMenu = () => {
           active={menuItem.path === pathname}
           onClick={() => navigate(menuItem.path)}
         >
-          {menuItem.title}
+          <MenuItemText>{menuItem.title}</MenuItemText>
         </MenuItem>
       ))}
     </LeftMenuContainer>
