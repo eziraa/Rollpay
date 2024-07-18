@@ -49,6 +49,7 @@ export const RouterConfig = () => {
           {routing_elements}
         </Route>
         {<Route path="not-found" element={<NotFoundPage />} />}
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );
