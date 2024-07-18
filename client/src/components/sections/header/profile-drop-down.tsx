@@ -10,9 +10,12 @@ export const DropDownContainer = styled.div`
   gap: 1rem;
   align-items: center;
   cursor: pointer;
+  color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
+
   &:hover {
+    color: ${({ theme }) => theme.buttons.primary};
     background-color: ${({ theme }) =>
-      addOpacityToColor(0.1, theme.colors.primary)};
+      addOpacityToColor(0.1, theme.buttons.primary)};
   }
   padding: 0.5rem;
 `;
