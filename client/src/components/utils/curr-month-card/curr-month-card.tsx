@@ -184,7 +184,7 @@ export const MonthCard = ({ statType }: Props) => {
                 height={350}
                 series={overtimetData.series}
                 options={{
-                  title: { text: "Deduction PieChart" },
+                  title: { text: "Overtime PieChart" },
                   noData: { text: "Empty Data" },
                   colors: colors.slice(0, overtimetData.series.length),
                   labels: overtimetData.labels,

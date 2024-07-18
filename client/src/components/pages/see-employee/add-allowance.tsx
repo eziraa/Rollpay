@@ -95,6 +95,7 @@ export const AddAllowanceToEmp = () => {
         })
       );
       dispatcher(addEmpAllowanceRequested(values));
+      navigate(-1);
     },
   });
 

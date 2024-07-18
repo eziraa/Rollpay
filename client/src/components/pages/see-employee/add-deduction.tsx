@@ -54,6 +54,7 @@ export const AddDeductionToEmp = () => {
         })
       );
       dispatcher(addEmpDeductionRequested(values));
+      navigate(-1);
     },
   });
 

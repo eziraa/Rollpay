@@ -43,7 +43,7 @@ const Profile = ({ close }: { close: () => void }) => {
                 close();
               }}
             >
-              <Link to={`/${user.user?.role !== "user" && "me"}`}>Profile</Link>
+              <Link to={`/${user.user?.role !== "user" ?  "me" : ""}`}>Profile</Link>
             </Label>
           </ResetLink>
         </ItemContainer>
