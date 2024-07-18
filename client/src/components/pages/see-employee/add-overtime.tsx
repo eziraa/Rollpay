@@ -51,6 +51,7 @@ export const AddOvertimeToEmp = () => {
     },
     onSubmit(values) {
       dispatcher(addEmpOvertimeRequested(values));
+      navigate(-1);
     },
     validationSchema: AddOvertimeToEmpSchema,
   });
