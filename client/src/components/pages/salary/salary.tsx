@@ -26,6 +26,7 @@ import {
 } from "../display-employee/display-employee.style";
 import { Select, SelectOption } from "../../utils/form-elements/form.style";
 import {
+  getSalariesDone,
   loadNextPaymentListPage,
   searchPaymentRequested,
 } from "../../../store/salary/salary-slice";
@@ -45,6 +46,11 @@ import { RiFileExcel2Line } from "react-icons/ri";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
 import { handleExport, pdfExport } from "./export";
 import { ThreeDots } from "../../utils/loading/dots";
+import SalaryAPI from "../../../services/salary-api";
+import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
+import {
+  PaginatedPaymentResponse,
+} from "../../../typo/salary/response";
 
 const getNestValue = (
   key: string,
@@ -92,6 +98,35 @@ export const EmployeesSalaryPage = () => {
 
   const { year, month, changeMonth, changeYear } = useYearMonthPagination();
   const { year: query_year, month: query_month } = useParams();
+  const handlePay = (month: string) => {
+    const response: PaginatedPaymentResponse = SalaryAPI.paySalary(month)
+      .then(() => {
+        dispatcher(
+          setFlashMessage({
+            type: "success",
+            title: "Pay salary",
+            status: true,
+            duration: 5,
+            desc: "Salary paid successfully",
+          })
+        );
+      })
+      .catch(() => {
+        dispatcher(
+          setFlashMessage({
+            type: "error",
+            title: "Failed to pay salary",
+            status: true,
+            duration: 5,
+            desc: "Please try again later",
+          })
+        );
+      });
+    if (response.results.length > 0) {
+      dispatcher(getSalariesDone(response));
+      window.location.reload();
+    }
+  };
   useEffect(() => {
     if (query_year && query_month) {
       dispatcher(
@@ -126,7 +161,7 @@ export const EmployeesSalaryPage = () => {
     if (!month && !year) return;
     !year && changeYear(current_year);
     !month && changeMonth(current_month);
-    year && month && navigate(`/employees-salary/${year}/${month}`);
+    year && month && navigate(`/payroll/${year}/${month}`);
   }, [month, year]);
 
   useEffect(() => {
@@ -293,7 +328,15 @@ export const EmployeesSalaryPage = () => {
             navigate("raise");
           }}
         >
-          Raise Salary
+          Raise
+        </StartPaymentBtn>
+        <StartPaymentBtn
+          onClick={(e) => {
+            e.stopPropagation();
+            if (employees.length > 0) handlePay(employees[0].month);
+          }}
+        >
+          Pay
         </StartPaymentBtn>
 
         <Label
