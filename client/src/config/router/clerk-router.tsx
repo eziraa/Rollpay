@@ -67,13 +67,10 @@ export const ClerkRouterConfig = () => {
           element={<CheckFlashMessage />}
         />
 
-        <Route path="/employees-salary" element={<EmployeesSalaryPage />}>
+        <Route path="/payroll" element={<EmployeesSalaryPage />}>
           <Route path="raise" element={<RaiseSalary />} />
         </Route>
-        <Route
-          path="/employees-salary/:year/:month"
-          element={<EmployeesSalaryPage />}
-        />
+        <Route path="/payroll/:year/:month" element={<EmployeesSalaryPage />} />
         <Route
           path="/employees/employee/:employee_id"
           element={<SeeEmployee />}
