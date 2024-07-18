@@ -71,7 +71,7 @@ function ProtectedRoute() {
       : user?.role === "sys_admin"
       ? AdminRouterConfig()
       : user?.role === "user"
-      ? UserRouterConfig()
+      ? UserRouterConfig("")
       : undefined;
   } else {
     return;
