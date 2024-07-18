@@ -57,6 +57,7 @@ export const MenuItem = styled.div<MenuItemProps>`
   text-align: left;
   font-size: 2rem;
   margin: 0.3rem 1rem;
+  gap: 1rem;
   border-radius: 1rem;
   color: ${({ active, theme }) =>
     active ? theme.backgrounds.primary : theme.colors.primary};
