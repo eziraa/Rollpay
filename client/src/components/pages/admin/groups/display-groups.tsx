@@ -166,7 +166,10 @@ export const DisplayGroups = () => {
                 {Object.entries(group).map(([key, value]) => (
                   <td>
                     {key === "permissions" ? (
-                      <Select multiple size={5}>
+                      <Select
+                        multiple
+                        size={Math.min(group.permissions.length + 1, 4)}
+                      >
                         {value.map((value: Permission) => (
                           <option value={value.codename}>{value.name}</option>
                         ))}

@@ -8,7 +8,7 @@ class RoleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Role
-        fields = '__all__'
+        fields = ("id", 'name', 'groups', 'created_at')
 
     def get_groups(self, obj: Role):
         return GroupSerializer(obj.groups, many=True).data
