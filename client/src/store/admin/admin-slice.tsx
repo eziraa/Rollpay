@@ -92,6 +92,15 @@ const AdminSlice = createSlice({
       state.deleting = true;
       state.groups = action.payload;
     },
+    deleteEmployeesRequest: (state, _: PayloadAction<string[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+    },
+    deleteEmployeesDone: (state, action: PayloadAction<AdminEmployee[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+      state.employees = action.payload;
+    },
     editGroupRequest: (state, _: PayloadAction<EditGroupParams>) => {
       state.task_finished = false;
       state.editing = true;
@@ -173,6 +182,8 @@ export const {
   deleteUserRequest,
   editUserDone,
   editUserRequest,
+  deleteEmployeesRequest,
+  deleteEmployeesDone,
   raiseError,
 } = AdminSlice.actions;
 export default AdminSlice.reducer;

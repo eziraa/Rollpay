@@ -71,7 +71,7 @@ class UserView(APIView):
                 user.save()
                 print(user.last_login)
                 empoyee.save()
-                return Response(data=UserSerializer(user).data, status=201)
+                return Response(data=MegaUserSerializer(user).data, status=201)
             else:
                 return JsonResponse({'error': 'Employee does not exist \n Check Your ID'}, status=400)
         except KeyError as e:
@@ -93,7 +93,7 @@ class UserView(APIView):
                 users = CustomUser.objects.filter(id__in=users_id)
                 if users.exists():
                     users.delete()
-                    return Response(UserSerializer(CustomUser.objects.all(), many=True).data, status=200)
+                    return Response(MegaUserSerializer(CustomUser.objects.all(), many=True).data, status=200)
                 else:
                     return Response({'error': 'User not found'}, status=404)
 

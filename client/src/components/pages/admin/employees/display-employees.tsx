@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../../../utils/custom-hook";
 import {
   getRolesRequest,
   getEmployeesRequest,
+  deleteEmployeesRequest,
 } from "../../../../store/admin/admin-slice";
 import { ThreeDots } from "../../../utils/loading/dots";
 import { NoResult } from "../../../utils/containers/containers.style";
@@ -43,12 +44,12 @@ export const DisplayEmployees = () => {
   const [checkedEmployees, setCheckedEmployees] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
   // Handle checkbox change
-  const handleCheckboxChange = (userId: string) => {
+  const handleCheckboxChange = (employeeId: string) => {
     setCheckedEmployees(
       (currentChecked: string[]) =>
-        currentChecked.includes(userId)
-          ? currentChecked.filter((id) => id !== userId) // Uncheck
-          : [...currentChecked, userId] // Check
+        currentChecked.includes(employeeId)
+          ? currentChecked.filter((id) => id !== employeeId) // Uncheck
+          : [...currentChecked, employeeId] // Check
     );
   };
   useEffect(() => {
@@ -61,11 +62,11 @@ export const DisplayEmployees = () => {
     employees &&
       setAllEmployees(
         employees.filter(
-          (user) =>
-            user.first_name
+          (employee) =>
+            employee.first_name
               .toLowerCase()
               .includes(search.toString().toLowerCase()) ||
-            user.last_name
+            employee.last_name
               .toLowerCase()
               .includes(search.toString().toLowerCase())
         )
@@ -81,7 +82,7 @@ export const DisplayEmployees = () => {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            navigate("add-user");
+            navigate("add-employee");
           }}
         >
           Add New
@@ -125,7 +126,7 @@ export const DisplayEmployees = () => {
                 dispacher(
                   setFlashMessage({
                     title: "Reminder",
-                    desc: "Please select a user",
+                    desc: "Please select a employee",
                     status: true,
                     duration: 5,
                     type: "error",
@@ -134,13 +135,13 @@ export const DisplayEmployees = () => {
                 return;
               }
               if (action === "delete") {
-                // dispacher(deleteEmployeeRequest(checkedEmployees));
+                dispacher(deleteEmployeesRequest(checkedEmployees));
               } else if (action === "edit") {
                 if (checkedEmployees.length > 1) {
                   dispacher(
                     setFlashMessage({
                       title: "Reminder",
-                      desc: "Please select only one user to edit",
+                      desc: "Please select only one employee to edit",
                       status: true,
                       duration: 5,
                       type: "error",
@@ -180,17 +181,17 @@ export const DisplayEmployees = () => {
               </tr>
             </thead>
             <tbody>
-              {all_employees.map((user) => (
+              {all_employees.map((employee) => (
                 <tr>
                   <td>
                     <CheckBox
                       type="checkbox"
-                      value={user.id}
-                      checked={checkedEmployees.includes(user.id)}
-                      onChange={() => handleCheckboxChange(user.id)}
+                      value={employee.id}
+                      checked={checkedEmployees.includes(employee.id)}
+                      onChange={() => handleCheckboxChange(employee.id)}
                     />
                   </td>
-                  {Object.entries(user).map(([_, value]) => (
+                  {Object.entries(employee).map(([_, value]) => (
                     <td>{value}</td>
                   ))}
                 </tr>

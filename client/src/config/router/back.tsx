@@ -302,8 +302,12 @@ export const adminRoutes = [
         element: <EmployeePage />,
         sub_routes: [
           { path: "", element: <DisplayEmployees /> },
-          { path: "add-employee", element: <AddUser /> },
-          { path: ":employee_id/edit", element: <EditUser /> },
+          {
+            path: "add-employee",
+            element: <AddEmployee />,
+            sub_routes: [{ path: "add-position", element: <AddPosition /> }],
+          },
+          { path: ":employee_id/edit", element: <AddEmployee /> },
         ],
       },
       { path: "", element: <Navigate to="users" replace={true} /> },
@@ -322,7 +326,7 @@ export const adminRoutes = [
         element: <RolePage />,
         sub_routes: [
           { path: "", element: <DisplayRoles /> },
-          { path: "add-role", element: <AddGroup /> },
+          // { path: "add-role", element: <AddGroup /> },
         ],
       },
     ],

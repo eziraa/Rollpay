@@ -10,6 +10,7 @@ import {
   addGroupRequest,
   addUserDone,
   addUserRequest,
+  deleteEmployeesRequest,
   deleteGroupRequest,
   deleteUserRequest,
   editGroupDone,
@@ -402,6 +403,61 @@ function* deleteGroup(action: PayloadAction<string[]>) {
   }
 }
 
+function* deleteEmployee(action: PayloadAction<string[]>) {
+  try {
+    const response: AdminResponse = yield call(
+      AdminAPI.deleteEmployee,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getEmployeesDone(response.employees));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Deleting Employee",
+          desc: "Employee deleted successfully",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "Not allowed to view groups",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (error) {
+    // TODO:
+  }
+}
+
 function* addUser(action: PayloadAction<AddUserParams>) {
   try {
     const response: AddUserResponse = yield call(
@@ -565,4 +621,5 @@ export function* watchAdminRequest() {
   yield takeEvery(deleteUserRequest.type, deleteUser);
   yield takeEvery(editUserRequest.type, editUser);
   yield takeEvery(getEmployeesRequest.type, getEmployees);
+  yield takeEvery(deleteEmployeesRequest.type, deleteEmployee);
 }

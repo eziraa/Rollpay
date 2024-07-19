@@ -237,6 +237,28 @@ const deleteUser = async (values: string[]) => {
   return users;
 };
 
+
+const deleteEmployee = async (values: string[]) => {
+  const users = await api
+    .delete("/employee/admin/delete", { data: { employees: values } })
+    .then((res) => {
+      return {
+        employees: res.data,
+        code: res.status,
+        success: "Employee deleted successfully",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
 const AdminAPI = {
   getRoles,
   getUsers,
@@ -249,6 +271,7 @@ const AdminAPI = {
   addUser,
   deleteUser,
   editUser,
+  deleteEmployee,
 };
 
 export default AdminAPI;
