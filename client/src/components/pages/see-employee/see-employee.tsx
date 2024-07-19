@@ -55,7 +55,7 @@ export const SeeEmployee = () => {
           <Title>Current Employee</Title>
         </TitleContainer>
         <NavigationBar />
-        {["edit", "salary-history"].includes(
+        {["edit", "salary-history","assets"].includes(
           pathname.split("/").slice(-1)[0]
         ) || (
           <Label
