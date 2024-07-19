@@ -17,7 +17,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from employee.serializers.employee import EmployeeSerializer
-from employee.serializers.user import UserSerializer
+from employee.serializers.user import MegaUserSerializer
 from employee.models import *
 
 
@@ -44,7 +44,7 @@ class UserView(APIView):
             except Employee.DoesNotExist:
                 return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
         users = CustomUser.objects.all()
-        serializer = UserSerializer(users, many=True)
+        serializer = MegaUserSerializer(users, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
@@ -111,16 +111,20 @@ class UserView(APIView):
         except CustomUser.DoesNotExist:
             return Response({'error': 'User not found'}, status=404)
         try:
-            user_role = Role.objects.filter(role=user_role)
+            user_role = Role.objects.get(name=user_role)
         except Role.DoesNotExist:
             return Response({'error': 'User not found'}, status=404)
 
         # Use request.data directly
         user.name = user_name
         user.role = user_role
+        user.groups.set(user_role.groups.all())
+        serializer = MegaUserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
         user.save()
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status=200)
+        serializer = MegaUserSerializer(user)
 
 
 

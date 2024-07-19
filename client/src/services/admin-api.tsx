@@ -9,6 +9,7 @@ const getUsers = async () => {
   const users = await api
     .get("user/list")
     .then((res) => {
+      console.log(res.data);
       return {
         users: res.data,
         code: res.status,

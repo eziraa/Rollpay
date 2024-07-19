@@ -25,6 +25,19 @@ export interface User {
   role: Role;
   first_name: string;
   last_name: string;
+  password: string;
+  empID: string;
+  is_staff: boolean;
+  is_superuser: boolean;
+}
+
+export interface EdiTableUser extends User {
+  password: string;
+  empID: string;
+  is_staff: boolean;
+  is_superuser: boolean;
+  permission: Permission[];
+  groups: Group[];
 }
 
 export interface AdminResponse extends BaseResponse {

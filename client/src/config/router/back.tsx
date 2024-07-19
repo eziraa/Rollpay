@@ -38,6 +38,7 @@ import { UserDashboard } from "../../components/pages/user/dashboard/dashboard";
 import { UserHomePage } from "../../components/pages/user/home/home";
 import UserProfile from "../../components/pages/user-profile/user-profile";
 import { AddUser } from "../../components/pages/admin/users/add-user";
+import { EditUser } from "../../components/pages/admin/users/edit-user";
 
 export const userRoute = (base_end_point: string) => [
   {
@@ -291,7 +292,7 @@ export const adminRoutes = [
         sub_routes: [
           { path: "", element: <DisplayUsers /> },
           { path: "add-user", element: <AddUser /> },
-          { path: ":user_id/edit", element: <AddUser /> },
+          { path: ":user_id/edit", element: <EditUser /> },
         ],
       },
       { path: "", element: <Navigate to="users" replace={true} /> },

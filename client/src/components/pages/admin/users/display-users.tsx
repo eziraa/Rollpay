@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // export const CustomTable =
 
 import { useEffect, useState } from "react";
@@ -5,6 +6,7 @@ import { useAdmin } from "../../../../hooks/admin-hook";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import {
   deleteUserRequest,
+  getRolesRequest,
   getUsersRequest,
 } from "../../../../store/admin/admin-slice";
 import { ThreeDots } from "../../../utils/loading/dots";
@@ -50,6 +52,7 @@ export const DisplayUsers = () => {
           : [...currentChecked, userId] // Check
     );
   };
+  const exclude_keys = ["is_admin", "is_staff", "password", "empID"];
   useEffect(() => {
     dispacher(getUsersRequest());
   }, []);
@@ -57,15 +60,18 @@ export const DisplayUsers = () => {
     setAllUsers(users);
   }, [users]);
   useEffect(() => {
-    setAllUsers(
-      users.filter(
-        (user) =>
-          user.first_name
-            .toLowerCase()
-            .includes(search.toString().toLowerCase()) ||
-          user.last_name.toLowerCase().includes(search.toString().toLowerCase())
-      )
-    );
+    users &&
+      setAllUsers(
+        users.filter(
+          (user) =>
+            user.first_name
+              .toLowerCase()
+              .includes(search.toString().toLowerCase()) ||
+            user.last_name
+              .toLowerCase()
+              .includes(search.toString().toLowerCase())
+        )
+      );
   }, [search]);
   if (loading) return <ThreeDots size={1} />;
 
@@ -132,7 +138,9 @@ export const DisplayUsers = () => {
               if (action === "delete") {
                 dispacher(deleteUserRequest(checkedUsers));
               } else if (action === "edit") {
-                if (checkedUsers.length > 1) {
+                if (checkedUsers.length > 1)
+                {
+                
                   dispacher(
                     setFlashMessage({
                       title: "Reminder",
@@ -144,6 +152,7 @@ export const DisplayUsers = () => {
                   );
                   return;
                 }
+                dispacher(getRolesRequest());
                 navigate(`${checkedUsers[0]}/edit`);
               } else {
                 dispacher(
@@ -165,13 +174,21 @@ export const DisplayUsers = () => {
           </ActionButton>
         </ActionContainer>
         {all_users && all_users.length > 0 ? (
-          <CustomTable keys={Object.keys(all_users[0]).length}>
+          <CustomTable
+            keys={
+              Object.keys(all_users[0]).filter(
+                (key) => !exclude_keys.includes(key)
+              ).length
+            }
+          >
             <thead>
               <tr>
                 <th>Action</th>
-                {Object.keys(all_users[0]).map((key) => (
-                  <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
-                ))}
+                {Object.keys(all_users[0])
+                  .filter((key) => !exclude_keys.includes(key))
+                  .map((key) => (
+                    <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
+                  ))}
               </tr>
             </thead>
             <tbody>
@@ -185,13 +202,15 @@ export const DisplayUsers = () => {
                       onChange={() => handleCheckboxChange(user.id)}
                     />
                   </td>
-                  {Object.values(user).map((value) => (
-                    <td>
-                      {typeof value === "string" || typeof value === "number"
-                        ? value
-                        : value["name"]}
-                    </td>
-                  ))}
+                  {Object.entries(user)
+                    .filter(([key]) => !exclude_keys.includes(key))
+                    .map(([_, value]) => (
+                      <td>
+                        {typeof value === "string" || typeof value === "number"
+                          ? value
+                          : value["name"]}
+                      </td>
+                    ))}
                 </tr>
               ))}
             </tbody>

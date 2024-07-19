@@ -1,21 +1,24 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../../../../utils/convertor/add-opacity-color";
+import { custom_vertical_scroll_bar } from "../../../../utils/scroll-bar/scroll-bar";
 
 export const AddItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  height: 100%;
+  max-height: 90vh;
+  ${custom_vertical_scroll_bar}
   flex: 1;
   gap: 1rem;
+  width: 100%;
+  padding: 1rem 3rem;
 `;
 
 export const CheckBox = styled.input`
   margin-right: 1rem;
   height: 20px;
 `;
-
 
 export const AddItemTitle = styled.p`
   font-size: 2.1rem;
@@ -61,4 +64,31 @@ export const ActionContainer = styled.div`
   width: 100%;
   height: fit-content;
   gap: 2rem;
+`;
+
+export const DataLabel = styled.div`
+  background-color: ${({ theme }) =>
+    addOpacityToColor(0.75, theme.buttons.primary)};
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 1rem;
+  width: 100%;
+  height: fit-content;
+  gap: 2rem;
+  margin-top: 2rem;
+`;
+
+export const ItemTitle = styled.h3`
+  font-size: 1.9rem;
+  letter-spacing: 1.2px;
+  color: ${({ theme }) => theme.backgrounds.primary};
+`;
+
+export const RowTamplate = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  justify-content: start;
 `;
