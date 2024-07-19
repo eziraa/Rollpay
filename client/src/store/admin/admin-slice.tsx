@@ -9,7 +9,11 @@ import {
   Role,
   User,
 } from "../../typo/admin/response";
-import { EditGroupParams, EditUserParams } from "../../typo/admin/params";
+import {
+  AddUserParams,
+  EditGroupParams,
+  EditUserParams,
+} from "../../typo/admin/params";
 
 const InitialEmpState: AdminState = {
   users: [],
@@ -97,7 +101,7 @@ const AdminSlice = createSlice({
       state.loading = false;
       state.task_error = action.payload;
     },
-    addUserRequest: (state, _) => {
+    addUserRequest: (state, _: PayloadAction<AddUserParams>) => {
       state.task_finished = false;
       state.adding = true;
     },

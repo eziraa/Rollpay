@@ -32,7 +32,7 @@ export const LeftMenu = () => {
     <LeftMenuContainer>
       {menu_items.map((menuItem) => (
         <MenuItem
-          active={menuItem.path === pathname}
+          active={pathname.startsWith(menuItem.path)}
           onClick={() => navigate(menuItem.path)}
         >
           <MenuItemText>{menuItem.title}</MenuItemText>

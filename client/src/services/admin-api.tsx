@@ -154,13 +154,13 @@ const deleteGroup = async (values: string[]) => {
 
 
 const addUser = async (values: AddUserParams) => {
-  const groups = await api
-    .post("/group/add", values)
+  const users = await api
+    .post("/user/add", values)
     .then((res) => {
       return {
-        group: res.data,
+        user: res.data,
         code: res.status,
-        success: "Success adding group",
+        success: "Success adding user",
       };
     })
     .catch((err: AxiosError) => {
@@ -171,15 +171,15 @@ const addUser = async (values: AddUserParams) => {
       } as { error: string; code: number };
     });
 
-  return groups;
+  return users;
 };
 
 const editUser = async (values: EditUserParams) => {
-  const groups = await api
-    .put("/group/edit", values)
+  const users = await api
+    .put("/user/edit", values)
     .then((res) => {
       return {
-        group: res.data,
+        user: res.data,
         code: res.status,
         success: "Edit User Success",
       };
@@ -192,15 +192,15 @@ const editUser = async (values: EditUserParams) => {
       } as { error: string; code: number };
     });
 
-  return groups;
+  return users;
 };
 
 const deleteUser = async (values: string[]) => {
-  const groups = await api
-    .delete("/group/delete", { data: { groups: values } })
+  const users = await api
+    .delete("/user/delete", { data: { users: values } })
     .then((res) => {
       return {
-        groups: res.data,
+        users: res.data,
         code: res.status,
         success: "User deleted successfully",
       };
@@ -213,7 +213,7 @@ const deleteUser = async (values: string[]) => {
       } as { error: string; code: number };
     });
 
-  return groups;
+  return users;
 };
 
 const AdminAPI = {

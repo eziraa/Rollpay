@@ -6,7 +6,7 @@ import { DisplayGroups } from "../../components/pages/admin/groups/display-group
 import { AddGroup } from "../../components/pages/admin/groups/add-group";
 import { GroupsPage } from "../../components/pages/admin/groups/groups";
 import { RolePage } from "../../components/pages/admin/roles/roles";
-import { UserPage } from "../../components/pages/admin/users/roles";
+import { UserPage } from "../../components/pages/admin/users/users";
 export const AdminRouterConfig = () => (
   <Route path="/" element={<AdminDashBoard />}>
     <Route path="/users" element={<UserPage />}>

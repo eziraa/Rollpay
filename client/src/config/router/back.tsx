@@ -27,7 +27,7 @@ import { EmployeeAsset } from "../../components/sections/employee-asset/asset";
 import { RaiseSalary } from "../../components/sections/raise-salary/raise-salary";
 import { EmployeeSalary } from "../../components/sections/employee-salary/employee-salary";
 import { AdminDashBoard } from "../../components/pages/admin/dashboard/dashbord";
-import { UserPage } from "../../components/pages/admin/users/roles";
+import { UserPage } from "../../components/pages/admin/users/users";
 import { DisplayUsers } from "../../components/pages/admin/users/display-users";
 import { AddGroup } from "../../components/pages/admin/groups/add-group";
 import { GroupsPage } from "../../components/pages/admin/groups/groups";
@@ -37,6 +37,7 @@ import { DisplayRoles } from "../../components/pages/admin/roles/display-roles";
 import { UserDashboard } from "../../components/pages/user/dashboard/dashboard";
 import { UserHomePage } from "../../components/pages/user/home/home";
 import UserProfile from "../../components/pages/user-profile/user-profile";
+import { AddUser } from "../../components/pages/admin/users/add-user";
 
 export const userRoute = (base_end_point: string) => [
   {
@@ -289,7 +290,8 @@ export const adminRoutes = [
         element: <UserPage />,
         sub_routes: [
           { path: "", element: <DisplayUsers /> },
-          { path: "add-user", element: <AddGroup /> },
+          { path: "add-user", element: <AddUser /> },
+          { path: ":user_id/edit", element: <AddUser /> },
         ],
       },
       { path: "", element: <Navigate to="users" replace={true} /> },

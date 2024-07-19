@@ -168,7 +168,7 @@ export const DisplayUsers = () => {
           <CustomTable keys={Object.keys(all_users[0]).length}>
             <thead>
               <tr>
-                <td>Action</td>
+                <th>Action</th>
                 {Object.keys(all_users[0]).map((key) => (
                   <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
                 ))}
@@ -186,7 +186,11 @@ export const DisplayUsers = () => {
                     />
                   </td>
                   {Object.values(user).map((value) => (
-                    <td>{typeof value === "string" ? value : value["name"]}</td>
+                    <td>
+                      {typeof value === "string" || typeof value === "number"
+                        ? value
+                        : value["name"]}
+                    </td>
                   ))}
                 </tr>
               ))}
