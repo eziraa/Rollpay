@@ -48,3 +48,14 @@ class SalaryEmployeeSerializer(EmployeeSerializer):
     def get_salary(self, obj: Employee):
         return SalarySerializer(obj.salary).data
 
+
+class AdminEmployeeSerializer(EmployeeSerializer):
+    user_id = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Employee
+        fields = ('id', 'first_name', 'last_name', 'gender',
+                  'phone_number', 'position', 'email', 'user_id')
+
+    def get_user_id(self, obj: Employee):
+        return obj.user_id

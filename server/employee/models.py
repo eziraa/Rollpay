@@ -132,7 +132,7 @@ class Salary(models.Model):
 class Payment(models.Model):
     employee = models.ForeignKey(
         Employee, blank=True, on_delete=models.CASCADE)
-    payment_date = models.DateTimeField(null=True, blank=True)
+    payment_date = models.DateField(null=True, blank=True)
     month = MonthField()
     salary = models.DecimalField(
         max_digits=12, decimal_places=2, blank=True, null=False)

@@ -23,6 +23,35 @@ export interface User {
   username: string;
   email: string;
   role: Role;
+  first_name: string;
+  last_name: string;
+  password: string;
+  empID: string;
+  is_staff: boolean;
+  is_superuser: boolean;
+}
+
+
+export interface AdminEmployee {
+  id: string;
+  first_name: string;
+  last_name: string;
+  gender: string;
+  email: string;
+  position: string;
+  phone_number: string;
+  date_of_hire: string;
+  salary: number;
+  role: string | undefined;
+}
+
+export interface EditableUser extends User {
+  password: string;
+  empID: string;
+  is_staff: boolean;
+  is_superuser: boolean;
+  permission: Permission[];
+  groups: Group[];
 }
 
 export interface AdminResponse extends BaseResponse {
@@ -30,8 +59,13 @@ export interface AdminResponse extends BaseResponse {
   groups: Group[];
   roles: Role[];
   permissions: Permission[];
+  employees: AdminEmployee[];
 }
 
 export interface AddGroupResponse extends BaseResponse {
   group: Group;
+}
+
+export interface AddUserResponse extends BaseResponse {
+  user: User;
 }

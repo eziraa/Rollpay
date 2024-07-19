@@ -17,7 +17,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from employee.serializers.employee import EmployeeSerializer
-from employee.serializers.user import UserSerializer
+from employee.serializers.user import MegaUserSerializer
 from employee.models import *
 
 
@@ -44,25 +44,88 @@ class UserView(APIView):
             except Employee.DoesNotExist:
                 return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
         users = CustomUser.objects.all()
-        serializer = UserSerializer(users, many=True)
+        serializer = MegaUserSerializer(users, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        logout(request)
-        return Response("Logged out", status=status.HTTP_200_OK)
+        try:
+            data = json.loads(request.body)
+            if Employee.objects.filter(id=data['empID']).exists():
+                empoyee = Employee.objects.get(id=data['empID'])
+                if CustomUser.objects.filter(username=data['username']).exists():
+                    return JsonResponse({'error': 'Username already exists'}, status=400)
+                if empoyee.user:
+                    return JsonResponse({'error': 'There is an other user registed in this ID Please check your ID '}, status=400)
 
-    def put(self, request, *args, **kwargs):
-        user = CustomUser.objects.get(id=request.user.id)
-        data = request.data
-        user.username = data.get('username', user.username)
-        user.email = data.get('email', user.email)
+                user = CustomUser.objects.create_user(
+                    id=id_generator(),
+                    first_name=empoyee.first_name,
+                    last_name=empoyee.last_name,
+                    email=empoyee.email,
+                    username=data['username'],
+                    password=data['password'],
+                )
+                RoleManager.add_role(user, empoyee.position)
+                empoyee.user = user
+                user.first_name
+                user.save()
+                print(user.last_login)
+                empoyee.save()
+                return Response(data=MegaUserSerializer(user).data, status=201)
+            else:
+                return JsonResponse({'error': 'Employee does not exist \n Check Your ID'}, status=400)
+        except KeyError as e:
+            return JsonResponse({'error': f'Missing field: {str(e)}'}, status=400)
+
+
+    def delete(self, request: Request, user_id=None, *args, **kwargs):
+        if user_id is not None:
+            user = CustomUser.objects.filter(id=user_id)
+            if user.exists():
+                user.delete()
+                return Response({'message': 'User deleted'}, status=200)
+            else:
+                return Response({'error': 'User not found'}, status=404)
+        else:
+            data = json.loads(request.body)
+            users_id = data.get('users', [])
+            if users_id is not None:
+                users = CustomUser.objects.filter(id__in=users_id)
+                if users.exists():
+                    users.delete()
+                    return Response(MegaUserSerializer(CustomUser.objects.all(), many=True).data, status=200)
+                else:
+                    return Response({'error': 'User not found'}, status=404)
+
+            return Response({'error': 'User id not provided'}, status=400)
+
+    def put(self, request: Request, *args, **kwargs):
+        user_id = request.data.get('id')
+        user_name = request.data.get('name')
+        user_role = request.data.get(
+            'role')
+        if not user_id:
+            return Response({'error': 'User id not specified'}, status=400)
+        try:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=404)
+        try:
+            user_role = Role.objects.get(name=user_role)
+        except Role.DoesNotExist:
+            return Response({'error': 'User not found'}, status=404)
+
+        # Use request.data directly
+        user.name = user_name
+        user.role = user_role
+        user.groups.set(user_role.groups.all())
+        serializer = MegaUserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
         user.save()
-        return Response(status=status.HTTP_200_OK)
+        serializer = MegaUserSerializer(user)
 
-    def delete(self, request, *args, **kwargs):
-        user = CustomUser.objects.get(id=request.user.id)
-        user.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ProfilePictureView(APIView):
@@ -145,6 +208,7 @@ class AccountView(APIView):
                 empoyee.user = user
                 user.first_name
                 user.save()
+                user.last_login
                 empoyee.save()
                 return JsonResponse({'message': 'User registered successfully'}, status=201)
             else:

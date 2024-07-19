@@ -5,6 +5,7 @@ import { useAdmin } from "../../../../hooks/admin-hook";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import {
   deleteGroupRequest,
+  getGroupsDone,
   getGroupsRequest,
 } from "../../../../store/admin/admin-slice";
 import { ThreeDots } from "../../../utils/loading/dots";
@@ -37,6 +38,7 @@ export const DisplayGroups = () => {
   const dispacher = useAppDispatch();
   const navigate = useNavigate();
   const { groups, loading } = useAdmin();
+  const [search, setSearch] = useState<string>("");
   const [checkedGroups, setCheckedGroups] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
   // Handle checkbox change
@@ -51,10 +53,13 @@ export const DisplayGroups = () => {
   useEffect(() => {
     dispacher(getGroupsRequest());
   }, []);
-
+  useEffect(() => {
+    dispacher(
+      getGroupsDone(groups.filter((group) => group.name.startsWith(search)))
+    );
+  }, [search]);
   if (loading) return <ThreeDots size={1} />;
 
-  if (groups.length < 1) return <NoResult>No Result</NoResult>;
   return (
     <ItemContainer>
       <ItemHeader>
@@ -74,7 +79,17 @@ export const DisplayGroups = () => {
           <BlurredIcon>
             <FaSearch />
           </BlurredIcon>
-          <ItemInput placeholder="" />
+          <ItemInput
+            placeholder=""
+            onChange={(e) => {
+              e.preventDefault();
+              if (e.target.value !== "") {
+                setSearch(e.target.value);
+              } else {
+                dispacher(getGroupsRequest());
+              }
+            }}
+          />
           <SearchButton>Search</SearchButton>
         </SearchContainer>
         <ActionContainer>
@@ -142,47 +157,51 @@ export const DisplayGroups = () => {
             Apply
           </ActionButton>
         </ActionContainer>
-
-        <CustomTable keys={Object.keys(groups[0]).length}>
-          <thead>
-            <tr>
-              <th>Action</th>
-              {Object.keys(groups[0]).map((key) => (
-                <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {groups.map((group) => (
-              <tr key={group.id}>
-                <td>
-                  <CheckBox
-                    type="checkbox"
-                    value={group.id}
-                    checked={checkedGroups.includes(group.id)}
-                    onChange={() => handleCheckboxChange(group.id)}
-                  />
-                </td>
-                {Object.entries(group).map(([key, value]) => (
-                  <td>
-                    {key === "permissions" ? (
-                      <Select
-                        multiple
-                        size={Math.min(group.permissions.length + 1, 4)}
-                      >
-                        {value.map((value: Permission) => (
-                          <option value={value.codename}>{value.name}</option>
-                        ))}
-                      </Select>
-                    ) : (
-                      value
-                    )}
-                  </td>
+        {groups && groups.length > 0 ? (
+          <CustomTable keys={Object.keys(groups[0]).length}>
+            <thead>
+              <tr>
+                <th>Action</th>
+                {Object.keys(groups[0]).map((key) => (
+                  <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </CustomTable>
+            </thead>
+
+            <tbody>
+              {groups.map((group) => (
+                <tr key={group.id}>
+                  <td>
+                    <CheckBox
+                      type="checkbox"
+                      value={group.id}
+                      checked={checkedGroups.includes(group.id)}
+                      onChange={() => handleCheckboxChange(group.id)}
+                    />
+                  </td>
+                  {Object.entries(group).map(([key, value]) => (
+                    <td>
+                      {key === "permissions" ? (
+                        <Select
+                          multiple
+                          size={Math.min(group.permissions.length + 1, 4)}
+                        >
+                          {value.map((value: Permission) => (
+                            <option value={value.codename}>{value.name}</option>
+                          ))}
+                        </Select>
+                      ) : (
+                        value
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </CustomTable>
+        ) : (
+          <NoResult>No Result</NoResult>
+        )}
       </ItemBody>
     </ItemContainer>
   );

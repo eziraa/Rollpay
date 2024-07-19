@@ -10,6 +10,9 @@ from employee.views import employee
 urlpatterns = [
     path('list', employee.EmployeeView.as_view(), name="__list_emplyees__"),
     path('add', employee.EmployeeView.as_view(), name='__add_emoployee__'),
+    path('admin', employee.AdminAPIView.as_view(), name='__add_emoployee__'),
+    path('admin/delete', employee.AdminAPIView.as_view(),
+         name='__delete_emoployee__'),
     path('filter', filter_employee.FilterEmployeeView.as_view(),
          name='__filter_emoployee__'),
     path('filter/<filter_by>', filter_employee.FilterEmployeeView.as_view(),

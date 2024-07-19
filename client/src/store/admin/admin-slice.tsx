@@ -4,17 +4,26 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AdminState } from "../../typo/admin/states";
 import {
   AddGroupResponse,
+  AdminEmployee,
   Group,
   Permission,
   Role,
   User,
 } from "../../typo/admin/response";
-import { EditGroupParams } from "../../typo/admin/params";
+import {
+  AddUserParams,
+  EditGroupParams,
+  EditUserParams,
+} from "../../typo/admin/params";
 
 const InitialEmpState: AdminState = {
   users: [],
   roles: [],
   groups: [],
+  employees: [],
+  employee: undefined,
+  user: undefined,
+  role: undefined,
   group: undefined,
   permissions: [],
   task_error: undefined,
@@ -35,6 +44,13 @@ const AdminSlice = createSlice({
     getUsersDone: (state, action: PayloadAction<User[]>) => {
       state.loading = false;
       state.users = action.payload;
+    },
+    getEmployeesRequest: (state) => {
+      state.loading = true;
+    },
+    getEmployeesDone: (state, action: PayloadAction<AdminEmployee[]>) => {
+      state.loading = false;
+      state.employees = action.payload;
     },
     getGroupsRequest: (state) => {
       state.loading = false;
@@ -76,6 +92,15 @@ const AdminSlice = createSlice({
       state.deleting = true;
       state.groups = action.payload;
     },
+    deleteEmployeesRequest: (state, _: PayloadAction<string[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+    },
+    deleteEmployeesDone: (state, action: PayloadAction<AdminEmployee[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+      state.employees = action.payload;
+    },
     editGroupRequest: (state, _: PayloadAction<EditGroupParams>) => {
       state.task_finished = false;
       state.editing = true;
@@ -95,12 +120,48 @@ const AdminSlice = createSlice({
       state.loading = false;
       state.task_error = action.payload;
     },
+    addUserRequest: (state, _: PayloadAction<AddUserParams>) => {
+      state.task_finished = false;
+      state.adding = true;
+    },
+    addUserDone: (state, action: PayloadAction<User>) => {
+      state.task_finished = true;
+      state.adding = false;
+      state.user = action.payload;
+      // Add new group to the list
+    },
+    deleteUserRequest: (state, _: PayloadAction<string[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+    },
+    deleteUserDone: (state, action: PayloadAction<User[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+      state.users = action.payload;
+    },
+    editUserRequest: (state, _: PayloadAction<EditUserParams>) => {
+      state.task_finished = false;
+      state.editing = true;
+    },
+    editUserDone: (state, action: PayloadAction<User>) => {
+      state.task_finished = false;
+      state.editing = true;
+      state.users = state.users.map((user) =>
+        user.id === action.payload.id ? action.payload : user
+      );
+    },
+    setCurrentUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.loading = false;
+    },
   },
 });
 
 export const {
   getUsersRequest,
   getUsersDone,
+  getEmployeesRequest,
+  getEmployeesDone,
   getGroupsRequest,
   getGroupsDone,
   getRolesRequest,
@@ -113,6 +174,16 @@ export const {
   deleteGroupRequest,
   editGroupDone,
   editGroupRequest,
+  setCurrentGroup,
+  setCurrentUser,
+  addUserRequest,
+  addUserDone,
+  deleteUserDone,
+  deleteUserRequest,
+  editUserDone,
+  editUserRequest,
+  deleteEmployeesRequest,
+  deleteEmployeesDone,
   raiseError,
 } = AdminSlice.actions;
 export default AdminSlice.reducer;

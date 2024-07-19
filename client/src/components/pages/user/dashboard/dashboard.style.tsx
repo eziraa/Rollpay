@@ -51,9 +51,7 @@ export const DashBoardCard = styled.div`
     addOpacityToColor(0.02, theme.colors.primary)};
   transition: transform 0.5s ease-in-out;
   cursor: pointer;
-  &:hover {
-    transform: scale(1.02);
-  }
+
   ${mini_shadow}
 `;
 

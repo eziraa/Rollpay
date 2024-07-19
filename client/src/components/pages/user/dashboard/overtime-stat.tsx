@@ -89,8 +89,11 @@ export const OvertimeStat = () => {
                             <SmallDot color={colors[index]} />
                             <span className="italic">
                               {overtime.overtime_type}{" "}
-                              {(overtime.length_of_overtime * employee.salary) /
-                                100}
+                              {(
+                                (overtime.length_of_overtime *
+                                  employee.salary) /
+                                100
+                              ).toFixed(2)}
                             </span>
                           </ToastRow>
                         ))}

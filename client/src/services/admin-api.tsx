@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import { AddGroupParams, EditGroupParams } from "../typo/admin/params";
+import { AddGroupParams, AddUserParams, EditGroupParams, EditUserParams } from "../typo/admin/params";
 
 /**
  * @returns a list of usrs
@@ -9,8 +9,30 @@ const getUsers = async () => {
   const users = await api
     .get("user/list")
     .then((res) => {
+      console.log(res.data);
       return {
         users: res.data,
+        code: res.status,
+        success: "Success getting users",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
+const getEmployees = async () => {
+  const users = await api
+    .get("employee/admin")
+    .then((res) => {
+      return {
+        employees: res.data,
         code: res.status,
         success: "Success getting users",
       };
@@ -152,14 +174,104 @@ const deleteGroup = async (values: string[]) => {
   return groups;
 };
 
+const addUser = async (values: AddUserParams) => {
+  const users = await api
+    .post("/user/add", values)
+    .then((res) => {
+      return {
+        user: res.data,
+        code: res.status,
+        success: "Success adding user",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
+const editUser = async (values: EditUserParams) => {
+  const users = await api
+    .put("/user/edit", values)
+    .then((res) => {
+      return {
+        user: res.data,
+        code: res.status,
+        success: "Edit User Success",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
+const deleteUser = async (values: string[]) => {
+  const users = await api
+    .delete("/user/delete", { data: { users: values } })
+    .then((res) => {
+      return {
+        users: res.data,
+        code: res.status,
+        success: "User deleted successfully",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
+
+const deleteEmployee = async (values: string[]) => {
+  const users = await api
+    .delete("/employee/admin/delete", { data: { employees: values } })
+    .then((res) => {
+      return {
+        employees: res.data,
+        code: res.status,
+        success: "Employee deleted successfully",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
 const AdminAPI = {
   getRoles,
   getUsers,
   getGroups,
+  getEmployees,
   getPermissions,
   addGroup,
   deleteGroup,
   editGroup,
+  addUser,
+  deleteUser,
+  editUser,
+  deleteEmployee,
 };
 
 export default AdminAPI;

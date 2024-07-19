@@ -32,7 +32,7 @@ export const CustomTable = styled.table<TableProps>`
   }
   tr {
     display: grid;
-    grid-template-columns: 0.5fr repeat(${({ keys }) => keys - 1}, 1fr) 1fr;
+    grid-template-columns: 0.5fr repeat(${({ keys }) => keys - 2}, 1fr) 2fr 1fr;
   }
   thead tr {
     background-color: ${({ theme }) =>

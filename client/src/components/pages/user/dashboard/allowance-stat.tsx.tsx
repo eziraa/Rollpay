@@ -92,8 +92,10 @@ export const AllowanceStat = () => {
                               <SmallDot color={colors[index]} />
                               <span className="italic">
                                 {allowance.allowance_type}{" "}
-                                {(allowance.allowance_rate * employee.salary) /
-                                  100}
+                                {(
+                                  (allowance.allowance_rate * employee.salary) /
+                                  100
+                                ).toFixed(2)}
                               </span>
                             </ToastRow>
                           ))}

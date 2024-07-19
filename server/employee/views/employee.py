@@ -14,7 +14,7 @@ import datetime
 from month import Month
 
 # Local modules
-from employee.serializers.employee import EmployeeSerializer
+from employee.serializers.employee import EmployeeSerializer, AdminEmployeeSerializer
 from employee.serializers.position import PositionSerializer
 from employee.permissions.clerk_permission import IsUserInGroupWithClerk
 from employee.serializers.payment import MonthlyPaymentSerializer
@@ -312,3 +312,31 @@ class SalaryManager:
                 overtime=overtime, start_time=start_time, end_time=end_time, payment=payment)
             payment.save()
         return True
+
+
+class AdminAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        employees = Employee.objects.all()
+        return Response(AdminEmployeeSerializer(employees, many=True).data, status= 200)
+
+    def delete(self, request: Request, employee_id=None, *args, **kwargs):
+        if employee_id is not None:
+            employee = Employee.objects.filter(id=employee_id)
+            if employee.exists():
+                employee.delete()
+                return Response({'message': 'Employee deleted'}, status=200)
+            else:
+                return Response({'error': 'Employee not found'}, status=404)
+        else:
+            data = json.loads(request.body)
+            employees_id = data.get('employees', [])
+            if employees_id is not None:
+                employees = Employee.objects.filter(id__in=employees_id)
+                if employees.exists():
+                    employees.delete()
+                    return Response(AdminEmployeeSerializer(Employee.objects.all(), many=True).data, status=200)
+                else:
+                    return Response({'error': 'Employee not found'}, status=404)
+
+            return Response({'error': 'Employee id not provided'}, status=400)

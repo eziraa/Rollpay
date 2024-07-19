@@ -59,10 +59,6 @@ export const ItemInput = styled.input`
       addOpacityToColor(0.8, theme.backgrounds.primary)};
     cursor: pointer;
   }
-  &:focus {
-    outline: none;
-    width: 50%;
-  }
   &:disabled {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.8, theme.backgrounds.primary)};
@@ -75,10 +71,8 @@ export const ItemInput = styled.input`
     color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
     cursor: not-allowed;
   }
+  width: 30%;
 
-  &:placeholder-shown {
-    width: 30%;
-  }
   &:invalid {
     border: 0.1rem solid red;
   }

@@ -1,12 +1,24 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { AddGroupResponse, AdminResponse } from "../../typo/admin/response";
+import {
+  AddGroupResponse,
+  AddUserResponse,
+  AdminResponse,
+} from "../../typo/admin/response";
 import AdminAPI from "../../services/admin-api";
 import {
   addGroupDone,
   addGroupRequest,
+  addUserDone,
+  addUserRequest,
+  deleteEmployeesRequest,
   deleteGroupRequest,
+  deleteUserRequest,
   editGroupDone,
   editGroupRequest,
+  editUserDone,
+  editUserRequest,
+  getEmployeesDone,
+  getEmployeesRequest,
   getGroupsDone,
   getGroupsRequest,
   getPermissionDone,
@@ -18,7 +30,12 @@ import {
   raiseError,
 } from "./admin-slice";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
-import { AddGroupParams, EditGroupParams } from "../../typo/admin/params";
+import {
+  AddGroupParams,
+  AddUserParams,
+  EditGroupParams,
+  EditUserParams,
+} from "../../typo/admin/params";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 function* getUsers() {
@@ -26,6 +43,49 @@ function* getUsers() {
     const response: AdminResponse = yield call(AdminAPI.getUsers);
     if (response.code === 200) {
       yield put(getUsersDone(response.users));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "Not allowed to view groupss",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Group",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (error) {
+    // TODO:
+  }
+}
+
+function* getEmployees() {
+  try {
+    const response: AdminResponse = yield call(AdminAPI.getEmployees);
+    if (response.code === 200) {
+      yield put(getEmployeesDone(response.employees));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
       yield put(
@@ -343,6 +403,212 @@ function* deleteGroup(action: PayloadAction<string[]>) {
   }
 }
 
+function* deleteEmployee(action: PayloadAction<string[]>) {
+  try {
+    const response: AdminResponse = yield call(
+      AdminAPI.deleteEmployee,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getEmployeesDone(response.employees));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Deleting Employee",
+          desc: "Employee deleted successfully",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "Not allowed to view groups",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Employee",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (error) {
+    // TODO:
+  }
+}
+
+function* addUser(action: PayloadAction<AddUserParams>) {
+  try {
+    const response: AddUserResponse = yield call(
+      AdminAPI.addUser,
+      action.payload
+    );
+
+    if (response.code === 201) {
+      yield put(addUserDone(response.user));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Adding User",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(raiseError(response.error));
+    } else if (response.code === 403) {
+      yield put(raiseError(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "Not allowed to add users",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(raiseError(response.error));
+    }
+  } catch (_) {
+    yield put(raiseError("Failed please try again later"));
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Add User",
+        desc: "Failed please try again later",
+        duration: 3,
+      })
+    );
+  }
+}
+
+function* editUser(action: PayloadAction<EditUserParams>) {
+  try {
+    const response: AddUserResponse = yield call(
+      AdminAPI.editUser,
+      action.payload
+    );
+
+    if (response.code === 200) {
+      yield put(editUserDone(response.user));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Editing User",
+          desc: response.success,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(raiseError(response.error));
+    } else if (response.code === 403) {
+      yield put(raiseError(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "Not allowed to add users",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(raiseError(response.error));
+    }
+  } catch (_) {
+    yield put(raiseError("Failed please try again later"));
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Add User",
+        desc: "Failed please try again later",
+        duration: 3,
+      })
+    );
+  }
+}
+
+function* deleteUser(action: PayloadAction<string[]>) {
+  try {
+    const response: AdminResponse = yield call(
+      AdminAPI.deleteUser,
+      action.payload
+    );
+    if (response.code === 200) {
+      yield put(getUsersDone(response.users));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title: "Deleting User",
+          desc: "User deleted successfully",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "Not allowed to view users",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List User",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (error) {
+    // TODO:
+  }
+}
+
 export function* watchAdminRequest() {
   yield takeEvery(getUsersRequest.type, getUsers);
   yield takeEvery(getGroupsRequest.type, getGroups);
@@ -351,4 +617,9 @@ export function* watchAdminRequest() {
   yield takeEvery(addGroupRequest.type, addGroup);
   yield takeEvery(deleteGroupRequest.type, deleteGroup);
   yield takeEvery(editGroupRequest.type, editGroup);
+  yield takeEvery(addUserRequest.type, addUser);
+  yield takeEvery(deleteUserRequest.type, deleteUser);
+  yield takeEvery(editUserRequest.type, editUser);
+  yield takeEvery(getEmployeesRequest.type, getEmployees);
+  yield takeEvery(deleteEmployeesRequest.type, deleteEmployee);
 }

@@ -34,7 +34,6 @@ import { useAuth } from "../../../hooks/auth-hook";
 export const LoginPage = () => {
   const dispatcher = useAppDispatch();
   const auth = useAuth();
-  const pathname = useLocation();
   const user = useUser();
   const { login_error, logging_in } = useUser();
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -44,11 +43,8 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (auth.curr_user.role) {
-      if (pathname.pathname !== "/login") {
-        navigate("/");
-      } else {
-        navigate("/");
-      }
+      navigate("/");
+      window.location.reload();
     }
   }, [auth.curr_user]);
 

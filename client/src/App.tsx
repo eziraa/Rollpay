@@ -17,6 +17,7 @@ import { ProfileProvider } from "./contexts/profile-context";
 import { YearMonthPaginationProvider } from "./providers/year-month-pagination-provider";
 import { RefsProvider } from "./providers/refs-provider";
 import { AuthProvider } from "./providers/auth-provider";
+import { NavigationProvider } from "./providers/navigation-provider";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
@@ -33,33 +34,35 @@ function App() {
 
   return (
     <Provider store={store}>
-      <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <PaginationContext.Provider
-          value={{
-            ...usePagination(),
-          }}
-        >
-          <FilterProvider>
-            <RefsProvider>
-              <DisplayProvider>
-                <ProfileProvider>
-                  <ModalProvider>
-                    <AuthProvider>
-                      <YearMonthPaginationProvider>
-                        <ThemeProvider theme={theme}>
-                          <FlashMessage />
-                          <RouterConfig />
-                          <ModalStore />
-                        </ThemeProvider>
-                      </YearMonthPaginationProvider>
-                    </AuthProvider>
-                  </ModalProvider>
-                </ProfileProvider>
-              </DisplayProvider>
-            </RefsProvider>
-          </FilterProvider>
-        </PaginationContext.Provider>
-      </ThemeContext.Provider>
+      <NavigationProvider>
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+          <PaginationContext.Provider
+            value={{
+              ...usePagination(),
+            }}
+          >
+            <FilterProvider>
+              <RefsProvider>
+                <DisplayProvider>
+                  <ProfileProvider>
+                    <ModalProvider>
+                      <AuthProvider>
+                        <YearMonthPaginationProvider>
+                          <ThemeProvider theme={theme}>
+                            <FlashMessage />
+                            <RouterConfig />
+                            <ModalStore />
+                          </ThemeProvider>
+                        </YearMonthPaginationProvider>
+                      </AuthProvider>
+                    </ModalProvider>
+                  </ProfileProvider>
+                </DisplayProvider>
+              </RefsProvider>
+            </FilterProvider>
+          </PaginationContext.Provider>
+        </ThemeContext.Provider>
+      </NavigationProvider>
     </Provider>
   );
 }

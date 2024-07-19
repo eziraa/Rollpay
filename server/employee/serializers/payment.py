@@ -43,9 +43,8 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     def get_employee_id(self, obj):
         return obj.employee.id
+
     def get_payment_date(self, obj):
-        if(obj.payment_date):
-            return obj.payment_date.strftime('%Y-%m-%d')
         return obj.payment_date
     def get_salary_history(self, obj:Employee):
             employee = obj.employee

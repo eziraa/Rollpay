@@ -23,7 +23,11 @@ import {
   TableHeader,
   TableRow,
 } from "../../utils/custom-table/custom-table";
-import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
+import {
+  MdOutlineClose,
+  MdOutlineEdit,
+  MdOutlineRestartAlt,
+} from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useAllowance } from "../../../hooks/allowance-hook";
 import {
@@ -33,7 +37,7 @@ import {
   openAllowanceRequested,
 } from "../../../store/allowance/allowance-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
+import { IoAddOutline } from "react-icons/io5";
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
 
 /**
@@ -176,7 +180,7 @@ export const AllowancePage = () => {
                             <SmallSpinner />
                           ) : allowance.end_at ? (
                             <>
-                              <IoOpenOutline />
+                              <MdOutlineRestartAlt />
                             </>
                           ) : (
                             <>

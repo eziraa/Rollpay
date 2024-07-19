@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { useAdmin } from "../../../../hooks/admin-hook";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import {
-  deleteUserRequest,
   getRolesRequest,
-  getUsersRequest,
+  getEmployeesRequest,
+  deleteEmployeesRequest,
 } from "../../../../store/admin/admin-slice";
 import { ThreeDots } from "../../../utils/loading/dots";
 import { NoResult } from "../../../utils/containers/containers.style";
@@ -30,44 +30,43 @@ import { FaSearch } from "react-icons/fa";
 import { Label, Select, Option } from "../utils/dropdown/dropdown.style";
 import { CheckBox } from "../utils/add-item/add-item.style";
 import { setFlashMessage } from "../../../../store/notification/flash-messsage-slice";
-import { User } from "../../../../typo/admin/response";
+import { AdminEmployee } from "../../../../typo/admin/response";
 
-export const DisplayUsers = () => {
+export const DisplayEmployees = () => {
   /**
    * Calling hooks and getting necessary imformations
    */
   const dispacher = useAppDispatch();
   const navigate = useNavigate();
-  const { users, loading } = useAdmin();
-  const [all_users, setAllUsers] = useState<User[]>([]);
+  const { employees, loading } = useAdmin();
+  const [all_employees, setAllEmployees] = useState<AdminEmployee[]>([]);
   const [search, setSearch] = useState<string>("");
-  const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
+  const [checkedEmployees, setCheckedEmployees] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
   // Handle checkbox change
-  const handleCheckboxChange = (userId: string) => {
-    setCheckedUsers(
+  const handleCheckboxChange = (employeeId: string) => {
+    setCheckedEmployees(
       (currentChecked: string[]) =>
-        currentChecked.includes(userId)
-          ? currentChecked.filter((id) => id !== userId) // Uncheck
-          : [...currentChecked, userId] // Check
+        currentChecked.includes(employeeId)
+          ? currentChecked.filter((id) => id !== employeeId) // Uncheck
+          : [...currentChecked, employeeId] // Check
     );
   };
-  const exclude_keys = ["is_admin", "is_staff", "password", "empID"];
   useEffect(() => {
-    dispacher(getUsersRequest());
+    dispacher(getEmployeesRequest());
   }, []);
   useEffect(() => {
-    setAllUsers(users);
-  }, [users]);
+    setAllEmployees(employees);
+  }, [employees]);
   useEffect(() => {
-    users &&
-      setAllUsers(
-        users.filter(
-          (user) =>
-            user.first_name
+    employees &&
+      setAllEmployees(
+        employees.filter(
+          (employee) =>
+            employee.first_name
               .toLowerCase()
               .includes(search.toString().toLowerCase()) ||
-            user.last_name
+            employee.last_name
               .toLowerCase()
               .includes(search.toString().toLowerCase())
         )
@@ -78,12 +77,12 @@ export const DisplayUsers = () => {
   return (
     <ItemContainer>
       <ItemHeader>
-        <ItemTitle>Manage Users</ItemTitle>
+        <ItemTitle>Manage Employees</ItemTitle>
         <AddBtn
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            navigate("add-user");
+            navigate("add-employee");
           }}
         >
           Add New
@@ -123,11 +122,11 @@ export const DisplayUsers = () => {
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              if (checkedUsers.length < 1) {
+              if (checkedEmployees.length < 1) {
                 dispacher(
                   setFlashMessage({
                     title: "Reminder",
-                    desc: "Please select a user",
+                    desc: "Please select a employee",
                     status: true,
                     duration: 5,
                     type: "error",
@@ -136,15 +135,13 @@ export const DisplayUsers = () => {
                 return;
               }
               if (action === "delete") {
-                dispacher(deleteUserRequest(checkedUsers));
+                dispacher(deleteEmployeesRequest(checkedEmployees));
               } else if (action === "edit") {
-                if (checkedUsers.length > 1)
-                {
-                
+                if (checkedEmployees.length > 1) {
                   dispacher(
                     setFlashMessage({
                       title: "Reminder",
-                      desc: "Please select only one user to edit",
+                      desc: "Please select only one employee to edit",
                       status: true,
                       duration: 5,
                       type: "error",
@@ -153,7 +150,7 @@ export const DisplayUsers = () => {
                   return;
                 }
                 dispacher(getRolesRequest());
-                navigate(`${checkedUsers[0]}/edit`);
+                navigate(`${checkedEmployees[0]}/edit`);
               } else {
                 dispacher(
                   setFlashMessage({
@@ -167,50 +164,36 @@ export const DisplayUsers = () => {
                 return;
               }
               setAction("");
-              setCheckedUsers([]);
+              setCheckedEmployees([]);
             }}
           >
             Apply
           </ActionButton>
         </ActionContainer>
-        {all_users && all_users.length > 0 ? (
-          <CustomTable
-            keys={
-              Object.keys(all_users[0]).filter(
-                (key) => !exclude_keys.includes(key)
-              ).length
-            }
-          >
+        {all_employees && all_employees.length > 0 ? (
+          <CustomTable keys={Object.keys(all_employees[1]).length}>
             <thead>
               <tr>
                 <th>Action</th>
-                {Object.keys(all_users[0])
-                  .filter((key) => !exclude_keys.includes(key))
-                  .map((key) => (
-                    <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
-                  ))}
+                {Object.keys(all_employees[0]).map((key) => (
+                  <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {all_users.map((user) => (
+              {all_employees.map((employee) => (
                 <tr>
                   <td>
                     <CheckBox
                       type="checkbox"
-                      value={user.id}
-                      checked={checkedUsers.includes(user.id)}
-                      onChange={() => handleCheckboxChange(user.id)}
+                      value={employee.id}
+                      checked={checkedEmployees.includes(employee.id)}
+                      onChange={() => handleCheckboxChange(employee.id)}
                     />
                   </td>
-                  {Object.entries(user)
-                    .filter(([key]) => !exclude_keys.includes(key))
-                    .map(([_, value]) => (
-                      <td>
-                        {typeof value === "string" || typeof value === "number"
-                          ? value
-                          : value["name"]}
-                      </td>
-                    ))}
+                  {Object.entries(employee).map(([_, value]) => (
+                    <td>{value}</td>
+                  ))}
                 </tr>
               ))}
             </tbody>

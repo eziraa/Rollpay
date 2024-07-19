@@ -27,7 +27,7 @@ import { EmployeeAsset } from "../../components/sections/employee-asset/asset";
 import { RaiseSalary } from "../../components/sections/raise-salary/raise-salary";
 import { EmployeeSalary } from "../../components/sections/employee-salary/employee-salary";
 import { AdminDashBoard } from "../../components/pages/admin/dashboard/dashbord";
-import { UserPage } from "../../components/pages/admin/users/roles";
+import { UserPage } from "../../components/pages/admin/users/users";
 import { DisplayUsers } from "../../components/pages/admin/users/display-users";
 import { AddGroup } from "../../components/pages/admin/groups/add-group";
 import { GroupsPage } from "../../components/pages/admin/groups/groups";
@@ -37,6 +37,10 @@ import { DisplayRoles } from "../../components/pages/admin/roles/display-roles";
 import { UserDashboard } from "../../components/pages/user/dashboard/dashboard";
 import { UserHomePage } from "../../components/pages/user/home/home";
 import UserProfile from "../../components/pages/user-profile/user-profile";
+import { AddUser } from "../../components/pages/admin/users/add-user";
+import { EditUser } from "../../components/pages/admin/users/edit-user";
+import { EmployeePage } from "../../components/pages/admin/employees/employees";
+import { DisplayEmployees } from "../../components/pages/admin/employees/display-employees";
 
 export const userRoute = (base_end_point: string) => [
   {
@@ -139,6 +143,7 @@ export const clerk_routes: CustomRoute[] = [
             element: <EmployeesSalaryPage />,
             sub_routes: [{ path: "raise", element: <RaiseSalary /> }],
           },
+
           {
             path: "/payroll/:year/:month",
             element: <EmployeesSalaryPage />,
@@ -288,7 +293,21 @@ export const adminRoutes = [
         element: <UserPage />,
         sub_routes: [
           { path: "", element: <DisplayUsers /> },
-          { path: "add-user", element: <AddGroup /> },
+          { path: "add-user", element: <AddUser /> },
+          { path: ":user_id/edit", element: <EditUser /> },
+        ],
+      },
+      {
+        path: "/employees",
+        element: <EmployeePage />,
+        sub_routes: [
+          { path: "", element: <DisplayEmployees /> },
+          {
+            path: "add-employee",
+            element: <AddEmployee />,
+            sub_routes: [{ path: "add-position", element: <AddPosition /> }],
+          },
+          { path: ":employee_id/edit", element: <AddEmployee /> },
         ],
       },
       { path: "", element: <Navigate to="users" replace={true} /> },
@@ -307,7 +326,7 @@ export const adminRoutes = [
         element: <RolePage />,
         sub_routes: [
           { path: "", element: <DisplayRoles /> },
-          { path: "add-role", element: <AddGroup /> },
+          // { path: "add-role", element: <AddGroup /> },
         ],
       },
     ],

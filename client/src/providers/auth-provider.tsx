@@ -1,6 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "../contexts/auth-context";
 import { UserResponse } from "../typo/user/response";
+import { useAppDispatch } from "../utils/custom-hook";
+import { useUser } from "../hooks/user-hook";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/token-constants";
+import api from "../config/api";
+import { jwtDecode } from "jwt-decode";
+import { getCurrentUserRequest } from "../store/user/user-slice";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,6 +32,56 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       role: "",
     },
   });
+  const dispatcher = useAppDispatch();
+  const user = useUser();
+
+  const refreshToken = async () => {
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+    try {
+      const res = await api.post("/token/refresh/", {
+        refresh: refreshToken,
+      });
+      if (res.status === 200) {
+        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
+  };
+
+  const auth = async () => {
+    const token = localStorage.getItem(ACCESS_TOKEN);
+    let decoded: {
+      exp: number;
+      user_id: string;
+    };
+    if (!token) {
+      setIsAuthenticated(false);
+    } else {
+      decoded = await jwtDecode(token);
+      const tokenExpiration = decoded.exp;
+      const now = Date.now() / 1000;
+      if (tokenExpiration)
+        if (tokenExpiration < now) {
+          await refreshToken();
+        } else {
+          setIsAuthenticated(true);
+          dispatcher(getCurrentUserRequest(decoded.user_id));
+        }
+    }
+    return user;
+  };
+  useEffect(() => {
+    auth();
+  }, []);
+
+  useEffect(() => {
+    user.user && setCurrUser(user.user);
+  }, [user.user]);
 
   return (
     <AuthContext.Provider

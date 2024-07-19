@@ -59,7 +59,8 @@ class PaymentView(APIView):
             return Response({"error": "payment not found"}, status=status.HTTP_404_NOT_FOUND)
       
         for payment in payments:
-            if payment.payment_date == None : payment.payment_date = datetime.datetime.now()
+            if payment.payment_date == None:
+                payment.payment_date = datetime.datetime.now().date()
             payment.save()
         queryset = payments
         paginator = StandardResultsSetPagination()
