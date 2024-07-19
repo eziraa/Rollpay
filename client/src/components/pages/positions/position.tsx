@@ -32,8 +32,11 @@ import {
 } from "../../utils/custom-table/custom-table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
-import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
+import { MdOutlineEdit } from "react-icons/md";
+import { IoAddOutline } from "react-icons/io5";
+import { BsLock } from "react-icons/bs";
+import { BsUnlock } from "react-icons/bs";
+
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
 
 export const PositionPage = () => {
@@ -112,7 +115,7 @@ export const PositionPage = () => {
                             fontStyle: "italic",
                           }}
                         >
-                          Active
+                          Open
                         </span>
                       )}{" "}
                     </TableData>
@@ -149,11 +152,11 @@ export const PositionPage = () => {
                             <SmallSpinner />
                           ) : position.end_date ? (
                             <>
-                              <IoOpenOutline />
+                              <BsLock />
                             </>
                           ) : (
                             <>
-                              <MdOutlineClose />
+                              <BsUnlock />
                             </>
                           )}
                         </SuspendButton>
