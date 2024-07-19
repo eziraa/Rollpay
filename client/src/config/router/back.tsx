@@ -39,6 +39,8 @@ import { UserHomePage } from "../../components/pages/user/home/home";
 import UserProfile from "../../components/pages/user-profile/user-profile";
 import { AddUser } from "../../components/pages/admin/users/add-user";
 import { EditUser } from "../../components/pages/admin/users/edit-user";
+import { EmployeePage } from "../../components/pages/admin/employees/employees";
+import { DisplayEmployees } from "../../components/pages/admin/employees/display-employees";
 
 export const userRoute = (base_end_point: string) => [
   {
@@ -293,6 +295,15 @@ export const adminRoutes = [
           { path: "", element: <DisplayUsers /> },
           { path: "add-user", element: <AddUser /> },
           { path: ":user_id/edit", element: <EditUser /> },
+        ],
+      },
+      {
+        path: "/employees",
+        element: <EmployeePage />,
+        sub_routes: [
+          { path: "", element: <DisplayEmployees /> },
+          { path: "add-employee", element: <AddUser /> },
+          { path: ":employee_id/edit", element: <EditUser /> },
         ],
       },
       { path: "", element: <Navigate to="users" replace={true} /> },

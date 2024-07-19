@@ -14,7 +14,7 @@ import datetime
 from month import Month
 
 # Local modules
-from employee.serializers.employee import EmployeeSerializer
+from employee.serializers.employee import EmployeeSerializer, AdminEmployeeSerializer
 from employee.serializers.position import PositionSerializer
 from employee.permissions.clerk_permission import IsUserInGroupWithClerk
 from employee.serializers.payment import MonthlyPaymentSerializer
@@ -312,3 +312,10 @@ class SalaryManager:
                 overtime=overtime, start_time=start_time, end_time=end_time, payment=payment)
             payment.save()
         return True
+
+
+class AdminAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        employees = Employee.objects.all()
+        return Response(AdminEmployeeSerializer(employees, many=True).data, status= 200)

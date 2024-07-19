@@ -16,6 +16,8 @@ import {
   editGroupRequest,
   editUserDone,
   editUserRequest,
+  getEmployeesDone,
+  getEmployeesRequest,
   getGroupsDone,
   getGroupsRequest,
   getPermissionDone,
@@ -40,6 +42,49 @@ function* getUsers() {
     const response: AdminResponse = yield call(AdminAPI.getUsers);
     if (response.code === 200) {
       yield put(getUsersDone(response.users));
+    } else if (response.code === 401) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Unauthorized",
+          desc: "Please check your credentials",
+          duration: 3,
+        })
+      );
+    } else if (response.code === 403) {
+      window.location.href = "/access-denied";
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Access Denied",
+          desc: "Not allowed to view groupss",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "List Group",
+          desc: response.error,
+          duration: 3,
+        })
+      );
+    }
+  } catch (error) {
+    // TODO:
+  }
+}
+
+function* getEmployees() {
+  try {
+    const response: AdminResponse = yield call(AdminAPI.getEmployees);
+    if (response.code === 200) {
+      yield put(getEmployeesDone(response.employees));
     } else if (response.code === 401) {
       window.location.href = "/access-denied";
       yield put(
@@ -519,4 +564,5 @@ export function* watchAdminRequest() {
   yield takeEvery(addUserRequest.type, addUser);
   yield takeEvery(deleteUserRequest.type, deleteUser);
   yield takeEvery(editUserRequest.type, editUser);
+  yield takeEvery(getEmployeesRequest.type, getEmployees);
 }

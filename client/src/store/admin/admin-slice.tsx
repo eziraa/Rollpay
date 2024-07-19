@@ -4,6 +4,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AdminState } from "../../typo/admin/states";
 import {
   AddGroupResponse,
+  AdminEmployee,
   Group,
   Permission,
   Role,
@@ -19,6 +20,8 @@ const InitialEmpState: AdminState = {
   users: [],
   roles: [],
   groups: [],
+  employees: [],
+  employee: undefined,
   user: undefined,
   role: undefined,
   group: undefined,
@@ -41,6 +44,13 @@ const AdminSlice = createSlice({
     getUsersDone: (state, action: PayloadAction<User[]>) => {
       state.loading = false;
       state.users = action.payload;
+    },
+    getEmployeesRequest: (state) => {
+      state.loading = true;
+    },
+    getEmployeesDone: (state, action: PayloadAction<AdminEmployee[]>) => {
+      state.loading = false;
+      state.employees = action.payload;
     },
     getGroupsRequest: (state) => {
       state.loading = false;
@@ -141,6 +151,8 @@ const AdminSlice = createSlice({
 export const {
   getUsersRequest,
   getUsersDone,
+  getEmployeesRequest,
+  getEmployeesDone,
   getGroupsRequest,
   getGroupsDone,
   getRolesRequest,

@@ -27,6 +27,27 @@ const getUsers = async () => {
   return users;
 };
 
+const getEmployees = async () => {
+  const users = await api
+    .get("employee/admin")
+    .then((res) => {
+      return {
+        employees: res.data,
+        code: res.status,
+        success: "Success getting users",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
 const getRoles = async () => {
   const roles = await api
     .get("role/list")
@@ -153,7 +174,6 @@ const deleteGroup = async (values: string[]) => {
   return groups;
 };
 
-
 const addUser = async (values: AddUserParams) => {
   const users = await api
     .post("/user/add", values)
@@ -221,6 +241,7 @@ const AdminAPI = {
   getRoles,
   getUsers,
   getGroups,
+  getEmployees,
   getPermissions,
   addGroup,
   deleteGroup,
