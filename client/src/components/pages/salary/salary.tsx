@@ -51,6 +51,7 @@ import { setFlashMessage } from "../../../store/notification/flash-messsage-slic
 import {
   PaginatedPaymentResponse,
 } from "../../../typo/salary/response";
+import Pagination from "../../sections/pagination/pagination";
 
 const getNestValue = (
   key: string,
@@ -477,7 +478,7 @@ export const EmployeesSalaryPage = () => {
         </TableContainer>
       )}
       <Outlet />
-      {/* <Pagination pagination={pagination} /> */}
+      <Pagination pagination={pagination} />
     </SalaryContainer>
   );
 };

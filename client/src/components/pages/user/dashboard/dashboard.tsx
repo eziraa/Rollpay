@@ -19,11 +19,11 @@ import { useSalary } from "../../../../hooks/salary-hook";
 import { getCurrEmpPaymentInfo } from "../../../../store/salary/salary-slice";
 import { useUser } from "../../../../hooks/user-hook";
 import { useEffect } from "react";
-import { FaAmazonPay, FaSackDollar } from "react-icons/fa6";
 import { AllowanceStat } from "./allowance-stat.tsx";
 import { DeductionStat } from "./deduction-stat";
 import { OvertimeStat } from "./overtime-stat.tsx";
-import salary from "../../../../assets/salary.png";
+
+import money3 from "../../../../assets/money.jpg";
 export const UserDashboard = () => {
   const dispatcher = useAppDispatch();
   const employee = useSalary().curr_emp?.employee;
@@ -45,6 +45,7 @@ export const UserDashboard = () => {
                   width: "7rem",
                   height: "7rem",
                   objectFit: "cover",
+                  backgroundSize: "cover",
                   borderRadius: "50%",
                   marginLeft: "auto",
                   marginRight: "auto",
@@ -53,21 +54,21 @@ export const UserDashboard = () => {
                   border: "1px solid #ccc",
                   boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
                 }}
-                src={salary}
+                src={money3}
                 alt=""
               />
             </Icon>
             <DataBox>
               <DashboardTitle className="success">
-                {employee?.salary}
+                {employee?.salary} ETB
               </DashboardTitle>
-              <DashboardTitle className="italic">Salary</DashboardTitle>
+              <DashboardTitle className="italic">Base Salary</DashboardTitle>
             </DataBox>
           </CardBody>
           <CardFooter>
             <MidBlurredText className="mid-spaced">
-              Your salary is greater than prev month by
-              <span className="success"> 5%</span>
+              This is your current base salary for the current month
+              {/* <span className="success"> 5%</span> */}
             </MidBlurredText>
           </CardFooter>
         </DashBoardCard>
@@ -87,21 +88,21 @@ export const UserDashboard = () => {
                   border: "1px solid #ccc",
                   boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
                 }}
-                src={salary}
+                src={money3}
                 alt=""
               />
             </Icon>
             <DataBox>
               <DashboardTitle className="success">
-                {employee?.payments.slice(-1)[0].net_salary}
+                {employee?.payments.slice(-1)[0].net_salary} ETB
               </DashboardTitle>
               <DashboardTitle className="italic">Net Salary</DashboardTitle>
             </DataBox>
           </CardBody>
           <CardFooter>
             <MidBlurredText className="mid-spaced">
-              Your net Salary is greater than prev month by
-              <span className="success"> 4% </span>
+              This is your current net salary for the current month
+              {/* <span className="success"> 4% </span> */}
             </MidBlurredText>
           </CardFooter>
         </DashBoardCard>
@@ -121,21 +122,21 @@ export const UserDashboard = () => {
                   border: "1px solid #ccc",
                   boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
                 }}
-                src={salary}
+                src={money3}
                 alt=""
               />
             </Icon>
             <DataBox>
               <DashboardTitle className="success">
-                {employee?.payments.slice(-1)[0].gross_salary}
+                {employee?.payments.slice(-1)[0].gross_salary} ETB
               </DashboardTitle>
               <DashboardTitle className="italic">Gross salary</DashboardTitle>
             </DataBox>
           </CardBody>
           <CardFooter>
             <MidBlurredText className="mid-spaced">
-              Your gross salary is greater than prev month by
-              <span className="success"> 12%</span>
+              This is your current gross salary for the current month
+              {/* <span className="success"> 12%</span> */}
             </MidBlurredText>
           </CardFooter>
         </DashBoardCard>
@@ -155,21 +156,21 @@ export const UserDashboard = () => {
                   border: "1px solid #ccc",
                   boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
                 }}
-                src={salary}
+                src={money3}
                 alt=""
               />
             </Icon>
             <DataBox>
               <DashboardTitle className="success">
-                {employee?.payments.slice(-1)[0].income_tax}
+                {employee?.payments.slice(-1)[0].income_tax} ETB
               </DashboardTitle>
               <DashboardTitle className="italic"> Income Tax </DashboardTitle>
             </DataBox>
           </CardBody>
           <CardFooter>
             <MidBlurredText className="mid-spaced">
-              Your income tax is greater than prev month by
-              <span className="success"> 4%</span>
+              This is your current income tax for the current month
+              {/* <span className="success"> 4%</span> */}
             </MidBlurredText>
           </CardFooter>
         </DashBoardCard>

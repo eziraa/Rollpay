@@ -72,7 +72,7 @@ export const SearchIcon = styled(GoSearch)`
   cursor: pointer;
 `;
 
-export const SalaryTable = styled.div`
+export const SalaryTable = styled.table`
   width: fit-content;
   padding: 0.7rem;
   height: 40rem;
