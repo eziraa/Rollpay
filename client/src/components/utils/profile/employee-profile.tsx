@@ -136,7 +136,7 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
           <DataValue>{employee?.date_of_hire}</DataValue>
         </EmployeeData>
       </EmployeeInfoContainer>
-      {user?.employee.position === "Clerk" && !pathname.startsWith("/me") && (
+      {user?.role === "Clerk" && !pathname.startsWith("/me") && (
         <UpdateEmployee />
       )}
     </EmployeeeProfileContainer>
