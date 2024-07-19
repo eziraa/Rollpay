@@ -87,8 +87,10 @@ export const DeductionStat = () => {
                             <SmallDot color={colors[index]} />
                             <span className="italic">
                               {deduction.deduction_type}{" "}
-                              {(deduction.deduction_rate * employee.salary) /
-                                100}
+                              {(
+                                (deduction.deduction_rate * employee.salary) /
+                                100
+                              ).toFixed(2)}
                             </span>
                           </ToastRow>
                         ))}
