@@ -32,11 +32,13 @@ const StatisticsSlice = createSlice({
     getStatRequest: (state) => {
       state.task_error = undefined;
       state.task_finished = false;
+      state.loading = true;
     },
 
     getStatDone: (state, action: PayloadAction<StatisticsResponse>) => {
       state.stat = action.payload;
       state.task_finished = true;
+      state.loading = false;
     },
     getPaymentStatRequest: (state) => {
       state.loadding_payment_stat = true;

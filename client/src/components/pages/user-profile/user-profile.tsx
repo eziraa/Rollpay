@@ -54,7 +54,6 @@ const UserProfile = () => {
   // Defining a useEffect to get the infomration of current employee
 
   useEffect(() => {
-    employee_id && dispatcher(getCurrentEmployeeRequest(employee_id));
     employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
   }, [employee_id]);
 

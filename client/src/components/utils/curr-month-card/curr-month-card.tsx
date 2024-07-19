@@ -114,86 +114,102 @@ export const MonthCard = ({ statType }: Props) => {
     setCurrentMonth(monthYear);
   }, []);
   if (statType === "allowance") {
-    return loading ? (
-      <ThreeDots size={1} />
-    ) : (
+    return (
       <MonthCardContainer>
-        <MonthHeader>
-          <LargeText>Allowance of {currentMonth}</LargeText>
-        </MonthHeader>
-        <MonthCardBody>
-          <React.Fragment>
-            <div className="container-fluid mb-3">
-              <Chart
-                type="pie"
-                width={350}
-                height={350}
-                series={allowanceData.series}
-                options={{
-                  title: { text: "Allowance PieChart" },
-                  noData: { text: "Empty Data" },
-                  colors: colors.slice(0, allowanceData.series.length),
-                  labels: allowanceData.labels,
-                }}
-              ></Chart>
-            </div>
-          </React.Fragment>{" "}
-        </MonthCardBody>
-        <LargeText>Total: {stat.curr_month_allowances} ETB</LargeText>
+        {loading ? (
+          <ThreeDots size={1} />
+        ) : (
+          <>
+            <MonthHeader>
+              <LargeText>Allowance of {currentMonth}</LargeText>
+            </MonthHeader>
+            <MonthCardBody>
+              <React.Fragment>
+                <div className="container-fluid mb-3">
+                  <Chart
+                    type="pie"
+                    width={350}
+                    height={350}
+                    series={allowanceData.series}
+                    options={{
+                      title: { text: "Allowance PieChart" },
+                      noData: { text: "Empty Data" },
+                      colors: colors.slice(0, allowanceData.series.length),
+                      labels: allowanceData.labels,
+                    }}
+                  ></Chart>
+                </div>
+              </React.Fragment>{" "}
+            </MonthCardBody>
+            <LargeText>Total: {stat.curr_month_allowances} ETB</LargeText>
+          </>
+        )}
       </MonthCardContainer>
     );
   } else if (statType === "deduction") {
     return (
       <MonthCardContainer>
-        <MonthHeader>
-          <LargeText>Deduction of {currentMonth}</LargeText>
-        </MonthHeader>
-        <MonthCardBody>
-          <React.Fragment>
-            <div className="container-fluid mb-3">
-              <Chart
-                type="pie"
-                width={350}
-                height={350}
-                series={deductiontData.series}
-                options={{
-                  title: { text: "Deduction PieChart" },
-                  noData: { text: "Empty Data" },
-                  colors: colors.slice(0, deductiontData.series.length),
-                  labels: deductiontData.labels,
-                }}
-              ></Chart>
-            </div>
-          </React.Fragment>{" "}
-        </MonthCardBody>
-        <LargeText>Total: {stat.curr_month_deductions} ETB</LargeText>
+        {loading ? (
+          <ThreeDots size={1} />
+        ) : (
+          <>
+            <MonthHeader>
+              <LargeText>Deduction of {currentMonth}</LargeText>
+            </MonthHeader>
+            <MonthCardBody>
+              <React.Fragment>
+                <div className="container-fluid mb-3">
+                  <Chart
+                    type="pie"
+                    width={350}
+                    height={350}
+                    series={deductiontData.series}
+                    options={{
+                      title: { text: "Deduction PieChart" },
+                      noData: { text: "Empty Data" },
+                      colors: colors.slice(0, deductiontData.series.length),
+                      labels: deductiontData.labels,
+                    }}
+                  ></Chart>
+                </div>
+              </React.Fragment>{" "}
+            </MonthCardBody>
+            <LargeText>Total: {stat.curr_month_deductions} ETB</LargeText>
+          </>
+        )}
       </MonthCardContainer>
     );
   } else if (statType === "overtime") {
     return (
       <MonthCardContainer>
-        <MonthHeader>
-          <LargeText>Overtime of {currentMonth}</LargeText>
-        </MonthHeader>
-        <MonthCardBody>
-          <React.Fragment>
-            <div className="container-fluid mb-3">
-              <Chart
-                type="pie"
-                width={350}
-                height={350}
-                series={overtimetData.series}
-                options={{
-                  title: { text: "Overtime PieChart" },
-                  noData: { text: "Empty Data" },
-                  colors: colors.slice(0, overtimetData.series.length),
-                  labels: overtimetData.labels,
-                }}
-              ></Chart>
-            </div>
-          </React.Fragment>{" "}
-        </MonthCardBody>
-        <LargeText>Total: {stat.curr_month_overtimes} ETB</LargeText>
+        {loading ? (
+          <ThreeDots size={1} />
+        ) : (
+          <>
+            <MonthHeader>
+              <LargeText>Overtime of {currentMonth}</LargeText>
+            </MonthHeader>
+            <MonthCardBody>
+              <React.Fragment>
+                <div className="container-fluid mb-3">
+                  <Chart
+                    type="pie"
+                    width={350}
+                    height={350}
+                    series={overtimetData.series}
+                    options={{
+                      title: { text: "Overtime PieChart" },
+                      noData: { text: "Empty Data" },
+                      colors: colors.slice(0, overtimetData.series.length),
+                      labels: overtimetData.labels,
+                    }}
+                  ></Chart>
+                </div>
+              </React.Fragment>{" "}
+            </MonthCardBody>
+            <LargeText>Total: {stat.curr_month_overtimes} ETB</LargeText>
+          </>
+        )}
       </MonthCardContainer>
     );
   }
