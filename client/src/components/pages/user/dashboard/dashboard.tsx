@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FaDAndDBeyond, FaUserSecret } from "react-icons/fa";
 import { MidBlurredText } from "../../../utils/titles/titles";
 import {
   DashboardContainer,
@@ -25,6 +24,7 @@ import { OvertimeStat } from "./overtime-stat.tsx";
 import salary from "../../../../assets/salary.png";
 import { ThreeDots } from "../../../utils/loading/dots.tsx";
 import { useLocation } from "react-router";
+
 export const UserDashboard = () => {
   const dispatcher = useAppDispatch();
   const employee = useSalary().curr_emp?.employee;

@@ -123,17 +123,6 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
             <ButtonText>Prev</ButtonText>
           </ButtonName>
         </NavButton>
-        <NavButton>
-          <ButtonName
-            onClick={(e) => {
-              e.preventDefault();
-              loadNextPage();
-            }}
-          >
-            <ButtonText> Next</ButtonText>
-            <MdOutlineKeyboardArrowRight />
-          </ButtonName>
-        </NavButton>
         <Paragraph>Page:</Paragraph>
         <CurrentPageNumber
           onChange={(e) => {
@@ -152,8 +141,20 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
           <Text>of</Text>
           <Paragraph2> {pagination.total_pages} </Paragraph2>
         </TextContainer>
-        <Paragraph>Per Page:</Paragraph>
-        <DropDown />
+        <NavButton>
+          <ButtonName
+            onClick={(e) => {
+              e.preventDefault();
+              loadNextPage();
+            }}
+          >
+            <ButtonText> Next</ButtonText>
+            <MdOutlineKeyboardArrowRight />
+          </ButtonName>
+        </NavButton>
+
+        {/* <Paragraph>Per Page:</Paragraph>
+        <DropDown /> */}
       </BottomContainer>
     </PaginationContainer>
   );
