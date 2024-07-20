@@ -34,7 +34,7 @@ export const RouterConfig = () => {
         from: window.location.pathname,
         to: "/login",
       });
-      setRoutingElements(<Route path="*" element={<Navigate to="/login" />} />);
+      // setRoutingElements(<Route path="*" element={<Navigate to="/login" />} />);
     }
   }, [authenticator.curr_user]);
 
@@ -49,7 +49,7 @@ export const RouterConfig = () => {
           {routing_elements}
         </Route>
         {<Route path="not-found" element={<NotFoundPage />} />}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/not-found" />} />
       </Routes>
     </Router>
   );

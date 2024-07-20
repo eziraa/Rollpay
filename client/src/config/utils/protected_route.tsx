@@ -23,21 +23,7 @@ function ProtectedRoute(isAuthorised: boolean, user: UserResponse) {
     ) : (
       <Route path={path} element={<Navigate to={"/access-denied"} />} />
     );
-  } else {
-    return (
-      <Route
-        path="*"
-        element={
-          <Navigate
-            to="/login"
-            state={{
-              from: window.location.pathname,
-            }}
-          />
-        }
-      />
-    );
-  }
+  } 
 }
 
 export default ProtectedRoute;
