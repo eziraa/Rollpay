@@ -10,7 +10,6 @@ import {
 import { Outlet, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
 import { EmployeeProfile } from "../../utils/profile/employee-profile";
 import { useSalary } from "../../../hooks/salary-hook";
@@ -54,9 +53,8 @@ const UserProfile = () => {
   // Defining a useEffect to get the infomration of current employee
 
   useEffect(() => {
-    employee_id && dispatcher(getCurrEmpPaymentInfo(employee_id));
+    employee_id && dispatcher(getCurrentEmployeeRequest(employee_id));
   }, [employee_id]);
-
   return (
     <UserProfileBody>
       <UserProfileHeader>
@@ -100,11 +98,7 @@ const UserProfile = () => {
                   month <= new Date(Date.now()).getMonth() + 1) && (
                   <SelectOption key={month} value={`${month}`}>
                     {getNamedMonth(
-                      new Date(
-                        `${query_year || current_year}-${
-                          query_month || current_month
-                        }-01`
-                      )
+                      new Date(`${query_year || current_year}-${month}-01`)
                     )}
                   </SelectOption>
                 )

@@ -17,7 +17,7 @@ import {
   ActionsContainer,
   LoginSection,
 } from "./login.style";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { LogInSchema } from "../../../schema/log-in-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
