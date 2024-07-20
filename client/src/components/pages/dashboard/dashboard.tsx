@@ -32,15 +32,17 @@ export const DashBoard = () => {
   }, []);
   return (
     <DashboardContainer>
-      {loading ? (
-        <ThreeDots size={1} />
-      ) : (
+      {
         <StatContainer className="state-card-container">
           <StatCard>
             <CardRowTemplate>
               <CardColumnTemplate>
                 <LargeText>Total Employees</LargeText>
-                <Text>{stat.total_employees}</Text>
+                {loading ? (
+                  <ThreeDots size={1} />
+                ) : (
+                  <Text>{stat.total_employees}</Text>
+                )}
               </CardColumnTemplate>
               {<FaUsers />}
             </CardRowTemplate>
@@ -52,7 +54,11 @@ export const DashBoard = () => {
             <CardRowTemplate>
               <CardColumnTemplate>
                 <LargeText>Total Positions</LargeText>
-                <Text>{stat.total_positions}</Text>
+                {loading ? (
+                  <ThreeDots size={1} />
+                ) : (
+                  <Text>{stat.total_positions}</Text>
+                )}{" "}
               </CardColumnTemplate>
               {<IoBriefcase />}
             </CardRowTemplate>
@@ -64,7 +70,11 @@ export const DashBoard = () => {
             <CardRowTemplate>
               <CardColumnTemplate>
                 <LargeText>Average Salary</LargeText>
-                <Text>{stat.avg_basic_salary} ETB</Text>
+                {loading ? (
+                  <ThreeDots size={1} />
+                ) : (
+                  <Text>{stat.avg_basic_salary} ETB</Text>
+                )}{" "}
               </CardColumnTemplate>
               {<FaDollarSign />}
             </CardRowTemplate>
@@ -76,7 +86,11 @@ export const DashBoard = () => {
             <CardRowTemplate>
               <CardColumnTemplate>
                 <LargeText>Income Tax</LargeText>
-                <Text>{stat.curr_month_tax} ETB</Text>
+                {loading ? (
+                  <ThreeDots size={1} />
+                ) : (
+                  <Text>{stat.curr_month_tax} ETB</Text>
+                )}{" "}
               </CardColumnTemplate>
               {<FaDollarSign />}
             </CardRowTemplate>
@@ -85,7 +99,7 @@ export const DashBoard = () => {
             </CardRowTemplate>
           </StatCard>
         </StatContainer>
-      )}
+      }
       <DashboardBody>
         <DashboardBodyRow>
           <MonthCard statType="allowance" />
