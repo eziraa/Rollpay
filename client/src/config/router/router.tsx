@@ -1,4 +1,4 @@
-import { Route, Navigate } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 
 import { ClerkPage, HomePage } from "../../components/pages/home/home-page";
 import { EmployeesListPage } from "../../components/pages/display-employee/display-employee";
@@ -46,12 +46,12 @@ export const userRoute = (base_end_point: string) => [
   {
     path: base_end_point || "",
     element: <UserHomePage />,
-    sub_routes: [
+    children: [
       { path: "", element: <UserDashboard /> },
       {
         path: "user-profile/:employee_id",
         element: <UserProfile />,
-        sub_routes: [
+        children: [
           { path: "allowances", element: <EmployeeAllowance /> },
           { path: "", element: <Navigate to="allowances" replace /> },
           { path: "allowances/:year/:month", element: <EmployeeAllowance /> },
@@ -67,31 +67,24 @@ export const userRoute = (base_end_point: string) => [
   },
 ];
 
-export interface CustomRoute {
-  path: string;
-  element: JSX.Element;
-  sub_routes?: CustomRoute[];
-}
-export const clerk_routes: CustomRoute[] = [
+export const clerk_routes: RouteObject[] = [
   {
     path: "/",
     element: <ClerkPage />,
-    sub_routes: [
+    children: [
       {
         path: "/",
         element: <HomePage />,
-        sub_routes: [
+        children: [
           { path: "/", element: <DashBoard /> },
           {
             path: "/employees",
             element: <EmployeesListPage />,
-            sub_routes: [
+            children: [
               {
                 path: "add-employee",
                 element: <AddEmployee />,
-                sub_routes: [
-                  { path: "add-position", element: <AddPosition /> },
-                ],
+                children: [{ path: "add-position", element: <AddPosition /> }],
               },
               { path: "upload-document", element: <AddDocument /> },
             ],
@@ -99,7 +92,7 @@ export const clerk_routes: CustomRoute[] = [
           {
             path: "/positions",
             element: <PositionPage />,
-            sub_routes: [
+            children: [
               { path: "add-position", element: <AddPosition /> },
               { path: "edit-position/:position_id", element: <AddPosition /> },
             ],
@@ -107,7 +100,7 @@ export const clerk_routes: CustomRoute[] = [
           {
             path: "/allowances",
             element: <AllowancePage />,
-            sub_routes: [
+            children: [
               { path: "add-allowance", element: <AddAllowance /> },
               {
                 path: "edit-allowance/:allowance_id",
@@ -118,7 +111,7 @@ export const clerk_routes: CustomRoute[] = [
           {
             path: "/deductions",
             element: <DeductionPage />,
-            sub_routes: [
+            children: [
               { path: "add-deduction", element: <AddDeduction /> },
               {
                 path: "edit-deduction/:deduction_id",
@@ -129,7 +122,7 @@ export const clerk_routes: CustomRoute[] = [
           {
             path: "/overtimes",
             element: <OvertimePage />,
-            sub_routes: [
+            children: [
               { path: "add-overtime", element: <AddOvertime /> },
               { path: "edit-overtime/:overtime_id", element: <AddOvertime /> },
             ],
@@ -141,7 +134,7 @@ export const clerk_routes: CustomRoute[] = [
           {
             path: "/payroll",
             element: <EmployeesSalaryPage />,
-            sub_routes: [{ path: "raise", element: <RaiseSalary /> }],
+            children: [{ path: "raise", element: <RaiseSalary /> }],
           },
 
           {
@@ -151,18 +144,18 @@ export const clerk_routes: CustomRoute[] = [
           {
             path: "/employees/employee/:employee_id",
             element: <SeeEmployee />,
-            sub_routes: [
+            children: [
               { path: "", element: <Navigate to="allowances" replace /> },
               {
                 path: "allowances/:year/:month",
                 element: <EmployeeAllowance />,
-                sub_routes: [
+                children: [
                   { path: "delete", element: <CheckFlashMessage /> },
 
                   {
                     path: "add-allowance",
                     element: <AddAllowanceToEmp />,
-                    sub_routes: [
+                    children: [
                       { path: "add-new-allowance", element: <AddAllowance /> },
                     ],
                   },
@@ -171,12 +164,12 @@ export const clerk_routes: CustomRoute[] = [
               {
                 path: "allowances",
                 element: <EmployeeAllowance />,
-                sub_routes: [
+                children: [
                   { path: "delete", element: <CheckFlashMessage /> },
                   {
                     path: "add-allowance",
                     element: <AddAllowanceToEmp />,
-                    sub_routes: [
+                    children: [
                       { path: "add-new-allowance", element: <AddAllowance /> },
                     ],
                   },
@@ -185,7 +178,7 @@ export const clerk_routes: CustomRoute[] = [
               {
                 path: "assets",
                 element: <EmployeeAsset />,
-                sub_routes: [
+                children: [
                   { path: "delete", element: <CheckFlashMessage /> },
 
                   { path: "add-asset", element: <AddDocument /> },
@@ -194,13 +187,13 @@ export const clerk_routes: CustomRoute[] = [
               {
                 path: "overtimes/:year/:month",
                 element: <EmployeeOvertime />,
-                sub_routes: [
+                children: [
                   { path: "delete", element: <CheckFlashMessage /> },
 
                   {
                     path: "add-overtime",
                     element: <AddOvertimeToEmp />,
-                    sub_routes: [
+                    children: [
                       { path: "add-new-overtime", element: <AddOvertime /> },
                     ],
                   },
@@ -209,13 +202,13 @@ export const clerk_routes: CustomRoute[] = [
               {
                 path: "overtimes",
                 element: <EmployeeOvertime />,
-                sub_routes: [
+                children: [
                   { path: "delete", element: <CheckFlashMessage /> },
 
                   {
                     path: "add-overtime",
                     element: <AddOvertimeToEmp />,
-                    sub_routes: [
+                    children: [
                       { path: "add-new-overtime", element: <AddOvertime /> },
                     ],
                   },
@@ -224,13 +217,13 @@ export const clerk_routes: CustomRoute[] = [
               {
                 path: "deductions/:year/:month",
                 element: <EmployeeDeduction />,
-                sub_routes: [
+                children: [
                   { path: "delete", element: <CheckFlashMessage /> },
 
                   {
                     path: "add-deduction",
                     element: <AddDeductionToEmp />,
-                    sub_routes: [
+                    children: [
                       { path: "add-new-deduction", element: <AddDeduction /> },
                     ],
                   },
@@ -239,13 +232,13 @@ export const clerk_routes: CustomRoute[] = [
               {
                 path: "deductions",
                 element: <EmployeeDeduction />,
-                sub_routes: [
+                children: [
                   { path: "delete", element: <CheckFlashMessage /> },
 
                   {
                     path: "add-deduction",
                     element: <AddDeductionToEmp />,
-                    sub_routes: [
+                    children: [
                       { path: "add-new-deduction", element: <AddDeduction /> },
                     ],
                   },
@@ -260,38 +253,17 @@ export const clerk_routes: CustomRoute[] = [
       },
     ],
   },
-  ...userRoute("me"),
 ];
-
-export const getRoutes = (routes: CustomRoute[]) => {
-  return routes.map((route) => {
-    return (
-      <Route key={route.path} path={route.path} element={route.element}>
-        {route.sub_routes && getRoutes(route.sub_routes)}
-      </Route>
-    );
-  });
-};
-
-export const getRoute = (routes: CustomRoute[]) => {
-  return routes.map((route) => {
-    return (
-      <Route key={route.path} path={route.path} element={route.element}>
-        {route.sub_routes && getRoutes(route.sub_routes)}
-      </Route>
-    );
-  });
-};
 
 export const adminRoutes = [
   {
     path: "/",
     element: <AdminDashBoard />,
-    sub_routes: [
+    children: [
       {
         path: "/users",
         element: <UserPage />,
-        sub_routes: [
+        children: [
           { path: "", element: <DisplayUsers /> },
           { path: "add-user", element: <AddUser /> },
           { path: ":user_id/edit", element: <EditUser /> },
@@ -300,12 +272,12 @@ export const adminRoutes = [
       {
         path: "/employees",
         element: <EmployeePage />,
-        sub_routes: [
+        children: [
           { path: "", element: <DisplayEmployees /> },
           {
             path: "add-employee",
             element: <AddEmployee />,
-            sub_routes: [{ path: "add-position", element: <AddPosition /> }],
+            children: [{ path: "add-position", element: <AddPosition /> }],
           },
           { path: ":employee_id/edit", element: <AddEmployee /> },
         ],
@@ -315,7 +287,7 @@ export const adminRoutes = [
       {
         path: "/groups",
         element: <GroupsPage />,
-        sub_routes: [
+        children: [
           { path: "", element: <DisplayGroups /> },
           { path: "add-group", element: <AddGroup /> },
           { path: ":group_id/edit", element: <AddGroup /> },
@@ -324,7 +296,7 @@ export const adminRoutes = [
       {
         path: "/roles",
         element: <RolePage />,
-        sub_routes: [
+        children: [
           { path: "", element: <DisplayRoles /> },
           // { path: "add-role", element: <AddGroup /> },
         ],
