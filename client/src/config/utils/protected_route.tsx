@@ -1,29 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Navigate, Route, useLocation } from "react-router-dom";
-import {
-  adminRoutes,
-  clerk_routes,
-  getRoutes,
-  userRoute,
-} from "../router/back";
-import { UserResponse } from "../../typo/user/response";
+import { Navigate } from "react-router-dom";
+import { adminRoutes, clerk_routes, userRoute } from "../router/back";
 
-function ProtectedRoute(isAuthorised: boolean, user: UserResponse) {
-  const path = window.location.pathname;
-
-  if (isAuthorised) {
-    return user?.role === "Clerk" ? (
-      getRoutes(clerk_routes)
-    ) : user?.role === "sys_admin" ? (
-      getRoutes(adminRoutes)
-    ) : user?.role === "user" ? (
-      getRoutes(userRoute("/"))
-    ) : (
-      <Route path={path} element={<Navigate to={"/access-denied"} />} />
-    );
-  } 
+export function protectedRoute(role: string) {
+  return role === "Clerk"
+    ? clerk_routes
+    : role === "sys_admin"
+    ? adminRoutes
+    : role === "user"
+    ? userRoute("/")
+    : [
+        {
+          path: "*",
+          element: <Navigate to="/access-denied" />,
+        },
+      ];
 }
 
-export default ProtectedRoute;
