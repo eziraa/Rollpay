@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { Navigate } from "react-router-dom";
-import { adminRoutes, clerk_routes, userRoute } from "../router/back";
+import { adminRoutes, clerk_routes, userRoute } from "../router/router";
 
 export function protectedRoute(role: string) {
   return role === "Clerk"
