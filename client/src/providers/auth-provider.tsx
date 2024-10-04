@@ -7,9 +7,12 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/token-constants";
 import api from "../config/api";
 import { jwtDecode } from "jwt-decode";
 import { getCurrentUserRequest } from "../store/user/user-slice";
+import { protectedRoute } from "../config/utils/protected_route";
+import { RouteObject } from "react-router-dom";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [routers, setRouters] = useState<RouteObject[]>([]);
   const [curr_user, setCurrUser] = useState<UserResponse>({
     user_id: "",
     username: "",
@@ -80,12 +83,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    user.user && setCurrUser(user.user);
+    if (user.user) {
+      setCurrUser(user.user);
+      setRouters(protectedRoute(user.user.role));
+    }
   }, [user.user]);
 
   return (
     <AuthContext.Provider
-      value={{ curr_user, setCurrUser, isAuthenticated, setIsAuthenticated }}
+      value={{
+        curr_user,
+        setCurrUser,
+        isAuthenticated,
+        setIsAuthenticated,
+        routers,
+      }}
     >
       {children}
     </AuthContext.Provider>
