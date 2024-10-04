@@ -14,18 +14,7 @@ import { ProfileProvider } from "./contexts/profile-context";
 import { YearMonthPaginationProvider } from "./providers/year-month-pagination-provider";
 import { RefsProvider } from "./providers/refs-provider";
 import { NavigationProvider } from "./providers/navigation-provider";
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
-import { MainPage } from "./components/pages/main/main";
-import { LoginPage } from "./components/pages/login/login";
-import { ChangePassword } from "./components/pages/change-password/change-password";
-import SignUp from "./components/pages/sign-up/sign-up";
-import NotFoundPage from "./components/pages/4_0_4/404";
-import AccessDenied from "./components/pages/access-denied/access-denied";
-import { useAuth } from "./hooks/auth-hook";
+import AppRouter from "./AppRouter";
 
 function App() {
   const current_theme = localStorage.getItem("current_theme");
@@ -39,28 +28,13 @@ function App() {
     );
     setTheme(theme === lightTheme ? darkTheme : lightTheme);
   };
-  const { routers } = useAuth();
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <MainPage />,
-      children: [...routers],
-    },
-    { path: "login", element: <LoginPage /> },
-    { path: "sign-up", element: <SignUp /> },
-    { path: "change-password", element: <ChangePassword /> },
-    { path: "404", element: <NotFoundPage /> },
-    { path: "access-denied", element: <AccessDenied /> },
-    { path: "*", element: <Navigate to="/404" /> },
-  ]);
+
+  const pagination = usePagination();
+
   return (
     <NavigationProvider>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <PaginationContext.Provider
-          value={{
-            ...usePagination(),
-          }}
-        >
+        <PaginationContext.Provider value={{ ...pagination }}>
           <FilterProvider>
             <RefsProvider>
               <DisplayProvider>
@@ -69,7 +43,7 @@ function App() {
                     <YearMonthPaginationProvider>
                       <ThemeProvider theme={theme}>
                         <FlashMessage />
-                        <RouterProvider router={router} />
+                        <AppRouter />
                         <ModalStore />
                       </ThemeProvider>
                     </YearMonthPaginationProvider>
