@@ -158,7 +158,7 @@ export const DisplayGroups = () => {
           </ActionButton>
         </ActionContainer>
         {groups && groups.length > 0 ? (
-          <CustomTable keys={Object.keys(groups[0]).length}>
+          <CustomTable keys={Object.keys(groups[0]).length} className="shadow-md">
             <thead>
               <tr>
                 <th>Action</th>

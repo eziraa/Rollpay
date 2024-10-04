@@ -76,7 +76,7 @@ export const DisplayEmployees = () => {
 
   return (
     <ItemContainer>
-      <ItemHeader className="shadow-md">
+      <ItemHeader>
         <ItemTitle>Manage Employees</ItemTitle>
         <AddBtn
           onClick={(e) => {
@@ -171,7 +171,10 @@ export const DisplayEmployees = () => {
           </ActionButton>
         </ActionContainer>
         {all_employees && all_employees.length > 0 ? (
-          <CustomTable keys={Object.keys(all_employees[1]).length}>
+          <CustomTable
+            keys={Object.keys(all_employees[1]).length}
+            className="shadow-md"
+          >
             <thead>
               <tr>
                 <th>Action</th>

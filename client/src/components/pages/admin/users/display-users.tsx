@@ -138,9 +138,7 @@ export const DisplayUsers = () => {
               if (action === "delete") {
                 dispacher(deleteUserRequest(checkedUsers));
               } else if (action === "edit") {
-                if (checkedUsers.length > 1)
-                {
-                
+                if (checkedUsers.length > 1) {
                   dispacher(
                     setFlashMessage({
                       title: "Reminder",
@@ -180,6 +178,7 @@ export const DisplayUsers = () => {
                 (key) => !exclude_keys.includes(key)
               ).length
             }
+            className="shadow-md"
           >
             <thead>
               <tr>

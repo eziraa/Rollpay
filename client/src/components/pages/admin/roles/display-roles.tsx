@@ -36,9 +36,6 @@ export const DisplayRoles = () => {
 
   useEffect(() => {
     dispacher(getRolesRequest());
-    for (const role of roles) {
-      console.log(typeof role.groups);
-    }
   }, []);
 
   if (loading) return <ThreeDots size={1} />;
@@ -71,7 +68,7 @@ export const DisplayRoles = () => {
           <DropDown />
           <ActionButton>Apply</ActionButton>
         </ActionContainer>
-        <CustomTable keys={Object.keys(roles[0]).length}>
+        <CustomTable keys={Object.keys(roles[0]).length} className="shadow-md">
           <thead>
             <tr>
               {Object.keys(roles[0]).map((key) => (
