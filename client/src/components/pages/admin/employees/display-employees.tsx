@@ -76,7 +76,7 @@ export const DisplayEmployees = () => {
 
   return (
     <ItemContainer>
-      <ItemHeader>
+      <ItemHeader className="shadow-md">
         <ItemTitle>Manage Employees</ItemTitle>
         <AddBtn
           onClick={(e) => {
