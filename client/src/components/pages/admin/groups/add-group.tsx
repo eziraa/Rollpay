@@ -11,39 +11,30 @@ import {
 } from "../utils/add-item/add-item.style";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import { useAdmin } from "../../../../hooks/admin-hook";
-import { useEffect, useState } from "react";
-import {
-  addGroupRequest,
-  editGroupRequest,
-  getPermissionsRequest,
-} from "../../../../store/admin/admin-slice";
+import { useState } from "react";
+import { addGroupRequest } from "../../../../store/admin/admin-slice";
 import { Permission } from "../../../../typo/admin/response";
 import { FormError } from "../../../utils/form-elements/form.style";
-import { useParams } from "react-router";
+import AdminAPI from "../../../../services/admin-api";
+import { useLoaderData } from "react-router-dom";
+
+interface PermissionsLoaderData {
+  permissions: Permission[];
+}
 
 export const AddGroup = () => {
   const dispatcher = useAppDispatch();
-  const { permissions, task_error, groups } = useAdmin();
-  const [selectedOptions, setSelectedOptions] = useState<Permission[]>([]);
+  const { task_error } = useAdmin();
+  const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>(
+    []
+  );
   const [name, setName] = useState("");
-  const { group_id } = useParams();
-
+  const { permissions } = useLoaderData() as PermissionsLoaderData;
   const permission = {
-    all_permissions: permissions,
-    selected_permissions: selectedOptions,
-    selectHandler: setSelectedOptions,
+    all_permissions: permissions || [],
+    selectedPermissions,
+    selectHandler: setSelectedPermissions,
   };
-  const group = groups.find((g) => g.id == group_id);
-  useEffect(() => {
-    if (group_id && group) {
-      setName(group.name);
-      setSelectedOptions(group.permissions);
-    }
-    // Fetch permissions on component mount or group_id change
-  }, [group_id]);
-  useEffect(() => {
-    dispatcher(getPermissionsRequest());
-  }, []);
 
   return (
     <AddItemContainer>
@@ -65,29 +56,19 @@ export const AddGroup = () => {
         <AddBtn
           onClick={(e) => {
             e.preventDefault();
-            if (group_id)
-              dispatcher(
-                editGroupRequest({
-                  id: group_id || "",
-                  name: name,
-                  permissions: selectedOptions.map(
-                    (permission) => permission.codename
-                  ),
-                })
-              );
-            else
-              dispatcher(
-                addGroupRequest({
-                  name: name,
-                  permissions: selectedOptions.map(
-                    (permission) => permission.codename
-                  ), // Step 3: Pass selected permissions to the request action creator.
-                  onSuccess: () => {},
-                  onError: () => {
-                    // Handle error if request fails
-                  },
-                })
-              );
+
+            dispatcher(
+              addGroupRequest({
+                name: name,
+                permissions: selectedPermissions.map(
+                  (permission) => permission.codename
+                ), // Step 3: Pass selected permissions to the request action creator.
+                onSuccess: () => {},
+                onError: () => {
+                  // Handle error if request fails
+                },
+              })
+            );
           }}
         >
           Save
@@ -96,4 +77,16 @@ export const AddGroup = () => {
       </ActionContainer>
     </AddItemContainer>
   );
+};
+
+export const loader = async () => {
+  const permissionsResponse = await AdminAPI.getPermissions();
+  if ("permissions" in permissionsResponse) {
+    const { permissions } = permissionsResponse;
+    return {
+      permissions,
+    };
+  } else {
+    throw new Error("Failed to fetch permissions");
+  }
 };
