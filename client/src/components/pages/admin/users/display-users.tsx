@@ -4,6 +4,8 @@
 import { useEffect, useState } from "react";
 import { useAdmin } from "../../../../hooks/admin-hook";
 import { useAppDispatch } from "../../../../utils/custom-hook";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import {
   deleteUserRequest,
   getRolesRequest,
@@ -25,6 +27,7 @@ import {
 } from "../utils/model/item.style";
 import { AddBtn } from "../../../sections/add_employee/add-employee.style";
 import { useNavigate } from "react-router";
+import { useNavigation } from "react-router-dom";
 import { BlurredIcon } from "../utils/icons/icons.style";
 import { FaSearch } from "react-icons/fa";
 import { Label, Select, Option } from "../utils/dropdown/dropdown.style";
@@ -43,6 +46,7 @@ export const DisplayUsers = () => {
   const [search, setSearch] = useState<string>("");
   const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
+  const isLoading = useNavigation().state === "loading";
   // Handle checkbox change
   const handleCheckboxChange = (userId: string) => {
     setCheckedUsers(
@@ -61,6 +65,7 @@ export const DisplayUsers = () => {
   }, [users]);
   useEffect(() => {
     users &&
+      !!search &&
       setAllUsers(
         users.filter(
           (user) =>
@@ -119,30 +124,18 @@ export const DisplayUsers = () => {
             <Option value="delete">Delete</Option>
             <Option value="edit">Edit</Option>
           </Select>
-          <ActionButton
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              if (checkedUsers.length < 1) {
-                dispacher(
-                  setFlashMessage({
-                    title: "Reminder",
-                    desc: "Please select a user",
-                    status: true,
-                    duration: 5,
-                    type: "error",
-                  })
-                );
-                return;
-              }
-              if (action === "delete") {
-                dispacher(deleteUserRequest(checkedUsers));
-              } else if (action === "edit") {
-                if (checkedUsers.length > 1) {
+          {isLoading ? (
+            <CircularProgress size={20} />
+          ) : (
+            <ActionButton
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                if (checkedUsers.length < 1) {
                   dispacher(
                     setFlashMessage({
                       title: "Reminder",
-                      desc: "Please select only one user to edit",
+                      desc: "Please select a user",
                       status: true,
                       duration: 5,
                       type: "error",
@@ -150,26 +143,42 @@ export const DisplayUsers = () => {
                   );
                   return;
                 }
-                dispacher(getRolesRequest());
-                navigate(`${checkedUsers[0]}/edit`);
-              } else {
-                dispacher(
-                  setFlashMessage({
-                    title: "Reminder",
-                    desc: "Please select an action",
-                    status: true,
-                    duration: 5,
-                    type: "error",
-                  })
-                );
-                return;
-              }
-              setAction("");
-              setCheckedUsers([]);
-            }}
-          >
-            Apply
-          </ActionButton>
+                if (action === "delete") {
+                  dispacher(deleteUserRequest(checkedUsers));
+                } else if (action === "edit") {
+                  if (checkedUsers.length > 1) {
+                    dispacher(
+                      setFlashMessage({
+                        title: "Reminder",
+                        desc: "Please select only one user to edit",
+                        status: true,
+                        duration: 5,
+                        type: "error",
+                      })
+                    );
+                    return;
+                  }
+                  dispacher(getRolesRequest());
+                  navigate(`${checkedUsers[0]}/edit`);
+                } else {
+                  dispacher(
+                    setFlashMessage({
+                      title: "Reminder",
+                      desc: "Please select an action",
+                      status: true,
+                      duration: 5,
+                      type: "error",
+                    })
+                  );
+                  return;
+                }
+                setAction("");
+                setCheckedUsers([]);
+              }}
+            >
+              Apply
+            </ActionButton>
+          )}
         </ActionContainer>
         {all_users && all_users.length > 0 ? (
           <CustomTable
