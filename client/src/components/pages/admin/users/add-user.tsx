@@ -53,7 +53,7 @@ export const AddUser = () => {
       },
     });
   return (
-    <AddItemContainer>
+    <AddItemContainer className="drop-shadow-md">
       <AddItemTitle>Add User </AddItemTitle>
       <AddItemForm
         style={{
@@ -151,7 +151,6 @@ export const AddUser = () => {
             <ErrorMessage>{errors.confirmPassword} </ErrorMessage>
           )}
         </InputContainer>
-        {task_error && <ErrorMessage>{task_error}</ErrorMessage>}
         <ActionContainer>
           <AddBtn type="submit">Save</AddBtn>
           {task_error && <FormError> {task_error} </FormError>}
