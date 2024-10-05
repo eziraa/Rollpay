@@ -15,14 +15,12 @@ import {
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import { useAdmin } from "../../../../hooks/admin-hook";
 import { useEffect, useState } from "react";
-import {
-  editUserRequest,
-  getRolesRequest,
-} from "../../../../store/admin/admin-slice";
+import { editUserRequest } from "../../../../store/admin/admin-slice";
 import { FormError } from "../../../utils/form-elements/form.style";
 import { ErrorMessage } from "../../sign-up/sign-up.style";
-import { useParams } from "react-router";
 import { Option, Select } from "../utils/dropdown/dropdown.style";
+import AdminAPI from "../../../../services/admin-api";
+import { useLoaderData } from "react-router-dom";
 export interface EditableUser {
   id: string;
   username: string;
@@ -37,10 +35,11 @@ export interface EditableUser {
 }
 export const EditUser = () => {
   const dispatcher = useAppDispatch();
-  const { user_id } = useParams();
-  const { adding, task_error, users, roles } = useAdmin();
+
+  const { adding, task_error } = useAdmin();
+  const { user, roles } = useLoaderData();
   const [inputError, setInputError] = useState(false);
-  const [currentUser, setCurrentUser] = useState<EditableUser>({
+  const [currentUser, _setCurrentUser] = useState<EditableUser>({
     id: "",
     username: "",
     email: "",
@@ -52,16 +51,16 @@ export const EditUser = () => {
     is_staff: false,
     is_superuser: false,
   });
-
+  const setCurrentUser = (user: EditableUser) => {
+    _setCurrentUser({ ...user });
+  };
   useEffect(() => {
-    const user = users.find((user) => user.id == user_id);
     user &&
       setCurrentUser({
         ...user,
         role: user.role.name,
       });
-    dispatcher(getRolesRequest());
-  }, []);
+  }, [user]);
 
   const validate = (user: EditableUser): boolean => {
     return Object.values(user).some((value) => value === "");
@@ -69,7 +68,7 @@ export const EditUser = () => {
 
   return (
     <AddItemContainer>
-      <AddItemTitle>Add User </AddItemTitle>
+      <AddItemTitle>{user ? "Edit" : "Add"} User </AddItemTitle>
       <AddItemForm
         style={{
           width: "100%",
@@ -78,7 +77,6 @@ export const EditUser = () => {
           e.preventDefault();
           e.stopPropagation();
           setInputError(validate(currentUser));
-
           !inputError && !adding && dispatcher(editUserRequest(currentUser));
         }}
       >
@@ -280,7 +278,6 @@ export const EditUser = () => {
             <ErrorMessage>Role is not selectd </ErrorMessage>
           )}
         </InputContainer>
-        {task_error && <ErrorMessage>{task_error}</ErrorMessage>}
         <ActionContainer>
           <AddBtn type="submit">Save</AddBtn>
           {task_error && <FormError> {task_error} </FormError>}
@@ -288,4 +285,15 @@ export const EditUser = () => {
       </AddItemForm>
     </AddItemContainer>
   );
+};
+
+export const loader = async ({ params }) => {
+  const { user_id } = params;
+  return await AdminAPI.getUsers(user_id).then(async ({ users }) => {
+    const { roles } = await AdminAPI.getRoles();
+    return {
+      user: users,
+      roles,
+    };
+  });
 };
