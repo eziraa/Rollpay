@@ -30,7 +30,9 @@ import { Label, Select, Option } from "../utils/dropdown/dropdown.style";
 import { Permission } from "../../../../typo/admin/response";
 import { CheckBox } from "../utils/add-item/add-item.style";
 import { setFlashMessage } from "../../../../store/notification/flash-messsage-slice";
-
+import { useNavigation } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
+import DeleteConfirmationModal from "../utils/model/ConfirmitionModal";
 export const DisplayGroups = () => {
   /**
    * Calling hooks and getting necessary imformations
@@ -41,6 +43,22 @@ export const DisplayGroups = () => {
   const [search, setSearch] = useState<string>("");
   const [checkedGroups, setCheckedGroups] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
+  const isLoading = useNavigation().state === "loading";
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+    setAction("");
+    setCheckedGroups([]);
+  };
+
+  const handleDelete = () => {
+    dispacher(deleteGroupRequest(checkedGroups));
+    closeModal();
+  };
   // Handle checkbox change
   const handleCheckboxChange = (groupId: string) => {
     setCheckedGroups(
@@ -74,6 +92,12 @@ export const DisplayGroups = () => {
           Add New
         </AddBtn>
       </ItemHeader>
+      {isOpen && checkedGroups.length > 0 && (
+        <DeleteConfirmationModal
+          handleClose={closeModal}
+          action={handleDelete}
+        />
+      )}
       <ItemBody>
         <SearchContainer>
           <BlurredIcon>
@@ -106,30 +130,18 @@ export const DisplayGroups = () => {
             <Option value="delete">Delete</Option>
             <Option value="edit">Edit</Option>
           </Select>
-          <ActionButton
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              if (checkedGroups.length < 1) {
-                dispacher(
-                  setFlashMessage({
-                    title: "Reminder",
-                    desc: "Please select a group",
-                    status: true,
-                    duration: 5,
-                    type: "error",
-                  })
-                );
-                return;
-              }
-              if (action === "delete") {
-                dispacher(deleteGroupRequest(checkedGroups));
-              } else if (action === "edit") {
-                if (checkedGroups.length > 1) {
+          {isLoading ? (
+            <CircularProgress size={20} />
+          ) : (
+            <ActionButton
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                if (checkedGroups.length < 1) {
                   dispacher(
                     setFlashMessage({
                       title: "Reminder",
-                      desc: "Please select only one group to edit",
+                      desc: "Please select a group",
                       status: true,
                       duration: 5,
                       type: "error",
@@ -137,28 +149,45 @@ export const DisplayGroups = () => {
                   );
                   return;
                 }
-                navigate(`${checkedGroups[0]}/edit`);
-              } else {
-                dispacher(
-                  setFlashMessage({
-                    title: "Reminder",
-                    desc: "Please select an action",
-                    status: true,
-                    duration: 5,
-                    type: "error",
-                  })
-                );
-                return;
-              }
-              setAction("");
-              setCheckedGroups([]);
-            }}
-          >
-            Apply
-          </ActionButton>
+                if (action === "delete") {
+                  openModal();
+                } else if (action === "edit") {
+                  if (checkedGroups.length > 1) {
+                    dispacher(
+                      setFlashMessage({
+                        title: "Reminder",
+                        desc: "Please select only one group to edit",
+                        status: true,
+                        duration: 5,
+                        type: "error",
+                      })
+                    );
+                    return;
+                  }
+                  navigate(`${checkedGroups[0]}/edit`);
+                } else {
+                  dispacher(
+                    setFlashMessage({
+                      title: "Reminder",
+                      desc: "Please select an action",
+                      status: true,
+                      duration: 5,
+                      type: "error",
+                    })
+                  );
+                  return;
+                }
+              }}
+            >
+              Apply
+            </ActionButton>
+          )}
         </ActionContainer>
         {groups && groups.length > 0 ? (
-          <CustomTable keys={Object.keys(groups[0]).length} className="shadow-md">
+          <CustomTable
+            keys={Object.keys(groups[0]).length}
+            className="shadow-md"
+          >
             <thead>
               <tr>
                 <th>Action</th>
