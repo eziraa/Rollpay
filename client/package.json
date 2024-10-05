@@ -11,6 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.2",
     "@reduxjs/toolkit": "^2.2.5",
     "@types/react-router-dom": "^5.3.3",
     "apexcharts": "^3.49.2",
@@ -33,7 +36,8 @@
     "react-router-dom": "^6.23.1",
     "react-to-print": "^2.15.1",
     "redux-saga": "^1.3.0",
-    "styled-components": "^6.1.11",
+    "styled-components": "^6.1.13",
+    "twin.macro": "^3.4.1",
     "xlsx": "^0.18.5",
     "yup": "^1.4.0"
   },
