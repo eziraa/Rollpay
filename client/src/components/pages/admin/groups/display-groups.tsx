@@ -8,7 +8,6 @@ import {
   getGroupsDone,
   getGroupsRequest,
 } from "../../../../store/admin/admin-slice";
-import { ThreeDots } from "../../../utils/loading/dots";
 import { NoResult } from "../../../utils/containers/containers.style";
 import { CustomTable } from "../utils/custom-table/custom-table.style";
 import {
@@ -33,6 +32,7 @@ import { setFlashMessage } from "../../../../store/notification/flash-messsage-s
 import { useNavigation } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import DeleteConfirmationModal from "../utils/model/ConfirmitionModal";
+import BodyLoader from "../../../utils/loading/body-loading";
 export const DisplayGroups = () => {
   /**
    * Calling hooks and getting necessary imformations
@@ -76,7 +76,7 @@ export const DisplayGroups = () => {
       getGroupsDone(groups.filter((group) => group.name.startsWith(search)))
     );
   }, [search]);
-  if (loading) return <ThreeDots size={1} />;
+  if (loading) return <BodyLoader />;
 
   return (
     <ItemContainer>
