@@ -29,11 +29,12 @@ import {
   resetEmployeeState,
 } from "../../../../store/employee/employee-slice";
 import { AddEmployeeSchema } from "../../../../schema/add-emp-schema";
+import { CircularProgress } from "@mui/material";
 
 export const AddEmployeeSection = () => {
   const dispatcher = useAppDispatch();
   const employee = useEmployee();
-  const { task_finished, task_error } = useEmployee();
+  const { task_finished, task_error, adding } = useEmployee();
   const navigate = useNavigate();
   const { positions, curr_position } = usePosition();
 
@@ -309,7 +310,11 @@ export const AddEmployeeSection = () => {
 
         {task_error && <ErrorMessage>{task_error}</ErrorMessage>}
         <ActionContainer>
-          <AddBtn type="submit">Save</AddBtn>
+          {adding ? (
+            <CircularProgress size={20} />
+          ) : (
+            <AddBtn type="submit">Save</AddBtn>
+          )}{" "}
           {task_error && <FormError> {task_error} </FormError>}
         </ActionContainer>
       </AddItemForm>
