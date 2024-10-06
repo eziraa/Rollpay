@@ -11,12 +11,16 @@ import {
 } from "../utils/add-item/add-item.style";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import { useAdmin } from "../../../../hooks/admin-hook";
-import { useState } from "react";
-import { addGroupRequest } from "../../../../store/admin/admin-slice";
+import { useEffect, useState } from "react";
+import {
+  addGroupRequest,
+  resetError,
+} from "../../../../store/admin/admin-slice";
 import { Permission } from "../../../../typo/admin/response";
 import { FormError } from "../../../utils/form-elements/form.style";
 import AdminAPI from "../../../../services/admin-api";
 import { useLoaderData } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 interface PermissionsLoaderData {
   permissions: Permission[];
@@ -24,7 +28,7 @@ interface PermissionsLoaderData {
 
 export const AddGroup = () => {
   const dispatcher = useAppDispatch();
-  const { task_error } = useAdmin();
+  const { task_error, adding } = useAdmin();
   const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>(
     []
   );
@@ -36,12 +40,16 @@ export const AddGroup = () => {
     selectHandler: setSelectedPermissions,
   };
 
+  useEffect(() => {
+    dispatcher(resetError());
+  }, [name]);
+
   return (
     <AddItemContainer>
-      <AddItemTitle>Add Item</AddItemTitle>
+      <AddItemTitle>Add New Group</AddItemTitle>
       <AddItemForm>
         <InputContainer>
-          <AddItemLabel>Name</AddItemLabel>
+          <AddItemLabel> Group Name</AddItemLabel>
           <AddItemInput
             type="text"
             value={name}
@@ -53,26 +61,30 @@ export const AddGroup = () => {
       </AddItemForm>
       <DisplayPermissions permission={permission} />
       <ActionContainer>
-        <AddBtn
-          onClick={(e) => {
-            e.preventDefault();
+        {adding ? (
+          <CircularProgress size={20} />
+        ) : (
+          <AddBtn
+            onClick={(e) => {
+              e.preventDefault();
 
-            dispatcher(
-              addGroupRequest({
-                name: name,
-                permissions: selectedPermissions.map(
-                  (permission) => permission.codename
-                ), // Step 3: Pass selected permissions to the request action creator.
-                onSuccess: () => {},
-                onError: () => {
-                  // Handle error if request fails
-                },
-              })
-            );
-          }}
-        >
-          Save
-        </AddBtn>
+              dispatcher(
+                addGroupRequest({
+                  name: name,
+                  permissions: selectedPermissions.map(
+                    (permission) => permission.codename
+                  ), // Step 3: Pass selected permissions to the request action creator.
+                  onSuccess: () => {},
+                  onError: () => {
+                    // Handle error if request fails
+                  },
+                })
+              );
+            }}
+          >
+            Save
+          </AddBtn>
+        )}
         {task_error && <FormError> {task_error} </FormError>}
       </ActionContainer>
     </AddItemContainer>
