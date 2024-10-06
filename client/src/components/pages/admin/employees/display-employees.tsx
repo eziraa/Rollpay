@@ -31,6 +31,7 @@ import { Label, Select, Option } from "../utils/dropdown/dropdown.style";
 import { CheckBox } from "../utils/add-item/add-item.style";
 import { setFlashMessage } from "../../../../store/notification/flash-messsage-slice";
 import { AdminEmployee } from "../../../../typo/admin/response";
+import DeleteConfirmationModal from "../utils/model/ConfirmitionModal";
 
 export const DisplayEmployees = () => {
   /**
@@ -43,6 +44,26 @@ export const DisplayEmployees = () => {
   const [search, setSearch] = useState<string>("");
   const [checkedEmployees, setCheckedEmployees] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Open modal
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  // Close modal
+  const closeModal = () => {
+    setIsOpen(false);
+    setAction("");
+    setCheckedEmployees([]);
+  };
+
+  // Handle delete
+  const handleDelete = () => {
+    dispacher(deleteEmployeesRequest(checkedEmployees));
+    closeModal();
+    setAction("");
+    setCheckedEmployees([]);
+  };
   // Handle checkbox change
   const handleCheckboxChange = (employeeId: string) => {
     setCheckedEmployees(
@@ -88,6 +109,12 @@ export const DisplayEmployees = () => {
           Add New
         </AddBtn>
       </ItemHeader>
+      {isOpen && (
+        <DeleteConfirmationModal
+          handleClose={closeModal}
+          action={handleDelete}
+        />
+      )}
       <ItemBody>
         <SearchContainer>
           <BlurredIcon>
@@ -135,7 +162,7 @@ export const DisplayEmployees = () => {
                 return;
               }
               if (action === "delete") {
-                dispacher(deleteEmployeesRequest(checkedEmployees));
+                openModal();
               } else if (action === "edit") {
                 if (checkedEmployees.length > 1) {
                   dispacher(
@@ -163,8 +190,6 @@ export const DisplayEmployees = () => {
                 );
                 return;
               }
-              setAction("");
-              setCheckedEmployees([]);
             }}
           >
             Apply
@@ -179,7 +204,9 @@ export const DisplayEmployees = () => {
               <tr>
                 <th>Action</th>
                 {Object.keys(all_employees[0]).map((key) => (
-                  <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
+                  <th>
+                    {key.at(0)?.toUpperCase() + key.slice(1).replace("_", " ")}
+                  </th>
                 ))}
               </tr>
             </thead>
