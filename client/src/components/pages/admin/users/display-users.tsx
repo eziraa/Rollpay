@@ -34,6 +34,7 @@ import { Label, Select, Option } from "../utils/dropdown/dropdown.style";
 import { CheckBox } from "../utils/add-item/add-item.style";
 import { setFlashMessage } from "../../../../store/notification/flash-messsage-slice";
 import { User } from "../../../../typo/admin/response";
+import DeleteConfirmationModal from "../utils/model/ConfirmitionModal";
 
 export const DisplayUsers = () => {
   /**
@@ -47,6 +48,21 @@ export const DisplayUsers = () => {
   const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
   const isLoading = useNavigation().state === "loading";
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+    setAction("");
+    setCheckedUsers([]);
+  };
+
+  const handleDelete = () => {
+    dispacher(deleteUserRequest(checkedUsers));
+    closeModal();
+  };
   // Handle checkbox change
   const handleCheckboxChange = (userId: string) => {
     setCheckedUsers(
@@ -94,6 +110,12 @@ export const DisplayUsers = () => {
           Add New
         </AddBtn>
       </ItemHeader>
+      {isOpen && (
+        <DeleteConfirmationModal
+          handleClose={closeModal}
+          action={handleDelete}
+        />
+      )}
       <ItemBody>
         <SearchContainer>
           <BlurredIcon>
@@ -144,7 +166,7 @@ export const DisplayUsers = () => {
                   return;
                 }
                 if (action === "delete") {
-                  dispacher(deleteUserRequest(checkedUsers));
+                  openModal();
                 } else if (action === "edit") {
                   if (checkedUsers.length > 1) {
                     dispacher(
@@ -172,8 +194,6 @@ export const DisplayUsers = () => {
                   );
                   return;
                 }
-                setAction("");
-                setCheckedUsers([]);
               }}
             >
               Apply
