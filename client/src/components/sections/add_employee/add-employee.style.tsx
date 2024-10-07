@@ -53,12 +53,14 @@ export const AddButton = styled(Button)<ThemeProps>`
 `;
 
 export const AddBtn = styled(Button)<ThemeProps>`
-  width: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
   padding: 0.7rem 1rem;
 `;
 
 export const UploadBtn = styled(Button)<ThemeProps>`
-  margin-top: 1rem;
   padding: 0.7rem 1rem;
 `;
 

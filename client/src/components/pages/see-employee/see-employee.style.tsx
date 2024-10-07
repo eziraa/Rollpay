@@ -20,7 +20,7 @@ export const SeeEmployeeHeader = styled.div`
 
 export const TitleContainer = styled.div`
   display: flex;
-  flex: 1.4;
+  width: 32.4rem;
   align-items: center;
   gap: 2rem;
 `;
@@ -92,6 +92,10 @@ export const Button = styled.button`
   background-color: ${({ theme }) => theme.buttons.primary};
   border-radius: 0.5rem;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};

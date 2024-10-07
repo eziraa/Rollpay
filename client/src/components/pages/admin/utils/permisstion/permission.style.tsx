@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { addOpacityToColor } from "../../../../utils/convertor/add-opacity-color";
 import { custom_vertical_scroll_bar } from "../../../../utils/scroll-bar/scroll-bar";
 import { NormalBlurredText } from "../../../../utils/titles/titles";
+import { ThemeProps } from "../../../../../typo/theme/theme";
 
 export const PermissionContainer = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ export const PermissionGroup = styled.div`
     ${({ theme }) => addOpacityToColor(0.23, theme.colors.primary)};
 `;
 
-export const PermissionHeader = styled.div`
+export const PermissionHeader = styled.div<ThemeProps>`
   display: flex;
   align-items: center;
   justify-content: start;
@@ -43,11 +44,9 @@ export const PermissionHeader = styled.div`
   width: 100%;
   font-weight: 700;
   font-size: 1.2rem;
-  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
+  color: ${({ theme }) => addOpacityToColor(0.99, theme.backgrounds.primary)};
   background-color: ${({ theme }) =>
-    addOpacityToColor(0.15, theme.colors.primary)};
-  border-bottom: 0.1rem solid
-    ${({ theme }) => addOpacityToColor(0.23, theme.colors.primary)};
+    addOpacityToColor(0.99, theme.table.header)};
   padding: 1rem;
 `;
 
@@ -110,6 +109,7 @@ export const Adder = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
+  
 `;
 
 export const ChooseBtn = styled.button`

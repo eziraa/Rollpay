@@ -36,14 +36,13 @@ export const Title = styled.h1<ThemeProps>`
 
 export const EmpsDisplayerHeader = styled.div`
   ${sub_header_css}
-  position: relative;
   width: 100%;
 `;
 
 export const EmployeesListHeader = styled.div`
   ${sub_header_css}
   width: 100%;
-  position: relative;
+  justify-content: space-between;
 `;
 
 export const Body = styled.div<ThemeProps>`
@@ -56,7 +55,8 @@ export const Body = styled.div<ThemeProps>`
 export const AddButton = styled(Button)`
   width: fit-content;
   justify-self: end;
-  display: block;
-  position: absolute;
-  right: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 3rem;
 `;

@@ -7,17 +7,16 @@ import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { LuCircleDollarSign } from "react-icons/lu";
 import { PiUsersThree } from "react-icons/pi";
 import { CloseIcon } from "../../utils/flash-message/flash-message.style";
+import { Theme } from "../../../theme/theme";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
   width: 16vw;
   height: 100vh;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.9, theme.backgrounds.primary)};
-  z-index: 100;
   display: flex;
+  z-index: 100;
   flex-direction: column;
-  /* gap: 1rem; */
-
   color: ${({ theme }) => theme.colors.secondary};
   border-right: 0.3rem solid ${({ theme }) => theme.colors.secondary};
   position: relative;
@@ -44,8 +43,9 @@ export const LogoImage = styled.img`
   border-radius: 50%;
 `;
 
-interface MenuItemProps extends ThemeProps {
-  active: boolean;
+interface MenuItemProps {
+  is_active: boolean;
+  theme: Theme;
 }
 
 export const MenuItem = styled.div<MenuItemProps>`
@@ -58,9 +58,9 @@ export const MenuItem = styled.div<MenuItemProps>`
   font-size: 2rem;
   margin: 0.3rem 1rem;
   gap: 1rem;
-  border-radius: 1rem;
-  color: ${({ active, theme }) =>
-    active ? theme.backgrounds.primary : theme.colors.primary};
+  border-radius: 0.5rem;
+  color: ${({ is_active, theme }) =>
+    is_active ? theme.backgrounds.primary : theme.colors.primary};
   cursor: pointer;
   &:hover {
     background-color: ${({ theme }) =>
@@ -68,8 +68,8 @@ export const MenuItem = styled.div<MenuItemProps>`
     color: ${({ theme }) => theme.backgrounds.primary};
   }
   border-bottom: 0.4rem solid transparent;
-  background-color: ${({ active, theme }) =>
-    active ? theme.buttons.primary : "transparent"};
+  background-color: ${({ is_active, theme }) =>
+    is_active ? theme.buttons.primary : "transparent"};
   position: relative;
 `;
 
@@ -83,7 +83,6 @@ export const SubMenuContainer = styled.div`
   margin: 1rem;
   margin-left: 4rem;
   border-radius: 0.5rem;
-
   transition: all 0.5s ease;
   border-left: 0.2rem solid
     ${({ theme }) => addOpacityToColor(0.7, theme.buttons.primary)};

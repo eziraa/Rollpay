@@ -11,7 +11,6 @@ export const HomeBody = styled.div<ThemeProps>`
   ${body}
   flex-direction: column;
   flex: 1;
-  padding: 1rem;
 `;
 
 export const HamburgerMenu = styled.div<ThemeProps>`

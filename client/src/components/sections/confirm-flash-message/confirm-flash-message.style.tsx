@@ -60,9 +60,9 @@ export const BtnsContainer = styled.div`
 export const btn_css = css`
   background-color: ${({ theme }) => theme.buttons.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border: none;
   cursor: pointer;

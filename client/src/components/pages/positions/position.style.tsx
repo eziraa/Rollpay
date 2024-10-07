@@ -37,7 +37,6 @@ export const PositionListHeader = styled.div`
   margin-bottom: 1rem;
   margin-top: 3rem;
   padding: 0 5rem;
-  position: relative;
   width: 100%;
   display: flex;
   align-items: center;

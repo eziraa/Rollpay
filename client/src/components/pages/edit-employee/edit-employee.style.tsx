@@ -9,9 +9,11 @@ export const EditEmployeeBody = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  max-height: 50rem;
   padding: 1rem;
   gap: 1rem;
   position: relative;
+  margin-top: -3rem;
 `;
 export const InputField = styled.div`
   display: grid;
@@ -40,8 +42,7 @@ export const SaveBtn = styled(Button)`
   background-color: ${({ theme }) => theme.buttons.primary};
 `;
 export const CancelBtn = styled(Button)`
-  width: 8rem;
-  padding: 0.6rem 0.4rem;
+  width: fit-content;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.5, theme.buttons.primary)};
 `;
