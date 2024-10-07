@@ -29,28 +29,28 @@ export const CustomTable = styled.table<TableProps>`
     text-align: left;
     font-size: 1.4rem;
     vertical-align: middle;
+    color: aliceblue;
   }
   tr {
     display: grid;
     grid-template-columns: 0.5fr repeat(${({ keys }) => keys - 2}, 1fr) 2fr 1fr;
   }
   thead tr {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.095, theme.colors.primary)};
     line-height: 2;
-    background-color: ${({ theme }) => theme.backgrounds.secondary};
+    background-color: ${({ theme }) => theme.table.header};
   }
   tr:nth-child(even) {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.095, theme.colors.primary)};
   }
 
-  tr {
-    &:not(:first-child) {
-      &:hover {
-        background-color: aliceblue;
-        cursor: pointer;
-      }
+  tbody tr {
+    &:hover {
+      background-color: aliceblue;
+      cursor: pointer;
     }
+  }
+  tbody tr td {
+    color: black;
   }
 `;

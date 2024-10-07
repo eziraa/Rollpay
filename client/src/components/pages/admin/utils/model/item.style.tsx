@@ -6,15 +6,13 @@ export const ItemContainer = styled.div`
   width: 100%;
   padding: 1rem;
   height: 100%;
-  border: 0.2rem solid
-    ${({ theme }) => addOpacityToColor(0.1, theme.colors.primary)};
 `;
 
 export const ItemHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 0.5rem;
+  padding: 1rem;
   border-bottom: 0.1rem solid
     ${({ theme }) => addOpacityToColor(0.1, theme.colors.primary)};
 `;
