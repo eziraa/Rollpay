@@ -10,8 +10,11 @@ import {
 } from "../utils/add-item/add-item.style";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import { useAdmin } from "../../../../hooks/admin-hook";
-import { useState } from "react";
-import { addUserRequest } from "../../../../store/admin/admin-slice";
+import { useEffect, useState } from "react";
+import {
+  addUserRequest,
+  resetError,
+} from "../../../../store/admin/admin-slice";
 import {
   FormError,
   PasswordContainer,
@@ -22,6 +25,7 @@ import { ErrorMessage } from "../../sign-up/sign-up.style";
 import { PasswordVisible } from "../../../utils/password-visiblity/password.style";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { CircularProgress } from "@mui/material";
 
 export const AddUser = () => {
   const dispatcher = useAppDispatch();
@@ -42,6 +46,9 @@ export const AddUser = () => {
     password: "",
     confirmPassword: "",
   };
+  useEffect(() => {
+    dispatcher(resetError());
+  }, [initialValues.username, initialValues.empID]);
   const { touched, values, handleBlur, handleChange, handleSubmit, errors } =
     useFormik({
       initialValues,
@@ -152,7 +159,11 @@ export const AddUser = () => {
           )}
         </InputContainer>
         <ActionContainer>
-          <AddBtn type="submit">Save</AddBtn>
+          {adding ? (
+            <CircularProgress size={20} />
+          ) : (
+            <AddBtn type="submit">Save</AddBtn>
+          )}
           {task_error && <FormError> {task_error} </FormError>}
         </ActionContainer>
       </AddItemForm>
