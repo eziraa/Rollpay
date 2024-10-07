@@ -21,6 +21,7 @@ import { ErrorMessage } from "../../sign-up/sign-up.style";
 import { Option, Select } from "../utils/dropdown/dropdown.style";
 import AdminAPI from "../../../../services/admin-api";
 import { useLoaderData } from "react-router-dom";
+import { Role, User } from "../../../../typo/admin/response";
 export interface EditableUser {
   id: string;
   username: string;
@@ -33,11 +34,15 @@ export interface EditableUser {
   is_staff: boolean;
   is_superuser: boolean;
 }
+interface EditUserData {
+  user: User;
+  roles: Role[];
+}
 export const EditUser = () => {
   const dispatcher = useAppDispatch();
 
   const { adding, task_error } = useAdmin();
-  const { user, roles } = useLoaderData();
+  const { user, roles } = useLoaderData() as EditUserData;
   const [inputError, setInputError] = useState(false);
   const [currentUser, _setCurrentUser] = useState<EditableUser>({
     id: "",
@@ -58,7 +63,7 @@ export const EditUser = () => {
     user &&
       setCurrentUser({
         ...user,
-        role: user.role.name,
+        role: user.role.id,
       });
   }, [user]);
 
@@ -262,7 +267,7 @@ export const EditUser = () => {
         >
           <AddItemLabel htmlFor="empID">Role </AddItemLabel>
           <Select
-            defaultValue={currentUser.role}
+            value={currentUser.role}
             onChange={(e) => {
               setCurrentUser({
                 ...currentUser,
@@ -270,7 +275,7 @@ export const EditUser = () => {
               });
             }}
           >
-            {roles.map((role) => (
+            {roles.map((role: Role) => (
               <Option value={role.id}>{role.name}</Option>
             ))}
           </Select>
@@ -287,13 +292,21 @@ export const EditUser = () => {
   );
 };
 
-export const loader = async ({ params }) => {
+export const loader = async ({ params }: { params: { user_id: string } }) => {
   const { user_id } = params;
-  return await AdminAPI.getUsers(user_id).then(async ({ users }) => {
-    const { roles } = await AdminAPI.getRoles();
-    return {
-      user: users,
-      roles,
-    };
+  return await AdminAPI.getUsers(user_id).then(async (response) => {
+    if ("users" in response) {
+      const rolesResponse = await AdminAPI.getRoles();
+      if ("roles" in rolesResponse) {
+        return {
+          user: response.users,
+          roles: rolesResponse.roles,
+        };
+      } else {
+        throw new Error(rolesResponse.error || "Failed to fetch roles data");
+      }
+    } else {
+      throw new Error(response.error || "Failed to fetch user data");
+    }
   });
 };
