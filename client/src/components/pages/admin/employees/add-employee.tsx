@@ -21,25 +21,28 @@ import {
 import { useFormik } from "formik";
 import { ErrorMessage } from "../../sign-up/sign-up.style";
 import { useEmployee } from "../../../../hooks/employee-hook";
-import { useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { usePosition } from "../../../../hooks/position-hook";
-import { listPositionsRequested } from "../../../../store/position/position-slice";
 import {
   addEmpRequested,
   resetEmployeeState,
 } from "../../../../store/employee/employee-slice";
 import { AddEmployeeSchema } from "../../../../schema/add-emp-schema";
 import { CircularProgress } from "@mui/material";
-
+import { Position } from "../../../../typo/position/response";
+import api from "../../../../config/api";
+interface PositionsLoader {
+  positions: Position[];
+}
 export const AddEmployeeSection = () => {
   const dispatcher = useAppDispatch();
   const employee = useEmployee();
   const { task_finished, task_error, adding } = useEmployee();
   const navigate = useNavigate();
-  const { positions, curr_position } = usePosition();
+  const { curr_position } = usePosition();
 
+  const { positions } = useLoaderData() as PositionsLoader;
   useEffect(() => {
-    dispatcher(listPositionsRequested());
     dispatcher(
       resetEmployeeState({
         ...employee,
@@ -48,11 +51,7 @@ export const AddEmployeeSection = () => {
       })
     );
   }, []);
-  useEffect(() => {
-    if (curr_position) {
-      dispatcher(listPositionsRequested());
-    }
-  }, [curr_position, dispatcher]);
+
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -320,4 +319,14 @@ export const AddEmployeeSection = () => {
       </AddItemForm>
     </AddItemContainer>
   );
+};
+
+export const loader = async () => {
+  const positions = await api
+    .get("/position/list?is_active=True")
+    .then((response) => {
+      return response.data;
+    });
+
+  return { positions };
 };
