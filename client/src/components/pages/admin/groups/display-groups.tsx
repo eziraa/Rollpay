@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // export const CustomTable =
 
 import { useEffect, useState } from "react";
@@ -76,7 +77,6 @@ export const DisplayGroups = () => {
       getGroupsDone(groups.filter((group) => group.name.startsWith(search)))
     );
   }, [search]);
-  if (loading) return <BodyLoader />;
 
   return (
     <ItemContainer>
@@ -232,6 +232,7 @@ export const DisplayGroups = () => {
           <NoResult>No Result</NoResult>
         )}
       </ItemBody>
+      {loading && <BodyLoader />}
     </ItemContainer>
   );
 };
