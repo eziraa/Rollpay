@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 
 interface PermissionProps {
   all_permissions: Permission[];
-  selected_permissions: Permission[];
+  selectedPermissions: Permission[];
   selectHandler: (permissions: Permission[]) => void;
 }
 
@@ -34,16 +34,16 @@ export const DisplayPermissions = ({
   const [permissions, setPermissions] = useState<Permission[]>([]);
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [removeAll, setRemoveAll] = useState<boolean>(false);
-  const [selectedPermissions, setSelecteddPermissions] = useState<Permission[]>(
+  const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>(
     []
   );
   const [filterAll, setFilterAll] = useState<string>("");
   const [filterSelected, setFilterSelected] = useState<string>("");
   useEffect(() => {
     setPermissions(permission.all_permissions);
-    setSelecteddPermissions(permission.selected_permissions);
+    setSelectedPermissions(permission.selectedPermissions);
     setSelectedOptions(
-      permission.selected_permissions.map((permission) => permission.codename)
+      permission.selectedPermissions.map((permission) => permission.codename)
     );
   }, [permission]);
   //
@@ -51,18 +51,18 @@ export const DisplayPermissions = ({
   useEffect(() => {
     setPermissions(
       permission.all_permissions.filter((permission) =>
-        permission.name.includes(filterAll)
+        permission.name?.toLowerCase().includes(filterAll?.toLowerCase())
       )
     );
-  }, [filterAll]);
+  }, [filterAll, permission.all_permissions]);
 
   useEffect(() => {
-    setSelecteddPermissions(
-      permission.selected_permissions.filter((permission) =>
-        permission.name.includes(filterSelected)
+    setSelectedPermissions(
+      permission.selectedPermissions.filter((permission) =>
+        permission.name.toLowerCase().includes(filterSelected.toLowerCase())
       )
     );
-  }, [filterSelected]);
+  }, [filterSelected, permission.selectedPermissions]);
 
   return (
     <PermissionContainer>
@@ -76,8 +76,8 @@ export const DisplayPermissions = ({
         </BlurredText>
       </Header>
       <PermissionGroup>
-        <PermissionHeader>
-          <BlurredText>All Permissions</BlurredText>
+        <PermissionHeader className="drop-shadow-md">
+          <p className="text-slate-50 ">All Permissions</p>
         </PermissionHeader>
         <PermissionFilter>
           <BlurredIcon>
@@ -102,13 +102,14 @@ export const DisplayPermissions = ({
           multiple
           size={5}
           onChange={(event) => {
-            const { options } = event.target;
+            const options = event.target.options;
             const value: string[] = [];
-            for (let i = 0, len = options.length; i < len; i++) {
-              if (options[i].selected) {
-                value.push(options[i].value);
+            Array.from(options).forEach((option) => {
+              if (option.selected) {
+                value.push(option.value);
               }
-            }
+            });
+
             setSelectedOptions(
               Array.from(new Set([...selectedOptions, ...value]))
             );
@@ -138,33 +139,38 @@ export const DisplayPermissions = ({
         <SortBtn
           onClick={() => {
             permission.selectHandler(
-              permissions.filter((permission) =>
-                selectedOptions.includes(permission.codename)
-              )
+              selectAll
+                ? permission.all_permissions
+                : permission.all_permissions.filter((permission) => {
+                    return selectedOptions.includes(permission.codename);
+                  })
             );
           }}
         >
           <BlurredIcon>
-            <GoArrowRight />
+            <GoArrowRight size={20} />
           </BlurredIcon>
         </SortBtn>
         <SortBtn
           onClick={() => {
             permission.selectHandler(
-              selectedPermissions.filter(
-                (permission) => !removedOptions.includes(permission.codename)
-              )
+              removeAll
+                ? []
+                : selectedPermissions.filter(
+                    (permission) =>
+                      !removedOptions.includes(permission.codename)
+                  )
             );
           }}
         >
           <BlurredIcon>
-            <GoArrowLeft />
+            <GoArrowLeft size={20} />
           </BlurredIcon>
         </SortBtn>
       </Adder>
       <PermissionGroup>
         <PermissionHeader>
-          <BlurredText>Selected Permissions</BlurredText>
+          <p className="text-slate-50">Selected Permissions</p>
         </PermissionHeader>
         <PermissionFilter>
           <BlurredIcon>
