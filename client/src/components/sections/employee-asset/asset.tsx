@@ -1,6 +1,5 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../../utils/custom-hook";
-import { useUser } from "../../../hooks/user-hook";
 import {
   AddButton,
   AllowanceBody,
@@ -28,20 +27,31 @@ import {
 } from "../../../store/asset/asset-slice";
 import { useAsset } from "../../../hooks/asset-hook";
 
-import { SmallSpinner } from "../../utils/spinner/spinner";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { NoResult } from "../../utils/containers/containers.style";
 import DownloadPDF from "../../utils/download/download";
 import { IoAddOutline } from "react-icons/io5";
+import { useAuth } from "../../../hooks/auth-hook";
+import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
 
 export const EmployeeAsset = () => {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { curr_user: user } = useAuth();
   const { employee_id } = useParams();
   const dispatcher = useAppDispatch();
-  const { task_error, task_finished, assets } = useAsset();
-  const DELETE = "delete";
-  const [action, setAction] = useState("");
+  const { task_finished, assets } = useAsset();
+  const [deleteAsset, setDeleteAsset] = useState("");
+  const [openModel, setOpenModal] = useState(false);
+  const handleDelete = () => {
+    if (deleteAsset) {
+      dispatcher(deleteAssetRequested(deleteAsset));
+      setOpenModal(false);
+    }
+  };
+  const handleClose = () => {
+    setDeleteAsset("");
+    setOpenModal(false);
+  };
   useEffect(() => {
     if (employee_id) dispatcher(listAssetsRequested(employee_id));
   }, [dispatcher, employee_id]);
@@ -64,6 +74,12 @@ export const EmployeeAsset = () => {
           </AddButton>
         )}
       </AllowanceHeader>
+      {openModel && (
+        <DeleteConfirmationModal
+          handleClose={handleClose}
+          action={handleDelete}
+        />
+      )}
       <AllowanceBody>
         {!task_finished ? (
           <ThreeDots size={1} />
@@ -72,7 +88,7 @@ export const EmployeeAsset = () => {
             <NoResult>No assets found</NoResult>
           </div>
         ) : (
-          <CustomTable>
+          <CustomTable className="shadow-md">
             <thead>
               <TableHeader>
                 <HeaderTitle>Asset name</HeaderTitle>
@@ -92,19 +108,11 @@ export const EmployeeAsset = () => {
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              setAction(DELETE);
-                              dispatcher(deleteAssetRequested(asset.id));
+                              setDeleteAsset(asset.id);
+                              setOpenModal(true);
                             }}
                           >
-                            {action === DELETE &&
-                            !task_error &&
-                            !task_finished ? (
-                              <SmallSpinner />
-                            ) : (
-                              <>
-                                <RiDeleteBin6Line />
-                              </>
-                            )}
+                            <RiDeleteBin6Line />
                           </DeleteButton>
                         )}
 
