@@ -5,12 +5,7 @@ import { Button } from "../../utils/form-elements/form.style";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 export const ModalContainer = styled.div`
-  width: 100vw;
   height: 100vh;
-  top: 2vh;
-  left: 0;
-  position: absolute;
-  z-index: 200;
 `;
 
 export const Modal = styled.div<ThemeProps>`
@@ -24,12 +19,7 @@ export const Modal = styled.div<ThemeProps>`
   padding: 1rem 0;
   flex-direction: column;
   justify-content: first baseline;
-
   border-radius: 0.5rem;
-  box-shadow: 0.5rem 0 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
-    -0.5rem 0 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
-    0 0.5rem 0.5rem -0.5rem ${({ theme }) => theme.colors.primary},
-    0 -0.5rem 0.5rem -0.5rem ${({ theme }) => theme.colors.primary};
 `;
 
 export const ResetLink = styled(CustomLink)<ThemeProps>`
@@ -49,10 +39,15 @@ export const ResetLink = styled(CustomLink)<ThemeProps>`
     color: ${({ theme }) => theme.colors.primary};
   }
 `;
-export const Label = styled.p<ThemeProps>`
+export const Label = styled.div<ThemeProps>`
   font-size: 1.5rem;
   padding: 0.5rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
+  flex: 1;
 `;
 
 export const LogoutButton = styled(Button)<ThemeProps>`
@@ -61,13 +56,17 @@ export const LogoutButton = styled(Button)<ThemeProps>`
 `;
 
 export const IconContainer = styled.div<ThemeProps>`
-  font-size: 2rem;
+  font-size: 1.8rem;
+  display: flex;
   align-items: center;
+  justify-content: center;
 `;
 export const ItemContainer = styled.div<ThemeProps>`
   display: flex;
   padding: 0.5rem 1rem;
   align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
   color: ${({ theme }) => theme.colors.primary};
   &:hover {
     color: ${({ theme }) => theme.buttons.primary};

@@ -23,10 +23,10 @@ export const SignUpPage = styled.div`
 export const SignUpContainer = styled.div<ThemeProps>`
   background-color: ${({ theme }) => theme.backgrounds.primary};
   color: ${({ theme }) => theme.backgrounds.primary};
-  width: fit-content;
+  width: 35rem;
   height: auto;
-  box-shadow: 0px 0px 1rem
-    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
+  box-shadow: 0px 0.4rem 2rem
+    ${({ theme }) => addOpacityToColor(0.16, theme.colors.primary)};
   display: flex;
   flex-direction: column;
   align-items: center;

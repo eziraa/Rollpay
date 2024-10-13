@@ -11,9 +11,9 @@ export const FilterContainer = styled.div`
   gap: 1rem;
   padding: 2rem;
   position: absolute;
-  left: 0;
+  left: 21vw;
   right: 0;
-  top: 5rem;
+  top: 21vh;
   border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
   box-shadow: 0 0 0.5rem 0 ${({ theme }) => theme.colors.primary};

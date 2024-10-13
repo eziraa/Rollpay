@@ -25,14 +25,11 @@ export const SalaryContainer = styled(MainContainer)`
   align-items: center;
   justify-content: start;
   height: 90vh;
-  position: relative;
   padding: 2rem;
   width: auto;
 `;
 
 export const SalaryTitle = styled.h1`
-  position: absolute;
-  left: 25rem;
   font-size: 2.5rem;
   font-weight: bold;
   letter-spacing: 0.1rem;
@@ -202,9 +199,6 @@ export const TableRow = styled.tr<ThemeProps>`
 
   &:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
-  }
-  &:last-child {
-    border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
   }
 `;
 
