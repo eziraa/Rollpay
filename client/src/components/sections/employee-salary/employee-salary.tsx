@@ -52,7 +52,7 @@ export const EmployeeSalary = () => {
             <NoResult>No salary history found</NoResult>
           </div>
         ) : (
-          <CustomTable>
+          <CustomTable className="shadow-md">
             <thead>
               <TableHeader>
                 <HeaderTitle>From</HeaderTitle>

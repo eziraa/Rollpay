@@ -3,15 +3,14 @@ import { NormalBlurredText } from "../../utils/titles/titles";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import Profile from "../profile/profile";
 import { useState } from "react";
-import { useUser } from "../../../hooks/user-hook";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
+import { useAuth } from "../../../hooks/auth-hook";
 export const DropDownContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
   cursor: pointer;
   color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
-
   &:hover {
     color: ${({ theme }) => theme.buttons.primary};
     background-color: ${({ theme }) =>
@@ -34,7 +33,7 @@ export const ProfileToggle = styled.div`
 
 export const DropDown = () => {
   const [openProfileMenu, setProfileMenu] = useState<boolean>();
-  const { user } = useUser();
+  const { curr_user } = useAuth();
   const closeAction = () => {
     setProfileMenu(false);
   };
@@ -44,13 +43,13 @@ export const DropDown = () => {
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
-        setProfileMenu(!openProfileMenu);
+        setProfileMenu((prev) => !prev);
       }}
     >
       {openProfileMenu && <Profile close={closeAction} />}
       <UserInfo>
-        <NormalBlurredText> {user?.employee.first_name} </NormalBlurredText>
-        <NormalBlurredText> {user?.employee.position} </NormalBlurredText>
+        <NormalBlurredText>{curr_user?.employee.first_name}</NormalBlurredText>
+        <NormalBlurredText> {curr_user?.employee.position} </NormalBlurredText>
       </UserInfo>
       <ProfileToggle>
         {openProfileMenu ? <MdExpandLess /> : <MdExpandMore />}

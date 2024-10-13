@@ -5,7 +5,6 @@ import {
   ProfileImage,
   WelcomeMessageContainer,
 } from "./header.style";
-import { useUser } from "../../../hooks/user-hook";
 import { BlurredText, MidBlurredText } from "../../utils/titles/titles";
 import { stringDay } from "../../utils/day/string-day";
 import { DropDown } from "./profile-drop-down";
@@ -15,10 +14,11 @@ import { useRefs } from "../../../hooks/refs-hook";
 import { baseURL } from "../../../config/api";
 import { useEffect, useState } from "react";
 import UserAPI from "../../../services/user-api";
+import { useAuth } from "../../../hooks/auth-hook";
 
 export const Header = () => {
-  const { user } = useUser();
   const leftMenuRef = useRefs().refs?.leftMenuRef;
+  const { curr_user } = useAuth();
   const [date, setDate] = useState<Date | null>(null);
   useEffect(() => {
     UserAPI.getServerTime().then((res) => {
@@ -49,7 +49,7 @@ export const Header = () => {
   }, []); // Ensure this effect runs only once upon mounting
   return (
     <>
-      <HeaderContainer>
+      <HeaderContainer className="shadow-md drop-shadow-md shadow-green-100">
         <HamburgerMenu
           className="hamburger-menu"
           onClick={() => {
@@ -66,8 +66,8 @@ export const Header = () => {
               fontSize: "2rem",
             }}
           >
-            Welcome,{user?.employee.gender === "F" ? " Ms" : " Mr"}.{" "}
-            {user?.employee.first_name}
+            Welcome,{curr_user?.employee.gender === "F" ? " Ms" : " Mr"}.{" "}
+            {curr_user?.employee.first_name}
           </BlurredText>
           <MidBlurredText>
             Today is {date && stringDay(date)}
@@ -84,7 +84,7 @@ export const Header = () => {
           </MidBlurredText>
         </WelcomeMessageContainer>
         <ProfileContainer>
-          <ProfileImage profile={baseURL + user?.profile_picture} />
+          <ProfileImage profile={baseURL + curr_user?.profile_picture} />
           <DropDown />
         </ProfileContainer>
       </HeaderContainer>
