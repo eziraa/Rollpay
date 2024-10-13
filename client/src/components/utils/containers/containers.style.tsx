@@ -37,8 +37,11 @@ export const btn_css = css`
   font-size: 1.5rem;
   color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
-  padding: 0.71rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
   background-color: ${({ theme }) => theme.buttons.primary};
   border: none;
   &:hover {

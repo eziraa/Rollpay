@@ -19,17 +19,23 @@ export const EmployeeeProfileContainer = styled.div`
   gap: 2rem;
   position: relative;
   min-height: 60vh;
+  margin-top: 3rem;
+  padding-top: 2rem;
 `;
 
 export const Button = styled.button`
   font-size: 1.6rem;
-  color: ${({theme})=>theme.backgrounds.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
   cursor: pointer;
   padding: 0.5rem 1rem;
   border: none;
   background-color: ${({ theme }) => theme.buttons.primary};
   border-radius: 0.5rem;
   width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   text-align: center;
   vertical-align: baseline;
   &:hover {
@@ -218,7 +224,6 @@ export const NavItem = styled.div<NavItemProps>`
 
 export const DeleteButton = styled(Button)`
   background-color: #f46262;
-  border: 0.2rem solid #dc3545;
   color: #fbfbfb;
   &:hover {
     background-color: #dc3545;

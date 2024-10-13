@@ -23,8 +23,6 @@ export const ForgotPasswordContainer = styled(LoginContainer)`
   left: 50%;
   transform: translate(-50%, -50%);
   width: fit-content;
-  box-shadow: 0 0 1rem
-    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
 `;
 
 export const ForgotPasswordContent = styled.div`

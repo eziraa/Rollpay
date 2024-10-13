@@ -79,7 +79,6 @@ body{
     .collapsed {
       display: block;
       z-index: 1010;
-      position: absolute;
       width: 100vw;
       height: 100%;
 

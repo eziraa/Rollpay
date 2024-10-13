@@ -25,7 +25,6 @@ export const sub_header_css = css`
   justify-content: start;
   width: 100%;
   padding: 1rem;
-  position: relative;
   margin: 0rem 2rem 0rem 1rem;
 `;
 

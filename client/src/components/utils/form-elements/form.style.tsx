@@ -11,16 +11,16 @@ export const Form = styled.form`
   border-radius: 0.5rem;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<ThemeProps>`
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
   border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.backgrounds.primary};
-  outline: none;
   color: ${({ theme }) => theme.colors.primary};
+  outline: none;
   &:focus {
-    border: 0.1rem solid ${({ theme }) => theme.colors.primary};
+    border: 0.1rem solid ${({ theme }) => theme.buttons.primary};
   }
 `;
 
@@ -37,6 +37,10 @@ export const Button = styled.button<ThemeProps>`
   font-size: ${({ theme }) => theme.fontSizes.medium};
   background-color: ${({ theme }) => theme.buttons.primary};
   color: ${({ theme }) => addOpacityToColor(0.99, theme.backgrounds.primary)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   &:hover {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.75, theme.buttons.primary)};
@@ -62,20 +66,18 @@ export const PasswordContainer = styled.div`
   gap: 0.5rem;
   width: 100%;
   border-radius: 0.5rem;
-  border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
-  outline: none;
   position: relative;
   input {
-    outline: 0.1rem solid transparent;
     width: 100%;
     padding: 1rem;
-    border: none;
     border-radius: 0.5rem;
+    border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.backgrounds.primary};
-    &:focus {
-      border: 0.1rem solid ${({ theme }) => theme.colors.primary};
-    }
     color: ${({ theme }) => theme.colors.primary};
+    outline: none;
+    &:focus {
+      border: 0.1rem solid ${({ theme }) => theme.buttons.primary};
+    }
   }
 `;
 export const FormError = styled.span({
@@ -86,7 +88,6 @@ export const FormError = styled.span({
 });
 
 export const Select = styled.select`
-  width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
   border: 0.1rem solid ${({ theme }) => theme.colors.secondary};
