@@ -21,13 +21,14 @@ import { ThreeDots } from "../../utils/loading/dots";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useYearMonthPagination } from "../../../hooks/year-month-pagination-hook";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
-import { useUser } from "../../../hooks/user-hook";
 import { removeSalaryAssetRequested } from "../../../store/employee/employee-slice";
 import { stringDay } from "../../utils/day/string-day";
 import { IoAddOutline } from "react-icons/io5";
+import { useAuth } from "../../../hooks/auth-hook";
+import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
 
 export const EmployeeAllowance = () => {
   //--- Calling hooks and getting necessary information ---
@@ -35,7 +36,7 @@ export const EmployeeAllowance = () => {
   const navigate = useNavigate();
   const dispatcher = useAppDispatch();
   const { pathname } = useLocation();
-  const { user } = useUser();
+  const { curr_user: user } = useAuth();
 
   //Getting current year and month
   const now = new Date(Date.now());
@@ -45,6 +46,30 @@ export const EmployeeAllowance = () => {
   const { year, month, changeYear, changeMonth } = useYearMonthPagination();
 
   const { year: query_year, month: query_month, employee_id } = useParams();
+
+  const [removeId, setRemoveId] = useState("");
+  const [paymentMonth, setPaymentMonth] = useState("");
+  const [openModel, setOpenModal] = useState(false);
+
+  const closeModal = () => {
+    setOpenModal(false);
+    setRemoveId("");
+    setPaymentMonth("");
+  };
+
+  const handleRemove = () => {
+    if (curr_emp)
+      dispatcher(
+        removeSalaryAssetRequested({
+          employee_id: curr_emp.employee.id,
+          asset_type: "allowance",
+          asset_id: removeId,
+          qury_string: `?year=${paymentMonth.split("-")[0]}&month=${
+            paymentMonth.split("-")[1]
+          }`,
+        })
+      );
+  };
   const baseUrl = query_year
     ? pathname.slice(0, pathname.indexOf("/" + query_year + "/"))
     : pathname;
@@ -76,6 +101,7 @@ export const EmployeeAllowance = () => {
         <AllowanceTitle>Employee Allowance</AllowanceTitle>
         {user?.role === "Clerk" && (
           <AddButton
+            className="rounded-md "
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -86,6 +112,12 @@ export const EmployeeAllowance = () => {
           </AddButton>
         )}
       </AllowanceHeader>
+      {openModel && (
+        <DeleteConfirmationModal
+          handleClose={closeModal}
+          action={handleRemove}
+        />
+      )}
       <AllowanceBody>
         {!task_finished ? (
           <ThreeDots size={1} />
@@ -98,14 +130,14 @@ export const EmployeeAllowance = () => {
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.allowances.length > 0 ? (
-              <CustomTable key={index}>
+              <CustomTable key={index} className="shadow-md">
                 <thead>
                   <tr>
-                    <Caption>
+                    <Caption className="shadow-md mb-3">
                       {getFormattedMonth(new Date(payment.month))}
                     </Caption>
                   </tr>
-                  <TableHeader>
+                  <TableHeader className="shadow-lg">
                     <HeaderTitle>Allowance Name</HeaderTitle>
                     <HeaderTitle>Allowance Value</HeaderTitle>
                     <HeaderTitle>Date of Given</HeaderTitle>
@@ -130,16 +162,9 @@ export const EmployeeAllowance = () => {
                             <span
                               onClick={(e) => {
                                 e.stopPropagation();
-                                dispatcher(
-                                  removeSalaryAssetRequested({
-                                    employee_id: curr_emp.employee.id,
-                                    asset_type: "allowance",
-                                    asset_id: allowance.id,
-                                    qury_string: `?year=${
-                                      payment.month.split("-")[0]
-                                    }&month=${payment.month.split("-")[1]}`,
-                                  })
-                                );
+                                setPaymentMonth(payment.month);
+                                setRemoveId(allowance.id);
+                                setOpenModal(true);
                               }}
                             >
                               <span className="fail">Remove</span>
