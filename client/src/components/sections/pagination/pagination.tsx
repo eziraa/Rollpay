@@ -13,22 +13,15 @@ import {
 } from "./pagination.style";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import DropDown from "../../utils/drop-down/drop-down";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
 import { useEffect, useState } from "react";
 import { loadNextEmployeeListPage } from "../../../store/employee/employee-slice";
 import { loadNextPaymentListPage } from "../../../store/salary/salary-slice";
-import { PaginationResponse } from "../../../typo/pagination/response";
+import { Pagination as PaginationInterface } from "../../../typo/utils/response";
+import DropDown from "../../utils/drop-down/drop-down";
 
-export interface PageInfo {
-  currentPage: number;
-  totalPages: number;
-  totalRecords: number;
-  pageSize: number;
-}
-
-function Pagination({ pagination }: { pagination: PaginationResponse }) {
+function Pagination({ pagination }: { pagination: PaginationInterface }) {
   const dispatcher = useAppDispatch();
   const [pageNumber, setPageNumber] = useState<number>(pagination.current_page);
 
@@ -50,11 +43,11 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
       );
   };
   const loadPrevPage = async () => {
-    if (pagination?.prev) {
+    if (pagination?.previous) {
       pagination.type === "employee" &&
-        dispatcher(loadNextEmployeeListPage(pagination.prev));
+        dispatcher(loadNextEmployeeListPage(pagination.previous));
       pagination.type === "salary" &&
-        dispatcher(loadNextPaymentListPage(pagination.prev));
+        dispatcher(loadNextPaymentListPage(pagination.previous));
     } else
       dispatcher(
         setFlashMessage({
@@ -62,7 +55,7 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
           type: "error",
           duration: 3,
           status: true,
-          title: "Loading previous page...",
+          title: "Loading prev page...",
         })
       );
   };
@@ -80,7 +73,7 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
           })
         );
       }
-      if (page > pagination.total_pages) {
+      if (page > pagination.number_of_pages) {
         dispatcher(
           setFlashMessage({
             desc: "Page number out of range",
@@ -92,13 +85,13 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
         );
       } else {
         let base_url;
-        if (pagination.prev) base_url = pagination.prev;
+        if (pagination.previous) base_url = pagination.previous;
         else if (pagination.next) base_url = pagination.next;
         if (base_url) {
           const url = new URL(base_url);
           dispatcher(
             loadNextEmployeeListPage(
-              url.pathname + `?page=${page}&page_size=${pagination.per_page}`
+              url.pathname + `?page=${page}&page_size=${pagination.page_size}`
             )
           );
         }
@@ -135,11 +128,11 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
           type="number"
           value={pageNumber}
           min={pagination.current_page ? 1 : 0}
-          max={pagination.total_pages}
+          max={pagination.number_of_pages}
         />
         <TextContainer>
           <Text>of</Text>
-          <Paragraph2> {pagination.total_pages} </Paragraph2>
+          <Paragraph2> {pagination.number_of_pages} </Paragraph2>
         </TextContainer>
         <NavButton>
           <ButtonName
@@ -153,8 +146,8 @@ function Pagination({ pagination }: { pagination: PaginationResponse }) {
           </ButtonName>
         </NavButton>
 
-        {/* <Paragraph>Per Page:</Paragraph>
-        <DropDown /> */}
+        <Paragraph>Per Page:</Paragraph>
+        <DropDown pagination={pagination} />
       </BottomContainer>
     </PaginationContainer>
   );
