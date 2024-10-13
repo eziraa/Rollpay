@@ -24,7 +24,6 @@ import { useNavigate } from "react-router";
 
 import { ThreeDots } from "../../utils/loading/dots";
 import Pagination from "../pagination/pagination";
-import { usePagination } from "../../../hooks/use-pagination";
 import { ProfileImage } from "../header/header.style";
 import { baseURL } from "../../../config/api";
 import { NormalIcon } from "../../utils/icons/icons.style";
@@ -80,7 +79,6 @@ function EmployeeListDisplayer() {
   const emplist = [...employee.employees];
   const [emp_list, setEmpList] = useState(emplist);
   const { display } = useContext(DisplayContext);
-  const { pagination } = usePagination();
 
   useEffect(() => {
     if (display.list_employees) setEmpList(emplist);
@@ -220,7 +218,7 @@ function EmployeeListDisplayer() {
               <ListTitle>Actions</ListTitle>
             </HeaderItem>
           </ListHeader>
-          <ListBody>
+          <ListBody className="shadow-md px-2 py-3">
             <ScrollBar>
               {emp_list.map((emp, index, emplists) => {
                 return (
@@ -243,7 +241,6 @@ function EmployeeListDisplayer() {
                     <Data> {emp.email} </Data>
                     <Data> {emp.phone_number} </Data>
                     <Data> {emp.date_of_hire} </Data>
-                    {/* <Data> {emp.date_of_birth} </Data> */}
                     <Data> {emp.position} </Data>
                     <Data>{emp.salary}</Data>
                     <Data>
@@ -264,7 +261,9 @@ function EmployeeListDisplayer() {
               })}
             </ScrollBar>
           </ListBody>
-          <Pagination pagination={pagination} />
+          {employee.pagination && (
+            <Pagination pagination={employee.pagination} />
+          )}
         </ListContainer>
       )}
     </div>
