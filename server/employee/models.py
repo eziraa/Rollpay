@@ -1,3 +1,5 @@
+import uuid
+from django.contrib.auth.models import User
 from typing import Any
 from django.db import models
 from django.contrib.auth.models import User as BaseUser, Group
@@ -105,10 +107,8 @@ class Employee(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=False)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_hire = models.DateField(auto_now_add=True, null=False)
-    position = models.ManyToManyField(Position, related_name="employees")
     user = models.OneToOneField(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
-
 
     @staticmethod
     def generate_employee_id(last_id):
@@ -117,6 +117,22 @@ class Employee(models.Model):
     
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+
+class EmployeePosition(models.Model):
+    employee = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, related_name="positions")
+    position = models.ForeignKey(
+        Position, on_delete=models.CASCADE)
+    start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.employee.first_name + " " + self.employee.last_name + " - " + self.position.position_name
+
+    def get_salary(self):
+        return self.position.basic_salary
+
 
 
 class Salary(models.Model):
@@ -184,3 +200,14 @@ class Asset(models.Model):
 
     class Meta:
         unique_together = ('employee', 'asset_name')
+
+
+class OTP(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6, unique=True)
+    token = models.CharField(max_length=255, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_used = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.otp}"
