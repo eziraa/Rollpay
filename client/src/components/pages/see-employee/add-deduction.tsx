@@ -25,11 +25,18 @@ import {
   resetEmployeeState,
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { Outlet, useNavigate, useParams } from "react-router";
+import { Outlet, useLoaderData, useNavigate, useParams } from "react-router";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { useSalary } from "../../../hooks/salary-hook";
+import api from "../../../config/api";
+import { Deduction } from "../../../typo/deduction/response";
+interface DeductionsLoader {
+  deductions: Deduction[];
+}
+
 export const AddDeductionToEmp = () => {
-  const { deductions, curr_deduction } = useDeduction();
+  const { curr_deduction } = useDeduction();
+  const { deductions } = useLoaderData() as DeductionsLoader;
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
   const { year, month, employee_id } = useParams();
@@ -150,4 +157,14 @@ export const AddDeductionToEmp = () => {
       </DeductionContainer>
     </Modal>
   );
+};
+
+export const loader = async () => {
+  const deductions = await api
+    .get("/deduction/list?is_active=True")
+    .then((response) => {
+      return response.data;
+    });
+
+  return { deductions };
 };

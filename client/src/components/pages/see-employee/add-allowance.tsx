@@ -27,16 +27,28 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
-import { Outlet, useLocation, useNavigate, useParams } from "react-router";
+import {
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router";
 import { AddAllowanceToEmpSchema } from "../../../schema/add-allowance-schema";
+import api from "../../../config/api";
+import { Allowance } from "../../../typo/allowance/response";
 /**
  * Renders a modal for adding an allowance to an employee.
  *
  * @returns JSX element representing the modal for adding an allowance to an employee.
  */
+interface AllowancesLoader {
+  allowances: Allowance[];
+}
 export const AddAllowanceToEmp = () => {
   //geting necessary data form the context , routers and the redux store
-  const { allowances, curr_allowance } = useAllowance();
+  const { curr_allowance } = useAllowance();
+  const { allowances } = useLoaderData() as AllowancesLoader;
   const dispatcher = useAppDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -210,4 +222,14 @@ export const AddAllowanceToEmp = () => {
       </AllowanceContainer>
     </Modal>
   );
+};
+
+export const loader = async () => {
+  const allowances = await api
+    .get("/allowance/list?is_active=True")
+    .then((response) => {
+      return response.data;
+    });
+
+  return { allowances };
 };

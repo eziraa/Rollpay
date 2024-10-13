@@ -1,12 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import {
-  CurrEmployeeContent,
-  Title,
-  SeeEmployeeHeader,
-  TitleContainer,
-} from "./see-employee.style";
+import { CurrEmployeeContent, SeeEmployeeHeader } from "./see-employee.style";
 
 import { MainContainer } from "../../utils/pages-utils/containers.style";
 
@@ -49,57 +44,61 @@ export const SeeEmployee = () => {
     employee_id && dispatcher(getCurrentEmployeeRequest(employee_id));
   }, [employee_id]);
   return (
-    <MainContainer>
-      <SeeEmployeeHeader>
-        <TitleContainer>
-          <Title>Current Employee</Title>
-        </TitleContainer>
-        <NavigationBar />
-        {["edit", "salary-history","assets"].includes(
-          pathname.split("/").slice(-1)[0]
-        ) || (
-          <Label
-            style={{
-              position: "absolute",
-              right: "2rem",
-              top: "1rem",
-              fontSize: "1.5rem",
-              display: "flex",
-              gap: "1rem",
-            }}
-          >
-            <Select
-              value={`${year || current_year}`}
-              onChange={(e) => {
-                changeYear(+e.target.value);
+    <MainContainer
+      style={{
+        flexDirection: "row",
+        alignItems: "start",
+      }}
+    >
+      {employee && <EmployeeProfile employee={employee} />}
+      <CurrEmployeeContent
+        style={{
+          flexDirection: "column",
+        }}
+      >
+        <SeeEmployeeHeader>
+          <NavigationBar />
+          {!["edit", "salary-history", "assets"].includes(
+            pathname.split("/").slice(-1)[0]
+          ) && (
+            <Label
+              style={{
+                fontSize: "1.5rem",
+                display: "flex",
+                gap: "1rem",
               }}
             >
-              {years.map((year) => (
-                <SelectOption key={year} value={`${year}`}>
-                  {year}
-                </SelectOption>
-              ))}
-            </Select>
-            <Select
-              value={`${month || current_month}`}
-              onChange={(e) => {
-                changeMonth(+e.target.value);
-              }}
-            >
-              {months.map(
-                (month) =>
-                  ((year && year < current_year) || month <= current_month) && (
-                    <SelectOption key={month} value={`${month}`}>
-                      {getNamedMonth(new Date(`${year}-${month}-01`))}
-                    </SelectOption>
-                  )
-              )}
-            </Select>
-          </Label>
-        )}
-      </SeeEmployeeHeader>
-      <CurrEmployeeContent>
-        {employee && <EmployeeProfile employee={employee} />}
+              <Select
+                value={`${year || current_year}`}
+                onChange={(e) => {
+                  changeYear(+e.target.value);
+                }}
+              >
+                {years.map((year) => (
+                  <SelectOption key={year} value={`${year}`}>
+                    {year}
+                  </SelectOption>
+                ))}
+              </Select>
+              <Select
+                value={`${month || current_month}`}
+                onChange={(e) => {
+                  changeMonth(+e.target.value);
+                }}
+              >
+                {months.map(
+                  (month) =>
+                    ((year && year < current_year) ||
+                      month <= current_month) && (
+                      <SelectOption key={month} value={`${month}`}>
+                        {getNamedMonth(new Date(`${year}-${month}-01`))}
+                      </SelectOption>
+                    )
+                )}
+              </Select>
+            </Label>
+          )}
+        </SeeEmployeeHeader>
         <Outlet />
       </CurrEmployeeContent>
     </MainContainer>

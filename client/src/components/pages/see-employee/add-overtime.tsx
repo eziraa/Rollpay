@@ -27,11 +27,17 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useSalary } from "../../../hooks/salary-hook";
 import { useEmployee } from "../../../hooks/employee-hook";
-import { Outlet, useNavigate, useParams } from "react-router";
+import { Outlet, useLoaderData, useNavigate, useParams } from "react-router";
 import { AddOvertimeToEmpSchema } from "../../../schema/add-overtime-schema";
+import api from "../../../config/api";
+import { Overtime } from "../../../typo/overtime/response";
+interface OvertimesLoader {
+  overtimes: Overtime[];
+}
 export const AddOvertimeToEmp = () => {
-  const { overtimes, curr_overtime } = useOvertime();
+  const { curr_overtime } = useOvertime();
   const dispatcher = useAppDispatch();
+  const { overtimes } = useLoaderData() as OvertimesLoader;
   const navigate = useNavigate();
   const { curr_emp } = useSalary();
   const { year, month, employee_id } = useParams();
@@ -172,4 +178,14 @@ export const AddOvertimeToEmp = () => {
       </OvertimeContainer>
     </Modal>
   );
+};
+
+export const loader = async () => {
+  const overtimes = await api
+    .get("/overtime/list?is_active=True")
+    .then((response) => {
+      return response.data;
+    });
+
+  return { overtimes };
 };
