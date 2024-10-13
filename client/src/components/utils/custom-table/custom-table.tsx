@@ -3,9 +3,6 @@ import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const CustomTable = styled.table`
-  /* display: flex;
-  flex-direction: column;
-  align-items: start; */
   border-collapse: collapse;
   border: none;
   width: 100%;
@@ -19,18 +16,16 @@ export const Caption = styled.th`
   text-align: left;
   padding: 1rem;
   width: 15rem;
-  border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
 export const TableHeader = styled.tr<ThemeProps>`
   width: 100%;
   font-size: 1.4rem;
   background-color: ${({ theme }) => theme.table.header};
-  color: ${({ theme }) => theme.colors.primary};
+  color: white !important;
   /* font-size: 1.4rem; */
   font-weight: bold;
   text-align: center;
-  border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
 `;
 
 export const HeaderTitle = styled.th`
@@ -39,6 +34,7 @@ export const HeaderTitle = styled.th`
   color: ${({ theme }) => theme.colors.primary};
   text-align: left;
   padding: 1rem;
+  color: aliceblue;
 `;
 
 export const TableBody = styled.tbody`
@@ -60,9 +56,7 @@ export const TableRow = styled.tr<ThemeProps>`
   &:hover {
     background-color: ${({ theme }) => theme.table.tableRowHover};
   }
-  &:last-child {
-    border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
-  }
+
 `;
 
 export const TableData = styled.td`
