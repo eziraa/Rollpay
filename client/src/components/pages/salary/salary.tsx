@@ -89,7 +89,6 @@ export const EmployeesSalaryPage = () => {
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
   const [searchBy, _] = useState("first_name");
-  const { pagination, setPagination } = usePagination();
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
@@ -166,9 +165,6 @@ export const EmployeesSalaryPage = () => {
   }, [month, year]);
 
   useEffect(() => {
-    salary.pagination && setPagination(salary.pagination);
-  }, [salary.pagination]);
-  useEffect(() => {
     const loadEmployee = setTimeout(() => {
       dispatcher(
         searchPaymentRequested({
@@ -202,18 +198,18 @@ export const EmployeesSalaryPage = () => {
               key: key,
               value: key
                 .split("_")
-                .map((item) => item[0].toUpperCase() + item.slice(1))
+                .map((item) => item[0]?.toUpperCase() + item.slice(1))
                 .join(" "),
               sub_columns: Array.from(getOvertimeTypes(employees)).map(
                 (key) => {
                   return {
                     key: key
                       .split(" ")
-                      .map((item) => item[0].toLowerCase() + item.slice(1))
+                      .map((item) => item[0]?.toLowerCase() + item.slice(1))
                       .join(" "),
                     value: key
                       .split("_")
-                      .map((item) => item[0].toUpperCase() + item.slice(1))
+                      .map((item) => item[0]?.toUpperCase() + item.slice(1))
                       .join(" "),
                   };
                 }
@@ -279,7 +275,6 @@ export const EmployeesSalaryPage = () => {
           };
         });
 
-    console.log(column);
     column && setColumns(column);
   }, [employees]);
 
@@ -340,16 +335,7 @@ export const EmployeesSalaryPage = () => {
           Pay
         </StartPaymentBtn>
 
-        <Label
-          style={{
-            position: "absolute",
-            right: "1rem",
-            top: "0rem",
-            fontSize: "1.5rem",
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
+        <Label>
           <Select
             value={`${query_year || current_year}`}
             onChange={(e) => {
@@ -384,8 +370,8 @@ export const EmployeesSalaryPage = () => {
       {salary.loading ? (
         <ThreeDots size={1} />
       ) : (
-        <TableContainer>
-          <SalaryTable id="table">
+        <TableContainer className="shadow-lg">
+          <SalaryTable id="table" className="shadow-lg">
             <TableHeader
               style={{
                 width: "150rem",
@@ -478,7 +464,7 @@ export const EmployeesSalaryPage = () => {
         </TableContainer>
       )}
       <Outlet />
-      <Pagination pagination={pagination} />
+      {salary.pagination &&<Pagination pagination={salary.pagination} />}
     </SalaryContainer>
   );
 };
