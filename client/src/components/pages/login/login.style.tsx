@@ -13,8 +13,8 @@ export const LoginSection = styled.div<ThemeProps>`
   color: ${({ theme }) => theme.backgrounds.primary};
   width: fit-content;
   height: fit-content;
-  box-shadow: 0 0 1rem
-    ${({ theme }) => addOpacityToColor(0.5, theme.colors.primary)};
+  box-shadow: 0 0.4rem 2rem
+    ${({ theme }) => addOpacityToColor(0.15, theme.colors.primary)};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,6 +26,7 @@ export const LoginSection = styled.div<ThemeProps>`
   transform: translate(-50%, -50%);
   padding: 1rem;
   border-radius: 1rem;
+  padding: 2rem ;
 `;
 export const Checkbox = styled.input`
   height: 1.5rem;
@@ -50,13 +51,10 @@ export const CheckboxContainer = styled.div`
   position: relative;
 `;
 
-export const CustomLink = styled.p`
+export const CustomLink = styled.div`
   color: ${({ theme }) => theme.colors.link};
   text-decoration: none;
   font-size: 1.2rem;
-  /* right: 1rem; */
-  /* font-weight: 500; */
-  /* Unvisited link */
   a:link {
     color: blue;
   }

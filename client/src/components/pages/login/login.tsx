@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import {
   Form,
@@ -26,7 +27,6 @@ import { loginRequested } from "../../../store/user/user-slice";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { SmallSpinner } from "../../utils/spinner/spinner";
-import { Toggle } from "../../utils/buttons/toggle";
 import { EmpsDisplayerHeader as Header } from "../display-employee/display-employee.style";
 import { useUser } from "../../../hooks/user-hook";
 import { useAuth } from "../../../hooks/auth-hook";
@@ -68,16 +68,18 @@ export const LoginPage = () => {
 
   return (
     <LoginContainer>
-      <LoginSection>
+      <LoginSection className="shadow-lg">
         <Header
           style={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "center",
             gap: "30%",
+            marginBottom: "0",
           }}
         >
-          <Title>Log In</Title>
-          <Toggle />
+          <Title className="font-semibold from-green-400 to-pink-600 text-slate-700 ">
+            Log In
+          </Title>
         </Header>
         <Form
           onSubmit={(e) => {
@@ -102,7 +104,7 @@ export const LoginPage = () => {
           <InputContainer>
             <Label>Password</Label>
             <PasswordContainer>
-              <input
+              <Input
                 type={passwordVisible ? "text" : "password"}
                 name="password"
                 value={values.password}
@@ -120,7 +122,7 @@ export const LoginPage = () => {
           </InputContainer>
           <ActionsContainer>
             <CustomLink>
-              <Link to="/forgot_password">Frogot Password?</Link>
+              <Link to="/forgot-password">Frogot Password?</Link>
             </CustomLink>
           </ActionsContainer>
           <Button type="submit" disabled={logging_in}>
@@ -130,7 +132,7 @@ export const LoginPage = () => {
         <LinkContainer>
           <Text>Don't have an account? </Text>
           <CustomLink>
-            <Link to="/signup"> Sign up</Link>
+            <Link to="/sign-up"> Sign up</Link>
           </CustomLink>
         </LinkContainer>
       </LoginSection>

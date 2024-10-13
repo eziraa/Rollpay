@@ -1,12 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Search } from "../../utils/search/search";
 import EmployeeListDisplayer from "../../sections/list-displayer/list-displayer";
-import {
-  Body,
-  Title,
-  EmployeesListHeader,
-  AddButton,
-} from "./display-employee.style";
+import { Body, EmployeesListHeader, AddButton } from "./display-employee.style";
 import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { MainContainer } from "../../utils/pages-utils/containers.style";
@@ -28,9 +23,6 @@ export const EmployeesListPage = () => {
   }, [employee.pagination]);
   return (
     <MainContainer>
-      <EmployeesListHeader>
-        <Title>All Employees</Title>
-      </EmployeesListHeader>
       <EmployeesListHeader>
         <Search />
         <AddButton
