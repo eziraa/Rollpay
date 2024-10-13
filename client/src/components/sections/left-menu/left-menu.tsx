@@ -38,7 +38,7 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
       }}
     >
       <LeftMenuContainer
-        className="left-menu"
+        className="left-menu shadow-md"
         onClick={(e) => e.stopPropagation()}
       >
         <Close
@@ -67,7 +67,7 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
           <div key={item.path}>
             <MenuItem
               key={item.path}
-              active={
+              is_active={
                 item?.sub_menu_items?.some((item) =>
                   pathname.startsWith(item.path)
                 ) || pathname === item.path
@@ -108,6 +108,7 @@ function LeftMenu({ menu_items }: { menu_items: MenuItemInterface[] }) {
           </div>
         ))}
       </LeftMenuContainer>
+      //{" "}
     </div>
   );
 }
