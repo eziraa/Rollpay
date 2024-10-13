@@ -35,6 +35,7 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
+import DeleteConfirmationModal from "../admin/utils/model/ConfirmitionModal";
 export const DeductionPage = () => {
   const dispatcher = useAppDispatch();
   const { task_error, deductions, editing, deleting, loading, curr_deduction } =
@@ -45,6 +46,19 @@ export const DeductionPage = () => {
 
   const [action, setAction] = useState("");
   const [actionId, setActionId] = useState("-1");
+  const [openModal, setOpenModal] = useState(false);
+
+  const closeModal = () => {
+    setOpenModal(false);
+    setAction("");
+    setActionId("-1");
+  };
+
+  const handleDelete = () => {
+    dispatcher(deleteDeductionRequested(actionId));
+    closeModal();
+  };
+
   const navigate = useNavigate();
   useEffect(() => {
     dispatcher(listDeductionsRequested());
@@ -69,6 +83,12 @@ export const DeductionPage = () => {
           <IoAddOutline /> Add New
         </AddButton>
       </PositionListHeader>
+      {openModal && (
+        <DeleteConfirmationModal
+          handleClose={closeModal}
+          action={handleDelete}
+        />
+      )}
       <PositionListBody>
         <Outlet />
         {loading ? (
@@ -78,7 +98,7 @@ export const DeductionPage = () => {
             <NoResult text="No deductions found" />
           </div>
         ) : (
-          <CustomTable>
+          <CustomTable className="shadow-lg">
             <thead>
               <tr>
                 <Caption>List of Deductions</Caption>
@@ -170,7 +190,7 @@ export const DeductionPage = () => {
                             e.stopPropagation();
                             setAction(DELETE);
                             setActionId(deduction.id);
-                            dispatcher(deleteDeductionRequested(deduction.id));
+                            setOpenModal(true);
                           }}
                         >
                           {action === DELETE &&

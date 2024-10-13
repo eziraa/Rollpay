@@ -38,11 +38,25 @@ import { BsLock } from "react-icons/bs";
 import { BsUnlock } from "react-icons/bs";
 
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
+import DeleteConfirmationModal from "../admin/utils/model/ConfirmitionModal";
 
 export const PositionPage = () => {
   const employee = useAppSelector((state) => state.employee);
   const dispatcher = useAppDispatch();
   const { task_error, task_finished, positions, curr_position } = usePosition();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selected, setSelected] = useState("");
+
+  const handleDelete = () => {
+    setAction(DELETE);
+    dispatcher(deletePositionRequested(selected));
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setAction("");
+    setShowDeleteModal(false);
+  };
   const DELETE = "delete";
   const CLOSE = "close";
   const [action, setAction] = useState("");
@@ -65,6 +79,12 @@ export const PositionPage = () => {
           <IoAddOutline /> New
         </AddButton>
       </PositionListHeader>
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          handleClose={handleClose}
+          action={handleDelete}
+        />
+      )}
       <PositionListBody>
         <Outlet />
         {!employee.task_finished ? (
@@ -74,7 +94,7 @@ export const PositionPage = () => {
             <NoResult text="Not Positions found" />
           </div>
         ) : (
-          <CustomTable>
+          <CustomTable className="shadow-lg px-3 py-4">
             <thead>
               <tr>
                 <Caption>List of Positions</Caption>
@@ -91,13 +111,10 @@ export const PositionPage = () => {
             <TableBody>
               {positions.map((position, index) => {
                 return (
-                  <TableRow key={index}>
+                  <TableRow className="px-4 " key={index}>
                     <TableData>{position.position_name}</TableData>
                     <TableData>{position.basic_salary}</TableData>
-                    <TableData>
-                      {" "}
-                      {position.start_date?.split("T")[0]}{" "}
-                    </TableData>
+                    <TableData>{position.start_date?.split("T")[0]} </TableData>
                     <TableData>
                       {position.end_date ? (
                         <span
@@ -117,7 +134,7 @@ export const PositionPage = () => {
                         >
                           Open
                         </span>
-                      )}{" "}
+                      )}
                     </TableData>
                     <TableData>
                       {position.end_date ? (
@@ -164,8 +181,8 @@ export const PositionPage = () => {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            setAction(DELETE);
-                            dispatcher(deletePositionRequested(position.id));
+                            setShowDeleteModal(true);
+                            setSelected(position.id);
                           }}
                         >
                           {action === DELETE &&

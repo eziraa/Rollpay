@@ -39,6 +39,7 @@ import {
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
+import DeleteConfirmationModal from "../admin/utils/model/ConfirmitionModal";
 
 /**
  * This is a page to show list allowances
@@ -54,6 +55,18 @@ export const AllowancePage = () => {
   const DELETE = "delete";
   const CLOSE = "close";
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+
+  const closeModal = () => {
+    setOpenModal(false);
+    setAction("");
+    setActionId("-1");
+  };
+
+  const handleDelete = () => {
+    dispatcher(deleteAllowanceRequested(actionId));
+    closeModal();
+  };
 
   /**
    * Defining state to set the action type and the allowance id responed to the currntt action
@@ -91,6 +104,12 @@ export const AllowancePage = () => {
           <IoAddOutline /> Add New
         </AddButton>
       </PositionListHeader>
+      {openModal && (
+        <DeleteConfirmationModal
+          handleClose={closeModal}
+          action={handleDelete}
+        />
+      )}
       <PositionListBody>
         <Outlet />
         {loading ? (
@@ -100,7 +119,7 @@ export const AllowancePage = () => {
             <NoResult text="No allowances found" />
           </div>
         ) : (
-          <CustomTable>
+          <CustomTable className="shadow-lg">
             <thead>
               <tr>
                 <Caption>List of Allowances</Caption>
@@ -194,7 +213,7 @@ export const AllowancePage = () => {
                             e.stopPropagation();
                             setAction(DELETE);
                             setActionId(allowance.id);
-                            dispatcher(deleteAllowanceRequested(allowance.id));
+                            setOpenModal(true);
                           }}
                         >
                           {action === DELETE &&

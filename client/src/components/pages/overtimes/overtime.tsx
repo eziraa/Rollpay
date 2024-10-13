@@ -29,9 +29,9 @@ import {
   deleteOvertimeRequested,
   listOvertimesRequested,
 } from "../../../store/overtime/overtime-slice";
-import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
+import DeleteConfirmationModal from "../admin/utils/model/ConfirmitionModal";
 export const OvertimePage = () => {
   //Defing hokks and getting necessary informations
   const dispatcher = useAppDispatch();
@@ -40,14 +40,24 @@ export const OvertimePage = () => {
 
   // Defining state to set the current overtime responsible to action
   const [actionId, setActionId] = useState("-1");
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+    const closeModal = () => {
+      setOpenModal(false);
+      setActionId("-1");
+    };
+
+    const handleDelete = () => {
+      dispatcher(deleteOvertimeRequested(actionId));
+      closeModal();
+    };
+
   useEffect(() => {
     dispatcher(listOvertimesRequested());
   }, []);
 
   useEffect(() => {
     !deleting && setActionId("-1");
-    !deleting && setIsDeleting(false);
   }, [deleting]);
   return (
     <MainContainer>
@@ -63,6 +73,12 @@ export const OvertimePage = () => {
           <IoAddOutline /> Add New
         </AddButton>
       </PositionListHeader>
+      {openModal && (
+        <DeleteConfirmationModal
+          handleClose={closeModal}
+          action={handleDelete}
+        />
+      )}
       <PositionListBody>
         <Outlet />
         {loading ? (
@@ -72,7 +88,7 @@ export const OvertimePage = () => {
             <NoResult text="No overtimes found" />
           </div>
         ) : (
-          <CustomTable>
+          <CustomTable className="shadow-lg">
             <thead>
               <tr>
                 <Caption>List of Overtimes</Caption>
@@ -108,19 +124,13 @@ export const OvertimePage = () => {
                             e.preventDefault();
                             e.stopPropagation();
                             setActionId(overtime.id);
-                            setIsDeleting(true);
-                            dispatcher(deleteOvertimeRequested(overtime.id));
+                            setOpenModal(true);
                           }}
                         >
-                          {actionId === overtime.id &&
-                          isDeleting &&
-                          !deleting ? (
-                            <SmallSpinner />
-                          ) : (
+                          
                             <>
                               <RiDeleteBin6Line />
                             </>
-                          )}
                         </DeleteButton>
                       </ActionBtnsContainer>
                     </TableData>
