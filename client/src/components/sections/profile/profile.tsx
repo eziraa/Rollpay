@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ResetLink,
   Label,
@@ -12,11 +12,11 @@ import { logoutRequested } from "../../../store/user/user-slice";
 import { MdLogout } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
-import { useUser } from "../../../hooks/user-hook";
+import { useAuth } from "../../../hooks/auth-hook";
 const Profile = ({ close }: { close: () => void }) => {
   const dispatcher = useAppDispatch();
-  const user = useUser();
-
+  const navigate = useNavigate();
+  const { curr_user: user } = useAuth();
   const handleClick = () => {
     dispatcher(logoutRequested());
     localStorage.clear();
@@ -28,6 +28,10 @@ const Profile = ({ close }: { close: () => void }) => {
       onClick={(e) => {
         e.stopPropagation();
         close();
+      }}
+      className=" fixed inset-0 flex justify-center items-center "
+      style={{
+        zIndex: 1000,
       }}
     >
       <Modal onClick={(e) => e.stopPropagation()}>
@@ -42,7 +46,14 @@ const Profile = ({ close }: { close: () => void }) => {
                 close();
               }}
             >
-              <Link to={`/${user.user?.role !== "user" ?  "me" : ""}`}>Profile</Link>
+              <div
+                className="cursor-pointer"
+                onClick={() =>
+                  navigate(`/${user?.role !== "user" ? "me" : ""}`)
+                }
+              >
+                Profile
+              </div>
             </Label>
           </ResetLink>
         </ItemContainer>
@@ -65,8 +76,11 @@ const Profile = ({ close }: { close: () => void }) => {
               e.stopPropagation();
               handleClick();
             }}
+            style={{
+              justifyContent: "start",
+            }}
           >
-            Log out
+            <p> Log out</p>
           </Label>
         </ItemContainer>
       </Modal>
