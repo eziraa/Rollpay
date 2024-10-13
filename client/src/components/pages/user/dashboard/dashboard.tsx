@@ -24,11 +24,13 @@ import { OvertimeStat } from "./overtime-stat.tsx";
 import salary from "../../../../assets/salary.png";
 import { ThreeDots } from "../../../utils/loading/dots.tsx";
 import { useLocation } from "react-router";
+import { useAuth } from "../../../../hooks/auth-hook.tsx";
 
 export const UserDashboard = () => {
   const dispatcher = useAppDispatch();
   const employee = useSalary().curr_emp?.employee;
-  const { user, loading } = useUser();
+  const { loading } = useUser();
+  const { curr_user: user } = useAuth();
   const pathname = useLocation().pathname;
 
   useEffect(() => {

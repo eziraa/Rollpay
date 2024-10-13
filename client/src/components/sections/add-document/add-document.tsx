@@ -105,33 +105,32 @@ export const AddDocument = () => {
       hiddenFileInput.current.click();
     }
   };
-  const { values, handleChange, handleSubmit, errors, dirty, touched } =
-    useFormik({
-      initialValues: {
-        asset_name: "",
-      },
-      onSubmit(values) {
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+    initialValues: {
+      asset_name: "",
+    },
+    onSubmit(values) {
+      dispatcher(
+        resetEmployeeState({
+          ...employee,
+          task_error: undefined,
+        })
+      );
+      if (selectedFile) {
+        uploadFile(values.asset_name);
+      } else {
         dispatcher(
-          resetEmployeeState({
-            ...employee,
-            task_error: undefined,
+          setFlashMessage({
+            desc: "Please select a file",
+            title: "No file uploaded",
+            status: true,
+            duration: 3,
+            type: "error",
           })
         );
-        if (selectedFile) {
-          uploadFile(values.asset_name);
-        } else {
-          dispatcher(
-            setFlashMessage({
-              desc: "Please select a file",
-              title: "No file uploaded",
-              status: true,
-              duration: 3,
-              type: "error",
-            })
-          );
-        }
-      },
-    });
+      }
+    },
+  });
 
   const clearTask = () => {
     dispatcher(closeEmployeeTask());

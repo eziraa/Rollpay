@@ -28,20 +28,22 @@ import {
 } from "../../../store/employee/employee-slice";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useEffect } from "react";
-import { listPositionsRequested } from "../../../store/position/position-slice";
 import { useEmployee } from "../../../hooks/employee-hook";
 import { usePosition } from "../../../hooks/position-hook";
-import { Outlet, useNavigate } from "react-router";
-
+import { Outlet, useLoaderData, useNavigate } from "react-router";
+import { Position } from "../../../typo/position/response";
+import api from "../../../config/api";
+interface PositionsLoader {
+  positions: Position[];
+}
 export const AddEmployee = () => {
   const dispatcher = useAppDispatch();
   const employee = useEmployee();
   const { task_finished, task_error } = useEmployee();
   const navigate = useNavigate();
-  const { positions, curr_position } = usePosition();
-
+  const { curr_position } = usePosition();
+  const { positions } = useLoaderData() as PositionsLoader;
   useEffect(() => {
-    dispatcher(listPositionsRequested());
     dispatcher(
       resetEmployeeState({
         ...employee,
@@ -50,11 +52,6 @@ export const AddEmployee = () => {
       })
     );
   }, []);
-  useEffect(() => {
-    if (curr_position) {
-      dispatcher(listPositionsRequested());
-    }
-  }, [curr_position, dispatcher]);
   const formHandler = useFormik({
     initialValues: {
       first_name: "",
@@ -233,7 +230,7 @@ export const AddEmployee = () => {
                   }}
                   style={{ flex: 1.2 }}
                 >
-                  {"Add New"}
+                  New
                 </AddBtn>
               </div>
               <FormError>
@@ -293,3 +290,14 @@ export const AddEmployee = () => {
     </Modal>
   );
 };
+
+export const loader = async () => {
+  const positions = await api
+    .get("/position/list?is_active=True")
+    .then((response) => {
+      return response.data;
+    });
+
+  return { positions };
+};
+

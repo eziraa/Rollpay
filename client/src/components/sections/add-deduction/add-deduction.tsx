@@ -17,7 +17,6 @@ import {
 import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   addDeductionRequested,
-  closeDeductionTask,
   editDeductionRequested,
   resetDeductionState,
 } from "../../../store/deduction/deduction-slice";
