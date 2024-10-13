@@ -9,17 +9,25 @@ import { MainPage } from "./components/pages/main/main";
 import { LoginPage } from "./components/pages/login/login";
 import { protectedRoute } from "./config/utils/protected_route";
 import SignUp from "./components/pages/sign-up/sign-up";
-import { ChangePassword } from "./components/pages/change-password/change-password";
+import ConfirmRegistration from "./components/pages/sign-up/confirm-registration";
+import RequestPasswordReset from "./components/pages/change-password/request-password-reset";
 import NotFoundPage from "./components/pages/4_0_4/404";
 import AccessDenied from "./components/pages/access-denied/access-denied";
 import api from "./config/api";
 import { ACCESS_TOKEN } from "./constants/token-constants";
+import RequestOTP from "./components/pages/otp/request-otp";
+import ResetPassword from "./components/pages/forgot_password/reset-password";
+import ChangePassword from "./components/pages/change-password/change-password";
 
 const AppRouter = () => {
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const getUserRole = async () => {
+      const TOKEN = localStorage.getItem(ACCESS_TOKEN);
+      if (!TOKEN) {
+        return;
+      }
       await api
         .get("/user/current-user")
         .then((res) => {
@@ -45,13 +53,32 @@ const AppRouter = () => {
       {
         path: "/",
         element: <MainPage />,
-        children: [...protectedRoute(userRole || "")],
+        children: [
+          ...protectedRoute(userRole ?? ""),
+          { path: "/change-password", element: <RequestPasswordReset /> },
+          {
+            path: "/password-reset-confirm/:uidb64/:token",
+            element: <ChangePassword />,
+          },
+          {
+            path: "/forgot-password",
+            element: <RequestOTP />,
+          },
+          {
+            path: "/reset-password",
+            element: <ResetPassword />,
+          },
+        ],
       },
+
       { path: "/login", element: <LoginPage /> },
       { path: "/sign-up", element: <SignUp /> },
-      { path: "/change-password", element: <ChangePassword /> },
       { path: "/404", element: <NotFoundPage /> },
       { path: "/access-denied", element: <AccessDenied /> },
+      {
+        path: "/confirm-registration/:uid/:token",
+        element: <ConfirmRegistration />,
+      },
       { path: "*", element: <Navigate to="404" /> },
     ]);
   }, [userRole]);
@@ -59,7 +86,7 @@ const AppRouter = () => {
   if (!router) {
     return (
       <div
-        className="flex-col h-full space-y-3 animate-pulse w-full p-7"
+        className="flex-col backdrop-blur-md h-full space-y-3 animate-pulse w-full p-7"
         style={{
           height: "100vh",
           overflow: "hidden",
