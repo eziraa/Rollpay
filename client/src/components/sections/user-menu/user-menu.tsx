@@ -12,9 +12,12 @@ import { useLocation, useNavigate } from "react-router";
 import Image from "../../../assets/logo.png";
 import { Title } from "../add_employee/add-employee.style";
 import { useUser } from "../../../hooks/user-hook";
+import { useAuth } from "../../../hooks/auth-hook";
 
 function UserMenu() {
-  const { task_finished, user } = useUser();
+  const { task_finished } = useUser();
+    const { curr_user: user } = useAuth();
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
   return (
@@ -33,9 +36,8 @@ function UserMenu() {
         </Title>
       </LogoContainer>
       <MenuItem
-        active={pathname === "/"}
+        is_active={pathname === "/"}
         onClick={(e) => {
-          if (!task_finished) return;
           e.preventDefault();
           e.stopPropagation();
           navigate("/");
@@ -46,7 +48,7 @@ function UserMenu() {
       </MenuItem>
       {user?.role === "Clerk" && (
         <MenuItem
-          active={pathname === "/me"}
+          is_active={pathname === "/me"}
           onClick={(e) => {
             if (!task_finished) return;
             e.preventDefault();
@@ -59,7 +61,7 @@ function UserMenu() {
         </MenuItem>
       )}
       <MenuItem
-        active={pathname.includes("user-profile")}
+        is_active={pathname.includes("user-profile")}
         onClick={(e) => {
           if (!task_finished) return;
           e.preventDefault();
