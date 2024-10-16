@@ -22,6 +22,7 @@ export interface EmployeeFilter {
 export interface FilterContextType {
   filter: EmployeeFilter;
   setFilter: (filter: EmployeeFilter) => void;
+  resetFilter: () => void;
 }
 
 export const initialFilter: EmployeeFilter = {
@@ -41,4 +42,5 @@ export const initialFilter: EmployeeFilter = {
 export const FilterContext = createContext<FilterContextType>({
   filter: initialFilter,
   setFilter: () => {},
+  resetFilter: () => {},
 });

@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-const pattern = RegExp(
+export const pattern = RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*{~?\\]])(?!.*[<>])[A-Za-z\\d!@#$%^&*{~?\\]]+$"
 );
 

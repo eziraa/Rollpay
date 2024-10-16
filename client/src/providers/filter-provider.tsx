@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { EmployeeFilter, FilterContext } from "../contexts/filter-context";
+import {
+  EmployeeFilter,
+  FilterContext,
+  initialFilter,
+} from "../contexts/filter-context";
 
 export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
   const [filter, setFilter] = useState<EmployeeFilter>({
@@ -23,8 +27,14 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const resetFilter = () => {
+    setFilter(initialFilter);
+  };
+
   return (
-    <FilterContext.Provider value={{ filter: filter, setFilter: updateFilter }}>
+    <FilterContext.Provider
+      value={{ filter: filter, setFilter: updateFilter, resetFilter }}
+    >
       {children}
     </FilterContext.Provider>
   );

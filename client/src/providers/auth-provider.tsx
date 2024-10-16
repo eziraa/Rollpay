@@ -1,18 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { AuthContext } from "../contexts/auth-context";
 import { UserResponse } from "../typo/user/response";
-import { useAppDispatch } from "../utils/custom-hook";
-import { useUser } from "../hooks/user-hook";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/token-constants";
 import api from "../config/api";
 import { jwtDecode } from "jwt-decode";
-import { getCurrentUserRequest } from "../store/user/user-slice";
-import { protectedRoute } from "../config/utils/protected_route";
-import { RouteObject } from "react-router-dom";
+import GLOBAL_URLS from "../config/global_urls";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [routers, setRouters] = useState<RouteObject[]>([]);
   const [curr_user, setCurrUser] = useState<UserResponse>({
     user_id: "",
     username: "",
@@ -35,28 +32,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       role: "",
     },
   });
-  const dispatcher = useAppDispatch();
-  const user = useUser();
 
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     try {
-      const res = await api.post("/token/refresh/", {
-        refresh: refreshToken,
-      });
-      if (res.status === 200) {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
+      await api
+        .post("/token/refresh/", {
+          refresh: refreshToken,
+        })
+        .then((response) => {
+          localStorage.setItem(ACCESS_TOKEN, response.data.access);
+          localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+          api
+            .get("/user/current-user")
+            .then((res) => {
+              setCurrUser(res.data);
+              setIsAuthenticated(true);
+            })
+            .catch((err) => {
+              const { error } = err.response?.data as { error: string };
+              return {
+                error: error,
+                code: err.response?.status,
+              } as { error: string; code: number };
+            });
+        });
     } catch (error) {
+      localStorage.removeItem(ACCESS_TOKEN);
+      localStorage.removeItem(REFRESH_TOKEN);
       setIsAuthenticated(false);
     }
   };
 
   const auth = async () => {
+    const pathname = window.location.pathname;
+    if (pathname.includes("confirm-registration")) {
+      return;
+    }
     const token = localStorage.getItem(ACCESS_TOKEN);
     let decoded: {
       exp: number;
@@ -64,6 +76,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
     if (!token) {
       setIsAuthenticated(false);
+      if (!GLOBAL_URLS.includes(window.location.pathname)) {
+        // window.location.href = "/login";
+      }
     } else {
       decoded = await jwtDecode(token);
       const tokenExpiration = decoded.exp;
@@ -72,22 +87,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (tokenExpiration < now) {
           await refreshToken();
         } else {
-          setIsAuthenticated(true);
-          dispatcher(getCurrentUserRequest(decoded.user_id));
+          await api
+            .get("/user/current-user")
+            .then((res) => {
+              setCurrUser(res.data);
+              setIsAuthenticated(true);
+            })
+            .catch((err) => {
+              const { error } = err.response?.data as { error: string };
+              return {
+                error: error,
+                code: err.response?.status,
+              } as { error: string; code: number };
+            });
         }
+      else {
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
+        setIsAuthenticated(false);
+      }
     }
-    return user;
   };
   useEffect(() => {
     auth();
   }, []);
-
-  useEffect(() => {
-    if (user.user) {
-      setCurrUser(user.user);
-      setRouters(protectedRoute(user.user.role));
-    }
-  }, [user.user]);
 
   return (
     <AuthContext.Provider
@@ -96,7 +119,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setCurrUser,
         isAuthenticated,
         setIsAuthenticated,
-        routers,
       }}
     >
       {children}
