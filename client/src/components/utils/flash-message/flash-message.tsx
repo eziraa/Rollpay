@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
-  CloseIcon,
   FlashMessageBody,
   FlashMessageIcon,
   FlashMessageText,
@@ -12,7 +11,6 @@ import { hideFlashMessage } from "../../../store/notification/flash-messsage-sli
 import { FaCheckCircle } from "react-icons/fa";
 import { IoIosWarning } from "react-icons/io";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
-import { addOpacityToColor } from "../convertor/add-opacity-color";
 import { FlashMessageItem as FlashMsg } from "../../../store/notification/flash-messsage-slice";
 export const FlashMessage = () => {
   const { flashMessages } = useAppSelector((state) => state.flashMessage);
@@ -23,16 +21,9 @@ export const FlashMessage = () => {
       {flashMessages.map((flashMessage: FlashMsg, index: number) => (
         <FlashMessageItem
           key={index}
-          style={{
-            borderColor:
-              flashMessage.type === "success" ? "#00af78" : "#f9ba46",
-            backgroundColor:
-              flashMessage.type === "success"
-                ? addOpacityToColor(1, "#f8f8f8")
-                : addOpacityToColor(1, "#f8f8f8"),
-          }}
+          className="flex items-center p-4 max-w-sm w-full bg-white shadow-lg rounded-lg border-l-4 border-green-500"
         >
-          <FlashMessageIcon>
+          <FlashMessageIcon className="inline-flex items-center justify-center h-10 w-10 text-green-500 bg-green-100 rounded-full">
             {flashMessage.type === "success" ? (
               <FaCheckCircle
                 style={{
@@ -52,20 +43,36 @@ export const FlashMessage = () => {
               style={{
                 color: flashMessage.type === "success" ? "#00af78" : "#f9ba46",
               }}
+              className="font-semibold text-gray-800"
             >
               {flashMessage.title}
             </FlashMessageTitle>
-            <FlashMessageText>{flashMessage.desc}</FlashMessageText>
+            <FlashMessageText className="text-sm text-gray-600">
+              {flashMessage.desc}
+            </FlashMessageText>
           </FlashMessageBody>
-          <CloseIcon
-            style={{
-              color: flashMessage.type === "success" ? "#00af78" : "#f9ba46",
-            }}
+          <button
             onClick={(e) => {
               e.stopPropagation();
               dispatcher(hideFlashMessage(flashMessage));
             }}
-          />
+            className="ml-auto text-gray-400 hover:text-gray-600 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </FlashMessageItem>
       ))}
     </FlasheMessageContainer>
