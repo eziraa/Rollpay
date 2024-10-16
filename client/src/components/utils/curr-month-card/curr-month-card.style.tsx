@@ -4,16 +4,13 @@ import { addOpacityToColor } from "../convertor/add-opacity-color";
 export const MonthCardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3rem;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 2rem;
-  border: 0.2rem solid
-    ${({ theme }) => addOpacityToColor(0.1, theme.colors.primary)};
   border-radius: 0.5rem;
   cursor: pointer;
-  box-shadow: 0 0 0.5rem
-    ${({ theme }) => addOpacityToColor(0.2, theme.colors.primary)};
+  box-shadow: 0 0.4rem 1rem
+    ${({ theme }) => addOpacityToColor(0.4, theme.buttons.primary)};
   transition: background-color 0.3s ease;
 `;
 

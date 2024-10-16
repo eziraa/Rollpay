@@ -4,11 +4,7 @@ import { LargeText } from "../titles/titles";
 // import Piechart from "./bar";
 import Chart from "react-apexcharts"; // Import the Chart component from react-apexcharts
 
-import {
-  MonthCardBody,
-  MonthCardContainer,
-  MonthHeader,
-} from "./curr-month-card.style";
+import { MonthCardBody, MonthCardContainer } from "./curr-month-card.style";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
@@ -28,7 +24,6 @@ interface ChartData {
   labels: string[];
 }
 export const MonthCard = ({ statType }: Props) => {
-  const [currentMonth, setCurrentMonth] = useState("");
   const { stat, loading } = useStatistics();
   const dispatcher = useAppDispatch();
   const [allowanceData, setAllowanceData] = useState<ChartData>({
@@ -104,15 +99,6 @@ export const MonthCard = ({ statType }: Props) => {
   useEffect(() => {
     dispatcher(getStatRequest());
   }, [dispatcher]);
-
-  useEffect(() => {
-    const date = new Date();
-    const monthYear = date.toLocaleString("default", {
-      month: "long",
-      year: "numeric",
-    });
-    setCurrentMonth(monthYear);
-  }, []);
   if (statType === "allowance") {
     return (
       <MonthCardContainer>
@@ -120,24 +106,21 @@ export const MonthCard = ({ statType }: Props) => {
           <ThreeDots size={1} />
         ) : (
           <>
-            <MonthHeader>
-              <LargeText>Allowance of {currentMonth}</LargeText>
-            </MonthHeader>
             <MonthCardBody>
               <React.Fragment>
-                <div className="container-fluid mb-3">
+                <div className="container-fluid m-3">
                   <Chart
                     type="pie"
                     width={350}
                     height={350}
                     series={allowanceData.series}
                     options={{
-                      title: { text: "Allowance PieChart" },
+                      title: { text: "Allowances" },
                       noData: { text: "Empty Data" },
                       colors: colors.slice(0, allowanceData.series.length),
                       labels: allowanceData.labels,
                     }}
-                  ></Chart>
+                  />
                 </div>
               </React.Fragment>{" "}
             </MonthCardBody>
@@ -153,19 +136,16 @@ export const MonthCard = ({ statType }: Props) => {
           <ThreeDots size={1} />
         ) : (
           <>
-            <MonthHeader>
-              <LargeText>Deduction of {currentMonth}</LargeText>
-            </MonthHeader>
             <MonthCardBody>
               <React.Fragment>
-                <div className="container-fluid mb-3">
+                <div className="container-fluid m-3">
                   <Chart
                     type="pie"
                     width={350}
                     height={350}
                     series={deductiontData.series}
                     options={{
-                      title: { text: "Deduction PieChart" },
+                      title: { text: "Deductions" },
                       noData: { text: "Empty Data" },
                       colors: colors.slice(0, deductiontData.series.length),
                       labels: deductiontData.labels,
@@ -186,12 +166,9 @@ export const MonthCard = ({ statType }: Props) => {
           <ThreeDots size={1} />
         ) : (
           <>
-            <MonthHeader>
-              <LargeText>Overtime of {currentMonth}</LargeText>
-            </MonthHeader>
             <MonthCardBody>
               <React.Fragment>
-                <div className="container-fluid mb-3">
+                <div className="container-fluid m-3">
                   <Chart
                     type="pie"
                     width={350}

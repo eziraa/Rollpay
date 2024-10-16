@@ -29,7 +29,6 @@ export const DashboardBody = styled.div`
   justify-content: space-between;
   gap: 2rem;
   width: 100%;
-  padding: 2rem 0;
 `;
 
 export const DashboardBodyRow = styled.div`
@@ -42,14 +41,12 @@ export const DashboardBodyRow = styled.div`
   margin-bottom: 2rem;
 `;
 export const StatContainer = styled.div`
-  display: grid;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: flex;
+  justify-content: stretch;
   gap: 2rem;
   width: 100%;
   padding: 2rem 0;
   align-items: flex-start;
-  grid-template-columns: repeat(4, 1fr);
   h2 {
     margin-bottom: 1rem;
   }
@@ -60,25 +57,12 @@ export const StatContainer = styled.div`
 `;
 export const StatCard = styled.div`
   border-radius: 10px;
-  padding: 2rem;
+  padding: 1rem;
   margin-bottom: 1rem;
-  box-shadow: 0 0 10px
-    ${({ theme }) => addOpacityToColor(0.3, theme.colors.primary)};
+  box-shadow: 0 0.5rem 1rem
+    ${({ theme }) => addOpacityToColor(0.23, theme.buttons.primary)};
   background-color: ${({ theme }) =>
     addOpacityToColor(0.85, theme.backgrounds.primary)};
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  font-size: 3.4rem;
-  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
-  h2 {
-    margin-bottom: 0.5rem;
-  }
-  p {
-    font-size: 1.2rem;
-  }
 `;
 
 export const CardRowTemplate = styled.div`
