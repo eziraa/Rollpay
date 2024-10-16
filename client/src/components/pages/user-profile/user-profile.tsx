@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Title, TitleContainer } from "../see-employee/see-employee.style";
 import {
-  Item,
-  UserProfileBody,
-  UserProfileContent,
-  UserProfileHeader,
-} from "./user-profile.style";
+  CurrEmployeeContent,
+  SeeEmployeeHeader,
+} from "../see-employee/see-employee.style";
 
 import { Outlet, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -21,6 +18,7 @@ import {
   SelectOption,
 } from "../../utils/form-elements/form.style";
 import { getNamedMonth } from "../salary/utils";
+import { MainContainer } from "../../utils/pages-utils/containers.style";
 
 const UserProfile = () => {
   const employee = useSalary().curr_emp?.employee;
@@ -56,61 +54,63 @@ const UserProfile = () => {
     employee_id && dispatcher(getCurrentEmployeeRequest(employee_id));
   }, [employee_id]);
   return (
-    <UserProfileBody>
-      <UserProfileHeader>
-        <TitleContainer>
-          <Item>
-            <Title>My Profile</Title>
-          </Item>
-        </TitleContainer>
-        <NavigationBar />
-        <Label
-          style={{
-            position: "absolute",
-            right: "2rem",
-            top: "1rem",
-            fontSize: "1.5rem",
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
-          <Select
-            value={`${query_year || current_year}`}
-            onChange={(e) => {
-              changeYear(+e.target.value);
+    <MainContainer
+      style={{
+        flexDirection: "row",
+        alignItems: "start",
+      }}
+    >
+      {employee && <EmployeeProfile employee={employee} />}
+      <CurrEmployeeContent
+        style={{
+          flexDirection: "column",
+        }}
+      >
+        <SeeEmployeeHeader>
+          <NavigationBar />
+          <Label
+            style={{
+              fontSize: "1.5rem",
+              display: "flex",
+              gap: "1rem",
             }}
           >
-            {years.map((year) => (
-              <SelectOption key={year} value={`${year}`}>
-                {year}
-              </SelectOption>
-            ))}
-          </Select>
-          <Select
-            value={`${query_month || curr_month}`}
-            onChange={(e) => {
-              changeMonth(+e.target.value);
-            }}
-          >
-            {months.map(
-              (month) =>
-                ((curr_year && curr_year < current_year) ||
-                  month <= new Date(Date.now()).getMonth() + 1) && (
-                  <SelectOption key={month} value={`${month}`}>
-                    {getNamedMonth(
-                      new Date(`${query_year || current_year}-${month}-01`)
-                    )}
-                  </SelectOption>
-                )
-            )}
-          </Select>
-        </Label>
-      </UserProfileHeader>
-      <UserProfileContent>
-        {employee && <EmployeeProfile employee={employee} />}
+            <Select
+              value={`${query_year || current_year}`}
+              onChange={(e) => {
+                changeYear(+e.target.value);
+              }}
+            >
+              {years.map((year) => (
+                <SelectOption key={year} value={`${year}`}>
+                  {year}
+                </SelectOption>
+              ))}
+            </Select>
+            <Select
+              value={`${query_month || curr_month}`}
+              onChange={(e) => {
+                changeMonth(+e.target.value);
+              }}
+            >
+              {months.map(
+                (month) =>
+                  ((curr_year && curr_year < current_year) ||
+                    month <= new Date(Date.now()).getMonth() + 1) && (
+                    <SelectOption key={month} value={`${month}`}>
+                      {getNamedMonth(
+                        new Date(`${query_year || current_year}-${month}-01`)
+                      )}
+                    </SelectOption>
+                  )
+              )}
+            </Select>
+          </Label>
+        </SeeEmployeeHeader>
+
         <Outlet />
-      </UserProfileContent>
-    </UserProfileBody>
+      </CurrEmployeeContent>
+    </MainContainer>
   );
 };
 

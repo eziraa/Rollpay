@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   DataLabel,
   DataValue,
@@ -11,7 +10,7 @@ import {
   InputButton,
   ProfileContainer,
 } from "./employee-profile.style";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { ThreeDots } from "../loading/dots";
 
 import { Label } from "../form-elements/form.style";
@@ -20,15 +19,12 @@ import { ImageCard } from "../profile-card/profile-card";
 import { baseURL } from "../../../config/api";
 import { CURRENT_USER } from "../../../constants/token-constants";
 import { useLocation, useParams } from "react-router";
-import { useUser } from "../../../hooks/user-hook";
-import { setProfilePicture as changeProfile } from "../../../store/salary/salary-slice";
 import UpdateEmployee from "../../pages/see-employee/update-employee";
 import { Employee } from "../../../typo/employee/response";
 import { useAuth } from "../../../hooks/auth-hook";
 
 export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
   const { curr_user: user } = useAuth();
-  const dispatcher = useAppDispatch();
   const { pathname } = useLocation();
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
@@ -36,13 +32,6 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
     localStorage.getItem(CURRENT_USER) || "[]"
   ).id;
   const { employee_id } = useParams();
-  const changedPic = useUser().user?.employee.profile_picture;
-
-  useEffect(() => {
-    if (changedPic) {
-      dispatcher(changeProfile(changedPic));
-    }
-  }, [changedPic]);
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.target.files) {

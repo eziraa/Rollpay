@@ -11,11 +11,9 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import Image from "../../../assets/logo.png";
 import { Title } from "../add_employee/add-employee.style";
-import { useUser } from "../../../hooks/user-hook";
 import { useAuth } from "../../../hooks/auth-hook";
 
 function UserMenu() {
-  const { task_finished } = useUser();
     const { curr_user: user } = useAuth();
 
   const navigate = useNavigate();
@@ -50,7 +48,6 @@ function UserMenu() {
         <MenuItem
           is_active={pathname === "/me"}
           onClick={(e) => {
-            if (!task_finished) return;
             e.preventDefault();
             e.stopPropagation();
             navigate("/me");
@@ -63,7 +60,6 @@ function UserMenu() {
       <MenuItem
         is_active={pathname.includes("user-profile")}
         onClick={(e) => {
-          if (!task_finished) return;
           e.preventDefault();
           e.stopPropagation();
           navigate("user-profile/" + user?.employee.id);

@@ -6,9 +6,7 @@ import {
   CardImage,
   SaveButton,
 } from "./profile-card.style";
-import { useAppDispatch } from "../../../utils/custom-hook";
 import UserAPI from "../../../services/user-api";
-import { changeProfileImage } from "../../../store/user/user-slice";
 import { useAuth } from "../../../hooks/auth-hook";
 
 export const ImageCard = ({
@@ -19,21 +17,21 @@ export const ImageCard = ({
   handleClose: () => void;
 }) => {
   // Getting necessary data
-  const dispatcher = useAppDispatch();
   const { employee_id } = useParams();
-  const { curr_user: user } = useAuth();
+  const { curr_user: user, setCurrUser } = useAuth();
   const saveProfileImage = async () => {
     if (employee_id) {
       const formData = new FormData();
       formData.append("profile_picture", picture);
 
       if (user) {
-        const response: string = await UserAPI.updateProfile(
-          user?.user_id,
-          formData
-        );
-        dispatcher(changeProfileImage(response));
-        handleClose();
+        await UserAPI.updateProfile(user?.user_id, formData).then((res) => {
+          setCurrUser({
+            ...user,
+            profile_picture: res,
+          });
+          handleClose();
+        });
       }
     }
   };

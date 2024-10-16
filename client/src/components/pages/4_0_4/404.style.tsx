@@ -24,12 +24,6 @@ export const Message = styled.p`
 
 export const HomeLink = styled.a`
   padding: 10px 20px;
-  background-color: #007bff;
-  color: ${({ theme }) => addOpacityToColor(0.9, theme.colors.primary)};
-
   border-radius: 5px;
   text-decoration: none;
-  &:hover {
-    background-color: #0056b3;
-  }
 `;

@@ -10,7 +10,7 @@ export const PaymentCardContainer = styled.div`
   min-height: 30rem;
   gap: 1rem;
   border-radius: 1rem;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  border: 0.3rem solid #63edaa;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.89, theme.backgrounds.primary)};
 `;

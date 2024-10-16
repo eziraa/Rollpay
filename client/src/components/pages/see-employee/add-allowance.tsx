@@ -37,11 +37,7 @@ import {
 import { AddAllowanceToEmpSchema } from "../../../schema/add-allowance-schema";
 import api from "../../../config/api";
 import { Allowance } from "../../../typo/allowance/response";
-/**
- * Renders a modal for adding an allowance to an employee.
- *
- * @returns JSX element representing the modal for adding an allowance to an employee.
- */
+
 interface AllowancesLoader {
   allowances: Allowance[];
 }
@@ -56,34 +52,10 @@ export const AddAllowanceToEmp = () => {
   const { curr_emp } = useSalary();
   const employee = useEmployee();
 
-  /**
-   * This effect hook listens for changes in the `curr_allowance` state.
-   * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
-   *
-   * @param {AllowanceState} curr_allowance - The current allowance state.
-   * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
-   *
-   * @returns {void}
-   */
-
-  /**
-   * This effect hook listens for changes in the `curr_allowance` state.
-   * If `curr_allowance` is not null, it dispatches an action to fetch allowances from the backend.
-   *
-   * @param {AllowanceState} curr_allowance - The current allowance state.
-   * @param {import('react').Dispatch<import('../../../store/allowance/allowance-slice').AllowanceAction>} dispatcher - The Redux dispatch function.
-   *
-   * @returns {void}
-   */
   useEffect(() => {
     allowances.length == 0 && dispatcher(listAllowancesRequested());
   }, []);
 
-  /**
-   * Initializes the Formik instance for the AddAllowanceToEmp component.
-   *
-   * @returns An object containing the Formik instance properties: errors, touched, handleChange, handleSubmit, and values.
-   */
   const {
     errors,
     touched,
@@ -107,7 +79,7 @@ export const AddAllowanceToEmp = () => {
         })
       );
       dispatcher(addEmpAllowanceRequested(values));
-      navigate(-1);
+      !employee.task_error && !isSubmitting && navigate(-1);
     },
   });
 
@@ -122,7 +94,6 @@ export const AddAllowanceToEmp = () => {
       });
       navigate(pathname.slice(0, pathname.lastIndexOf("/") + 1));
       clearTask();
-      // alert(pathname.slice(0, pathname.lastIndexOf("/") + 1));
     }
   }, []);
 
