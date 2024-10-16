@@ -24,9 +24,10 @@ import { useUser } from "../../../hooks/user-hook";
 import { setProfilePicture as changeProfile } from "../../../store/salary/salary-slice";
 import UpdateEmployee from "../../pages/see-employee/update-employee";
 import { Employee } from "../../../typo/employee/response";
+import { useAuth } from "../../../hooks/auth-hook";
 
 export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
-  const { user } = useUser();
+  const { curr_user: user } = useAuth();
   const dispatcher = useAppDispatch();
   const { pathname } = useLocation();
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
@@ -94,7 +95,10 @@ export const EmployeeProfile = ({ employee }: { employee: Employee }) => {
               onChange={handleChange}
             />
             {profilePicture && (
-              <ImageCard picture={profilePicture} action={closeImageCard} />
+              <ImageCard
+                picture={profilePicture}
+                handleClose={closeImageCard}
+              />
             )}
           </form>
         )}
