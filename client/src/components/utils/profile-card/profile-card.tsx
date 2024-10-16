@@ -9,19 +9,19 @@ import {
 import { useAppDispatch } from "../../../utils/custom-hook";
 import UserAPI from "../../../services/user-api";
 import { changeProfileImage } from "../../../store/user/user-slice";
-import { useUser } from "../../../hooks/user-hook";
+import { useAuth } from "../../../hooks/auth-hook";
 
 export const ImageCard = ({
   picture,
-  action,
+  handleClose,
 }: {
   picture: File;
-  action: () => void;
+  handleClose: () => void;
 }) => {
   // Getting necessary data
   const dispatcher = useAppDispatch();
   const { employee_id } = useParams();
-  const { user } = useUser();
+  const { curr_user: user } = useAuth();
   const saveProfileImage = async () => {
     if (employee_id) {
       const formData = new FormData();
@@ -33,7 +33,7 @@ export const ImageCard = ({
           formData
         );
         dispatcher(changeProfileImage(response));
-        action();
+        handleClose();
       }
     }
   };
@@ -45,7 +45,7 @@ export const ImageCard = ({
         <CancelButton
           onClick={(e) => {
             e.preventDefault();
-            action();
+            handleClose();
           }}
         >
           Cancel
