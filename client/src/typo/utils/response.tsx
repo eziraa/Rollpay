@@ -23,4 +23,7 @@ export interface PaginatedBackEndResponse {
   next: string | null;
   previous: string | null;
   status: number;
+  page_size: number;
+  current_page: number;
+  number_of_pages: number;
 }

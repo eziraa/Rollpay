@@ -40,9 +40,9 @@ export const lightTheme: Theme = {
     large: "2.2rem",
   },
   table: {
-    tableRow: "#7aa09f",
-    tableRowHover: "#e7e7e7",
-    header: "#7aa09f",
+    tableRow: "#a9ebd5",
+    tableRowHover: "#7ee2c1",
+    header: "#56b394",
   },
   buttons: {
     primary: "#28ce97",
@@ -67,9 +67,9 @@ export const darkTheme: Theme = {
     large: "2.2rem",
   },
   table: {
-    tableRow: "#7aa09f",
-    tableRowHover: "#69a199",
-    header: "#3b5e5d",
+    tableRow: "#a4f9c5",
+    tableRowHover: "#86f7b1",
+    header: "#3e935f",
   },
   buttons: {
     primary: "#3CFF87",
@@ -78,4 +78,3 @@ export const darkTheme: Theme = {
     secondaryHover: "#0a0a0a26",
   },
 };
-

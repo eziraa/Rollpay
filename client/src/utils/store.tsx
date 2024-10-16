@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
-import { RouterConfig } from "../config/router/router";
 import flashMessageSlice from "../store/notification/flash-messsage-slice";
 import { rootSaga } from "./saga";
 import employeeSlice from "../store/employee/employee-slice";
@@ -13,13 +12,8 @@ import overtimeSlice from "../store/overtime/overtime-slice";
 import statisticsSlice from "../store/statistics/statistics-slice";
 import assetSlice from "../store/asset/asset-slice";
 import adminSlice from "../store/admin/admin-slice";
-// import modalSlice from "../store/modal/modal-slice";
 
 const sagaMiddleware = createSagaMiddleware();
-
-sagaMiddleware.setContext({
-  router: RouterConfig,
-});
 const store = configureStore({
   reducer: {
     employee: employeeSlice,

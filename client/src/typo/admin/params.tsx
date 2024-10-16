@@ -22,3 +22,14 @@ export type EditUserParams = {
   password: string;
   role: string;
 };
+
+export type AddRoleParams = {
+  name: string;
+  groups: string[];
+};
+
+export type EditRoleParams = {
+  id: string;
+  name: string;
+  groups: string[];
+};

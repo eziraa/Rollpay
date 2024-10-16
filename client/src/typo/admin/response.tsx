@@ -69,3 +69,7 @@ export interface AddGroupResponse extends BaseResponse {
 export interface AddUserResponse extends BaseResponse {
   user: User;
 }
+
+export interface AddRoleResponse extends BaseResponse {
+  role: Role;
+}
