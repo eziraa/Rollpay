@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Navigate } from "react-router-dom";
 import { adminRoutes, clerk_routes, userRoute } from "../router/router";
 
 export function protectedRoute(role: string) {
@@ -11,11 +10,6 @@ export function protectedRoute(role: string) {
     ? adminRoutes
     : role === "user"
     ? userRoute("/")
-    : [
-        {
-          path: "*",
-          element: <Navigate to="/access-denied" />,
-        },
-      ];
+    : [];
 }
 

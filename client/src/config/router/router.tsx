@@ -8,10 +8,22 @@ import { EmployeeAllowance } from "../../components/sections/employee-allowance/
 import { EmployeeOvertime } from "../../components/sections/employee-overtime/overtime";
 import { EmployeeDeduction } from "../../components/sections/employee-deduction/deduction";
 import { EditEmployee } from "../../components/pages/edit-employee/edit-employee";
-import { AddAllowanceToEmp } from "../../components/pages/see-employee/add-allowance";
-import { AddDeductionToEmp } from "../../components/pages/see-employee/add-deduction";
-import { AddOvertimeToEmp } from "../../components/pages/see-employee/add-overtime";
-import { AddEmployee } from "../../components/sections/add_employee/add-employee";
+import {
+  AddAllowanceToEmp,
+  loader as allowancesLoader,
+} from "../../components/pages/see-employee/add-allowance";
+import {
+  AddDeductionToEmp,
+  loader as deductionsLoader,
+} from "../../components/pages/see-employee/add-deduction";
+import {
+  AddOvertimeToEmp,
+  loader as overtimesLoader,
+} from "../../components/pages/see-employee/add-overtime";
+import {
+  AddEmployee,
+  loader as positionsLoader,
+} from "../../components/sections/add_employee/add-employee";
 import { CheckFlashMessage } from "../../components/sections/confirm-flash-message/confirm-flash-message";
 import { AddAllowance } from "../../components/sections/add-allowance/add-allowance";
 import { AddOvertime } from "../../components/sections/add-overtime/add-overtime";
@@ -29,7 +41,10 @@ import { EmployeeSalary } from "../../components/sections/employee-salary/employ
 import { AdminDashBoard } from "../../components/pages/admin/dashboard/dashbord";
 import { UserPage } from "../../components/pages/admin/users/users";
 import { DisplayUsers } from "../../components/pages/admin/users/display-users";
-import { AddGroup } from "../../components/pages/admin/groups/add-group";
+import {
+  EditGroup,
+  loader as groupLoader,
+} from "../../components/pages/admin/groups/edit-group";
 import { GroupsPage } from "../../components/pages/admin/groups/groups";
 import { DisplayGroups } from "../../components/pages/admin/groups/display-groups";
 import { RolePage } from "../../components/pages/admin/roles/roles";
@@ -38,13 +53,28 @@ import { UserDashboard } from "../../components/pages/user/dashboard/dashboard";
 import { UserHomePage } from "../../components/pages/user/home/home";
 import UserProfile from "../../components/pages/user-profile/user-profile";
 import { AddUser } from "../../components/pages/admin/users/add-user";
-import { EditUser } from "../../components/pages/admin/users/edit-user";
+import {
+  EditUser,
+  loader as userLoader,
+} from "../../components/pages/admin/users/edit-user";
 import { EmployeePage } from "../../components/pages/admin/employees/employees";
 import { DisplayEmployees } from "../../components/pages/admin/employees/display-employees";
+import {
+  AddGroup,
+  loader as permissionsLoader,
+} from "../../components/pages/admin/groups/add-group";
+import {
+  AddRole,
+  loader as groupsLoader,
+} from "../../components/pages/admin/roles/add-role";
+import {
+  EditRole,
+  loader as roleLoader,
+} from "../../components/pages/admin/roles/edit-role";
 
-export const userRoute = (base_end_point: string) => [
+export const userRoute = (base_end_point: string): RouteObject[] => [
   {
-    path: base_end_point || "",
+    path: "/" + base_end_point,
     element: <UserHomePage />,
     children: [
       { path: "", element: <UserDashboard /> },
@@ -84,6 +114,7 @@ export const clerk_routes: RouteObject[] = [
               {
                 path: "add-employee",
                 element: <AddEmployee />,
+                loader: positionsLoader,
                 children: [{ path: "add-position", element: <AddPosition /> }],
               },
               { path: "upload-document", element: <AddDocument /> },
@@ -155,6 +186,7 @@ export const clerk_routes: RouteObject[] = [
                   {
                     path: "add-allowance",
                     element: <AddAllowanceToEmp />,
+                    loader: allowancesLoader,
                     children: [
                       { path: "add-new-allowance", element: <AddAllowance /> },
                     ],
@@ -169,6 +201,7 @@ export const clerk_routes: RouteObject[] = [
                   {
                     path: "add-allowance",
                     element: <AddAllowanceToEmp />,
+                    loader: allowancesLoader,
                     children: [
                       { path: "add-new-allowance", element: <AddAllowance /> },
                     ],
@@ -193,6 +226,7 @@ export const clerk_routes: RouteObject[] = [
                   {
                     path: "add-overtime",
                     element: <AddOvertimeToEmp />,
+                    loader: overtimesLoader,
                     children: [
                       { path: "add-new-overtime", element: <AddOvertime /> },
                     ],
@@ -208,6 +242,7 @@ export const clerk_routes: RouteObject[] = [
                   {
                     path: "add-overtime",
                     element: <AddOvertimeToEmp />,
+                    loader: overtimesLoader,
                     children: [
                       { path: "add-new-overtime", element: <AddOvertime /> },
                     ],
@@ -223,6 +258,7 @@ export const clerk_routes: RouteObject[] = [
                   {
                     path: "add-deduction",
                     element: <AddDeductionToEmp />,
+                    loader: deductionsLoader,
                     children: [
                       { path: "add-new-deduction", element: <AddDeduction /> },
                     ],
@@ -238,6 +274,7 @@ export const clerk_routes: RouteObject[] = [
                   {
                     path: "add-deduction",
                     element: <AddDeductionToEmp />,
+                    loader: deductionsLoader,
                     children: [
                       { path: "add-new-deduction", element: <AddDeduction /> },
                     ],
@@ -251,11 +288,12 @@ export const clerk_routes: RouteObject[] = [
           },
         ],
       },
+      ...userRoute("me"),
     ],
   },
 ];
 
-export const adminRoutes = [
+export const adminRoutes: RouteObject[] = [
   {
     path: "/",
     element: <AdminDashBoard />,
@@ -266,7 +304,16 @@ export const adminRoutes = [
         children: [
           { path: "", element: <DisplayUsers /> },
           { path: "add-user", element: <AddUser /> },
-          { path: ":user_id/edit", element: <EditUser /> },
+          {
+            path: ":user_id/edit",
+            element: <EditUser />,
+            loader: ({ params }) => {
+              if (!params.user_id) {
+                throw new Error("User ID is required");
+              }
+              return userLoader({ params: { user_id: params.user_id } });
+            },
+          },
         ],
       },
       {
@@ -277,9 +324,14 @@ export const adminRoutes = [
           {
             path: "add-employee",
             element: <AddEmployee />,
+            loader: positionsLoader,
             children: [{ path: "add-position", element: <AddPosition /> }],
           },
-          { path: ":employee_id/edit", element: <AddEmployee /> },
+          {
+            path: ":employee_id/edit",
+            loader: positionsLoader,
+            element: <AddEmployee />,
+          },
         ],
       },
       { path: "", element: <Navigate to="users" replace={true} /> },
@@ -289,8 +341,21 @@ export const adminRoutes = [
         element: <GroupsPage />,
         children: [
           { path: "", element: <DisplayGroups /> },
-          { path: "add-group", element: <AddGroup /> },
-          { path: ":group_id/edit", element: <AddGroup /> },
+          {
+            path: "add-group",
+            element: <AddGroup />,
+            loader: permissionsLoader,
+          },
+          {
+            path: ":group_id/edit",
+            element: <EditGroup />,
+            loader: ({ params }) => {
+              if (!params.group_id) {
+                throw new Error("Group ID is required");
+              }
+              return groupLoader({ params: { group_id: params.group_id } });
+            },
+          },
         ],
       },
       {
@@ -298,9 +363,20 @@ export const adminRoutes = [
         element: <RolePage />,
         children: [
           { path: "", element: <DisplayRoles /> },
-          // { path: "add-role", element: <AddGroup /> },
+          { path: "add-role", element: <AddRole />, loader: groupsLoader },
+          {
+            path: ":role_id/edit",
+            element: <EditRole />,
+            loader: ({ params }) => {
+              if (!params.role_id) {
+                throw new Error("Role ID is required");
+              }
+              return roleLoader({ params: { role_id: params.role_id } });
+            },
+          },
         ],
       },
     ],
   },
+  ...userRoute("me"),
 ];
