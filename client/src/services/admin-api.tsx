@@ -1,15 +1,21 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import { AddGroupParams, AddUserParams, EditGroupParams, EditUserParams } from "../typo/admin/params";
+import {
+  AddGroupParams,
+  AddRoleParams,
+  AddUserParams,
+  EditGroupParams,
+  EditRoleParams,
+  EditUserParams,
+} from "../typo/admin/params";
 
 /**
  * @returns a list of usrs
  */
-const getUsers = async () => {
+const getUsers = async (user_id = "") => {
   const users = await api
-    .get("user/list")
+    .get("user/list" + (user_id ? `/${user_id}` : ""))
     .then((res) => {
-      console.log(res.data);
       return {
         users: res.data,
         code: res.status,
@@ -48,9 +54,9 @@ const getEmployees = async () => {
   return users;
 };
 
-const getRoles = async () => {
+const getRoles = async (role_id = "") => {
   const roles = await api
-    .get("role/list")
+    .get("role/list" + (role_id ? `/${role_id}` : ""))
     .then((res) => {
       return {
         roles: res.data,
@@ -69,9 +75,9 @@ const getRoles = async () => {
   return roles;
 };
 
-const getGroups = async () => {
+const getGroups = async (group_id = "") => {
   const groups = await api
-    .get("group/list")
+    .get("group/list" + (group_id ? `/${group_id}` : ""))
     .then((res) => {
       return {
         groups: res.data,
@@ -237,7 +243,6 @@ const deleteUser = async (values: string[]) => {
   return users;
 };
 
-
 const deleteEmployee = async (values: string[]) => {
   const users = await api
     .delete("/employee/admin/delete", { data: { employees: values } })
@@ -258,6 +263,68 @@ const deleteEmployee = async (values: string[]) => {
 
   return users;
 };
+const addRole = async (values: AddRoleParams) => {
+  const users = await api
+    .post("/role/add", values)
+    .then((res) => {
+      return {
+        role: res.data,
+        code: res.status,
+        success: "Success adding role",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return users;
+};
+
+const editRole = async (values: EditRoleParams) => {
+  const roles = await api
+    .put("/role/edit", values)
+    .then((res) => {
+      return {
+        role: res.data,
+        code: res.status,
+        success: "Edit Role Success",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return roles;
+};
+
+const deleteRole = async (values: string[]) => {
+  const roles = await api
+    .delete("/role/delete", { data: { roles: values } })
+    .then((res) => {
+      return {
+        roles: res.data,
+        code: res.status,
+        success: "Role deleted successfully",
+      };
+    })
+    .catch((err: AxiosError) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
+  return roles;
+};
 
 const AdminAPI = {
   getRoles,
@@ -272,6 +339,9 @@ const AdminAPI = {
   deleteUser,
   editUser,
   deleteEmployee,
+  addRole,
+  deleteRole,
+  editRole,
 };
 
 export default AdminAPI;

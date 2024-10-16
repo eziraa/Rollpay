@@ -1,6 +1,5 @@
 import { AxiosError } from "axios";
 import api from "../config/api";
-import { AddAssetResponse } from "../typo/asset/response";
 
 const addEmpAsset = async (employee_id: string, formData: FormData) => {
   const response = await api
@@ -68,28 +67,6 @@ const getAsset = async (asset_id: string) => {
   return asset;
 };
 
-const editAsset = async (asset_id: string, formData: FormData) => {
-  const response = await api
-    .put<AddAssetResponse[]>("/asset/edit" + asset_id, formData)
-    .then((res) => {
-      return {
-        success: "Asset updated successfully",
-        code: res.status,
-        asset: res.data,
-      };
-    })
-    .catch((err: AxiosError) => {
-      for (const value of Object.values(
-        (err.response?.data as { [key: string]: unknown }) || {}
-      ))
-        return {
-          error: value,
-          code: err.response?.status,
-        } as { error: string; code: number };
-    });
-  return response;
-};
-
 const deleteAsset = async (asset_id: string) => {
   const response = await api
     .delete("/asset/delete/" + asset_id)
@@ -112,7 +89,6 @@ const deleteAsset = async (asset_id: string) => {
 
 const AssetAPI = {
   listAssets,
-  editAsset,
   deleteAsset,
   addEmpAsset,
   getAsset,

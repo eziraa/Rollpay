@@ -115,9 +115,9 @@ const updateProfile = async (employee_id: string, formData: FormData) => {
   return response;
 };
 
-const getCurrentUser = async (employee_id: string) => {
-  const response = api
-    .get("/user/current-user/" + employee_id)
+const getCurrentUser = async () =>
+  await api
+    .get("/user/current-user")
     .then((res) => {
       return {
         employee: { ...res.data },
@@ -132,9 +132,6 @@ const getCurrentUser = async (employee_id: string) => {
         code: err.response?.status,
       } as { error: string; code: number };
     });
-  return response;
-};
-
 const UserAPI = {
   signUp,
   login,

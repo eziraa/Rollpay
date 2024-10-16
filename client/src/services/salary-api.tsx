@@ -14,6 +14,10 @@ const listEmployeeSalary = async (pageUrl?: string) => {
           next: res.data.next,
           previous: res.data.previous,
           count: res.data.count,
+          page_size: res.data.page_size,
+          current_page: res.data.current_page,
+          number_of_pages: res.data.number_of_pages,
+          type: "salary",
         },
         code: res.status,
         success: "Success returned employees",
@@ -99,7 +103,6 @@ const paySalary = async (month: string) => {
   const response = await api
     .patch("/employee/pay/" + month)
     .then((res) => {
-      console.log(res.data.results);
       return {
         results: res.data.results,
         pagination: {

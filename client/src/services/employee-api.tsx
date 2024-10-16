@@ -55,12 +55,14 @@ export interface PaginatedBackEndResponse {
   results: Employee[];
   next: string | null;
   previous: string | null;
+  page_size: number;
+  current_page: number;
+  number_of_pages: number;
   status: number;
 }
 
 const listEmployee = async (pageUrl?: string) => {
   const endpoint = pageUrl || "/employee/list";
-
   const employees = await api
     .get<PaginatedBackEndResponse>(endpoint)
     .then((res) => {
@@ -70,6 +72,10 @@ const listEmployee = async (pageUrl?: string) => {
           next: res.data.next,
           previous: res.data.previous,
           count: res.data.count,
+          page_size: res.data.page_size,
+          current_page: res.data.current_page,
+          number_of_pages: res.data.number_of_pages,
+          type: "employee",
         },
         code: res.status,
         success: "Success returned employees",
