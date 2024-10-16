@@ -21,7 +21,6 @@ function* userSignUp(action: PayloadAction<SignUpParams>) {
 
     if (response.code === 201) {
       yield put(signUpFinished());
-      window.location.href = "/login";
     } else {
       yield put(wrongSignup(response.error));
     }
@@ -66,12 +65,9 @@ interface CurrentUserResponse extends SignUpResponse {
   employee: UserResponse;
 }
 
-function* getCurrentUser(action: PayloadAction<string>) {
+function* getCurrentUser() {
   try {
-    const response: CurrentUserResponse = yield call(
-      UserAPI.getCurrentUser,
-      action.payload
-    );
+    const response: CurrentUserResponse = yield call(UserAPI.getCurrentUser);
     if (response.code === 200) {
       yield put(getCurrentUserDone(response.employee));
     } else {

@@ -1,13 +1,12 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery } from "redux-saga/effects";
 import { setFlashMessage } from "../notification/flash-messsage-slice";
-import { AddAssetParams, EditAssetParams } from "../../typo/asset/params";
+import { AddAssetParams } from "../../typo/asset/params";
 import { AddAssetResponse, AssetResponse } from "../../typo/asset/response";
 import AssetAPI from "../../services/asset-api";
 import {
   addAssetDone,
   deleteAssetDone,
-  editAssetDone,
   getAssetDone,
   listAssetDone,
   taskUnfinished,
@@ -16,7 +15,8 @@ function* addAsset(action: PayloadAction<AddAssetParams>) {
   try {
     const response: AddAssetResponse = yield call(
       AssetAPI.addEmpAsset,
-      action.payload
+      action.payload.employee_id,
+      action.payload.formData
     );
 
     if (response.code === 201) {
@@ -159,7 +159,7 @@ function* DeleteAsset(action: PayloadAction<string>) {
       action.payload
     );
     if (response.code === 204) {
-      yield put(deleteAssetDone(response.asset));
+      yield put(deleteAssetDone(action.payload));
       yield put(
         setFlashMessage({
           type: "success",
@@ -205,75 +205,7 @@ function* DeleteAsset(action: PayloadAction<string>) {
   }
 }
 
-function* editAsset(action: PayloadAction<EditAssetParams>) {
-  try {
-    const response: AddAssetResponse = yield call(
-      AssetAPI.editAsset,
-      action.payload.id || "",
-      action.payload
-    );
-    if (response.code === 201) {
-      yield put(editAssetDone(response.asset));
-      yield put(
-        setFlashMessage({
-          type: "success",
-          status: true,
-          title: "Edit Asset",
-          desc: response.success,
-          duration: 3,
-        })
-      );
-    } else if (response.code === 401) {
-      // yield put(unfinishedEdit());
-      yield put(
-        setFlashMessage({
-          type: "error",
-          status: true,
-          title: "Permision Denied",
-          desc: "Not authorized to edit asset",
-          duration: 3,
-        })
-      );
-    } else if (response.code === 403) {
-      yield put(taskUnfinished(response.error));
-      yield put(
-        setFlashMessage({
-          type: "error",
-          status: true,
-          title: "Forbidden",
-          desc: "Not allowed to edit asset",
-          duration: 3,
-        })
-      );
-    } else {
-      yield put(
-        setFlashMessage({
-          type: "error",
-          status: true,
-          title: "Edit asset",
-          desc:
-            response.error.length < 3
-              ? "Failed please try again"
-              : response.error,
-          duration: 3,
-        })
-      );
-    }
-  } catch (_) {
-    yield put(
-      setFlashMessage({
-        type: "error",
-        status: true,
-        title: "Edit asset",
-        desc: "Cannot edit asset please try again",
-        duration: 3,
-      })
-    );
-  }
-}
-
 export function* watchAssetRequest() {
-  yield takeEvery("asset/editAssetRequested", editAsset);
   yield takeEvery("asset/addAssetRequested", addAsset);
   yield takeEvery("asset/listAssetsRequested", GetAssets);
   yield takeEvery("asset/deleteAssetRequested", DeleteAsset);

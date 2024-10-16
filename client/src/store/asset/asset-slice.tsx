@@ -56,10 +56,12 @@ const AssetSlice = createSlice({
       state.deleting = true;
       state.task_error = undefined;
     },
-    deleteAssetDone: (state, action: PayloadAction<Asset>) => {
+    deleteAssetDone: (state, action: PayloadAction<string>) => {
       state.task_finished = true;
-      state.deleting =true;
-      state.assets.splice(state.assets.indexOf(action.payload), 1);
+      state.deleting = true;
+      state.assets = state.assets.filter(
+        (asset) => asset.id !== action.payload
+      );
     },
     listAssetDone: (state, payload: PayloadAction<AssetResponse>) => {
       state.assets = payload.payload.results;
@@ -69,17 +71,6 @@ const AssetSlice = createSlice({
     setCurrentAsset: (state, payload: PayloadAction<Asset | undefined>) => {
       state.curr_asset = payload.payload;
       state.loading = false;
-    },
-    editAssetRequested: (state, _: PayloadAction<EditAssetParams>) => {
-      state.task_finished = false;
-      state.editing = true;
-    },
-    editAssetDone: (state, action: PayloadAction<Asset>) => {
-      state.task_finished = true;
-      state.editing = false;
-      state.assets = state.assets.map((Asset) =>
-        Asset.id === action.payload.id ? action.payload : Asset
-      );
     },
     resetAssetState: (state, action: PayloadAction<AssetState>) => {
       state = { ...action.payload };
@@ -94,8 +85,6 @@ export const {
   setCurrentAsset,
   addAssetRequested,
   addAssetDone,
-  editAssetRequested,
-  editAssetDone,
   resetAssetState,
   getAssetRequested,
   getAssetDone,

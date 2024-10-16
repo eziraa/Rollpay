@@ -3,7 +3,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AdminState } from "../../typo/admin/states";
 import {
-  AddGroupResponse,
   AdminEmployee,
   Group,
   Permission,
@@ -11,8 +10,10 @@ import {
   User,
 } from "../../typo/admin/response";
 import {
+  AddRoleParams,
   AddUserParams,
   EditGroupParams,
+  EditRoleParams,
   EditUserParams,
 } from "../../typo/admin/params";
 
@@ -118,6 +119,7 @@ const AdminSlice = createSlice({
     },
     raiseError: (state, action: PayloadAction<string>) => {
       state.loading = false;
+      state.adding = false;
       state.task_error = action.payload;
     },
     addUserRequest: (state, _: PayloadAction<AddUserParams>) => {
@@ -150,9 +152,41 @@ const AdminSlice = createSlice({
         user.id === action.payload.id ? action.payload : user
       );
     },
+    addRoleRequest: (state, _: PayloadAction<AddRoleParams>) => {
+      state.task_finished = false;
+      state.adding = true;
+    },
+    addRoleDone: (state, action: PayloadAction<Role>) => {
+      state.task_finished = true;
+      state.adding = false;
+      state.role = action.payload;
+    },
+    editRoleRequest: (state, _: PayloadAction<EditRoleParams>) => {
+      state.task_finished = false;
+      state.editing = true;
+    },
+    editRoleDone: (state, action: PayloadAction<Role>) => {
+      state.task_finished = false;
+      state.editing = true;
+      state.roles = state.roles.map((role) =>
+        role.id === action.payload.id ? action.payload : role
+      );
+    },
+    deleteRoleRequest: (state, _: PayloadAction<string[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+    },
+    deleteRoleDone: (state, action: PayloadAction<Role[]>) => {
+      state.task_finished = false;
+      state.deleting = true;
+      state.roles = action.payload;
+    },
     setCurrentUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.loading = false;
+    },
+    resetError: (state) => {
+      state.task_error = "";
     },
   },
 });
@@ -184,6 +218,13 @@ export const {
   editUserRequest,
   deleteEmployeesRequest,
   deleteEmployeesDone,
+  addRoleRequest,
+  addRoleDone,
+  editRoleRequest,
+  editRoleDone,
+  deleteRoleRequest,
+  deleteRoleDone,
   raiseError,
+  resetError,
 } = AdminSlice.actions;
 export default AdminSlice.reducer;

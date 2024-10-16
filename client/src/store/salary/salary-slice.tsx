@@ -39,11 +39,7 @@ const SalarySlice = createSlice({
       state.loading = false;
       state.employees = action.payload.results;
       state.searching = false;
-      state.pagination = {
-        ...action.payload.pagination,
-        page_size: state.pagination?.page_size ?? 10,
-        type: "salary",
-      };
+      state.pagination = action.payload.pagination;
     },
     getSalaryAssetsRequest: (state, _: PayloadAction<GetAssetParams>) => {
       state.loading = true;

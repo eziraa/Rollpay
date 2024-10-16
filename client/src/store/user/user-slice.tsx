@@ -66,7 +66,7 @@ const UserSlice = createSlice({
       state.logging_in = false;
     },
 
-    getCurrentUserRequest: (state, _: PayloadAction<string>) => {
+    getCurrentUserRequest: (state) => {
       state.task_finished = false;
     },
     getCurrentUserDone: (state, action: PayloadAction<UserResponse>) => {
@@ -75,6 +75,10 @@ const UserSlice = createSlice({
     },
     changeProfileImage: (state, action: PayloadAction<string>) => {
       if (state.user) state.user.profile_picture = action.payload;
+    },
+    reset: (state) => {
+      state.acc_created = false;
+      state.creating = false;
     },
   },
 });
@@ -91,5 +95,6 @@ export const {
   getCurrentUserRequest,
   getCurrentUserDone,
   changeProfileImage,
+  reset,
 } = UserSlice.actions;
 export default UserSlice.reducer;

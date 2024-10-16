@@ -216,7 +216,7 @@ function* GetPosition(action: PayloadAction<string>) {
   }
 }
 
-function* CLosePosition(action: PayloadAction<string>) {
+function* ClosePosition(action: PayloadAction<string>) {
   try {
     const response: AddPositionResponse = yield call(
       PositionAPI.closePosition,
@@ -453,7 +453,7 @@ export function* watchPositionRequest() {
   yield takeEvery("position/listPositionsRequested", GetPositions);
   yield takeEvery("position/deletePositionRequested", DeletePosition);
   yield takeEvery("position/getPositionRequested", GetPosition);
-  yield takeEvery("position/closePositionRequested", CLosePosition);
+  yield takeEvery("position/closePositionRequested", ClosePosition);
   yield takeEvery("position/openPositionRequested", OpenPosition);
   yield takeEvery("position/getPositionRequest", GetPosition);
 }

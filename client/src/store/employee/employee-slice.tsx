@@ -35,28 +35,7 @@ const EmployeeSlice = createSlice({
     addEmpRequested: (state, _: PayloadAction<AddEmpParams>) => {
       state.task_finished = false;
     },
-    setPagesize: (state, size: PayloadAction<number>) => {
-      let page = 1;
-      let number_of_pages = 1;
-      if (state.pagination) {
-        page = state.pagination?.current_page / state.pagination?.page_size;
-        page = page * size.payload;
-        page = Math.ceil(page);
-        number_of_pages = Math.ceil(
-          state.pagination.count / state.pagination.page_size
-        );
-      }
 
-      state.pagination = {
-        page_size: size.payload,
-        next: state.pagination?.next,
-        previous: state.pagination?.previous,
-        count: state.pagination?.count ?? 0,
-        current_page: 1,
-        number_of_pages,
-        type: state.pagination?.type,
-      };
-    },
     addEmpDone: (state, action: PayloadAction<Employee>) => {
       state.task_finished = true;
       state.task_error = undefined;
@@ -78,12 +57,7 @@ const EmployeeSlice = createSlice({
     listEmpDone: (state, payload: PayloadAction<PaginatedEmpResponse>) => {
       state.employees = payload.payload.results;
       state.task_finished = true;
-      state.pagination = {
-        ...payload.payload.pagination,
-        page_size: state.pagination?.page_size ?? 10,
-        type: "employee",
-        number_of_pages: payload.payload.pagination.number_of_pages,
-      };
+      state.pagination = payload.payload.pagination;
     },
     loadNextEmployeeListPage: (state, _: PayloadAction<string>) => {
       state.task_finished = false;
@@ -209,7 +183,6 @@ export const {
   editEmployeeDone,
   loadNextEmployeeListPage,
   loadPrevEmployeeListPage,
-  setPagesize,
   updateProfileDone,
   updateProfileRequest,
   closeEmployeeTask,
