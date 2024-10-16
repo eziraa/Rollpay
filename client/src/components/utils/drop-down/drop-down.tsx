@@ -1,20 +1,18 @@
-import { useContext } from "react";
 import { DropDownContainer } from "./drop-down.style";
-import { PaginationContext } from "../../../contexts/pagination-context";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { SelectOption } from "../form-elements/form.style";
 import { loadNextEmployeeListPage } from "../../../store/employee/employee-slice";
 import { loadNextPaymentListPage } from "../../../store/salary/salary-slice";
+import { Pagination } from "../../../typo/utils/response";
 
-function DropDown() {
-  const { pagination, setPageSize } = useContext(PaginationContext);
+function DropDown({ pagination }: { pagination: Pagination }) {
   const dispatcher = useAppDispatch();
+
   return (
     <DropDownContainer
       name="page"
-      value={pagination.per_page || 10}
+      value={pagination?.page_size || 10}
       onChange={(e) => {
-        setPageSize(parseInt(e.currentTarget.value));
         pagination.type === "employee" &&
           dispatcher(
             loadNextEmployeeListPage(
@@ -32,6 +30,7 @@ function DropDown() {
           );
       }}
     >
+      <SelectOption value="5">5</SelectOption>
       <SelectOption value="10">10</SelectOption>
       <SelectOption value="20">20</SelectOption>
       <SelectOption value="30">30</SelectOption>
