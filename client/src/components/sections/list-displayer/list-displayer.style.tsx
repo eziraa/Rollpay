@@ -20,15 +20,12 @@ export const ListBody = styled.div`
   position: relative;
 `;
 export const ListHeader = styled.div<ThemeProps>`
-  background-color: ${({ theme }) => theme.table.header};
-  background-color: #d1d0d0;
-  color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.buttons.primary};
   width: 100%;
   display: grid;
   padding: 1rem;
-  border-radius: 1rem;
   grid-template-columns: 3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr 3fr;
-  border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
+  box-shadow: 0 0.5rem 1rem #b4b4b4;
 `;
 
 export const ListTitle = styled.p<ThemeProps>`
@@ -43,6 +40,7 @@ export const HeaderItem = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  color: #fff;
 `;
 
 export const ListRow = styled.div<ThemeProps>`

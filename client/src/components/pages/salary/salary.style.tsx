@@ -40,7 +40,8 @@ export const SearchContainer = styled.div<ThemeProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border: 0.1rem solid ${({ theme }) => theme.colors.primary};
+  border: 0.2rem solid
+    ${({ theme }) => addOpacityToColor(0.23, theme.colors.primary)};
   border-radius: 3rem;
   width: 40rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
@@ -77,7 +78,7 @@ export const SalaryTable = styled.table`
   margin-right: 1rem;
 `;
 
-export const ExportButton = styled.div`
+export const Button = styled.button`
   width: fit-content;
   display: flex;
   background-color: ${({ theme }) => theme.buttons.primary};
@@ -85,6 +86,7 @@ export const ExportButton = styled.div`
   align-items: center;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
+  font-size: 1.4rem;
   border-radius: 0.5rem;
   cursor: pointer;
 `;
@@ -152,8 +154,7 @@ export const Caption = styled.th`
 export const TableHeader = styled.tr<ThemeProps>`
   width: fit-content;
   font-size: 1.4rem;
-  background-color: ${({ theme }) => theme.table.header};
-  color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.buttons.primary};
   /* font-size: 1.4rem; */
   font-weight: bold;
   text-align: center;
@@ -165,7 +166,7 @@ export const TableHeader = styled.tr<ThemeProps>`
 export const HeaderTitle = styled.th`
   /* font-size: 1.4rem; */
   font-weight: 500;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.backgrounds.primary};
   text-align: left;
   display: flex;
   padding: 1rem;

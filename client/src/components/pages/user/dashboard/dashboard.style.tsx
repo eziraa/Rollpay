@@ -52,7 +52,7 @@ export const DashBoardCard = styled.div`
   transition: transform 0.5s ease-in-out;
   cursor: pointer;
 
-  ${mini_shadow}
+  /* ${mini_shadow} */
 `;
 
 export const CardBody = styled.div`
@@ -289,4 +289,15 @@ export const BrokenLine = styled.div`
   border-bottom: 1px #434343e7 dashed;
 `;
 
-
+export const Image = styled.img`
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  display: block;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+`;

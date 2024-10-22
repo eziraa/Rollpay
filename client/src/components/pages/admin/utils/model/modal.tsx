@@ -16,8 +16,8 @@ const CustomModal = ({
       {isOpen && (
         <div
           onClick={handleClose}
-          className={`fixed inset-0 ${
-            noColor ? "" : "bg-black bg-opacity-50"
+          className={`fixed inset-0  ${
+            noColor ? "backdrop-blur-[0.2rem]" : "bg-black bg-opacity-50"
           } flex justify-center items-center `}
           style={{
             zIndex: 1000,

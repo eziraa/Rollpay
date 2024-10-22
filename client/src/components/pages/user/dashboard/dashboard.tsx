@@ -12,6 +12,7 @@ import {
   DashBoardCard,
   DataBox,
   Icon,
+  Image,
 } from "./dashboard.style";
 import { useAppDispatch } from "../../../../utils/custom-hook";
 import { useSalary } from "../../../../hooks/salary-hook";
@@ -41,29 +42,14 @@ export const UserDashboard = () => {
   return (
     <DashboardContainer>
       <CardsContainer>
-        <DashBoardCard>
+        <DashBoardCard className="drop-shadow-md">
           {loading ? (
             <ThreeDots size={1} />
           ) : (
             <>
               <CardBody>
                 <Icon>
-                  <img
-                    style={{
-                      width: "7rem",
-                      height: "7rem",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      marginBottom: "1rem",
-                      display: "block",
-                      border: "1px solid #ccc",
-                      boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-                    }}
-                    src={salary}
-                    alt=""
-                  />
+                  <Image src={salary} />
                 </Icon>
                 <DataBox>
                   <DashboardTitle className="success">
@@ -88,22 +74,7 @@ export const UserDashboard = () => {
             <>
               <CardBody>
                 <Icon>
-                  <img
-                    style={{
-                      width: "7rem",
-                      height: "7rem",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      marginBottom: "1rem",
-                      display: "block",
-                      border: "1px solid #ccc",
-                      boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-                    }}
-                    src={salary}
-                    alt=""
-                  />
+                  <Image />
                 </Icon>
                 <DataBox>
                   <DashboardTitle className="success">
@@ -128,22 +99,7 @@ export const UserDashboard = () => {
             <>
               <CardBody>
                 <Icon>
-                  <img
-                    style={{
-                      width: "7rem",
-                      height: "7rem",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      marginBottom: "1rem",
-                      display: "block",
-                      border: "1px solid #ccc",
-                      boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-                    }}
-                    src={salary}
-                    alt=""
-                  />
+                  <Image />
                 </Icon>
                 <DataBox>
                   <DashboardTitle className="success">
@@ -170,22 +126,7 @@ export const UserDashboard = () => {
             <>
               <CardBody>
                 <Icon>
-                  <img
-                    style={{
-                      width: "7rem",
-                      height: "7rem",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      marginBottom: "1rem",
-                      display: "block",
-                      border: "1px solid #ccc",
-                      boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-                    }}
-                    src={salary}
-                    alt=""
-                  />
+                  <Image />
                 </Icon>
                 <DataBox>
                   <DashboardTitle className="success">

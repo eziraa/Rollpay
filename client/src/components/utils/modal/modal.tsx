@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { CloseIcon } from "../buttons/close";
 import { ModalContainer, ModalContent } from "./modal.style";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 export const Modal = ({
   children,
@@ -11,19 +12,17 @@ export const Modal = ({
 }) => {
   const navigate = useNavigate();
 
+  const close = () => {
+    navigate(-1);
+    closeAction();
+  };
+  const { ref } = useOutsideClick({ close });
   return (
-    <ModalContainer
-      onClick={(e) => {
-        e.stopPropagation();
-        closeAction();
-        navigate(-1);
-      }}
-    >
-      <ModalContent onClick={(e) => e.stopPropagation()}>
+    <ModalContainer className="drop-shadow-2xl backdrop-blur-sm">
+      <ModalContent ref={ref}>
         <CloseIcon
           onClick={() => {
-            navigate(-1);
-            closeAction();
+            close();
           }}
         />
         {children}

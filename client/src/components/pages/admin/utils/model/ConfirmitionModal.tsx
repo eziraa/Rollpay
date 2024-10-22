@@ -1,3 +1,5 @@
+import useOutsideClick from "../../../../../hooks/useOutsideClick";
+
 const DeleteConfirmationModal = ({
   handleClose,
   action,
@@ -5,25 +7,28 @@ const DeleteConfirmationModal = ({
   handleClose: () => void;
   action: () => void;
 }) => {
+  const { ref } = useOutsideClick({ close: handleClose });
   return (
     <>
       {
         <div
-          onClick={handleClose}
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center "
+          className="fixed inset-0 backdrop-blur-sm flex justify-center items-center "
           style={{
             zIndex: 1000,
           }}
         >
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+          <div
+            ref={ref}
+            className="bg-white rounded-lg p-10 relative shadow-2xl  w-full max-w-md"
+          >
             {/* Modal Header */}
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-gray-800">
+            <div className="flex justify-between  items-center mb-4">
+              <h3 className="text-xl font-semibold text-slate-600">
                 Confirm Deletion
               </h3>
               <button
                 onClick={handleClose}
-                className="text-gray-500 hover:text-gray-800 focus:outline-none"
+                className="text-gray-500 absolute top-6 right-7 text-2xl hover:text-gray-800 focus:outline-none"
               >
                 ✕
               </button>

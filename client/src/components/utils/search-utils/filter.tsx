@@ -59,7 +59,7 @@ export const Filter = ({ close }: { close: () => void }) => {
         <FilterRow>
           <FilterLabel>Search By</FilterLabel>
           <FilterSelect
-            defaultValue={filter.filter_by || "name"}
+            defaultValue={"name"}
             onChange={(e) => {
               if (e.currentTarget.value) {
                 setFilter({

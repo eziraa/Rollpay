@@ -26,6 +26,8 @@ export const TableHeader = styled.tr<ThemeProps>`
   /* font-size: 1.4rem; */
   font-weight: bold;
   text-align: center;
+  box-shadow: 0 0.4rem 2rem ${() => addOpacityToColor(0.3, "#3f3f3f")};
+  margin-bottom: 0.5rem;
 `;
 
 export const HeaderTitle = styled.th`

@@ -42,7 +42,7 @@ export const DashBoard = () => {
       {openInfo && (
         <div
           className={
-            "border-green-400/60 px-3 py-2 relative justify-start w-full border-2  flex  items-center space-x-2 rounded-md "
+            "border-green-400/60 px-3 py-2 relative justify-start w-full border-2 -z-0  flex  items-center space-x-2 rounded-md "
           }
         >
           <TiInfo className="text-green-400 text-3xl" />
@@ -63,17 +63,17 @@ export const DashBoard = () => {
         <StatContainer
           className="state-card-container w-full justify-stretch"
           style={{
-            justifyContent: "stretch",
+            justifyContent: "space-between",
           }}
         >
           <StatCard>
-            <div className="flex justify-between p-2   space-x-3 items-end ">
+            <div className="flex justify-between p-2    items-end ">
               <div className="flex-col space-y-3 gap-2 mr-3">
                 <h3 className="text-slate-400 text-xl">Total Employees</h3>
                 {loading ? (
                   <ThreeDots size={1} />
                 ) : (
-                  <h4 className="font-extrabold text-4xl text-slate-600/90 ">
+                  <h4 className="font-extrabold text-3xl text-slate-600/90 ">
                     {stat.total_employees * 137}
                   </h4>
                 )}
@@ -88,13 +88,13 @@ export const DashBoard = () => {
             </div>
           </StatCard>
           <StatCard>
-            <div className="flex justify-between p-2 space-x-3 items-end ">
+            <div className="flex justify-between p-2 space-x-2 items-end ">
               <div className="flex-col space-y-3">
                 <h3 className="text-slate-400 text-xl">Total Positions</h3>
                 {loading ? (
                   <ThreeDots size={1} />
                 ) : (
-                  <h4 className="font-extrabold text-4xl text-slate-600/90">
+                  <h4 className="font-extrabold text-3xl text-slate-600/90">
                     {stat.total_positions * 13}
                   </h4>
                 )}
@@ -109,13 +109,13 @@ export const DashBoard = () => {
             </div>
           </StatCard>
           <StatCard>
-            <div className="flex justify-between p-2 space-x-3 items-end ">
+            <div className="flex  justify-between p-2 space-x-3 items-end ">
               <div className="flex-col space-y-3 mr-2">
                 <h3 className="text-slate-400 text-xl">Average Salary</h3>
                 {loading ? (
                   <ThreeDots size={1} />
                 ) : (
-                  <h4 className="font-extrabold text-4xl text-slate-600/90 ">
+                  <h4 className="font-extrabold text-3xl text-slate-600/90 ">
                     {stat.avg_basic_salary} ETB
                   </h4>
                 )}
@@ -136,7 +136,7 @@ export const DashBoard = () => {
                 {loading ? (
                   <ThreeDots size={1} />
                 ) : (
-                  <h4 className="font-extrabold text-4xl text-slate-600/90 ">
+                  <h4 className="font-extrabold text-3xl text-slate-600/90 ">
                     {stat.curr_month_tax} ETB
                   </h4>
                 )}

@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { ThemeProps } from "../../../typo/theme/theme";
+import { addOpacityToColor } from "../convertor/add-opacity-color";
 
 export const ModalContainer = styled.div<ThemeProps>`
   position: fixed; /* Changed from absolute to fixed */
   width: 100vw;
   height: 100vh;
-  background-color: #322c2c9b;
+  filter: blur();
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -30,4 +31,6 @@ export const ModalContent = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  box-shadow: 0 0.3rem 3rem
+    ${({ theme }) => addOpacityToColor(0.4, theme.colors.primary)};
 `;

@@ -8,7 +8,7 @@ import {
   SalaryTable,
   SearchContainer,
   SearchInput,
-  ExportButton,
+  Button,
   ExportIcon,
   StartPaymentBtn,
   TableContainer,
@@ -48,10 +48,9 @@ import { handleExport, pdfExport } from "./export";
 import { ThreeDots } from "../../utils/loading/dots";
 import SalaryAPI from "../../../services/salary-api";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
-import {
-  PaginatedPaymentResponse,
-} from "../../../typo/salary/response";
+import { PaginatedPaymentResponse } from "../../../typo/salary/response";
 import Pagination from "../../sections/pagination/pagination";
+import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 
 const getNestValue = (
   key: string,
@@ -294,7 +293,7 @@ export const EmployeesSalaryPage = () => {
 
       <EmpsDisplayerHeader>
         <SearchContainer>
-          <SearchIcon />
+          <SearchIcon color={addOpacityToColor(0.75, "#444444")} />
           <SearchInput
             onChange={(e) => {
               setSearchVal(e.currentTarget.value);
@@ -302,7 +301,7 @@ export const EmployeesSalaryPage = () => {
           />
         </SearchContainer>
 
-        <ExportButton
+        <Button
           onClick={() => {
             handleExport(employeeSalary, allowanceTypes, deductionTypes);
           }}
@@ -311,29 +310,29 @@ export const EmployeesSalaryPage = () => {
             <RiFileExcel2Line />
           </ExportIcon>
           Excel
-        </ExportButton>
-        <ExportButton onClick={pdfExport}>
+        </Button>
+        <Button onClick={pdfExport}>
           <ExportIcon>
             <TbFileTypePdf />
           </ExportIcon>
           PDF
-        </ExportButton>
-        <StartPaymentBtn
+        </Button>
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             navigate("raise");
           }}
         >
           Raise
-        </StartPaymentBtn>
-        <StartPaymentBtn
+        </Button>
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             if (employees.length > 0) handlePay(employees[0].month);
           }}
         >
           Pay
-        </StartPaymentBtn>
+        </Button>
 
         <Label>
           <Select
@@ -403,8 +402,7 @@ export const EmployeesSalaryPage = () => {
                             ),
                           }}
                         >
-                          {" "}
-                          {column.value}{" "}
+                          {column.value}
                         </HeaderTitle>
                         {
                           <TableHeader>
@@ -464,7 +462,7 @@ export const EmployeesSalaryPage = () => {
         </TableContainer>
       )}
       <Outlet />
-      {salary.pagination &&<Pagination pagination={salary.pagination} />}
+      {salary.pagination && <Pagination pagination={salary.pagination} />}
     </SalaryContainer>
   );
 };

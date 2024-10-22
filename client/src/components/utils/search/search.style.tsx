@@ -20,7 +20,8 @@ export const SearchInputContainer = styled.div<ThemeProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border: 0.1rem solid ${({ theme }) => theme.colors.primary};
+  border: 0.2rem solid
+    ${({ theme }) => addOpacityToColor(0.2, theme.colors.primary)};
   border-radius: 3rem;
   width: 40vw;
   background-color: ${({ theme }) => theme.backgrounds.primary};

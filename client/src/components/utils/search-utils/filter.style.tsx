@@ -16,7 +16,8 @@ export const FilterContainer = styled.div`
   top: 21vh;
   border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.backgrounds.primary};
-  box-shadow: 0 0 0.5rem 0 ${({ theme }) => theme.colors.primary};
+  box-shadow: 0 0.5rem 2rem 0
+    ${({ theme }) => addOpacityToColor(0.29, theme.colors.primary)};
   z-index: 100;
 `;
 

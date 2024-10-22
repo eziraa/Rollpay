@@ -92,7 +92,7 @@ export const DeductionPage = () => {
       <PositionListBody>
         <Outlet />
         {loading ? (
-          <ThreeDots size={2} />
+          <ThreeDots size={1} />
         ) : deductions.length === 0 ? (
           <div>
             <NoResult text="No deductions found" />
@@ -103,7 +103,7 @@ export const DeductionPage = () => {
               <tr>
                 <Caption>List of Deductions</Caption>
               </tr>
-              <TableHeader>
+              <TableHeader className="drop-shadow-md shadow-zinc-400">
                 <HeaderTitle>Deduction Name</HeaderTitle>
                 <HeaderTitle>Deduction Rate</HeaderTitle>
                 <HeaderTitle>Date of Start</HeaderTitle>

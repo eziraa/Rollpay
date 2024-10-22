@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { filterEmployeeRequest } from "../../../store/employee/employee-slice";
+import {
+  filterEmployeeRequest,
+  listEmpRequested,
+} from "../../../store/employee/employee-slice";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   ClearIcon,
@@ -37,10 +40,11 @@ export const Search = () => {
   return (
     <SearchContainer>
       <SearchInputContainer>
-        <SearchIcon />
+        <SearchIcon color="#a6a6a6" />
         <SearchInput
           onChange={(e) => {
             if (e.target.value.trim()) setSearchVal(e.target.value);
+            else dispatcher(listEmpRequested());
           }}
         />
         {openFilter ? (
