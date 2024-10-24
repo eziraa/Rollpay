@@ -17,7 +17,12 @@ class AllowanceView (APIView):
                 allowance = Allowance.objects.get(id=allowance_id)
                 serializer = AllowanceSerializer(allowance)
                 return Response(serializer.data)
-
+            is_active = request.query_params.get("is_active", None)
+            if is_active:
+                queryset = Allowance.objects.filter(
+                    end_at__isnull=True).order_by("pk")
+                serializer = AllowanceSerializer(queryset, many=True)
+                return Response(serializer.data)
             queryset = Allowance.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)

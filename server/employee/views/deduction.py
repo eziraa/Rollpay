@@ -17,6 +17,12 @@ class DeductionView (APIView):
                 deduction  = Deduction.objects.get(id=deduction_id)
                 serializer = DeductionSerializer(deduction)
                 return Response(serializer.data)
+            is_active = request.query_params.get("is_active", None)
+            if is_active:
+                queryset = Deduction.objects.filter(
+                    end_at__isnull=True).order_by("pk")
+                serializer = DeductionSerializer(queryset, many=True)
+                return Response(serializer.data)
 
             queryset = Deduction.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()

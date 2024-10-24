@@ -18,6 +18,12 @@ class PositionView (APIView):
                 position = Position.objects.get(id=position_id)
                 serializer = PositionSerializer(position)
                 return Response(serializer.data)
+            is_active = request.query_params.get("is_active", None)
+            if is_active:
+                queryset = Position.objects.filter(
+                    end_date__isnull=True).order_by("pk")
+                serializer = PositionSerializer(queryset, many=True)
+                return Response(serializer.data)
             queryset = Position.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)
@@ -62,10 +68,9 @@ class PositionView (APIView):
             position = Position.objects.get(pk=position_id)
         except Position.DoesNotExist:
             return Response({"error": "Position not found"}, status=status.HTTP_404_NOT_FOUND)
-        position.end_date = None if position.end_date else datetime.datetime.now()
+        position.end_date = None if position.end_date else datetime.date.today()
         position.save()
         serializer = PositionSerializer(position)
-
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
 
     def put(self, request, position_id):

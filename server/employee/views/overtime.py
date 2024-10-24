@@ -18,6 +18,12 @@ class OvertimeView (APIView):
                 overtime  = Overtime.objects.get(id=overtime_id)
                 serializer = OvertimeSerializer(overtime)
                 return Response(serializer.data)
+            is_active = request.query_params.get("is_active", None)
+            if is_active:
+                queryset = Overtime.objects.filter(
+                    end_at__isnull=True).order_by("pk")
+                serializer = OvertimeSerializer(queryset, many=True)
+                return Response(serializer.data)
             queryset = Overtime.objects.all().order_by("pk")
             paginator = StandardResultsSetPagination()
             paginator.page_size = request.query_params.get("page_size", 10)
