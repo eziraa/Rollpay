@@ -1,5 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useEffect } from "react";
+import { useLoaderData } from "react-router-dom";
+import { useFormik } from "formik";
 import {
   Input,
   Form,
@@ -20,57 +23,45 @@ import {
   editEmployeeRequested,
   resetEmployeeState,
 } from "../../../store/employee/employee-slice";
-import { useFormik } from "formik";
 import { AddEmployeeSchema } from "../../../schema/add-emp-schema";
 import { ErrorMessage } from "../sign-up/sign-up.style";
 import { setFlashMessage } from "../../../store/notification/flash-messsage-slice";
-import { useEffect } from "react";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { useEmployee } from "../../../hooks/employee-hook";
-import { listPositionsRequested } from "../../../store/position/position-slice";
-import { usePosition } from "../../../hooks/position-hook";
+import { Position } from "../../../typo/position/response";
+import { Employee } from "../../../typo/employee/response";
 
+interface DataLoader {
+  positions: Position[];
+  employee: Employee;
+}
 export const EditEmployee = () => {
-  const { curr_emp, task_finished } = useEmployee();
-  const employee = useEmployee();
-
+  const { employee, positions } = useLoaderData() as DataLoader;
   const dispatcher = useAppDispatch();
-
+  const empState = useEmployee();
   const initialValues = {
-    id: curr_emp?.id ?? "",
-    first_name: curr_emp?.first_name ?? "",
-    last_name: curr_emp?.last_name ?? "",
-    gender: curr_emp?.gender ?? "",
-    email: curr_emp?.email ?? "",
-    position: curr_emp?.position ?? "",
-    phone_number: curr_emp?.phone_number ?? "",
-    date_of_birth: curr_emp?.date_of_birth ?? "",
-    date_of_hire: curr_emp?.date_of_hire ?? "",
-    salary: curr_emp?.salary ?? 0, // Default to 0 if salary is undefined
+    id: employee?.id,
+    first_name: employee?.first_name,
+    last_name: employee?.last_name,
+    gender: employee?.gender,
+    email: employee?.email,
+    position: employee?.position,
+    phone_number: employee?.phone_number,
+    date_of_birth: employee?.date_of_birth,
+    date_of_hire: employee?.date_of_hire,
+    salary: employee?.salary ?? 0, // Default to 0 if salary is undefined
   };
-  const { positions, curr_position } = usePosition();
 
   useEffect(() => {
-    dispatcher(listPositionsRequested());
     dispatcher(
       resetEmployeeState({
-        ...employee,
+        ...empState,
         curr_emp: undefined,
         task_error: undefined,
       })
     );
   }, []);
-  useEffect(() => {
-    if (curr_position) {
-      dispatcher(listPositionsRequested());
-    }
-  }, [curr_position, dispatcher]);
 
-  useEffect(() => {
-    resetForm({
-      values: initialValues,
-    });
-  }, [curr_emp]);
   const {
     resetForm,
     dirty,
@@ -229,14 +220,16 @@ export const EditEmployee = () => {
               gap: "1rem",
             }}
           >
-            <Select style={{ flex: 2 }} name="position" onChange={handleChange}>
+            <Select
+              style={{ flex: 2 }}
+              name="position"
+              defaultValue={employee.position}
+              onChange={handleChange}
+            >
               {positions.map(
                 (position) =>
                   position && (
-                    <SelectOption
-                      selected={position.id === curr_position?.id}
-                      value={position.position_name}
-                    >
+                    <SelectOption value={position.position_name}>
                       {position.position_name}
                     </SelectOption>
                   )
@@ -329,7 +322,7 @@ export const EditEmployee = () => {
             {"Reset"}
           </CancelBtn>
           <SaveBtn type="submit">
-            {!task_finished ? <SmallSpinner /> : "Save"}
+            {!empState.task_finished ? <SmallSpinner /> : "Save"}
           </SaveBtn>
         </ButtonContainer>
       </EditEmployeeBody>

@@ -478,7 +478,10 @@ function* editEmployee(action: PayloadAction<EditEmployeeParams>) {
           duration: 3,
         })
       );
-    } else if (response.code === 401) {
+    } else {
+      yield put(errorOccurred(response.error || "Some things went wrong"));
+    }
+    if (response.code === 401) {
       yield put(
         setFlashMessage({
           type: "error",

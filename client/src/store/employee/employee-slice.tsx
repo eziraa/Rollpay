@@ -77,10 +77,12 @@ const EmployeeSlice = createSlice({
     },
     editEmployeeRequested: (state, _: PayloadAction<EditEmployeeParams>) => {
       state.task_finished = false;
+      state.task_error = "";
     },
     editEmployeeDone: (state, action: PayloadAction<Employee>) => {
       state.task_finished = true;
       state.curr_emp = action.payload;
+      state.task_error = ""
     },
     addEmpAllowanceRequested: (
       state,

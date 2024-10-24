@@ -321,12 +321,25 @@ export const AddEmployeeSection = () => {
   );
 };
 
-export const loader = async () => {
+export const loader = async ({
+  params,
+}: {
+  params: { employee_id: string };
+}) => {
+  const employee_id = params.employee_id;
+
   const positions = await api
     .get("/position/list?is_active=True")
     .then((response) => {
       return response.data;
     });
+  if (!employee_id) return { positions };
 
-  return { positions };
+  const employee = await api
+    .get(`/employee/${employee_id}`)
+    .then((response) => {
+      return response.data;
+    });
+
+  return { positions, employee };
 };

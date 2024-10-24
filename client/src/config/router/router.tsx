@@ -22,7 +22,7 @@ import {
 } from "../../components/pages/see-employee/add-overtime";
 import {
   AddEmployee,
-  loader as positionsLoader,
+  loader as dataLoader,
 } from "../../components/sections/add_employee/add-employee";
 import { CheckFlashMessage } from "../../components/sections/confirm-flash-message/confirm-flash-message";
 import { AddAllowance } from "../../components/sections/add-allowance/add-allowance";
@@ -114,7 +114,8 @@ export const clerk_routes: RouteObject[] = [
               {
                 path: "add-employee",
                 element: <AddEmployee />,
-                loader: positionsLoader,
+                loader: ({ params }) =>
+                  dataLoader({ params: { employee_id: params.employee_id } }),
                 children: [{ path: "add-position", element: <AddPosition /> }],
               },
               { path: "upload-document", element: <AddDocument /> },
@@ -324,13 +325,15 @@ export const adminRoutes: RouteObject[] = [
           {
             path: "add-employee",
             element: <AddEmployee />,
-            loader: positionsLoader,
+            loader: ({ params }) =>
+              dataLoader({ params: { employee_id: params.employee_id } }),
             children: [{ path: "add-position", element: <AddPosition /> }],
           },
           {
             path: ":employee_id/edit",
-            loader: positionsLoader,
-            element: <AddEmployee />,
+            loader: ({ params }) =>
+              dataLoader({ params: { employee_id: params.employee_id } }),
+            element: <EditEmployee />,
           },
         ],
       },
