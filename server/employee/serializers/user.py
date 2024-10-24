@@ -1,5 +1,6 @@
 
 
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from employee.models import CustomUser, Role, Employee
 from employee.serializers.roles import RoleSerializer
@@ -39,7 +40,8 @@ class MegaUserSerializer (UserSerializer):
             "role",
             'is_admin',
             'is_staff',
-            "password", "empID"
+            "password",
+            "empID"
 
         )
 
