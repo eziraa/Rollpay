@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from employee.serializers.salary import SalarySerializer
 from employee.serializers.asset import AssetSerializer
-from ..models import Employee, Asset
+from ..models import Employee, EmployeePosition, Position
+import random
 
+from datetime import datetime
 
 class EmployeeSerializer(serializers.ModelSerializer):
     id = serializers.CharField(read_only=True)
@@ -24,8 +26,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
             return 0
 
     def get_position(self, obj: Employee):
-        if obj.position.all():
-         return obj.position.all().last().position_name
+        if obj.positions.all():
+            return obj.positions.all().last().position.position_name
         else:
             return 0
 
