@@ -326,6 +326,26 @@ const deleteRole = async (values: string[]) => {
   return roles;
 };
 
+const activateUser = async (user_id: string) =>
+  await api
+    .patch("/user/activate", {
+      user_id: user_id,
+    })
+    .then((res) => {
+      return {
+        user: { ...res.data },
+        success: " success",
+        code: res.status,
+      };
+    })
+    .catch((err) => {
+      const { error } = err.response?.data as { error: string };
+      return {
+        error: error,
+        code: err.response?.status,
+      } as { error: string; code: number };
+    });
+
 const AdminAPI = {
   getRoles,
   getUsers,
@@ -342,6 +362,7 @@ const AdminAPI = {
   addRole,
   deleteRole,
   editRole,
+  activateUser,
 };
 
 export default AdminAPI;
