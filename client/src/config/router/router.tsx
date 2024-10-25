@@ -282,7 +282,13 @@ export const clerk_routes: RouteObject[] = [
                   },
                 ],
               },
-              { path: "edit", element: <EditEmployee /> },
+              {
+                path: "edit",
+                element: <EditEmployee />,
+                loader: ({ params }) =>
+                  dataLoader({ params: { employee_id: params.employee_id } }),
+                children: [{ path: "add-position", element: <AddPosition /> }],
+              },
               { path: "salary-history", element: <EmployeeSalary /> },
               { path: "delete", element: <CheckFlashMessage /> },
             ],
