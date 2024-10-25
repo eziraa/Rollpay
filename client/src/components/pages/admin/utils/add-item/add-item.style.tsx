@@ -1,18 +1,20 @@
 import styled from "styled-components";
 import { addOpacityToColor } from "../../../../utils/convertor/add-opacity-color";
 import { custom_vertical_scroll_bar } from "../../../../utils/scroll-bar/scroll-bar";
+import { Input } from "../../../../utils/form-elements/form.style";
 
 export const AddItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  max-height: 90vh;
+  max-height: 85vh;
   ${custom_vertical_scroll_bar}
   flex: 1;
   gap: 1rem;
   width: 100%;
   padding: 1rem 3rem;
+  margin-bottom: 2rem;
 `;
 
 export const CheckBox = styled.input`
@@ -41,12 +43,9 @@ export const InputContainer = styled.div`
   gap: 0.5rem;
   width: 100%;
 `;
-export const AddItemInput = styled.input`
-  padding: 0.71rem;
-  border: 1px solid
-    ${({ theme }) => addOpacityToColor(0.7, theme.colors.primary)};
+export const AddItemInput = styled(Input)`
   border-radius: 5px;
-  flex: 1.2;
+  flex: 1.2rem;
 `;
 
 export const AddItemLabel = styled.label`

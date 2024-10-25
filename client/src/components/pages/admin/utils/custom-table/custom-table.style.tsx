@@ -14,7 +14,6 @@ export const CustomTable = styled.table<TableProps>`
   width: 100%;
   border: none;
   height: fit-content;
-  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
   tbody {
     width: 100%;
     display: flex;
@@ -33,7 +32,7 @@ export const CustomTable = styled.table<TableProps>`
   }
   tr {
     display: grid;
-    grid-template-columns: 0.5fr repeat(${({ keys }) => keys - 2}, 1fr) 2fr 1fr;
+    grid-template-columns: 0.5fr repeat(${({ keys }) => keys - 2}, 1fr) 2fr 1fr 1fr 1fr;
   }
   thead tr {
     line-height: 2;
@@ -50,7 +49,8 @@ export const CustomTable = styled.table<TableProps>`
       cursor: pointer;
     }
   }
+
   tbody tr td {
-    color: black;
+    color: #0e0e0eac;
   }
 `;
