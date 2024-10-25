@@ -40,6 +40,7 @@ class MegaUserSerializer (UserSerializer):
             "role",
             'is_admin',
             'is_staff',
+            'is_active',
             "password",
             "empID"
 
