@@ -29,7 +29,7 @@ export const AddRole = () => {
   const [selectedGroups, setSelectedGroups] = useState<Group[]>([]);
   const [name, setName] = useState("");
   const { groups } = useLoaderData() as GroupsLoaderData;
-
+  const [error, setError] = useState("");
   const group = {
     all_groups: groups || [],
     selectedGroups,
@@ -41,16 +41,34 @@ export const AddRole = () => {
   return (
     <AddItemContainer>
       <AddItemTitle>Add New Role</AddItemTitle>
-      <AddItemForm>
-        <InputContainer>
+      <AddItemForm
+        style={{
+          width: "100%",
+        }}
+      >
+        <InputContainer
+          style={{
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+          }}
+        >
           <AddItemLabel>Name</AddItemLabel>
           <AddItemInput
             type="text"
             value={name}
             onChange={(e) => {
+              if (!e.target.value) {
+                setError("Role name is required");
+                setName("");
+                return;
+              } else {
+                setError("");
+              }
               setName(e.target.value);
             }}
           />
+          {<FormError> {error} </FormError>}
         </InputContainer>
       </AddItemForm>
       <DisplayGroups group={group} />
@@ -59,9 +77,15 @@ export const AddRole = () => {
           <CircularProgress size={20} />
         ) : (
           <AddBtn
+            disabled={adding}
             onClick={(e) => {
               e.preventDefault();
-
+              if (!name) {
+                setError("Role name is required");
+                return;
+              } else {
+                setError("");
+              }
               dispatcher(
                 addRoleRequest({
                   name: name,
