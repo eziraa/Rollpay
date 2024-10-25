@@ -7,6 +7,7 @@ import {
 } from "../../typo/admin/response";
 import AdminAPI from "../../services/admin-api";
 import {
+  activateUserRequest,
   addGroupDone,
   addGroupRequest,
   addRoleDone,
@@ -562,6 +563,58 @@ function* editUser(action: PayloadAction<EditUserParams>) {
   }
 }
 
+function* activateUser(action: PayloadAction<string>) {
+  try {
+    const response: AddUserResponse = yield call(
+      AdminAPI.activateUser,
+      action.payload
+    );
+
+    if (response.code === 200) {
+      yield put(editUserDone(response.user));
+      yield put(
+        setFlashMessage({
+          type: "success",
+          status: true,
+          title:
+            (response.user.is_active ? "Activating " : "Deactivating ") +
+            "User",
+          desc: `User successfully ${
+            response.user.is_active ? "activated" : "deactivated"
+          }`,
+          duration: 3,
+        })
+      );
+    } else if (response.code === 401) {
+      yield put(raiseError(response.error));
+    } else if (response.code === 403) {
+      yield put(raiseError(response.error));
+      yield put(
+        setFlashMessage({
+          type: "error",
+          status: true,
+          title: "Forbidden",
+          desc: "Not allowed to add users",
+          duration: 3,
+        })
+      );
+    } else {
+      yield put(raiseError(response.error));
+    }
+  } catch (_) {
+    yield put(raiseError("Failed please try again later"));
+    yield put(
+      setFlashMessage({
+        type: "error",
+        status: true,
+        title: "Editing User",
+        desc: "Failed please try again later",
+        duration: 3,
+      })
+    );
+  }
+}
+
 function* deleteUser(action: PayloadAction<string[]>) {
   try {
     const response: AdminResponse = yield call(
@@ -778,6 +831,7 @@ export function* watchAdminRequest() {
   yield takeEvery(addUserRequest.type, addUser);
   yield takeEvery(deleteUserRequest.type, deleteUser);
   yield takeEvery(editUserRequest.type, editUser);
+  yield takeEvery(activateUserRequest.type, activateUser);
   yield takeEvery(addRoleRequest.type, addRole);
   yield takeEvery(deleteRoleRequest.type, deleteRole);
   yield takeEvery(editRoleRequest.type, editRole);

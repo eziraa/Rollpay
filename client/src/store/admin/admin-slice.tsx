@@ -84,6 +84,10 @@ const AdminSlice = createSlice({
       state.group = action.payload;
       // Add new group to the list
     },
+    activateUserRequest: (state, _: PayloadAction<string>) => {
+      state.task_error = "";
+      state.task_finished = false;
+    },
     deleteGroupRequest: (state, _: PayloadAction<string[]>) => {
       state.task_finished = false;
       state.deleting = true;
@@ -146,8 +150,9 @@ const AdminSlice = createSlice({
       state.editing = true;
     },
     editUserDone: (state, action: PayloadAction<User>) => {
-      state.task_finished = false;
-      state.editing = true;
+      state.task_finished = true;
+      state.editing = false;
+      state.task_error = "";
       state.users = state.users.map((user) =>
         user.id === action.payload.id ? action.payload : user
       );
@@ -226,5 +231,6 @@ export const {
   deleteRoleDone,
   raiseError,
   resetError,
+  activateUserRequest,
 } = AdminSlice.actions;
 export default AdminSlice.reducer;
