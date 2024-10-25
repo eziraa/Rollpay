@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../../../utils/custom-hook";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import {
+  activateUserRequest,
   deleteUserRequest,
   getRolesRequest,
   getUsersRequest,
@@ -35,6 +36,7 @@ import { CheckBox } from "../utils/add-item/add-item.style";
 import { setFlashMessage } from "../../../../store/notification/flash-messsage-slice";
 import { User } from "../../../../typo/admin/response";
 import DeleteConfirmationModal from "../utils/model/ConfirmitionModal";
+import { Button } from "@mui/material";
 
 export const DisplayUsers = () => {
   /**
@@ -42,11 +44,12 @@ export const DisplayUsers = () => {
    */
   const dispacher = useAppDispatch();
   const navigate = useNavigate();
-  const { users, loading } = useAdmin();
+  const { users, loading, task_finished } = useAdmin();
   const [all_users, setAllUsers] = useState<User[]>([]);
   const [search, setSearch] = useState<string>("");
   const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
   const [action, setAction] = useState<string>("");
+  const [actionId, setActionId] = useState<string>("");
   const isLoading = useNavigation().state === "loading";
   const [isOpen, setIsOpen] = useState(false);
 
@@ -72,7 +75,13 @@ export const DisplayUsers = () => {
           : [...currentChecked, userId] // Check
     );
   };
-  const exclude_keys = ["is_admin", "is_staff", "password", "empID"];
+  const exclude_keys = [
+    "is_admin",
+    "is_staff",
+    "password",
+    "empID",
+    "is_active",
+  ];
   useEffect(() => {
     dispacher(getUsersRequest());
   }, []);
@@ -207,19 +216,25 @@ export const DisplayUsers = () => {
                 (key) => !exclude_keys.includes(key)
               ).length
             }
-            className="shadow-md"
+            className="shadow-md text-slate-700"
           >
             <thead>
               <tr>
-                <th>Action</th>
+                <th>Select</th>
                 {Object.keys(all_users[0])
                   .filter((key) => !exclude_keys.includes(key))
                   .map((key) => (
-                    <th>{key.at(0)?.toUpperCase() + key.slice(1)}</th>
+                    <th key={key}>
+                      {key
+                        .split("_")
+                        .map((k) => k.at(0)?.toUpperCase() + k.slice(1))
+                        .join(" ")}
+                    </th>
                   ))}
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-slate-700  ">
               {all_users.map((user) => (
                 <tr>
                   <td>
@@ -239,6 +254,31 @@ export const DisplayUsers = () => {
                           : value["name"]}
                       </td>
                     ))}
+                  <td
+                    style={{
+                      color: user.is_active ? "#0cf292" : "red",
+                    }}
+                  >
+                    {user.is_active ? "active" : "inactive"}
+                  </td>
+                  <td>
+                    <Button
+                      variant="outlined"
+                      color={user.is_active ? "error" : "success"}
+                      disabled={!task_finished && actionId === user.id}
+                      className={
+                        !task_finished && actionId === user.id
+                          ? "bg-slate-200"
+                          : ""
+                      }
+                      onClick={() => {
+                        setActionId(user.id);
+                        dispacher(activateUserRequest(user.id));
+                      }}
+                    >
+                      {user.is_active ? "deactivate" : "Activate"}
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
