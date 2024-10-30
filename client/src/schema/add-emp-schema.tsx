@@ -3,10 +3,10 @@ const pattern: RegExp = /^(09|07)\d{8}$/;
 export const AddEmployeeSchema = Yup.object({
   first_name: Yup.string()
     .required("Please enter first name")
-    .min(3, "First name should be at least 3 characters"),
+    .min(1, "First name should be at least 3 characters"),
   last_name: Yup.string()
     .required("Please enter last name")
-    .min(3, "Last name should be at least 3 characters"),
+    .min(1, "Last name should be at least 3 characters"),
   gender: Yup.string().required("Please enter gender"),
   email: Yup.string()
     .email("Please enter valid email")

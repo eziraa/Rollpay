@@ -25,7 +25,7 @@ export const AddOvertimeToEmpSchema = Yup.object().shape({
     ),
   end_time: Yup.date()
     .required("End time is required")
-    .max(new Date(), "End time cannot be in the future")
+    .max(new Date(), "End time cannot be in the futurrrre")
     .test(
       "is-valid-end-start",
       "End time must be greater than start time",
