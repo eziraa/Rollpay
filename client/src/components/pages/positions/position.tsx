@@ -18,7 +18,6 @@ import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { usePosition } from "../../../hooks/position-hook";
 import { NoResult } from "../../utils/no-result/no-result";
-import { Caption } from "../../utils/custom-table/custom-table";
 import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
 
@@ -81,7 +80,6 @@ export const PositionPage = () => {
           </div>
         ) : (
           <>
-            <Caption>List of Positions</Caption>
             <CustomTable
               className="shadow-lg px-3 py-4"
               gridCols="2fr 1fr 1fr 1fr 1fr 2fr"

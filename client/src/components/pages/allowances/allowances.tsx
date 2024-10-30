@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { NoResult } from "../../utils/no-result/no-result";
-import { Caption } from "../../utils/custom-table/custom-table";
 import { useAllowance } from "../../../hooks/allowance-hook";
 import {
   closeAllowanceRequested,
@@ -78,7 +77,7 @@ export const AllowancePage = () => {
   return (
     <MainContainer>
       <PositionListHeader>
-        <Title>Allowance</Title>
+        <Title>Allowances</Title>
         <AddButton
           onClick={(e) => {
             e.preventDefault();
@@ -105,7 +104,6 @@ export const AllowancePage = () => {
           </div>
         ) : (
           <>
-            <Caption>List of Allowances</Caption>
             <CustomTable
               className="shadow-lg"
               gridCols="1fr 1fr 1fr 0.5fr 1fr 2fr"

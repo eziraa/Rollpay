@@ -1,13 +1,5 @@
 import styled from "styled-components";
-import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../convertor/add-opacity-color";
-
-export const CustomTable = styled.table`
-  border-collapse: collapse;
-  border: none;
-  width: 100%;
-  margin: 0;
-`;
 
 export const Caption = styled.th`
   font-size: 1.4rem;
@@ -16,56 +8,4 @@ export const Caption = styled.th`
   text-align: left;
   padding: 1rem;
   width: 15rem;
-`;
-
-export const TableHeader = styled.tr<ThemeProps>`
-  width: 100%;
-  font-size: 1.4rem;
-  background-color: ${({ theme }) => theme.table.header};
-  color: white !important;
-  /* font-size: 1.4rem; */
-  font-weight: bold;
-  text-align: center;
-  box-shadow: 0 0.4rem 2rem ${() => addOpacityToColor(0.3, "#3f3f3f")};
-  margin-bottom: 0.5rem;
-`;
-
-export const HeaderTitle = styled.th`
-  /* font-size: 1.4rem; */
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.primary};
-  text-align: left;
-  padding: 1rem;
-  color: aliceblue;
-`;
-
-export const TableBody = styled.tbody`
-  width: 100%;
-`;
-
-export const TableRow = styled.tr<ThemeProps>`
-  color: ${({ theme }) => theme.colors.primary};
-  text-align: left;
-  cursor: pointer;
-  font-size: 1.2rem;
-  width: 100%;
-  background-color: ${({ theme }) => theme.backgrounds.primary};
-  &:nth-child(even) {
-    background-color: ${({ theme }) =>
-      addOpacityToColor(0.4, theme.table.tableRow)};
-  }
-
-  &:hover {
-    background-color: ${({ theme }) => theme.table.tableRowHover};
-  }
-
-`;
-
-export const TableData = styled.td`
-  /* font-size: 1.4rem; */
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.primary};
-  text-align: left;
-  padding-left: 0.5rem;
-  line-height: 2.5;
 `;

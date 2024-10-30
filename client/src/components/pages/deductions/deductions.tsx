@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { NoResult } from "../../utils/no-result/no-result";
-import { Caption } from "../../utils/custom-table/custom-table";
 import { useDeduction } from "../../../hooks/deduction-hook";
 import {
   closeDeductionRequested,
@@ -59,7 +58,7 @@ export const DeductionPage = () => {
   return (
     <MainContainer>
       <PositionListHeader>
-        <Title>Deduction</Title>
+        <Title>Deductions</Title>
         <AddButton
           onClick={(e) => {
             e.preventDefault();
@@ -87,7 +86,6 @@ export const DeductionPage = () => {
           </div>
         ) : (
           <>
-            <Caption>List of Deductions</Caption>
             <CustomTable
               className="shadow-lg"
               gridCols="1fr 1fr 1fr 0.5fr 1fr 2fr"

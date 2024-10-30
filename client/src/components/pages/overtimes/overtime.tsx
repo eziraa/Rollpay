@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { NoResult } from "../../utils/no-result/no-result";
-import { Caption } from "../../utils/custom-table/custom-table";
 import { useOvertime } from "../../../hooks/overtime-hook";
 import {
   deleteOvertimeRequested,
@@ -51,7 +50,7 @@ export const OvertimePage = () => {
   return (
     <MainContainer>
       <PositionListHeader>
-        <Title>Overtime</Title>
+        <Title>Overtimes</Title>
         <AddButton
           onClick={(e) => {
             e.preventDefault();
@@ -78,7 +77,6 @@ export const OvertimePage = () => {
           </div>
         ) : (
           <>
-            <Caption>List of Overtimes</Caption>
             <CustomTable className="shadow-lg" gridCols="1fr 1fr 1fr">
               <thead>
                 <tr>
