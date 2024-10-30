@@ -1,24 +1,22 @@
 import styled, { css } from "styled-components";
-import { FcHome } from "react-icons/fc";
-import { HiUserCircle } from "react-icons/hi";
+import { HiOutlineUsers, HiUserCircle } from "react-icons/hi";
 
 import { ThemeProps } from "../../../typo/theme/theme";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
 import { LuCircleDollarSign } from "react-icons/lu";
-import { PiUsersThree } from "react-icons/pi";
 import { CloseIcon } from "../../utils/flash-message/flash-message.style";
 import { Theme } from "../../../theme/theme";
+import { GoHome } from "react-icons/go";
 
 export const LeftMenuContainer = styled.div<ThemeProps>`
   width: 16vw;
-  height: 100vh;
+  height: 101vh;
   background-color: ${({ theme }) =>
     addOpacityToColor(0.9, theme.backgrounds.primary)};
   display: flex;
   z-index: 100;
   flex-direction: column;
   color: ${({ theme }) => theme.colors.secondary};
-  border-right: 0.3rem solid ${({ theme }) => theme.colors.secondary};
   position: relative;
 `;
 
@@ -48,16 +46,19 @@ interface MenuItemProps {
   theme: Theme;
 }
 
-export const MenuItem = styled.div<MenuItemProps>`
+export const MenuItem = styled("div").withConfig({
+  shouldForwardProp: (prop) => !["is_active"].includes(prop),
+})<MenuItemProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: 90%;
-  padding: 0.5rem 2rem;
+  padding: 0.4rem 2rem;
   text-align: left;
   font-size: 2rem;
   margin: 0.3rem 1rem;
-  gap: 1rem;
+  line-height: 1.3;
+  gap: 0.5rem;
   border-radius: 0.5rem;
   color: ${({ is_active, theme }) =>
     is_active ? theme.backgrounds.primary : theme.colors.primary};
@@ -77,11 +78,11 @@ export const SubMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  justify-content: flex-start;
-  gap: 1rem;
+  gap: 0.4rem;
   width: 90%;
   margin: 1rem;
   margin-left: 4rem;
+  line-height: normal;
   border-radius: 0.5rem;
   transition: all 0.5s ease;
   border-left: 0.2rem solid
@@ -92,7 +93,9 @@ interface SubMenuItemProps extends ThemeProps {
   active: boolean;
 }
 
-export const SubMenuItem = styled.div<SubMenuItemProps>`
+export const SubMenuItem = styled("div").withConfig({
+  shouldForwardProp: (prop) => !["active"].includes(prop),
+})<SubMenuItemProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -101,7 +104,7 @@ export const SubMenuItem = styled.div<SubMenuItemProps>`
   text-align: left;
   font-size: 1.6rem;
   color: ${({ active, theme }) =>
-    active ? theme.buttons.primary : theme.colors.primary};
+    active ? theme.buttons.primary : addOpacityToColor(0.8, theme.colors.primary)};
 
   background-color: ${({ active, theme }) =>
     active ? addOpacityToColor(0.1, theme.buttons.primary) : "transparent"};
@@ -128,23 +131,28 @@ export const Icon = css`
   margin-right: 1rem;
 `;
 
-export const HomeIcon = styled(FcHome)`
-  ${Icon}
+export const HomeIcon = styled(GoHome)`
+  font-size: 1.6rem;
+  font-weight: 700;
 `;
 
-export const UsersIcon = styled(PiUsersThree)`
-  ${Icon}
+export const UsersIcon = styled(HiOutlineUsers)`
+  font-size: 1.6rem;
+  font-weight: 700;
 `;
 
 export const UserIcon = styled(HiUserCircle)`
-  ${Icon}
+  font-size: 1.6rem;
+  font-weight: 600;
 `;
 
 export const SalaryIcon = styled(LuCircleDollarSign)`
-  ${Icon}
+  font-size: 1.6rem;
+  font-weight: 600;
 `;
 export const Close = styled(CloseIcon)`
-  ${Icon}
+  font-size: 1.6rem;
+  font-weight: 600;
   position: absolute;
   top: 0.51rem;
   right: 0.5rem;

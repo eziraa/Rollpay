@@ -1,19 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  Caption,
-  CustomTable,
-  HeaderTitle,
-  TableBody,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
+import { Caption } from "../../utils/custom-table/custom-table";
 import {
   AddButton,
-  AllowanceBody,
-  AllowanceContainer,
-  AllowanceHeader,
-  AllowanceTitle,
+  Body,
+  Container,
+  Header,
+  Title,
 } from "./allowance.style";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
@@ -29,6 +21,7 @@ import { stringDay } from "../../utils/day/string-day";
 import { IoAddOutline } from "react-icons/io5";
 import { useAuth } from "../../../hooks/auth-hook";
 import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
+import { CustomTable } from "../employee-overtime/table";
 
 export const EmployeeAllowance = () => {
   //--- Calling hooks and getting necessary information ---
@@ -95,10 +88,10 @@ export const EmployeeAllowance = () => {
     }
   }, [query_year, query_month]);
   return (
-    <AllowanceContainer>
-      <AllowanceHeader>
+    <Container>
+      <Header>
         <Outlet />
-        <AllowanceTitle>Employee Allowance</AllowanceTitle>
+        <Title>Employee Allowance </Title>
         {user?.role === "Clerk" && (
           <AddButton
             className="rounded-md "
@@ -111,14 +104,14 @@ export const EmployeeAllowance = () => {
             <IoAddOutline /> New
           </AddButton>
         )}
-      </AllowanceHeader>
+      </Header>
       {openModel && (
         <DeleteConfirmationModal
           handleClose={closeModal}
           action={handleRemove}
         />
       )}
-      <AllowanceBody>
+      <Body>
         {!task_finished ? (
           <ThreeDots size={1} />
         ) : curr_emp?.employee.payments.every(
@@ -130,61 +123,64 @@ export const EmployeeAllowance = () => {
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.allowances.length > 0 ? (
-              <CustomTable key={index} className="shadow-md">
-                <thead>
-                  <tr>
-                    <Caption className="shadow-md mb-3">
-                      {getFormattedMonth(new Date(payment.month))}
-                    </Caption>
-                  </tr>
-                  <TableHeader className="shadow-lg">
-                    <HeaderTitle>Allowance Name</HeaderTitle>
-                    <HeaderTitle>Allowance Value</HeaderTitle>
-                    <HeaderTitle>Date of Given</HeaderTitle>
-                    {user?.employee.position === "Clerk" && (
-                      <HeaderTitle>Action</HeaderTitle>
-                    )}
-                  </TableHeader>
-                </thead>
-                <TableBody>
-                  {payment.allowances.map((allowance, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableData>{allowance.allowance_type}</TableData>
-                        <TableData className=" italic">
-                          {allowance.allowance_rate}%
-                        </TableData>
-                        <TableData className=" italic">
-                          {stringDay(new Date(allowance.date_of_given))}
-                        </TableData>
-                        <TableData>
-                          {user?.employee.position === "Clerk" && (
-                            <span
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setPaymentMonth(payment.month);
-                                setRemoveId(allowance.id);
-                                setOpenModal(true);
-                              }}
-                            >
-                              <span className="fail">Remove</span>
-                            </span>
-                          )}
-                        </TableData>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </CustomTable>
+              <>
+                <Caption className="shadow-md mb-3">
+                  {getFormattedMonth(new Date(payment.month))}
+                </Caption>
+                <CustomTable
+                  key={index}
+                  className="shadow-md"
+                  gridCols="1fr 1fr 2fr 1fr"
+                >
+                  <thead>
+                    <tr className="shadow-lg">
+                      <th> Allowance Name</th>
+                      <th> Allowance Value</th>
+                      <th>  Date of Given</th>
+                      {user?.employee.position === "Clerk" && <th>Action</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {payment.allowances.map((allowance, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{allowance.allowance_type}</td>
+                          <td className=" italic">
+                            {allowance.allowance_rate}%
+                          </td>
+                          <td className=" italic">
+                            {stringDay(new Date(allowance.date_of_given))}
+                          </td>
+                          <td>
+                            {user?.employee.position === "Clerk" && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setPaymentMonth(payment.month);
+                                  setRemoveId(allowance.id);
+                                  setOpenModal(true);
+                                }}
+                                className="text-red-500 rounded-md font-bold tracking-wider uppercase text-xl  border bg-red-50/50 py-2 px-4 border-red-400 hover:bg-red-500 hover:text-white transition-all duration-500"
+                              >
+                                remove
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </CustomTable>
+              </>
             ) : (
               <div>
                 <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-                <NoResult>No Allowance</NoResult>
+                <NoResult>No </NoResult>
               </div>
             );
           })
         )}
-      </AllowanceBody>
-    </AllowanceContainer>
+      </Body>
+    </Container>
   );
 };

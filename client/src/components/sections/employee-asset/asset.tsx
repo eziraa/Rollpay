@@ -2,24 +2,16 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import {
   AddButton,
-  AllowanceBody,
-  AllowanceContainer,
-  AllowanceHeader,
-  AllowanceTitle,
+  Body,
+  Container,
+  Header,
+  Title,
 } from "../employee-allowance/allowance.style";
 import {
   ActionBtnsContainer,
   DeleteButton,
 } from "../../pages/positions/position.style";
 import { ThreeDots } from "../../utils/loading/dots";
-import {
-  CustomTable,
-  HeaderTitle,
-  TableBody,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
 import { useEffect, useState } from "react";
 import {
   deleteAssetRequested,
@@ -33,6 +25,7 @@ import DownloadPDF from "../../utils/download/download";
 import { IoAddOutline } from "react-icons/io5";
 import { useAuth } from "../../../hooks/auth-hook";
 import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
+import { CustomTable } from "../employee-overtime/table";
 
 export const EmployeeAsset = () => {
   const navigate = useNavigate();
@@ -57,10 +50,10 @@ export const EmployeeAsset = () => {
   }, [dispatcher, employee_id]);
 
   return (
-    <AllowanceContainer>
-      <AllowanceHeader>
+    <Container>
+      <Header>
         <Outlet />
-        <AllowanceTitle>Employee Asset</AllowanceTitle>
+        <Title>Employee Asset</Title>
         {user?.role === "Clerk" && (
           <AddButton
             onClick={(e) => {
@@ -73,14 +66,14 @@ export const EmployeeAsset = () => {
             <IoAddOutline /> New
           </AddButton>
         )}
-      </AllowanceHeader>
+      </Header>
       {openModel && (
         <DeleteConfirmationModal
           handleClose={handleClose}
           action={handleDelete}
         />
       )}
-      <AllowanceBody>
+      <Body>
         {!task_finished ? (
           <ThreeDots size={1} />
         ) : assets.length === 0 ? (
@@ -88,20 +81,20 @@ export const EmployeeAsset = () => {
             <NoResult>No assets found</NoResult>
           </div>
         ) : (
-          <CustomTable className="shadow-md">
+          <CustomTable className="shadow-md" gridCols="1fr 1fr">
             <thead>
-              <TableHeader>
-                <HeaderTitle>Asset name</HeaderTitle>
+              <tr>
+                <th>Asset name</th>
 
-                <HeaderTitle>Action</HeaderTitle>
-              </TableHeader>
+                <th>Action</th>
+              </tr>
             </thead>
-            <TableBody>
+            <tbody>
               {assets.map((asset, index) => {
                 return (
-                  <TableRow key={index}>
-                    <TableData>{asset.asset_name}</TableData>
-                    <TableData>
+                  <tr key={index}>
+                    <td>{asset.asset_name}</td>
+                    <td>
                       <ActionBtnsContainer>
                         {user?.employee.position === "Clerk" && (
                           <DeleteButton
@@ -121,14 +114,14 @@ export const EmployeeAsset = () => {
                           file_name={asset.asset_name}
                         />
                       </ActionBtnsContainer>
-                    </TableData>
-                  </TableRow>
+                    </td>
+                  </tr>
                 );
               })}
-            </TableBody>
+            </tbody>
           </CustomTable>
         )}
-      </AllowanceBody>
-    </AllowanceContainer>
+      </Body>
+    </Container>
   );
 };

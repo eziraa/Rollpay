@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   ActionBtnsContainer,
-  DeleteButton,
-  EditButton,
   PositionListBody,
   PositionListHeader,
-  SuspendButton,
   Title,
 } from "../positions/position.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
@@ -14,17 +11,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { NoResult } from "../../utils/no-result/no-result";
-import {
-  Caption,
-  CustomTable,
-  HeaderTitle,
-  TableBody,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
-import { MdOutlineClose, MdOutlineEdit } from "react-icons/md";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { Caption } from "../../utils/custom-table/custom-table";
 import { useDeduction } from "../../../hooks/deduction-hook";
 import {
   closeDeductionRequested,
@@ -32,10 +19,11 @@ import {
   listDeductionsRequested,
   openDeductionRequested,
 } from "../../../store/deduction/deduction-slice";
-import { SmallSpinner } from "../../utils/spinner/spinner";
-import { IoAddOutline, IoOpenOutline } from "react-icons/io5";
+import { IoAddOutline } from "react-icons/io5";
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
 import DeleteConfirmationModal from "../admin/utils/model/ConfirmitionModal";
+import { CircularProgress } from "@mui/material";
+import { CustomTable } from "../../sections/employee-overtime/table";
 export const DeductionPage = () => {
   const dispatcher = useAppDispatch();
   const { task_error, deductions, editing, deleting, loading, curr_deduction } =
@@ -98,118 +86,120 @@ export const DeductionPage = () => {
             <NoResult text="No deductions found" />
           </div>
         ) : (
-          <CustomTable className="shadow-lg">
-            <thead>
-              <tr>
-                <Caption>List of Deductions</Caption>
-              </tr>
-              <TableHeader className="drop-shadow-md shadow-zinc-400">
-                <HeaderTitle>Deduction Name</HeaderTitle>
-                <HeaderTitle>Deduction Rate</HeaderTitle>
-                <HeaderTitle>Date of Start</HeaderTitle>
-                <HeaderTitle>Status</HeaderTitle>
+          <>
+            <Caption>List of Deductions</Caption>
+            <CustomTable
+              className="shadow-lg"
+              gridCols="1fr 1fr 1fr 0.5fr 1fr 2fr"
+            >
+              <thead>
+                <tr className="drop-shadow-md shadow-zinc-400">
+                  <th>Deduction Name</th>
+                  <th>Deduction Rate</th>
+                  <th>Date of Start</th>
+                  <th>Status</th>
 
-                <HeaderTitle>Date of End</HeaderTitle>
-                <HeaderTitle>Actions</HeaderTitle>
-              </TableHeader>
-            </thead>
-            <TableBody>
-              {deductions.map((deduction, index) => {
-                return (
-                  <TableRow key={index}>
-                    <TableData>{deduction.deduction_type}</TableData>
-                    <TableData>{deduction.deduction_rate}</TableData>
-                    <TableData>{deduction.start_at?.split("T")[0]}</TableData>
-                    <TableData>
+                  <th>Date of End</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {deductions.map((deduction, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{deduction.deduction_type}</td>
+                      <td>{deduction.deduction_rate}</td>
+                      <td>{deduction.start_at?.split("T")[0]}</td>
+                      <td>
+                        {deduction.end_at ? (
+                          <span
+                            style={{
+                              color: "#f45",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            Closed
+                          </span>
+                        ) : (
+                          <span
+                            style={{
+                              color: "#04d574",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            Active
+                          </span>
+                        )}{" "}
+                      </td>
                       {deduction.end_at ? (
-                        <span
-                          style={{
-                            color: "#f45",
-                            fontStyle: "italic",
-                          }}
-                        >
-                          Closed
-                        </span>
+                        <td>{deduction.end_at.split("T")[0]}</td>
                       ) : (
-                        <span
-                          style={{
-                            color: "#04d574",
-                            fontStyle: "italic",
-                          }}
-                        >
-                          Active
-                        </span>
-                      )}{" "}
-                    </TableData>
-                    {deduction.end_at ? (
-                      <TableData>{deduction.end_at.split("T")[0]}</TableData>
-                    ) : (
-                      <TableData>Not ended</TableData>
-                    )}
+                        <td>Not ended</td>
+                      )}
 
-                    <TableData>
-                      <ActionBtnsContainer>
-                        <EditButton
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setAction(EDIT);
-                            navigate(`edit-deduction/${deduction.id}`);
-                          }}
-                        >
-                          <MdOutlineEdit />
-                        </EditButton>
-                        <SuspendButton
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setAction(CLOSE);
-                            setActionId(deduction.id);
-                            deduction.end_at
-                              ? dispatcher(openDeductionRequested(deduction.id))
-                              : dispatcher(
-                                  closeDeductionRequested(deduction.id)
-                                );
-                          }}
-                        >
-                          {action === CLOSE && actionId == deduction.id ? (
-                            <SmallSpinner />
-                          ) : deduction.end_at ? (
-                            <>
-                              <IoOpenOutline />
-                            </>
-                          ) : (
-                            <>
-                              <MdOutlineClose />
-                            </>
-                          )}
-                        </SuspendButton>
-                        <DeleteButton
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setAction(DELETE);
-                            setActionId(deduction.id);
-                            setOpenModal(true);
-                          }}
-                        >
-                          {action === DELETE &&
-                          deduction.id === actionId &&
-                          !task_error ? (
-                            <SmallSpinner />
-                          ) : (
-                            <>
-                              <RiDeleteBin6Line />
-                            </>
-                          )}
-                        </DeleteButton>
-                      </ActionBtnsContainer>
-                    </TableData>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </CustomTable>
+                      <td>
+                        <ActionBtnsContainer>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setAction(EDIT);
+                              navigate(`edit-deduction/${deduction.id}`);
+                            }}
+                            className="text-green-500 rounded-md font-semibold tracking-wider uppercase  border bg-green-50/50  py-1 px-3 border-green-400 hover:bg-green-500 hover:text-white"
+                          >
+                            edit
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setAction(CLOSE);
+                              setActionId(deduction.id);
+                              deduction.end_at
+                                ? dispatcher(
+                                    openDeductionRequested(deduction.id)
+                                  )
+                                : dispatcher(
+                                    closeDeductionRequested(deduction.id)
+                                  );
+                            }}
+                            className="text-green-500 rounded-md font-semibold tracking-wider uppercase  border bg-green-50/50  py-1 px-3 border-green-400 hover:bg-green-500 hover:text-white"
+                          >
+                            {action === CLOSE && actionId == deduction.id ? (
+                              <CircularProgress size={16} />
+                            ) : deduction.end_at ? (
+                              <>open</>
+                            ) : (
+                              <>close</>
+                            )}
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setAction(DELETE);
+                              setActionId(deduction.id);
+                              setOpenModal(true);
+                            }}
+                            className="text-red-500 rounded-md font-semibold tracking-wider uppercase  border bg-red-50/50  py-1 px-3 border-red-400 hover:bg-red-500 hover:text-white"
+                          >
+                            {action === DELETE &&
+                            deduction.id === actionId &&
+                            !task_error ? (
+                              <CircularProgress />
+                            ) : (
+                              <>delete</>
+                            )}
+                          </button>
+                        </ActionBtnsContainer>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </CustomTable>
+          </>
         )}
       </PositionListBody>
     </MainContainer>

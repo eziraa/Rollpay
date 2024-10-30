@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   ActionBtnsContainer,
-  DeleteButton,
-  EditButton,
   PositionListBody,
   PositionListHeader,
-  SuspendButton,
   Title,
 } from "../positions/position.style";
 import { useAppDispatch } from "../../../utils/custom-hook";
@@ -14,21 +11,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { ThreeDots } from "../../utils/loading/dots";
 import { NoResult } from "../../utils/no-result/no-result";
-import {
-  Caption,
-  CustomTable,
-  HeaderTitle,
-  TableBody,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
-import {
-  MdOutlineClose,
-  MdOutlineEdit,
-  MdOutlineRestartAlt,
-} from "react-icons/md";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { Caption } from "../../utils/custom-table/custom-table";
 import { useAllowance } from "../../../hooks/allowance-hook";
 import {
   closeAllowanceRequested,
@@ -40,6 +23,8 @@ import { SmallSpinner } from "../../utils/spinner/spinner";
 import { IoAddOutline } from "react-icons/io5";
 import { AddButton } from "../../sections/employee-allowance/allowance.style";
 import DeleteConfirmationModal from "../admin/utils/model/ConfirmitionModal";
+import { CircularProgress } from "@mui/material";
+import { CustomTable } from "../../sections/employee-overtime/table";
 
 /**
  * This is a page to show list allowances
@@ -119,120 +104,121 @@ export const AllowancePage = () => {
             <NoResult text="No allowances found" />
           </div>
         ) : (
-          <CustomTable className="shadow-lg">
-            <thead>
-              <tr>
-                <Caption>List of Allowances</Caption>
-              </tr>
+          <>
+            <Caption>List of Allowances</Caption>
+            <CustomTable
+              className="shadow-lg"
+              gridCols="1fr 1fr 1fr 0.5fr 1fr 2fr"
+            >
+              <thead>
+                <tr>
+                  <th>Allowance Name</th>
+                  <th>Allowance Rate</th>
+                  <th>Date of Start</th>
+                  <th>Status</th>
 
-              <TableHeader>
-                <HeaderTitle>Allowance Name</HeaderTitle>
-                <HeaderTitle>Allowance Rate</HeaderTitle>
-                <HeaderTitle>Date of Start</HeaderTitle>
-                <HeaderTitle>Status</HeaderTitle>
-
-                <HeaderTitle>Date of End</HeaderTitle>
-                <HeaderTitle>Actions</HeaderTitle>
-              </TableHeader>
-            </thead>
-            <TableBody>
-              {allowances.map((allowance, index) => {
-                return (
-                  <TableRow key={index}>
-                    <TableData>{allowance.allowance_type}</TableData>
-                    <TableData>{allowance.allowance_rate}</TableData>
-                    <TableData>{allowance.start_at?.split("T")[0]}</TableData>
-                    <TableData>
+                  <th>Date of End</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allowances.map((allowance, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{allowance.allowance_type}</td>
+                      <td>{allowance.allowance_rate}</td>
+                      <td>{allowance.start_at?.split("T")[0]}</td>
+                      <td>
+                        {allowance.end_at ? (
+                          <span
+                            style={{
+                              color: "#f45",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            Closed
+                          </span>
+                        ) : (
+                          <span
+                            style={{
+                              color: "#04d574",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            Active
+                          </span>
+                        )}{" "}
+                      </td>
                       {allowance.end_at ? (
-                        <span
-                          style={{
-                            color: "#f45",
-                            fontStyle: "italic",
-                          }}
-                        >
-                          Closed
-                        </span>
+                        <td>{allowance.end_at.split("T")[0]}</td>
                       ) : (
-                        <span
-                          style={{
-                            color: "#04d574",
-                            fontStyle: "italic",
-                          }}
-                        >
-                          Active
-                        </span>
-                      )}{" "}
-                    </TableData>
-                    {allowance.end_at ? (
-                      <TableData>{allowance.end_at.split("T")[0]}</TableData>
-                    ) : (
-                      <TableData>Not ended</TableData>
-                    )}
+                        <td>Not ended</td>
+                      )}
 
-                    <TableData>
-                      <ActionBtnsContainer>
-                        <EditButton
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            navigate(`edit-allowance/${allowance.id}`);
-                          }}
-                        >
-                          <MdOutlineEdit />
-                        </EditButton>
-                        <SuspendButton
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setAction(CLOSE);
-                            setActionId(allowance.id);
-                            allowance.end_at
-                              ? dispatcher(openAllowanceRequested(allowance.id))
-                              : dispatcher(
-                                  closeAllowanceRequested(allowance.id)
-                                );
-                          }}
-                        >
-                          {action === CLOSE &&
-                          !editing &&
-                          actionId === allowance.id ? (
-                            <SmallSpinner />
-                          ) : allowance.end_at ? (
-                            <>
-                              <MdOutlineRestartAlt />
-                            </>
-                          ) : (
-                            <>
-                              <MdOutlineClose />
-                            </>
-                          )}
-                        </SuspendButton>
-                        <DeleteButton
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setAction(DELETE);
-                            setActionId(allowance.id);
-                            setOpenModal(true);
-                          }}
-                        >
-                          {action === DELETE &&
-                          allowance.id === actionId &&
-                          deleting ? (
-                            <SmallSpinner />
-                          ) : (
-                            <>
-                              <RiDeleteBin6Line />
-                            </>
-                          )}
-                        </DeleteButton>
-                      </ActionBtnsContainer>
-                    </TableData>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </CustomTable>
+                      <td>
+                        <ActionBtnsContainer>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              navigate(`edit-allowance/${allowance.id}`);
+                            }}
+                            className="text-green-500 rounded-md font-semibold tracking-wider uppercase  border bg-green-50/50  py-1 px-3 border-green-400 hover:bg-green-500 hover:text-white"
+                          >
+                            edit
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setAction(CLOSE);
+                              setActionId(allowance.id);
+                              allowance.end_at
+                                ? dispatcher(
+                                    openAllowanceRequested(allowance.id)
+                                  )
+                                : dispatcher(
+                                    closeAllowanceRequested(allowance.id)
+                                  );
+                            }}
+                            className="text-green-500 rounded-md font-semibold tracking-wider uppercase  border bg-green-50/50  py-1 px-3 border-green-400 hover:bg-green-500 hover:text-white"
+                          >
+                            {action === CLOSE &&
+                            !editing &&
+                            actionId === allowance.id ? (
+                              <CircularProgress size={16} />
+                            ) : allowance.end_at ? (
+                              <>open</>
+                            ) : (
+                              <>close</>
+                            )}
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setAction(DELETE);
+                              setActionId(allowance.id);
+                              setOpenModal(true);
+                            }}
+                            className="text-red-500 rounded-md font-semibold tracking-wider uppercase  border bg-red-50/50  py-1 px-3 border-red-400 hover:bg-red-500 hover:text-white"
+                          >
+                            {action === DELETE &&
+                            allowance.id === actionId &&
+                            deleting ? (
+                              <SmallSpinner />
+                            ) : (
+                              <>delete</>
+                            )}
+                          </button>
+                        </ActionBtnsContainer>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </CustomTable>
+          </>
         )}
       </PositionListBody>
     </MainContainer>

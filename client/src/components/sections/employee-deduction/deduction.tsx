@@ -1,20 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  CustomTable,
-  HeaderTitle,
-  TableBody,
-  Caption,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
-import {
   AddButton,
-  DeductionBody,
-  DeductionContainer,
-  DeductionHeader,
-  DeductionTitle,
-} from "./deduction.style";
+  Body,
+  Container,
+  Header,
+  Title,
+} from "../employee-allowance/allowance.style";
 import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 import { getFormattedMonth } from "../../pages/salary/utils";
 import { NoResult } from "../../utils/containers/containers.style";
@@ -28,6 +19,8 @@ import { stringDay } from "../../utils/day/string-day";
 import { IoAddOutline } from "react-icons/io5";
 import { useAuth } from "../../../hooks/auth-hook";
 import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
+import { Caption } from "../../utils/custom-table/custom-table";
+import { CustomTable } from "../employee-overtime/table";
 
 export const EmployeeDeduction = () => {
   //Calling hooks and getting nucessary information
@@ -93,10 +86,10 @@ export const EmployeeDeduction = () => {
     }
   }, [query_year, query_month]);
   return (
-    <DeductionContainer>
+    <Container>
       <Outlet />
-      <DeductionHeader>
-        <DeductionTitle>Employee Deduction</DeductionTitle>
+      <Header>
+        <Title>Employee Deductio</Title>
         {user?.role === "Clerk" && (
           <AddButton
             onClick={(e) => {
@@ -108,14 +101,14 @@ export const EmployeeDeduction = () => {
             <IoAddOutline /> New
           </AddButton>
         )}
-      </DeductionHeader>
+      </Header>
       {openModel && (
         <DeleteConfirmationModal
           handleClose={closeModal}
           action={handleRemove}
         />
       )}
-      <DeductionBody>
+      <Body>
         {!task_finished ? (
           <ThreeDots size={1} />
         ) : curr_emp?.employee.payments.every(
@@ -127,61 +120,62 @@ export const EmployeeDeduction = () => {
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.deductions.length > 0 ? (
-              <CustomTable key={index} className="shadow-md">
-                <thead>
-                  <tr>
-                    <Caption>
-                      {getFormattedMonth(new Date(payment.month))}
-                    </Caption>
-                  </tr>
-                  <TableHeader>
-                    <HeaderTitle>Deduction Name</HeaderTitle>
-                    <HeaderTitle>Deduction Value</HeaderTitle>
-                    <HeaderTitle>Date of Given</HeaderTitle>
-                    {user?.employee.position === "Clerk" && (
-                      <HeaderTitle>Action</HeaderTitle>
-                    )}
-                  </TableHeader>
-                </thead>
-                <TableBody>
-                  {payment.deductions.map((deduction, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableData>{deduction.deduction_type}</TableData>
-                        <TableData className="italic">
-                          {deduction.deduction_rate}%
-                        </TableData>
-                        <TableData>
-                          {stringDay(new Date(deduction.date_of_given))}
-                        </TableData>
-                        <TableData>
-                          {user?.employee.position === "Clerk" && (
-                            <span
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setRemoveId(deduction.id);
-                                setOpenModal(true);
-                                setPaymentMonth(payment.month);
-                              }}
-                            >
-                              <span className="fail">Remove</span>
-                            </span>
-                          )}
-                        </TableData>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </CustomTable>
+              <>
+                <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
+                <CustomTable
+                  key={index}
+                  className="shadow-md"
+                  gridCols="1fr 1fr 2fr 1fr"
+                >
+                  <thead>
+                    <tr>
+                      <th>Deductio Name</th>
+                      <th>Deductio Value</th>
+                      <th>Date of Given</th>
+                      {user?.employee.position === "Clerk" && <th>Action</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {payment.deductions.map((deduction, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{deduction.deduction_type}</td>
+                          <td className="italic">
+                            {deduction.deduction_rate}%
+                          </td>
+                          <td>
+                            {stringDay(new Date(deduction.date_of_given))}
+                          </td>
+                          <td>
+                            {user?.employee.position === "Clerk" && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setRemoveId(deduction.id);
+                                  setOpenModal(true);
+                                  setPaymentMonth(payment.month);
+                                }}
+                                className="text-red-500 rounded-md font-bold tracking-wider uppercase text-xl  border bg-red-50/50 py-2 px-4 border-red-400 hover:bg-red-500 hover:text-white transition-all duration-500"
+                              >
+                                remove
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </CustomTable>
+              </>
             ) : (
               <div>
                 <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>
-                <NoResult>No Deduction</NoResult>
+                <NoResult>No </NoResult>
               </div>
             );
           })
         )}
-      </DeductionBody>
-    </DeductionContainer>
+      </Body>
+    </Container>
   );
 };

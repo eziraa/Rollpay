@@ -8,17 +8,17 @@ import {
 } from "../../utils/containers/containers.style";
 import { custom_vertical_scroll_bar } from "../../utils/scroll-bar/scroll-bar";
 
-export const AllowanceContainer = styled.div`
+export const Container = styled.div`
   ${container_css}
   width: 100%;
   height: 100%;
 `;
 
-export const AllowanceHeader = styled.div`
+export const Header = styled.div`
   ${header_css}
 `;
 
-export const AllowanceTitle = styled.h1`
+export const Title = styled.h1`
   ${title_css}
 `;
 
@@ -26,7 +26,7 @@ export const AddButton = styled.button`
   ${btn_css}
 `;
 
-export const AllowanceBody = styled.div`
+export const Body = styled.div`
   ${body_css}
   ${custom_vertical_scroll_bar};
   height: 100%;

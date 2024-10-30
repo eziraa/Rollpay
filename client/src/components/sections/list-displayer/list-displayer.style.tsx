@@ -51,19 +51,33 @@ export const ListRow = styled.div<ThemeProps>`
   grid-template-columns: 3fr 1fr 1fr 2.5fr 2fr 2fr 3fr 1.5fr 1fr;
   justify-content: center;
   align-items: center;
-  border: 2px solid #3434342b;
+  border: 2px solid #37f9c258;
   border-radius: 0.5rem;
   margin-top: 0.5rem;
   cursor: pointer;
   /* background-color: ${({ theme }) =>
     addOpacityToColor(0.4, theme.table.tableRow)};
+  
+  */
   &:nth-child(even) {
-    background-color: ${({ theme }) => theme.backgrounds.primary};
-  } */
+    background-color: ${({ theme }) => theme.backgrounds.secondary};
+  }
+  &:nth-child(even) {
+    background-color: aliceblue;
+
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.095, theme.buttons.primary)};
+  }
 
   &:hover {
-    background-color: ${({ theme }) => theme.table.tableRowHover};
+    background-color: ${({ theme }) =>
+      addOpacityToColor(0.195, theme.buttons.primary)};
+    cursor: pointer;
   }
+
+  /* &:hover {
+    background-color: ${({ theme }) => theme.table.tableRowHover};
+  } */
   /* &:last-child {
     border-bottom: 0.2rem solid ${({ theme }) => theme.colors.primary};
   } */

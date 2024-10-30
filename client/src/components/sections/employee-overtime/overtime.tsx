@@ -1,13 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  CustomTable,
-  HeaderTitle,
-  TableBody,
-  Caption,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
+
 import {
   AddButton,
   OvertimeBody,
@@ -28,6 +20,8 @@ import { stringDatetine } from "../../utils/day/string-day";
 import { IoAddOutline } from "react-icons/io5";
 import { useAuth } from "../../../hooks/auth-hook";
 import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
+import { CustomTable } from "./table";
+import { Caption } from "../../utils/custom-table/custom-table";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information
@@ -127,56 +121,75 @@ export const EmployeeOvertime = () => {
         ) : (
           curr_emp?.employee.payments.map((payment, index) => {
             return payment.overtimes.length > 0 ? (
-              <CustomTable key={index} className="shadow-md">
-                <thead>
-                  <tr>
-                    <Caption>
-                      {getFormattedMonth(new Date(payment.month))}
-                    </Caption>
-                  </tr>
-                  <TableHeader>
-                    <HeaderTitle>Overtime Name</HeaderTitle>
-                    <HeaderTitle>Length of Time</HeaderTitle>
-                    <HeaderTitle>Start at</HeaderTitle>
-                    <HeaderTitle>End at</HeaderTitle>
-                    {user?.employee.position === "Clerk" && (
-                      <HeaderTitle>Action</HeaderTitle>
-                    )}
-                  </TableHeader>
-                </thead>
-                <TableBody>
-                  {payment.overtimes.map((overtime, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableData>{overtime.overtime_type}</TableData>
-                        <TableData className="center-text italic">
-                          {overtime.overtime_rate}
-                        </TableData>
-                        <TableData>
-                          {stringDatetine(new Date(overtime.start_time))}
-                        </TableData>
-                        <TableData>
-                          {stringDatetine(new Date(overtime.end_time))}
-                        </TableData>
-                        <TableData>
-                          {user?.employee.position === "Clerk" && (
-                            <span
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setPaymentMonth(payment.month);
-                                setRemoveId(overtime.id);
-                                setOpenModal(true);
-                              }}
-                            >
-                              <span className="fail italic">Remove</span>
-                            </span>
-                          )}
-                        </TableData>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </CustomTable>
+              <>
+                <Caption
+                  style={{
+                    marginTop: "1rem",
+                  }}
+                >
+                  {getFormattedMonth(new Date(payment.month))}
+                </Caption>
+                <CustomTable
+                  key={index}
+                  className="shadow-md"
+                  gridCols="1fr  1fr 1.6fr 1.6fr 1fr"
+                >
+                  <thead>
+                    <tr>
+                      <th>Overtime Name</th>
+                      <th>Length of Time</th>
+                      <th>Start at</th>
+                      <th>End at</th>
+                      {user?.employee.position === "Clerk" && <th>Action</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {payment.overtimes.map((overtime, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{overtime.overtime_type}</td>
+                          <td className="center-text italic">
+                            {overtime.overtime_rate}
+                          </td>
+                          <td
+                            style={{
+                              flex: 1.5,
+                            }}
+                          >
+                            {stringDatetine(new Date(overtime.start_time))}
+                          </td>
+                          <td
+                            style={{
+                              flex: 1.5,
+                            }}
+                          >
+                            {stringDatetine(new Date(overtime.end_time))}
+                          </td>
+                          <td
+                            style={{
+                              flex: 1,
+                            }}
+                          >
+                            {user?.employee.position === "Clerk" && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setPaymentMonth(payment.month);
+                                  setRemoveId(overtime.id);
+                                  setOpenModal(true);
+                                }}
+                                className="text-red-500 rounded-md font-bold tracking-wider uppercase text-xl  border bg-red-50/50 py-2 px-4 border-red-400 hover:bg-red-500 hover:text-white transition-all duration-500"
+                              >
+                                <span className=" ">Remove</span>
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </CustomTable>
+              </>
             ) : (
               <div>
                 <Caption>{getFormattedMonth(new Date(payment.month))}</Caption>

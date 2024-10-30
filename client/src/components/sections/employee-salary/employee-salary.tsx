@@ -1,26 +1,20 @@
 import { Outlet, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import {
-  AllowanceBody,
-  AllowanceContainer,
-  AllowanceHeader,
-  AllowanceTitle,
+  Body,
+  Container,
+  Header,
+  Title,
 } from "../employee-allowance/allowance.style";
 
 import { ThreeDots } from "../../utils/loading/dots";
-import {
-  CustomTable,
-  HeaderTitle,
-  TableBody,
-  TableData,
-  TableHeader,
-  TableRow,
-} from "../../utils/custom-table/custom-table";
+
 import { useEffect } from "react";
 
 import { NoResult } from "../../utils/containers/containers.style";
 import { getCurrEmpPaymentInfo } from "../../../store/salary/salary-slice";
 import { useSalary } from "../../../hooks/salary-hook";
+import { CustomTable } from "../employee-overtime/table";
 
 export const EmployeeSalary = () => {
   const { employee_id } = useParams();
@@ -39,12 +33,12 @@ export const EmployeeSalary = () => {
   ).map((str) => JSON.parse(str));
 
   return (
-    <AllowanceContainer>
-      <AllowanceHeader>
+    <Container>
+      <Header>
         <Outlet />
-        <AllowanceTitle>Employee Salary History</AllowanceTitle>
-      </AllowanceHeader>
-      <AllowanceBody>
+        <Title>Employee Salary History</Title>
+      </Header>
+      <Body>
         {!task_finished ? (
           <ThreeDots size={1} />
         ) : uniqueSalaryHistory.length === 0 ? (
@@ -52,26 +46,26 @@ export const EmployeeSalary = () => {
             <NoResult>No salary history found</NoResult>
           </div>
         ) : (
-          <CustomTable className="shadow-md">
+          <CustomTable className="shadow-md" gridCols="1fr 1fr 1fr">
             <thead>
-              <TableHeader>
-                <HeaderTitle>From</HeaderTitle>
-                <HeaderTitle>To</HeaderTitle>
-                <HeaderTitle>Salary</HeaderTitle>
-              </TableHeader>
+              <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Salary</th>
+              </tr>
             </thead>
-            <TableBody>
+            <tbody>
               {uniqueSalaryHistory.map((salary, index) => (
-                <TableRow key={index}>
-                  <TableData>{salary.from}</TableData>
-                  <TableData>{salary.to}</TableData>
-                  <TableData>{salary.salary}</TableData>
-                </TableRow>
+                <tr key={index}>
+                  <td>{salary.from}</td>
+                  <td>{salary.to}</td>
+                  <td>{salary.salary}</td>
+                </tr>
               ))}
-            </TableBody>
+            </tbody>
           </CustomTable>
         )}
-      </AllowanceBody>
-    </AllowanceContainer>
+      </Body>
+    </Container>
   );
 };

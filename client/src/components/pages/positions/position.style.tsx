@@ -45,12 +45,13 @@ export const PositionListHeader = styled.div`
 
 
 export const ActionBtnsContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   align-items: center;
-  margin: 0.5rem 0rem;
+  /* margin: 0.5rem 0rem; */
   justify-content: flex-start;
-  width: 80%;
+  width: fit-content;
 `;
 export const ActionButton = styled.button`
   display: flex;

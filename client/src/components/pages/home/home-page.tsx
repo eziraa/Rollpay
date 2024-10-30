@@ -3,7 +3,7 @@ import { HomeBody, HomeContainer } from "./home-page.style";
 import LeftMenu from "../../sections/left-menu/left-menu";
 
 import { Outlet } from "react-router";
-import { HomeIcon, SalaryIcon } from "../../sections/left-menu/left-menu.style";
+import { HomeIcon, SalaryIcon, UsersIcon } from "../../sections/left-menu/left-menu.style";
 import { MdExpandMore } from "react-icons/md";
 import { MenuItemInterface } from "../../../typo/menu/props";
 import { useState } from "react";
@@ -23,7 +23,7 @@ export const HomePage = () => {
     {
       title: "Employees",
       path: "/employees",
-      icon: <FaUsers />,
+      icon: <UsersIcon />,
       exapandItems: setColapseEmployees,
       items_expanded: colapseEmployees,
       sub_menu_items: [
