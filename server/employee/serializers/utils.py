@@ -6,7 +6,14 @@ from month import Month
 from employee.utils.salary_calculator import SalaryCalculator
 from employee.serializers.allowance import AllowanceItemSerializer
 
+from datetime import datetime
 
+
+def calculate_time_difference(start_time: datetime, end_time: datetime):
+    time_difference = end_time - start_time
+    total_minutes = time_difference.total_seconds() / 60
+    total_hours = time_difference.total_seconds() / 3600
+    return total_minutes, total_hours
 class StatisticsCalculator:
     '''
     This class is used to calculate statistics monthly payments
@@ -82,15 +89,15 @@ class StatisticsCalculator:
         '''
         curr_month_payments = Payment.objects.filter(month=month)
         overtimes_dict = {}
-        for curr_month_payment in curr_month_payments:
-            overtimes = OvertimeItem.objects.filter(payment=curr_month_payment)
+        for payment in curr_month_payments:
+            overtimes = OvertimeItem.objects.filter(payment=payment)
             for overtime in overtimes:
                 overtime_type = overtime.overtime.overtime_type
-                length_in_hour = overtime.end_time.hour - overtime.start_time.hour
-                length_in_minute = overtime.end_time.minute - overtime.start_time.minute
-                time_length_hr = length_in_hour + length_in_minute / 60
+                minutes, hours = calculate_time_difference(
+                    overtime.start_time, overtime.end_time)
+                time_length_hr = hours + minutes / 60
                 total_overtime_amount = (
-                    overtime.overtime.overtime_rate / 100) * curr_month_payment.salary * Decimal(time_length_hr)
+                    overtime.overtime.overtime_rate / 100) * payment.salary * Decimal(time_length_hr)
 
                 if overtime_type in overtimes_dict.keys():
                     overtimes_dict[overtime_type]['amount'] += total_overtime_amount
@@ -151,7 +158,7 @@ class StatisticsCalculator:
                 value = allowance.allowance.allowance_rate / 100 * curr_month_payment.salary
                 allowance_list.append(value)
 
-        return format(round(sum(allowance_list), 2), ',')
+        return round(sum(allowance_list), 2)
 
     @staticmethod
     def total_expense_of_overtimes_in_a_month(month: Month):
@@ -160,20 +167,22 @@ class StatisticsCalculator:
         @type function to calculate total expense for a given month in means of overtimes
         @return a number representing total expense for a given month in means of overtimes
         '''
-        now = datetime.datetime.now()
+        now = datetime.now()
         curr_month_paymnets = Payment.objects.filter(
             month=Month(now.year, now.month))
         overtime_list = []
         for curr_month_payment in curr_month_paymnets:
             overtimes = curr_month_payment.overtimes.all()
             for overtime in overtimes:
+                print(overtime.overtime.overtime_type)
                 length_in_hour = overtime.end_time.hour - overtime.start_time.hour
                 length_in_minute = overtime.end_time.minute - overtime.start_time.minute
                 time_length = length_in_hour + length_in_minute / 60
+                print(time_length, month)
                 value = overtime.overtime.overtime_rate / 100 * \
                     curr_month_payment.salary * Decimal(time_length)
                 overtime_list.append(value)
-        return format(round(sum(overtime_list), 2), ',')
+        return round(sum(overtime_list), 2)
 
     @staticmethod
     def total_tax_expense_in_a_month(month: Month):
@@ -188,7 +197,7 @@ class StatisticsCalculator:
             calculator = SalaryCalculator(curr_month_payment)
             calculator.calc_income_tax()
             total_income_tax += calculator.income_tax
-        return (round(total_income_tax, 2))
+        return round(total_income_tax, 2)
 
     @staticmethod
     def total_expense_of_deductions_in_a_month(month: Month):
@@ -207,7 +216,7 @@ class StatisticsCalculator:
             month=month)
         total_deduction = sum(deductions)/100
         total_deduction = float(total_deduction) + float(income_tax)
-        return format(round(total_deduction, 2), ',')
+        return round(total_deduction, 2)
 
     @staticmethod
     def net_payment_of_month(month: Month):
@@ -237,4 +246,4 @@ class StatisticsCalculator:
             sum_basic_salary += salary.salary
         average = sum_basic_salary / len(payments)
 
-        return format(round(average, 2), ',')
+        return round(average, 2)
