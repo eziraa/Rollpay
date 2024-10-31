@@ -154,7 +154,7 @@ const DeductionSlice = createSlice({
       state.task_error = undefined;
     },
     resetDeductionState: (state, action: PayloadAction<DeductionState>) => {
-      state = { ...action.payload };
+      state = { ...state, ...action.payload };
     },
   },
 });
