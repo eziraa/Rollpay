@@ -127,6 +127,7 @@ const OvertimeSlice = createSlice({
     },
     resetOvertimeState: (state, action: PayloadAction<OvertimeState>) => {
       state = {
+        ...state,
         ...action.payload,
       };
     },

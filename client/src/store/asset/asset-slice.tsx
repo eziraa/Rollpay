@@ -6,10 +6,7 @@ import {
   Asset,
   AssetResponse,
 } from "../../typo/asset/response";
-import {
-  AddAssetParams,
-  EditAssetParams,
-} from "../../typo/asset/params";
+import { AddAssetParams } from "../../typo/asset/params";
 
 const InitialAssetState: AssetState = {
   adding: false,
@@ -73,7 +70,7 @@ const AssetSlice = createSlice({
       state.loading = false;
     },
     resetAssetState: (state, action: PayloadAction<AssetState>) => {
-      state = { ...action.payload };
+      state = { ...state, ...action.payload };
     },
   },
 });

@@ -95,8 +95,9 @@ const SalarySlice = createSlice({
     },
     resetSalaryState: (state, action: PayloadAction<PaymentState>) => {
       state = {
+        ...state,
         ...action.payload,
-      }
+      };
 
     }
   },

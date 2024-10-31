@@ -7,7 +7,6 @@ import { HomeIcon, SalaryIcon, UsersIcon } from "../../sections/left-menu/left-m
 import { MdExpandMore } from "react-icons/md";
 import { MenuItemInterface } from "../../../typo/menu/props";
 import { useState } from "react";
-import { FaUsers } from "react-icons/fa6";
 
 export const HomePage = () => {
   const [colapseEmployees, setColapseEmployees] = useState(false);

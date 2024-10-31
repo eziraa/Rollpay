@@ -74,7 +74,9 @@ export const AddDocument = () => {
               curr_emp: undefined,
             })
           );
-          dispatcher(addAssetDone(res.asset));
+          if ("asset" in res) {
+            dispatcher(addAssetDone(res.asset));
+          }
           dispatcher(
             setFlashMessage({
               type: "success",

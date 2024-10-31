@@ -152,7 +152,7 @@ const AllowanceSlice = createSlice({
       );
     },
     resetAllowanceState: (state, action: PayloadAction<AllowanceState>) => {
-      state = { ...action.payload };
+      state = { ...state, ...action.payload };
     },
   },
 });

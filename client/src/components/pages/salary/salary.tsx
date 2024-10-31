@@ -9,7 +9,6 @@ import {
   SearchInput,
   Button,
   ExportIcon,
-  TableRow,
   TableContainer,
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";

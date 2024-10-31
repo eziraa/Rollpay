@@ -145,6 +145,7 @@ const EmployeeSlice = createSlice({
     },
     resetEmployeeState: (state, action: PayloadAction<EmployeeState>) => {
       state = {
+        ...state,
         ...action.payload,
       };
     },

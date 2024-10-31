@@ -148,6 +148,7 @@ const PositionSlice = createSlice({
     },
     resetPositionState: (state, action: PayloadAction<PositionState>) => {
       state = {
+        ...state,
         ...action.payload,
       };
     },
