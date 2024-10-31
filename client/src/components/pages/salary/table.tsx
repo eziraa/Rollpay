@@ -6,27 +6,24 @@ export interface TableProps extends ThemeProps {
   gridCols: string;
 }
 
-export const CustomTable = styled("div").withConfig({
-  shouldForwardProp: (prop) => !["gridCols"].includes(prop),
-})<TableProps>`
+export const Table = styled.table<TableProps>`
   border-collapse: collapse;
   margin: 0;
   display: flex;
   flex-direction: column;
-  width: 100%;
   border: none;
   height: fit-content;
+  min-width: 114vw;
   tbody {
-    width: 100%;
     display: flex;
     flex-direction: column;
     max-height: 30rem;
+    overflow-x: hidden;
     ${custom_vertical_scroll_bar}
   }
   th,
   td {
     padding: 0.5rem;
-    text-align: left;
     font-size: 1.4rem;
     vertical-align: middle;
     color: aliceblue;
@@ -40,7 +37,7 @@ export const CustomTable = styled("div").withConfig({
     line-height: 2;
     background-color: ${({ theme }) => theme.table.header};
   }
-  tr:nth-child(even) {
+  tbody tr:nth-child(even) {
     background-color: ${({ theme }) =>
       addOpacityToColor(0.095, theme.colors.primary)};
   }
@@ -51,7 +48,7 @@ export const CustomTable = styled("div").withConfig({
       cursor: pointer;
     }
   }
-  tr:nth-child(even) {
+  tbody tr:nth-child(even) {
     background-color: aliceblue;
 
     background-color: ${({ theme }) =>

@@ -1,4 +1,9 @@
+import { ThreeDots } from "../../utils/loading/dots";
+import { TiInfo } from "react-icons/ti";
+import { IoMdClose } from "react-icons/io";
+import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { useEffect, useState } from "react";
+import CountUp from "react-countup";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { MonthCard } from "../../utils/curr-month-card/curr-month-card";
 import { PaymentStatistics } from "../../utils/payment-card/payment-statistics";
@@ -14,10 +19,6 @@ import {
   getPaymentStatRequest,
   getStatRequest,
 } from "../../../store/statistics/statistics-slice";
-import { ThreeDots } from "../../utils/loading/dots";
-import { TiInfo } from "react-icons/ti";
-import { IoMdClose } from "react-icons/io";
-import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 
 export const DashBoard = () => {
   const { stat, loading } = useStatistics();
@@ -74,7 +75,12 @@ export const DashBoard = () => {
                   <ThreeDots size={1} />
                 ) : (
                   <h4 className="font-extrabold text-3xl text-slate-600/90 ">
-                    {stat.total_employees * 137}
+                    <CountUp
+                      end={stat.total_employees * 137}
+                      duration={5}
+                      suffix="+"
+                      delay={2}
+                    />
                   </h4>
                 )}
               </div>
@@ -95,7 +101,12 @@ export const DashBoard = () => {
                   <ThreeDots size={1} />
                 ) : (
                   <h4 className="font-extrabold text-3xl text-slate-600/90">
-                    {stat.total_positions * 13}
+                    <CountUp
+                      end={stat.total_positions * 13}
+                      duration={5}
+                      suffix="+"
+                      delay={2}
+                    />
                   </h4>
                 )}
               </div>
@@ -116,7 +127,14 @@ export const DashBoard = () => {
                   <ThreeDots size={1} />
                 ) : (
                   <h4 className="font-extrabold text-3xl text-slate-600/90 ">
-                    {stat.avg_basic_salary} ETB
+                    <CountUp
+                      end={stat.avg_basic_salary}
+                      duration={5}
+                      suffix="+ ETB"
+                        delay={2}
+                        start={0}
+                        decimals={2}
+                    />
                   </h4>
                 )}
               </div>
@@ -137,7 +155,13 @@ export const DashBoard = () => {
                   <ThreeDots size={1} />
                 ) : (
                   <h4 className="font-extrabold text-3xl text-slate-600/90 ">
-                    {stat.curr_month_tax} ETB
+                    <CountUp
+                      end={stat.curr_month_tax}
+                      duration={5}
+                      suffix="+ ETB"
+                      delay={2}
+                      decimals={2}
+                    />
                   </h4>
                 )}
               </div>

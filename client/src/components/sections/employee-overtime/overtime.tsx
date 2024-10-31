@@ -21,7 +21,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { useAuth } from "../../../hooks/auth-hook";
 import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
 import { CustomTable } from "./table";
-import { Caption } from "../../utils/custom-table/custom-table";
+import { Caption } from "../../utils/custom-table/caption";
 
 export const EmployeeOvertime = () => {
   //Callig hooks and getting necessary information

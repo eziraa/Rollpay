@@ -8,13 +8,13 @@ import { MonthCardBody, MonthCardContainer } from "./curr-month-card.style";
 import { useStatistics } from "../../../hooks/statistics-hook";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { getStatRequest } from "../../../store/statistics/statistics-slice";
-import React from "react";
 import {
   AllowanceResponse,
   DeductionResponse,
   OvertimeResponse,
 } from "../../../typo/statistics/response";
 import { ThreeDots } from "../loading/dots";
+import CountUp from "react-countup";
 
 interface Props {
   statType: string;
@@ -107,7 +107,7 @@ export const MonthCard = ({ statType }: Props) => {
         ) : (
           <>
             <MonthCardBody>
-              <React.Fragment>
+              <>
                 <div className="container-fluid m-3">
                   <Chart
                     type="pie"
@@ -122,9 +122,19 @@ export const MonthCard = ({ statType }: Props) => {
                     }}
                   />
                 </div>
-              </React.Fragment>{" "}
+              </>{" "}
             </MonthCardBody>
-            <LargeText>Total: {stat.curr_month_allowances} ETB</LargeText>
+            <LargeText>
+              <CountUp
+                start={0}
+                delay={2}
+                duration={5}
+                end={stat.curr_month_allowances}
+                suffix="+ ETB"
+                prefix="Total: "
+                decimals={2}
+              />
+            </LargeText>
           </>
         )}
       </MonthCardContainer>
@@ -137,12 +147,12 @@ export const MonthCard = ({ statType }: Props) => {
         ) : (
           <>
             <MonthCardBody>
-              <React.Fragment>
-                <div className="container-fluid m-3">
+              <>
+                <div className=" m-3">
                   <Chart
                     type="pie"
-                    width={350}
-                    height={350}
+                    width={375}
+                    height={375}
                     series={deductiontData.series}
                     options={{
                       title: { text: "Deductions" },
@@ -150,11 +160,21 @@ export const MonthCard = ({ statType }: Props) => {
                       colors: colors.slice(0, deductiontData.series.length),
                       labels: deductiontData.labels,
                     }}
-                  ></Chart>
+                  />
                 </div>
-              </React.Fragment>{" "}
+              </>{" "}
             </MonthCardBody>
-            <LargeText>Total: {stat.curr_month_deductions} ETB</LargeText>
+            <LargeText>
+              <CountUp
+                start={0}
+                delay={2}
+                duration={5}
+                end={stat.curr_month_deductions}
+                suffix="+ ETB"
+                prefix="Total: "
+                decimals={2}
+              />
+            </LargeText>
           </>
         )}
       </MonthCardContainer>
@@ -167,7 +187,7 @@ export const MonthCard = ({ statType }: Props) => {
         ) : (
           <>
             <MonthCardBody>
-              <React.Fragment>
+              <>
                 <div className="container-fluid m-3">
                   <Chart
                     type="pie"
@@ -182,9 +202,19 @@ export const MonthCard = ({ statType }: Props) => {
                     }}
                   ></Chart>
                 </div>
-              </React.Fragment>{" "}
+              </>{" "}
             </MonthCardBody>
-            <LargeText>Total: {stat.curr_month_overtimes} ETB</LargeText>
+            <LargeText>
+              <CountUp
+                start={0}
+                delay={2}
+                duration={5}
+                end={stat.curr_month_overtimes}
+                suffix="+ ETB"
+                prefix="Total: "
+                decimals={2}
+              />
+            </LargeText>
           </>
         )}
       </MonthCardContainer>

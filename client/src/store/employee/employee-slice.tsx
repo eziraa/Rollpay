@@ -34,6 +34,7 @@ const EmployeeSlice = createSlice({
   reducers: {
     addEmpRequested: (state, _: PayloadAction<AddEmpParams>) => {
       state.task_finished = false;
+      state.task_error = undefined;
     },
 
     addEmpDone: (state, action: PayloadAction<Employee>) => {

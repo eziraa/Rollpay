@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Caption } from "../../utils/custom-table/custom-table";
+import { Caption } from "../../utils/custom-table/caption";
 import {
   AddButton,
   Body,

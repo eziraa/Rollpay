@@ -26,7 +26,7 @@ export const SalaryContainer = styled(MainContainer)`
   justify-content: start;
   height: 90vh;
   padding: 2rem;
-  width: auto;
+  width: fit-content;
 `;
 
 export const SalaryTitle = styled.h1`
@@ -126,7 +126,7 @@ export const TableContainer = styled.div`
   align-items: center;
   justify-content: start;
   width: fit-content;
-  max-width: 100%;
+  max-width: 80vw;
   ${custom_horizontal_scroll_bar}
 `;
 

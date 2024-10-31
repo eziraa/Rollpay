@@ -2,7 +2,10 @@ import { AxiosError } from "axios";
 import api from "../config/api";
 import { SearchParams } from "../typo/salary/params";
 import { BaseResponse } from "../typo/utils/response";
-import { PaginatedPayBackEndResponse } from "../typo/salary/response";
+import {
+  PaginatedPayBackEndResponse,
+  PaginatedPaymentResponse,
+} from "../typo/salary/response";
 const listEmployeeSalary = async (pageUrl?: string) => {
   const endpoint = pageUrl || "/employee/salary/get";
   const employees = await api
@@ -99,9 +102,10 @@ const raiseSalary = async (value: number) => {
   return response;
 };
 
-const paySalary = async (month: string) => {
-  const response = await api
-    .patch("/employee/pay/" + month)
+const paySalary = async (month: string, employee_id = "") => {
+  const urlEndpoint = employee_id ? `${employee_id}/` : "";
+  const response = (await api
+    .patch("/payments/pay/" + urlEndpoint + month)
     .then((res) => {
       return {
         results: res.data.results,
@@ -122,7 +126,7 @@ const paySalary = async (month: string) => {
           error: value,
           code: err.response?.status,
         } as { error: string; code: number };
-    });
+    })) as PaginatedPaymentResponse;
   return response;
 };
 

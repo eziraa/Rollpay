@@ -64,7 +64,7 @@ export const AddEmployee = () => {
       position: curr_position?.position_name || "",
     },
     validationSchema: AddEmployeeSchema,
-    onSubmit: (values, _) => {
+    onSubmit: (values, { resetForm }) => {
       dispatcher(
         resetEmployeeState({
           ...employee,
@@ -73,13 +73,17 @@ export const AddEmployee = () => {
         })
       );
       dispatcher(addEmpRequested(values));
+      // if (!task_error && task_finished) {
+      //   resetForm();
+      //   navigate(-1);
+      // }
     },
   });
-
   useEffect(() => {
     !task_error && task_finished && formHandler.isSubmitting && navigate(-1);
   }, [task_finished]);
 
+  const adding = !task_finished && !task_error;
   const clearTask = () => {
     dispatcher(closeEmployeeTask());
   };
@@ -283,7 +287,7 @@ export const AddEmployee = () => {
             )}
           </Column>
           <AddButton type="submit">
-            {!task_finished && task_error ? <SmallSpinner /> : "Add"}
+            {(!task_finished && !task_error) ? <SmallSpinner /> : "Add"}
           </AddButton>
         </AddEmployeeForm>
       </AddEmployeeContainer>

@@ -19,7 +19,7 @@ import { stringDay } from "../../utils/day/string-day";
 import { IoAddOutline } from "react-icons/io5";
 import { useAuth } from "../../../hooks/auth-hook";
 import DeleteConfirmationModal from "../../pages/admin/utils/model/ConfirmitionModal";
-import { Caption } from "../../utils/custom-table/custom-table";
+import { Caption } from "../../utils/custom-table/caption";
 import { CustomTable } from "../employee-overtime/table";
 
 export const EmployeeDeduction = () => {

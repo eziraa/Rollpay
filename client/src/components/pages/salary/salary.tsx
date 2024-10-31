@@ -5,19 +5,12 @@ import { useAppDispatch, useAppSelector } from "../../../utils/custom-hook";
 
 import {
   SalaryContainer,
-  SalaryTable,
   SearchContainer,
   SearchInput,
   Button,
   ExportIcon,
-  StartPaymentBtn,
-  TableContainer,
-  TableHeader,
-  HeaderTitle,
-  Vertical,
   TableRow,
-  TableData,
-  // ExportLabel,
+  TableContainer,
 } from "./salary.style";
 import { SearchIcon } from "../../utils/search/search.style";
 import {
@@ -38,7 +31,6 @@ import {
 } from "./utils";
 import { Label } from "../../sections/profile/profile.style";
 import { PaymentEmployee } from "../../../typo/payment/response";
-import { usePagination } from "../../../hooks/use-pagination";
 import { Outlet, useNavigate, useParams } from "react-router";
 
 import { TbFileTypePdf } from "react-icons/tb";
@@ -51,28 +43,24 @@ import { setFlashMessage } from "../../../store/notification/flash-messsage-slic
 import { PaginatedPaymentResponse } from "../../../typo/salary/response";
 import Pagination from "../../sections/pagination/pagination";
 import { addOpacityToColor } from "../../utils/convertor/add-opacity-color";
-
-const getNestValue = (
-  key: string,
-  value: string,
-  employee: PaymentEmployee
-) => {
+import { Table } from "./table";
+const getNestValue = (key: string, type: string, employee: PaymentEmployee) => {
   if (key === "overtimes") {
     const res: string | undefined = employee.overtimes.find(
-      (overtime) => overtime.overtime_type === value
+      (overtime) => overtime.overtime_type === type
     )?.overtime_rate;
     return res ? res : "-";
   }
 
   if (key === "allowances") {
     const res: number | undefined = employee.allowances.find(
-      (allowance) => allowance.allowance_type === value
+      (allowance) => allowance.allowance_type === type
     )?.allowance_rate;
     return res ? res + "%" : "-";
   }
   if (key === "deductions") {
     const res: number | undefined = employee.deductions.find(
-      (deduction) => deduction.deduction_type === value
+      (deduction) => deduction.deduction_type === type
     )?.deduction_rate;
     return res ? res + "%" : "-";
   }
@@ -83,11 +71,28 @@ export interface ColumnInterface {
   value: string;
   sub_columns?: ColumnInterface[];
 }
+
+const clalculateLength = (clumns: ColumnInterface[]): string[] => {
+  const lengths: string[] = [];
+  clumns.forEach((column) => {
+    if (column.sub_columns) {
+      lengths.push(...clalculateLength(column.sub_columns));
+    } else if (column.key === "month") {
+      lengths.push("10fr");
+    } else if (column.key === "employee_name") {
+      lengths.push("15fr");
+    } else {
+      lengths.push(column.value.length + "fr");
+    }
+  });
+  return lengths;
+};
 export const EmployeesSalaryPage = () => {
   // Calling  hooks and  Getting necessary information
   const dispatcher = useAppDispatch();
   const salary = useAppSelector((state) => state.salary);
   const [searchBy, _] = useState("first_name");
+  const [paying, setPaying] = useState(false);
   const [allowanceTypes, setAllowanceTypes] = useState<string[]>([]);
   const [deductionTypes, setDeductionTypes] = useState<string[]>([]);
   const { employees } = useAppSelector((state) => state.salary);
@@ -97,9 +102,10 @@ export const EmployeesSalaryPage = () => {
 
   const { year, month, changeMonth, changeYear } = useYearMonthPagination();
   const { year: query_year, month: query_month } = useParams();
-  const handlePay = (month: string) => {
-    const response: PaginatedPaymentResponse = SalaryAPI.paySalary(month)
-      .then(() => {
+  const handlePay = (month: string, employee_id = "") => {
+    setPaying(true);
+    SalaryAPI.paySalary(month, employee_id)
+      .then((response: PaginatedPaymentResponse) => {
         dispatcher(
           setFlashMessage({
             type: "success",
@@ -109,6 +115,9 @@ export const EmployeesSalaryPage = () => {
             desc: "Salary paid successfully",
           })
         );
+        if (response.results.length > 0) {
+          dispatcher(getSalariesDone(response));
+        }
       })
       .catch(() => {
         dispatcher(
@@ -120,11 +129,10 @@ export const EmployeesSalaryPage = () => {
             desc: "Please try again later",
           })
         );
+      })
+      .finally(() => {
+        setPaying(false);
       });
-    if (response.results.length > 0) {
-      dispatcher(getSalariesDone(response));
-      window.location.reload();
-    }
   };
   useEffect(() => {
     if (query_year && query_month) {
@@ -175,17 +183,18 @@ export const EmployeesSalaryPage = () => {
 
     return () => clearTimeout(loadEmployee);
   }, [search_val]);
+
   useEffect(() => {
+    let column: ColumnInterface[] = [];
     setAllowanceTypes(Array.from(getAllowancesTypes(employees)));
     setDeductionTypes(Array.from(getDeductionTypes(employees)));
-    let column: ColumnInterface[] = [];
     if (employees.length > 0)
       column = Object.entries(employees[0])
         .filter(([key]) => key !== "salary_history")
         .map(([key, value]) => {
-          if (key === "payment_date") {
+          if (key.includes("_")) {
             return {
-              key: "payment_date",
+              key: key,
               value: key
                 .split("_")
                 .map((item) => item[0].toUpperCase() + item.slice(1))
@@ -273,18 +282,18 @@ export const EmployeesSalaryPage = () => {
             value: "",
           };
         });
-
     column && setColumns(column);
   }, [employees]);
 
   const [employeeSalary, setEmployeeSalary] = useState<PaymentEmployee[]>([]);
-
+  if (!salary.loading) {
+    clalculateLength(table_col);
+  }
   useEffect(() => {
     if (salary.searching && salary.search_response)
       setEmployeeSalary(salary.search_response || []);
     else setEmployeeSalary(salary.employees || []);
   }, [salary.employees, salary.search_response]);
-
   return (
     <SalaryContainer>
       <EmpsDisplayerHeader>
@@ -293,7 +302,7 @@ export const EmployeesSalaryPage = () => {
 
       <EmpsDisplayerHeader>
         <SearchContainer>
-          <SearchIcon color={addOpacityToColor(0.75, "#444444")} />
+          <SearchIcon color={addOpacityToColor(0.75, "#36fb88")} />
           <SearchInput
             onChange={(e) => {
               setSearchVal(e.currentTarget.value);
@@ -366,99 +375,118 @@ export const EmployeesSalaryPage = () => {
           </Select>
         </Label>
       </EmpsDisplayerHeader>
-      {salary.loading ? (
+      {salary.loading || table_col.length < 5 ? (
         <ThreeDots size={1} />
       ) : (
-        <TableContainer className="shadow-lg">
-          <SalaryTable id="table" className="shadow-lg">
-            <TableHeader
-              style={{
-                width: "150rem",
-              }}
-            >
-              {table_col.length > 0 &&
-                table_col.map((column) => {
-                  if (!column.sub_columns) {
-                    return (
-                      <HeaderTitle
-                        style={{
-                          flex:
-                            column.key === "month"
-                              ? column.key.length * 2
-                              : `${column.key.length}`,
-                        }}
-                      >
-                        {column.value}
-                      </HeaderTitle>
-                    );
-                  } else {
-                    return (
-                      <Vertical>
-                        <HeaderTitle
+        <TableContainer>
+          <Table
+            style={{
+              zIndex: 5000,
+            }}
+            gridCols={clalculateLength(table_col).join(" ") + " 8fr"}
+            className="shadow-lg"
+          >
+            <thead id="table" className="shadow-lg">
+              <tr>
+                {table_col.length > 0 &&
+                  table_col.map((column) => {
+                    if (!column.sub_columns) {
+                      return (
+                        <th
                           style={{
-                            flex: column.sub_columns.reduce(
-                              (acc, column) => acc + column.value.length,
-                              0
-                            ),
+                            gridRowEnd: "span 2",
                           }}
                         >
                           {column.value}
-                        </HeaderTitle>
-                        {
-                          <TableHeader>
-                            {column.sub_columns?.map((value) => (
-                              <HeaderTitle
-                                style={{
-                                  flex: value.key ? `${value.key.length}` : "7",
-                                }}
-                              >
-                                {value.value}
-                              </HeaderTitle>
-                            ))}
-                          </TableHeader>
+                        </th>
+                      );
+                    } else {
+                      return (
+                        <th
+                          style={{
+                            textAlign: "center",
+                            gridColumnEnd: `span ${column.sub_columns.length}`,
+                          }}
+                        >
+                          <span>{column.value}</span>
+                        </th>
+                      );
+                    }
+                  })}
+                <th
+                  style={{
+                    gridRowEnd: "span 2",
+                  }}
+                >
+                  Actions
+                </th>
+                {table_col.length > 0 &&
+                  table_col.map((column) => {
+                    if (column.sub_columns) {
+                      return column.sub_columns.map((sub_column) => (
+                        <th>
+                          <span>{sub_column.value}</span>
+                        </th>
+                      ));
+                    }
+                  })}
+              </tr>
+            </thead>
+            <tbody>
+              {employeeSalary
+                .filter((employee) => employee)
+                .map((employee) => (
+                  <tr key={employee.employee_id}>
+                    {table_col.length > 0 &&
+                      table_col.map((column) => {
+                        if (!column.sub_columns) {
+                          const value =
+                            employee[column.key as keyof PaymentEmployee];
+                          if (typeof value !== "boolean" && !!value) {
+                            return <td>{value?.toString()}</td>;
+                          }
+                          return (
+                            <td className="text-center ">
+                              {value ? (
+                                <span className="success w-full text-center ">
+                                  paid
+                                </span>
+                              ) : (
+                                <span className="warning w-full text-center">
+                                  not paid
+                                </span>
+                              )}
+                            </td>
+                          );
+                        } else {
+                          return column.sub_columns?.map((value) => (
+                            <td className="center-text">
+                              <span className="center-text">
+                                {getNestValue(
+                                  column.key,
+                                  value.value,
+                                  employee
+                                )}
+                              </span>
+                            </td>
+                          ));
                         }
-                      </Vertical>
-                    );
-                  }
-                })}
-            </TableHeader>
-            {employeeSalary
-              .filter((employee) => employee)
-              .map((employee) => (
-                <TableRow key={employee.employee_id}>
-                  {table_col.length > 0 &&
-                    table_col.map((column) => {
-                      if (!column.sub_columns) {
-                        return (
-                          <TableData
-                            style={{
-                              flex:
-                                column.key === "month"
-                                  ? column.key.length * 2
-                                  : `${column.key.length}`,
-                            }}
-                          >
-                            {employee[column.key]}
-                          </TableData>
-                        );
-                      } else {
-                        return column.sub_columns?.map((value) => (
-                          <TableData
-                            style={{
-                              flex: value.key ? `${value.key.length}` : "7",
-                            }}
-                            className="center-text"
-                          >
-                            <span className="center-text">
-                              {getNestValue(column.key, value.value, employee)}
-                            </span>
-                          </TableData>
-                        ));
-                      }
-                    })}
-                </TableRow>
-              ))}
-          </SalaryTable>
+                      })}
+                    <td>
+                      <button
+                        disabled={paying}
+                        className={(paying ? "bg-slate-200 text-slate-500 cursor-not-allowed" : "") + " w-full capitalize bg-slate-300 rounded-md py-1 hove:bg-slate-400  "} 
+                        onClick={() => {
+                          handlePay(employee.month, employee.employee_id);
+                        }}
+                      >
+                        {employee.payment_date ? "reset" : "pay"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
         </TableContainer>
       )}
       <Outlet />
