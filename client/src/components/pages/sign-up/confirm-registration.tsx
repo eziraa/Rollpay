@@ -2,11 +2,10 @@
 import { useState, useEffect } from "react";
 import Loader from "./loader"; // Adjust the import based on your project structure
 import api from "../../../config/api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuoteLeft, faQuoteRight } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { reset } from "../../../store/user/user-slice";
 import { useNavigate } from "react-router-dom";
+import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 
 const ConfirmRegistration = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -116,16 +115,10 @@ const ConfirmRegistration = () => {
             <h1
               className={`text-2xl font-bold bg-${color}-100 text-${color}-600 p-2 w-full rounded-md mb-4`}
             >
-              <FontAwesomeIcon
-                icon={faQuoteLeft}
-                className={`mr-2 mb-1 text-${color}-500`}
-              />
+              <FaQuoteLeft className={`mr-2 mb-1 text-${color}-500`} />
               {response.error}
               {response.message}
-              <FontAwesomeIcon
-                icon={faQuoteRight}
-                className={`ml-2 mr-2 mb-1 text-${color}-500`}
-              />
+              <FaQuoteRight className={`ml-2 mr-2 mb-1 text-${color}-500`} />
             </h1>
             {response.resend && (
               <button
