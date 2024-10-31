@@ -14,11 +14,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z7@x5h8_ej8a-9oj&6q6ya-v^yr^v!%$vu&acg+@3=)%$di42^'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+FRONT_END_URL = os.getenv('FRONT_END_URL', '')
 ALLOWED_HOSTS = []
 
 # Authentication defination
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'employee',
     'rest_framework',
     'corsheaders',
-
+    'django_q',
 ]
 
 
@@ -63,21 +63,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
-
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    FRONT_END_URL,
 ]
 APPEND_SLASH = False
 ROOT_URLCONF = 'payroll.urls'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    FRONT_END_URL,
     # other origins...
 ]
-
+CSRF_TRUSTED_ORIGINS = [FRONT_END_URL]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -154,3 +152,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', '')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', "")
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', "")
+
+
+# TO USE django-q TASK SCHEDULING
+Q_CLUSTER = {
+    'name': 'DjangORM',
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 60,
+    'django_redis': 'default',
+    'retry': 3600,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
