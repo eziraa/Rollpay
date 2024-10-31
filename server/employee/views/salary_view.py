@@ -82,7 +82,6 @@ class SalaryView(APIView):
                 #                         allowance=allowance, payment=payment)
                 #                     allowance.save()
                 #                 for overtime in Overtime.objects.all():
-                #                     print(overtime)
                 #                     if payment.overtimes.filter(overtime=overtime):
                 #                         continue
                 #                     start_at = datetime.datetime.now()
@@ -104,12 +103,16 @@ class SalaryView(APIView):
                 #     for employee in Employee.objects.all():
                 #         Payment.objects.create(employee=employee, month=curr_month, salary=SalaryManager.get_basic_salary(employee=employee))
                 queryset = Payment.objects.all().order_by("month")
+                today = datetime.datetime.today()
+                curr_month = curr_month if curr_month else today.month
+                year = year if year else today.year
                 if curr_month and year:
                     try:
                         queryset = queryset.filter(
                             month=month.Month((year), month=curr_month))
                     except Exception as e:
                         return JsonResponse({"error": str(e)}, status=400)
+
                 paginator = StandardResultsSetPagination()
                 paginator.page_size = request.query_params.get(
                     "page_size", 10)
