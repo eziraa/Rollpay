@@ -67,6 +67,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     FRONT_END_URL,
+    "https://payroll-green.vercel.app/"
 ]
 APPEND_SLASH = False
 ROOT_URLCONF = 'payroll.urls'

@@ -383,7 +383,8 @@ export const EmployeesSalaryPage = () => {
               zIndex: 5000,
             }}
             gridCols={clalculateLength(table_col).join(" ") + " 8fr"}
-            className="shadow-lg"
+            className="shadow-lg "
+            id="table"
           >
             <thead id="table" className="shadow-lg">
               <tr>
@@ -474,7 +475,12 @@ export const EmployeesSalaryPage = () => {
                     <td>
                       <button
                         disabled={paying}
-                        className={(paying ? "bg-slate-200 text-slate-500 cursor-not-allowed" : "") + " w-full capitalize bg-slate-300 rounded-md py-1 hove:bg-slate-400  "} 
+                        className={
+                          (paying
+                            ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+                            : "") +
+                          " w-full capitalize bg-slate-300 rounded-md py-1 hove:bg-slate-400  "
+                        }
                         onClick={() => {
                           handlePay(employee.month, employee.employee_id);
                         }}
