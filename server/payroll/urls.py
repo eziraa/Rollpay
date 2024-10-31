@@ -12,6 +12,7 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="refresh"),
     path("api-auth/", include("rest_framework.urls")),
     path('employee/', include('employee.urls.employee')),
+    path('otp/', include('employee.urls.otp')),
     path('position/', include('employee.urls.position')),
     path('deduction/', include('employee.urls.deduction')),
     path('allowance/', include('employee.urls.allowance')),
@@ -22,6 +23,7 @@ urlpatterns = [
     path('stat/', include('employee.urls.stat')),
     path('role/', include('employee.urls.role')),
     path('asset/', include('employee.urls.asset')),
+    path('payments/', include('employee.urls.payment')),
     path('server-time', get_server_time, name='__get_servr_time__')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -61,7 +61,6 @@ urlpatterns = [
          name='__update_emoployee__'),
     path("contract/<str:employee_id>",
          EmployeeAssetView.as_view(), name='_employement_contract__'),
-    path('pay/<month>', payment.PaymentView.as_view(), name='__pay_salary__')
 
 
 
