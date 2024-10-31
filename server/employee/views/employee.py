@@ -19,6 +19,7 @@ from employee.serializers.position import PositionSerializer
 from employee.permissions.clerk_permission import IsUserInGroupWithClerk
 from employee.serializers.payment import MonthlyPaymentSerializer
 from employee.views.utils.pagination import StandardResultsSetPagination
+from employee.views.user_views import RoleManager
 from ..models import *
 
 
@@ -27,25 +28,6 @@ class EmployeeView (APIView):
 
     def get(self, request: Request, employee_id=None, format=None):
         try:
-            # employees = Employee.objects.all()
-            # for employee in employees:
-            #     employee.position.clear()
-            #     if employee.user:
-            #         if employee.user.role.name == 'Clerk':
-            #             employee.position.add(
-            #                 random.choice(Position.objects.filter(position_name="Clerk")))
-            #             employee.save()
-            #         elif employee.user.role.name == 'sys_admin':
-            #             employee.position.add(
-            #                 random.choice(Position.objects.filter(position_name="System Administrator")))
-            #             employee.save()
-            #         employee.position.add(
-            #             random.choice(Position.objects.exclude(position_name="System Administrator").exclude(position_name="Clerk")))
-            #         employee.save()
-            #     else:
-            #         employee.position.add(
-            #             random.choice(Position.objects.exclude(position_name="System Administrator").exclude(position_name="Clerk")))
-            #         employee.save()
             if employee_id:
                 employee = Employee.objects.get(id=employee_id)
                 serializer = EmployeeSerializer(employee)
@@ -79,7 +61,14 @@ class EmployeeView (APIView):
             position = Position.objects.get(position_name=data['position'])
             data.pop('position')
             employee = Employee.objects.create(**data)
-            employee.position.add(position)
+            try:
+                EmployeePosition.objects.create(
+                    employee=employee,
+                    position=position,
+                    start_date=data['date_of_hire']
+                )
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
             employee.save()
             salary = Salary.objects.create(
                 basic_salary=position.basic_salary, employee=employee)
@@ -164,7 +153,24 @@ class EmployeeView (APIView):
             employee = Employee.objects.get(pk=employee_id)
         except Employee.DoesNotExist:
             return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        
+        position = request.data.get('position')
+        salary = request.data.get('salary')
+        user = employee.user
+        if position and employee.positions.all().last().position.position_name != position:
+            if not Position.objects.filter(position_name=position).exists():
+                return JsonResponse({'error': 'Position does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+            position = Position.objects.get(position_name=position)
+            EmployeePosition.objects.create(
+                employee=employee,
+                position=position,
+                start_date=datetime.datetime.now()
+            )
+            if user:
+                RoleManager.add_role(user, position.position_name)
+        if salary and salary != employee.salaries.all().last().basic_salary:
+            Salary.objects.create(
+                basic_salary=salary, employee=employee
+            )
         if asset_type:
             year = request.query_params['year']
             curr_month = request.query_params['month']
@@ -230,7 +236,7 @@ class EmployeeView (APIView):
                     return Response({"error": "No payment found for this month"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({"error": "Please have year and month to remove "}, status=status.HTTP_400_BAD_REQUEST)
-        else:        
+        else:
             serializer = EmployeeSerializer(employee, request.data)
             if serializer.is_valid():
                 serializer.save()

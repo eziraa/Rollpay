@@ -7,7 +7,12 @@ from employee.serializers.permissions import PermissionSerializer
 import json
 
 class GroupView(APIView):
-    def get(self, request: Request, *args, **kwargs):
+    def get(self, request: Request, group_id=None, *args, **kwargs):
+
+        if group_id is not None:
+            group = Group.objects.get(id=group_id)
+            serializer = GroupSerializer(group)
+            return Response(serializer.data, status=200)
         data = GroupSerializer(Group.objects.all(), many=True).data
         return Response(data=data, status=200)
 
@@ -66,6 +71,7 @@ class GroupView(APIView):
         group.name = group_name
         permissions = Permission.objects.filter(
             codename__in=group_permissions)
+        group.permissions.clear()
         for permission in permissions:
             group.permissions.add(permission)
         group.save()

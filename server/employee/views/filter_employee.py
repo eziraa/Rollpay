@@ -1,9 +1,10 @@
 from decimal import Decimal
-from django.views.generic import ListView
+from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Max, Q
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
-# Assuming your model is named Employee and located in models.py
-from ..models import Employee
+from ..models import Employee, EmployeePosition
 from employee.serializers.employee import EmployeeSerializer
 from employee.views.utils.pagination import StandardResultsSetPagination
 
@@ -26,8 +27,6 @@ class FilterEmployeeView(APIView):
         # Apply filters
         # Assuming there's no queryset defined in your view
         queryset = Employee.objects.all()
-        if position:
-            queryset = queryset.filter(position=position)
         if date_from:
             queryset = queryset.filter(
                 date_of_hire__gte=date_from)
@@ -41,9 +40,6 @@ class FilterEmployeeView(APIView):
         if salary_max:
             queryset = [
                 employee for employee in queryset if employee.salaries.all().last().basic_salary <= Decimal(salary_max)]
-
-
-
         # Apply search
         if filter_by:
             if filter_by == 'name':
@@ -64,7 +60,19 @@ class FilterEmployeeView(APIView):
             else:
                 name = self.request.GET.get('search_value')
                 queryset = queryset.filter(first_name__icontains=name)
-        # Apply ordering
+        if position:
+            # Get the latest EmployeePosition for each employee (by start_date or no end_date)
+            latest_position = EmployeePosition.objects.filter(
+                employee=OuterRef('pk')
+            ).order_by('-start_date').values('position__position_name')[:1]
+
+            # Annotate the queryset with the latest position name
+            employees_with_latest_position = queryset.annotate(
+                latest_position_name=Subquery(latest_position)
+            )
+            queryset = employees_with_latest_position.filter(
+                latest_position_name=position
+            )
         paginator = StandardResultsSetPagination()
         paginator.page_size = request.query_params.get("page_size", 10)
         page = paginator.paginate_queryset(queryset, request)
