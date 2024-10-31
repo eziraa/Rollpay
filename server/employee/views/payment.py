@@ -15,11 +15,9 @@ import datetime
 class PaymentView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-
     def post(self, request: Request, employee_id=None, year=None, curr_month=None):
         if employee_id:
             employee = Employee.objects.get(id=employee_id)
-            total_year = year if year is not None else 2022
             curr_month = curr_month if curr_month is not None else 13
             if year and curr_month:
                res = self.create_payment(employee=employee,
@@ -52,17 +50,24 @@ class PaymentView(APIView):
                     for year in range(2022, 2025):
                         for curr_month in range(1, 13):
                             self.create_payment(employee, month=curr_month)
-    def patch(self, request, month):
+    def patch(self, request, month=None, employee_id=None):
         try:
-            payments = Payment.objects.filter(month=month)
+            if month:
+                payments = Payment.objects.filter(month=month)
+            else:
+                return Response({"error": "month not provided"}, status=status.HTTP_400_BAD_REQUEST)
+            if employee_id:
+                payments = payments.filter(employee_id=employee_id)
         except payments.DoesNotExist:
             return Response({"error": "payment not found"}, status=status.HTTP_404_NOT_FOUND)
-      
+        
         for payment in payments:
             if payment.payment_date == None:
                 payment.payment_date = datetime.datetime.now().date()
+            elif payment.payment_date and employee_id:
+                payment.payment_date = None
             payment.save()
-        queryset = payments
+        queryset = Payment.objects.filter(month=month)
         paginator = StandardResultsSetPagination()
         paginator.page_size = request.query_params.get(
             "page_size", 10)
