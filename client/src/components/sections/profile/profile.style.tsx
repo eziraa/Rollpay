@@ -66,6 +66,7 @@ export const ItemContainer = styled.div<ThemeProps>`
   padding: 0.5rem 1rem;
   align-items: center;
   justify-content: start;
+  z-index: 4000;
   gap: 0.5rem;
   color: ${({ theme }) => theme.colors.primary};
   &:hover {

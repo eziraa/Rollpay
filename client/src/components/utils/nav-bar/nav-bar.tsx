@@ -49,7 +49,16 @@ export const NavigationBar = () => {
           navigate("salary-history");
         }}
       >
-        Salary History
+        Salaries
+      </NavItem>
+      <NavItem
+        active={location.pathname.includes("/position-history")}
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("position-history");
+        }}
+      >
+        Positions
       </NavItem>
     </NavBar>
   );

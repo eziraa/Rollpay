@@ -51,18 +51,29 @@ export const DashBoardCard = styled.div`
     addOpacityToColor(0.02, theme.colors.primary)};
   transition: transform 0.5s ease-in-out;
   cursor: pointer;
-
+  flex: 1;
   /* ${mini_shadow} */
 `;
 
+export const Card = styled.div<ThemeProps>`
+  ${column_template_js_center};
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: transform 0.5s ease-in-out;
+  cursor: pointer;
+  width: fit-content;
+`;
 export const CardBody = styled.div`
   ${row_template_js_space_between};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 2.5rem;
   width: 100%;
-  padding: 2rem 0;
+  padding: 0 1rem;
 `;
 
 export const DataBox = styled.div`
@@ -290,14 +301,8 @@ export const BrokenLine = styled.div`
 `;
 
 export const Image = styled.img`
-  width: 7rem;
-  height: 7rem;
+  width: 8rem;
+  height: 6rem;
   object-fit: cover;
-  border-radius: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
   display: block;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;

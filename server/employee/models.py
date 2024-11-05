@@ -2,10 +2,12 @@ import uuid
 from django.contrib.auth.models import User
 from typing import Any
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User as BaseUser, Group
 from month.models import MonthField
 import datetime
 import random
+
 def upload_to(instance, filename):
     return 'photos/{filename}'.format(filename = filename)
 
@@ -26,9 +28,6 @@ class CustomUser(BaseUser):
     role = models.ForeignKey(
         Role, on_delete=models.DO_NOTHING, null=True, blank=True)
 
-    # def __init__(self, *args: Any, **kwargs: Any) -> None:
-    #     super().__init__(*args, **kwargs)
-    #     self.id = CustomUser.id_generator()
 
 
 
@@ -139,6 +138,8 @@ class Salary(models.Model):
     basic_salary = models.DecimalField(
         max_digits=12, decimal_places=2, blank=True, null=False)
     start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField(null=True, blank=True)
+    reason = models.TextField(null=True, blank=True)
     employee = models.ForeignKey(
         Employee, on_delete=models.CASCADE, related_name="salaries")
 
@@ -165,9 +166,9 @@ class Payment(models.Model):
 class OvertimeItem (models.Model):
     overtime = models.ForeignKey(Overtime, on_delete=models.CASCADE)
     start_time = models.DateTimeField(
-        null=False, blank=False, default=datetime.datetime.now())
+        null=False, blank=False, default=timezone.now())
     end_time = models.DateTimeField(
-        null=False, blank=False, default=datetime.datetime.now())
+        null=False, blank=False, default=timezone.now())
     payment = models.ForeignKey(
         Payment, null=False, related_name="overtimes", blank=False, on_delete=models.CASCADE)
 

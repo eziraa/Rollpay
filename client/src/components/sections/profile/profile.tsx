@@ -29,12 +29,18 @@ const Profile = ({ close }: { close: () => void }) => {
         e.stopPropagation();
         close();
       }}
-      className=" fixed inset-0 flex justify-center items-center "
+      className=" bg fixed inset-0 flex justify-center items-center "
       style={{
         zIndex: 1000,
       }}
     >
-      <Modal onClick={(e) => e.stopPropagation()}>
+      <Modal
+        className="bg-red-500 "
+        style={{
+          zIndex: 5000,
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <ItemContainer>
           <IconContainer>
             <FaRegUser />

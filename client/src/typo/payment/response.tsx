@@ -2,8 +2,15 @@ import { Employee } from "../employee/response";
 import { Allowance, Deduction, Overtime } from "../salary/response";
 export interface SalaryHistory {
   salary: number;
-  from: string;
-  to: string;
+  start_date: string;
+  end_date: string;
+  reason: string;
+}
+
+export interface PositionHistory {
+  position_name: number;
+  start_date: string;
+  end_date: string;
 }
 
 export interface Payment {
@@ -19,6 +26,7 @@ export interface Payment {
   payment_status: boolean;
   month: string;
   salary_history: SalaryHistory[];
+  position_history: PositionHistory[];
 }
 
 export interface PaymentEmployee extends Payment {

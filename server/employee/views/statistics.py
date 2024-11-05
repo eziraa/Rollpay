@@ -13,7 +13,6 @@ class StatisticsView(APIView):
     def get(self, request, *args, **kwargs):
         payment = Payment.objects.all().first()
         serializer = StatisticsSerializer(payment)
-  
         return Response(data=serializer.data, status=200)
 
     def post(self, *args, **kwargs):

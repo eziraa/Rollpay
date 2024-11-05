@@ -189,7 +189,7 @@ export const EmployeesSalaryPage = () => {
     setDeductionTypes(Array.from(getDeductionTypes(employees)));
     if (employees.length > 0)
       column = Object.entries(employees[0])
-        .filter(([key]) => key !== "salary_history")
+        .filter(([key]) => key !== "salary_history" && key !== "position_history")
         .map(([key, value]) => {
           if (key.includes("_")) {
             return {

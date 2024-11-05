@@ -28,7 +28,7 @@ class StatisticsCalculator:
         curr_month_payments = Payment.objects.filter(month=month)
         deductions_dict = {}
         for curr_month_payment in curr_month_payments:
-
+  
             for deduction in curr_month_payment.deductions.all():
                 deduction_type = deduction.deduction.deduction_type
                 total_deduction_rate = deduction.deduction.deduction_rate or 0
@@ -174,11 +174,9 @@ class StatisticsCalculator:
         for curr_month_payment in curr_month_paymnets:
             overtimes = curr_month_payment.overtimes.all()
             for overtime in overtimes:
-                print(overtime.overtime.overtime_type)
                 length_in_hour = overtime.end_time.hour - overtime.start_time.hour
                 length_in_minute = overtime.end_time.minute - overtime.start_time.minute
                 time_length = length_in_hour + length_in_minute / 60
-                print(time_length, month)
                 value = overtime.overtime.overtime_rate / 100 * \
                     curr_month_payment.salary * Decimal(time_length)
                 overtime_list.append(value)

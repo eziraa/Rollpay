@@ -82,9 +82,15 @@ const getEmployeeSalary = async (pageUrl: string) => {
   return response;
 };
 
-const raiseSalary = async (value: number) => {
+const raiseSalary = async (values: {
+  rate: number;
+  reason: string;
+  employees: number[];
+}) => {
   const response = await api
-    .post(`/employee/salary/raise/${value}`)
+    .post(`/employee/salary/raise`, {
+      ...values,
+    })
     .then((res) => {
       return {
         employees: res.data,

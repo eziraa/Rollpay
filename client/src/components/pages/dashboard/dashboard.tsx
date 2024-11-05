@@ -40,7 +40,7 @@ export const DashBoard = () => {
 
   return (
     <DashboardContainer>
-      {openInfo && (
+      {!openInfo && (
         <div
           className={
             "border-green-400/60 px-3 py-2 relative justify-start w-full border-2 -z-0  flex  items-center space-x-2 rounded-md "
@@ -76,7 +76,7 @@ export const DashBoard = () => {
                 ) : (
                   <h4 className="font-extrabold text-3xl text-slate-600/90 ">
                     <CountUp
-                      end={stat.total_employees * 137}
+                      end={stat.total_employees}
                       duration={5}
                       suffix="+"
                       delay={2}
@@ -102,7 +102,7 @@ export const DashBoard = () => {
                 ) : (
                   <h4 className="font-extrabold text-3xl text-slate-600/90">
                     <CountUp
-                      end={stat.total_positions * 13}
+                      end={stat.total_positions}
                       duration={5}
                       suffix="+"
                       delay={2}
@@ -131,9 +131,9 @@ export const DashBoard = () => {
                       end={stat.avg_basic_salary}
                       duration={5}
                       suffix="+ ETB"
-                        delay={2}
-                        start={0}
-                        decimals={2}
+                      delay={2}
+                      start={0}
+                      decimals={2}
                     />
                   </h4>
                 )}

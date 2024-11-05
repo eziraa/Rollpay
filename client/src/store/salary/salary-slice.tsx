@@ -84,7 +84,10 @@ const SalarySlice = createSlice({
     raiseError: (state, action: PayloadAction<string>) => {
       state.task_error = action.payload;
     },
-    raiseSalaryRequest: (state, _: PayloadAction<number>) => {
+    raiseSalaryRequest: (
+      state,
+      _: PayloadAction<{ rate: number; reason: string; employees: number[] }>
+    ) => {
       state.adding = true;
     },
     raiseSalaryDone: (state, action: PayloadAction<PaymentEmployee[]>) => {
@@ -98,8 +101,7 @@ const SalarySlice = createSlice({
         ...state,
         ...action.payload,
       };
-
-    }
+    },
   },
 });
 export const {

@@ -46,7 +46,7 @@ export const HomePage = () => {
       exapandItems: setColapseSalary,
       sub_menu_items: [
         {
-          title: "Employees Payroll",
+          title: "Payroll",
           path: "/payroll",
           icon: <SalaryIcon />,
         },

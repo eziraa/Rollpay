@@ -46,20 +46,22 @@ export const EmployeeSalary = () => {
             <NoResult>No salary history found</NoResult>
           </div>
         ) : (
-          <CustomTable className="shadow-md" gridCols="1fr 1fr 1fr">
+          <CustomTable className="shadow-md" gridCols="1fr 1fr 1fr 2fr">
             <thead>
               <tr>
                 <th>From</th>
                 <th>To</th>
                 <th>Salary</th>
+                <th>Reason</th>
               </tr>
             </thead>
             <tbody>
               {uniqueSalaryHistory.map((salary, index) => (
                 <tr key={index}>
-                  <td>{salary.from}</td>
-                  <td>{salary.to}</td>
-                  <td>{salary.salary}</td>
+                  <td>{salary.start_date}</td>
+                  <td>{salary.end_date}</td>
+                  <td>{salary.basic_salary}</td>
+                  <td>{salary.reason}</td>
                 </tr>
               ))}
             </tbody>

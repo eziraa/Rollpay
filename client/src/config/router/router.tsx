@@ -71,6 +71,7 @@ import {
   EditRole,
   loader as roleLoader,
 } from "../../components/pages/admin/roles/edit-role";
+import { EmployeePosition } from "@/components/sections/employee-salary/employee-position";
 
 export const userRoute = (base_end_point: string): RouteObject[] => [
   {
@@ -91,6 +92,7 @@ export const userRoute = (base_end_point: string): RouteObject[] => [
           { path: "deductions/:year/:month", element: <EmployeeDeduction /> },
           { path: "assets", element: <EmployeeAsset /> },
           { path: "salary-history", element: <EmployeeSalary /> },
+          { path: "position-history", element: <EmployeePosition /> },
         ],
       },
     ],
@@ -290,6 +292,7 @@ export const clerk_routes: RouteObject[] = [
                 children: [{ path: "add-position", element: <AddPosition /> }],
               },
               { path: "salary-history", element: <EmployeeSalary /> },
+              { path: "position-history", element: <EmployeePosition /> },
               { path: "delete", element: <CheckFlashMessage /> },
             ],
           },

@@ -12,10 +12,13 @@ export const OvertimeContainer = styled.div`
 
 export const OvertimeBody = styled.div`
   ${add_body}
+  
 `;
 
 export const AddBtn = styled.button`
   ${add_btn}
 `;
 
-export const OvertimeForm = styled(Form)``;
+export const OvertimeForm = styled(Form)`
+  width: fit-content;
+`;

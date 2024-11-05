@@ -24,6 +24,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
          return obj.salaries.all().last().basic_salary
         else:
             return 0
+        return 0
 
     def get_position(self, obj: Employee):
         if obj.positions.all():

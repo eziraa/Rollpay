@@ -4,7 +4,7 @@ import {
   SeeEmployeeHeader,
 } from "../see-employee/see-employee.style";
 
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../utils/custom-hook";
 import { NavigationBar } from "../../utils/nav-bar/nav-bar";
@@ -22,6 +22,8 @@ import { MainContainer } from "../../utils/pages-utils/containers.style";
 
 const UserProfile = () => {
   const employee = useSalary().curr_emp?.employee;
+  const { pathname } = useLocation();
+
   const { year: query_year, month: query_month, employee_id } = useParams();
   const dispatcher = useAppDispatch();
   const {
@@ -68,44 +70,48 @@ const UserProfile = () => {
       >
         <SeeEmployeeHeader>
           <NavigationBar />
-          <Label
-            style={{
-              fontSize: "1.5rem",
-              display: "flex",
-              gap: "1rem",
-            }}
-          >
-            <Select
-              value={`${query_year || current_year}`}
-              onChange={(e) => {
-                changeYear(+e.target.value);
+          {!["salary-history", "position-history", "assets"].includes(
+            pathname.split("/").slice(-1)[0]
+          ) && (
+            <Label
+              style={{
+                fontSize: "1.5rem",
+                display: "flex",
+                gap: "1rem",
               }}
             >
-              {years.map((year) => (
-                <SelectOption key={year} value={`${year}`}>
-                  {year}
-                </SelectOption>
-              ))}
-            </Select>
-            <Select
-              value={`${query_month || curr_month}`}
-              onChange={(e) => {
-                changeMonth(+e.target.value);
-              }}
-            >
-              {months.map(
-                (month) =>
-                  ((curr_year && curr_year < current_year) ||
-                    month <= new Date(Date.now()).getMonth() + 1) && (
-                    <SelectOption key={month} value={`${month}`}>
-                      {getNamedMonth(
-                        new Date(`${query_year || current_year}-${month}-01`)
-                      )}
-                    </SelectOption>
-                  )
-              )}
-            </Select>
-          </Label>
+              <Select
+                value={`${query_year || current_year}`}
+                onChange={(e) => {
+                  changeYear(+e.target.value);
+                }}
+              >
+                {years.map((year) => (
+                  <SelectOption key={year} value={`${year}`}>
+                    {year}
+                  </SelectOption>
+                ))}
+              </Select>
+              <Select
+                value={`${query_month || curr_month}`}
+                onChange={(e) => {
+                  changeMonth(+e.target.value);
+                }}
+              >
+                {months.map(
+                  (month) =>
+                    ((curr_year && curr_year < current_year) ||
+                      month <= new Date(Date.now()).getMonth() + 1) && (
+                      <SelectOption key={month} value={`${month}`}>
+                        {getNamedMonth(
+                          new Date(`${query_year || current_year}-${month}-01`)
+                        )}
+                      </SelectOption>
+                    )
+                )}
+              </Select>
+            </Label>
+          )}
         </SeeEmployeeHeader>
 
         <Outlet />

@@ -201,7 +201,13 @@ export const DisplayEmployees = () => {
             className="shadow-md"
           >
             <thead>
-              <tr>
+              <tr
+                style={{
+                  gridTemplateColumns: `repeat(${
+                    Object.keys(all_employees[1]).length - 3
+                  }, 1fr) 1.5fr 2fr 2fr 1fr 1fr `,
+                }}
+              >
                 <th>Action</th>
                 {Object.keys(all_employees[0]).map((key) => (
                   <th>
@@ -212,7 +218,13 @@ export const DisplayEmployees = () => {
             </thead>
             <tbody>
               {all_employees.map((employee) => (
-                <tr>
+                <tr
+                  style={{
+                    gridTemplateColumns: `repeat(${
+                      Object.keys(all_employees[1]).length - 3
+                    }, 1fr) 1.5fr 2fr 2fr 1fr 1fr `,
+                  }}
+                >
                   <td>
                     <CheckBox
                       type="checkbox"

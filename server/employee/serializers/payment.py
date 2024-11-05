@@ -30,6 +30,7 @@ class PaymentSerializer(serializers.ModelSerializer):
     income_tax = serializers.SerializerMethodField(read_only=True)
     gross_salary = serializers.SerializerMethodField(read_only=True)
     salary_history = serializers.SerializerMethodField(read_only=True)
+    position_history = serializers.SerializerMethodField(read_only=True)
     payment_date = serializers.SerializerMethodField(read_only=True)
 
 
@@ -38,7 +39,8 @@ class PaymentSerializer(serializers.ModelSerializer):
         fields = ('employee_id', 'employee_name',  'basic_salary',
                   "allowances", "overtimes", 'gross_salary', "deductions",
                  "income_tax",  'total_deduction', "net_salary", 'month', 'payment_status', 'payment_date',
-                  'salary_history'
+                  'salary_history',
+                  'position_history'
                   )
 
     def get_employee_id(self, obj):
@@ -46,22 +48,43 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     def get_payment_date(self, obj):
         return obj.payment_date
-    def get_salary_history(self, obj:Employee):
+
+    def get_salary_history(self, obj: Payment):
             employee = obj.employee
-            salaries = Salary.objects.filter(employee=employee)
-            formatted_salary_history = []
+            salaries = Salary.objects.filter(
+                employee=employee).order_by("basic_salary")
             if salaries.exists():
-                for salary in salaries:
-                    payment_list = Payment.objects.filter(employee=employee, salary=salary.basic_salary)
-                    if payment_list.exists():
-                        formatted_salary_history.append (
-                            {
-                                'salary': salary.basic_salary,
-                                'from': str(payment_list.first().month),
-                                'to':str (payment_list.last().month),
-                            }
-                        )
-                return formatted_salary_history
+
+                class SalarySerializer(serializers.ModelSerializer):
+
+                    class Meta:
+                        model = Salary
+                        fields = ('basic_salary', 'start_date',
+                                  'end_date', "reason")
+
+                return SalarySerializer(salaries, many=True).data
+            else:
+                return []
+
+    def get_position_history(self, obj: Payment):
+        employee = obj.employee
+        positions = EmployeePosition.objects.filter(
+            employee=employee).order_by("start_date")
+        if positions.exists():
+
+            class PositionSerializer(serializers.ModelSerializer):
+                position_name = serializers.SerializerMethodField(
+                    read_only=True)
+
+                class Meta:
+                    model = EmployeePosition
+                    fields = ('position_name', 'start_date',
+                              'end_date')
+
+                def get_position_name(self, obj: EmployeePosition):
+                    return obj.position.position_name
+            return PositionSerializer(positions, many=True).data
+        else:
             return []
 
     def get_employee_name(self, obj):
@@ -116,5 +139,6 @@ class MonthlyPaymentSerializer(PaymentSerializer):
                   'month', 'basic_salary', 'gross_salary',
                   "allowances", "deductions", "overtimes",
                   'total_deduction', "income_tax", "net_salary", 
-                  'salary_history'
+                  'salary_history',
+                  "position_history"
                   )

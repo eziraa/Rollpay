@@ -58,7 +58,7 @@ export const SeeEmployee = () => {
       >
         <SeeEmployeeHeader>
           <NavigationBar />
-          {!["edit", "salary-history", "assets"].includes(
+          {!["edit", "salary-history", "position-history", "assets"].includes(
             pathname.split("/").slice(-1)[0]
           ) && (
             <Label

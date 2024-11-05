@@ -17,7 +17,7 @@ import {
   AllowanceForm,
 } from "../../sections/add-allowance/add-allowance.style";
 import { Title } from "../../sections/add_employee/add-employee.style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { listAllowancesRequested } from "../../../store/allowance/allowance-slice";
 import {
   addEmpAllowanceRequested,
@@ -55,6 +55,7 @@ export const AddAllowanceToEmp = () => {
   useEffect(() => {
     allowances.length == 0 && dispatcher(listAllowancesRequested());
   }, []);
+  const [submitting, setSubmitting] = useState(false);
 
   const {
     errors,
@@ -72,6 +73,7 @@ export const AddAllowanceToEmp = () => {
     },
     validationSchema: AddAllowanceToEmpSchema,
     onSubmit: (values) => {
+      setSubmitting(true);
       dispatcher(
         resetEmployeeState({
           ...employee,
@@ -79,7 +81,6 @@ export const AddAllowanceToEmp = () => {
         })
       );
       dispatcher(addEmpAllowanceRequested(values));
-      !employee.task_error && !isSubmitting && navigate(-1);
     },
   });
 
@@ -96,6 +97,12 @@ export const AddAllowanceToEmp = () => {
       clearTask();
     }
   }, []);
+  useEffect(() => {
+    if (!submitting) return;
+    if (employee.task_finished && !employee.task_error) {
+      navigate(-1);
+    }
+  }, [employee.task_error]);
 
   //Adding a method to close modal  properly
   /**

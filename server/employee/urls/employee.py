@@ -47,6 +47,8 @@ urlpatterns = [
          employee.EmployeeView.as_view(), name='__add_overtime_to_emp__'),
     path("salary/get", salary_view.SalaryView.as_view(), name='__get_salary__'),
     path("salary/raise", salary_view.SalaryView.as_view(), name='__raise_salary__'),
+    path("salary/raise",
+         salary_view.SalaryView.as_view(), name='__raise_salary__'),
     path("salary/raise/<rate>",
          salary_view.SalaryView.as_view(), name='__raise_salary__'),
     path("salary/raise/<employee_id>/<rate>",

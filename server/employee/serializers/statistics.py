@@ -8,7 +8,7 @@ from employee.serializers.allowance import AllowanceItemSerializer
 from .utils import StatisticsCalculator
 
 now = datetime.datetime.now()
-current_month = Month(year=now.year, month=now.month)
+current_month = Month(year=now.year, month=now.month - 1)
 class StatisticsSerializer(serializers.Serializer):
     total_employees = serializers.SerializerMethodField(read_only=True)
     total_positions = serializers.SerializerMethodField(read_only=True)
@@ -30,12 +30,12 @@ class StatisticsSerializer(serializers.Serializer):
                   "curr_month_allowances", "curr_month_deductions",  "curr_month_payment_amount", "avg_basic_salary", "curr_month_allowance", "curr_month_deduction", "curr_month_overtime", "curr_month_overtimes")
    
     def get_curr_month_deduction(self, obj):
-
+        print("get_curr_month_deduction")
         return StatisticsCalculator.deductions_of_a_month(month=current_month)
 
  
     def get_curr_month_allowance(self, obj):
-
+        print("get_curr_month_allowance")
         return StatisticsCalculator.allowanes_of_a_month(month=current_month)
         
 
@@ -43,6 +43,7 @@ class StatisticsSerializer(serializers.Serializer):
         '''
         Function to get current month statistics of overtime
         '''
+        print('get_curr_month_overtime')
         return StatisticsCalculator.overtimes_of_a_month(month=current_month)
         
     def get_total_employees(self, obj):

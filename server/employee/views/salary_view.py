@@ -129,6 +129,34 @@ class SalaryView(APIView):
     def post(self, request, employee_id=None, rate=None, *args, **kwargs):
         now = datetime.datetime.now()
         curr_month = month.Month(month=now.month, year=now.year)
+        if rate is None:
+            employees_id = list(request.data.get("employees"))
+            reason = request.data.get("reason")
+            rate = float(request.data.get("rate"))
+            if len(employees_id) > 0:
+                for employee_id in employees_id:
+                    employee = Employee.objects.filter(id=employee_id)
+                    if (not employee.exists()):
+                        return Response({"error": "Employee not found"}, status=404)
+                    else:
+                        employee = employee.first()
+                        salaries = Salary.objects.filter(
+                            employee=employee).order_by('start_date')
+                        if salaries.exists():
+                            last_salary = salaries.last()
+                            today = datetime.date.today()
+                            Salary.objects.create(
+                                employee=employee,
+                                reason=reason,
+                                start_date=today,
+                                basic_salary=last_salary.basic_salary *
+                                Decimal((1 + rate/100))
+                            )
+                            last_salary.end_date = today
+                            last_salary.save()
+            payments = Payment.objects.filter(month=curr_month)
+            serializer = PaymentSerializer(payments, many=True)
+            return Response(data=serializer.data, status=200)
         if rate is not None:
             if employee_id:
                 employee = Employee.objects.filter(id=employee_id)

@@ -19,7 +19,7 @@ export const DashboardContainer = styled.div`
 export const DashboardTitle = styled.h1`
   text-align: right;
   width: 100%;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => addOpacityToColor(0.75, theme.colors.primary)};
 `;
 
 export const DashboardBody = styled.div`

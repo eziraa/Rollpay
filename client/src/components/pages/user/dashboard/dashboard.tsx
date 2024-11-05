@@ -1,17 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { MidBlurredText } from "../../../utils/titles/titles";
 import {
   DashboardContainer,
   DashboardTitle,
 } from "../../dashboard/dashboard.style";
 import {
+  Card,
   CardBody,
-  CardFooter,
   CardsContainer,
   DashBoardCard,
-  DataBox,
-  Icon,
   Image,
 } from "./dashboard.style";
 import { useAppDispatch } from "../../../../utils/custom-hook";
@@ -23,9 +20,14 @@ import { AllowanceStat } from "./allowance-stat.tsx";
 import { DeductionStat } from "./deduction-stat";
 import { OvertimeStat } from "./overtime-stat.tsx";
 import salary from "../../../../assets/salary.png";
+import netSalary from "../../../../assets/net_salary.png";
+import gross from "../../../../assets/gross.png";
+import tax from "../../../../assets/tax.png";
 import { ThreeDots } from "../../../utils/loading/dots.tsx";
 import { useLocation } from "react-router";
 import { useAuth } from "../../../../hooks/auth-hook.tsx";
+import { FaArrowTrendUp } from "react-icons/fa6";
+import CountUp from "react-countup";
 
 export const UserDashboard = () => {
   const dispatcher = useAppDispatch();
@@ -46,107 +48,113 @@ export const UserDashboard = () => {
           {loading ? (
             <ThreeDots size={1} />
           ) : (
-            <>
-              <CardBody>
-                <Icon>
-                  <Image src={salary} />
-                </Icon>
-                <DataBox>
-                  <DashboardTitle className="success">
-                    {employee?.salary}
-                  </DashboardTitle>
+            <CardBody>
+              <Image src={salary} />
+              <Card>
+                  <h4 className="font-extrabold text-3xl text-slate-600/90 ">
+                    <CountUp
+                      end={employee?.salary || 0}
+                      duration={5}
+                      delay={1}
+                      decimals={2}
+                    />
+                  </h4>
                   <DashboardTitle className="italic">Salary</DashboardTitle>
-                </DataBox>
-              </CardBody>
-              <CardFooter>
-                <MidBlurredText className="mid-spaced">
-                  Your salary is greater than prev month by
-                  <span className="success"> 5%</span>
-                </MidBlurredText>
-              </CardFooter>
-            </>
+                <div className="flex space-x-4">
+                  <div className="flex items-center space-x-1 bg-slate-100 px-2 rounded-sm text-xl text-green-400">
+                    <FaArrowTrendUp />
+                    <span>1.2%</span>
+                  </div>
+                  <span className="text-slate-400 text-xl">last month</span>
+                </div>
+              </Card>
+            </CardBody>
           )}
         </DashBoardCard>
-        <DashBoardCard>
+        <DashBoardCard className="drop-shadow-md">
           {loading ? (
             <ThreeDots size={1} />
           ) : (
-            <>
-              <CardBody>
-                <Icon>
-                  <Image />
-                </Icon>
-                <DataBox>
-                  <DashboardTitle className="success">
-                    {employee?.payments.slice(-1)[0].net_salary}
-                  </DashboardTitle>
+            <CardBody>
+              <Image src={netSalary} />
+              <Card>
+                  <h4 className="font-extrabold text-3xl text-slate-600/90 ">
+                    <CountUp
+                      end={employee?.payments.slice(-1)[0].net_salary || 0}
+                      duration={5}
+                      delay={1}
+                      decimals={2}
+                    />
+                  </h4>
                   <DashboardTitle className="italic">Net Salary</DashboardTitle>
-                </DataBox>
-              </CardBody>
-              <CardFooter>
-                <MidBlurredText className="mid-spaced">
-                  Your net Salary is greater than prev month by
-                  <span className="success"> 4% </span>
-                </MidBlurredText>
-              </CardFooter>
-            </>
+                <div className="flex space-x-4">
+                  <div className="flex items-center space-x-1 bg-slate-100 px-2 rounded-sm text-xl text-green-400">
+                    <FaArrowTrendUp />
+                    <span>1.2%</span>
+                  </div>
+                  <span className="text-slate-400 text-xl">last month</span>
+                </div>
+              </Card>
+            </CardBody>
           )}
         </DashBoardCard>
-        <DashBoardCard>
+        <DashBoardCard className="drop-shadow-md">
           {loading ? (
             <ThreeDots size={1} />
           ) : (
-            <>
-              <CardBody>
-                <Icon>
-                  <Image />
-                </Icon>
-                <DataBox>
-                  <DashboardTitle className="success">
-                    {employee?.payments.slice(-1)[0].gross_salary}
-                  </DashboardTitle>
+            <CardBody>
+              <Image src={gross} />
+              <Card>
+                  <h4 className="font-extrabold text-3xl text-slate-600/90 ">
+                    <CountUp
+                      end={employee?.payments.slice(-1)[0].gross_salary || 0}
+                      duration={5}
+                      delay={1}
+                      decimals={2}
+                    />
+                  </h4>
                   <DashboardTitle className="italic">
-                    Gross salary
+                    Gross Salary
                   </DashboardTitle>
-                </DataBox>
-              </CardBody>
-              <CardFooter>
-                <MidBlurredText className="mid-spaced">
-                  Your gross salary is greater than prev month by
-                  <span className="success"> 12%</span>
-                </MidBlurredText>
-              </CardFooter>
-            </>
+                <div className="flex space-x-4">
+                  <div className="flex items-center space-x-1 bg-slate-100 px-2 rounded-sm text-xl text-green-400">
+                    <FaArrowTrendUp />
+                    <span>1.2%</span>
+                  </div>
+                  <span className="text-slate-400 text-xl">last month</span>
+                </div>
+              </Card>
+            </CardBody>
           )}
         </DashBoardCard>
-        <DashBoardCard>
+        <DashBoardCard className="drop-shadow-md">
           {loading ? (
             <ThreeDots size={1} />
           ) : (
-            <>
-              <CardBody>
-                <Icon>
-                  <Image />
-                </Icon>
-                <DataBox>
-                  <DashboardTitle className="success">
-                    {employee?.payments.slice(-1)[0].income_tax}
-                  </DashboardTitle>
-                  <DashboardTitle className="italic">
-                    {" "}
-                    Income Tax{" "}
-                  </DashboardTitle>
-                </DataBox>
-              </CardBody>
-              <CardFooter>
-                <MidBlurredText className="mid-spaced">
-                  Your income tax is greater than prev month by
-                  <span className="success"> 4%</span>
-                </MidBlurredText>
-              </CardFooter>
-            </>
+            <CardBody>
+              <Image src={tax} />
+              <Card>
+                  <h4 className="font-extrabold text-3xl text-slate-600/90 ">
+                    <CountUp
+                      end={employee?.payments.slice(-1)[0].income_tax || 0}
+                      duration={5}
+                      delay={1}
+                      decimals={2}
+                    />
+                  </h4>
+                  <DashboardTitle className="italic">Icome Tax</DashboardTitle>
+                <div className="flex space-x-4">
+                  <div className="flex items-center space-x-1 bg-slate-100 px-2 rounded-sm text-xl text-green-400">
+                    <FaArrowTrendUp />
+                    <span>1.2%</span>
+                  </div>
+                  <span className="text-slate-400 text-xl">last month</span>
+                </div>
+              </Card>
+            </CardBody>
           )}
         </DashBoardCard>
+        
       </CardsContainer>
       <AllowanceStat />
       <DeductionStat />

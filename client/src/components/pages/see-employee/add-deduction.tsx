@@ -17,7 +17,7 @@ import {
   DeductionForm,
 } from "../../sections/add-deduction/add-deduction.style";
 import { Title } from "../../sections/add_employee/add-employee.style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { listDeductionsRequested } from "../../../store/deduction/deduction-slice";
 import {
   addEmpDeductionRequested,
@@ -47,13 +47,16 @@ export const AddDeductionToEmp = () => {
       dispatcher(listDeductionsRequested());
     }
   }, [curr_deduction, dispatcher]);
+  const [submitting, setSubmitting] = useState(false);
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       deduction_type: "",
       employee_id: employee_id || "",
       query_string: `?year=${year}&month=${month}`,
     },
+
     onSubmit: (values) => {
+      setSubmitting(true);
       dispatcher(
         resetEmployeeState({
           ...employee,
@@ -61,10 +64,14 @@ export const AddDeductionToEmp = () => {
         })
       );
       dispatcher(addEmpDeductionRequested(values));
-      navigate(-1);
     },
   });
-
+  useEffect(() => {
+    if (!submitting) return;
+    if (employee.task_finished && !employee.task_error) {
+      navigate(-1);
+    }
+  }, [employee.task_error]);
   // Fetching list of deductions to able to add deduction to employee
 
   useEffect(() => {

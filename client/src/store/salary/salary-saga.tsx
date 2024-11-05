@@ -185,7 +185,9 @@ function* loadPrevPage(action: PayloadAction<string>) {
   }
 }
 
-function* raiseSalary(action: PayloadAction<number>) {
+function* raiseSalary(
+  action: PayloadAction<{ rate: number; reason: string; employees: number[] }>
+) {
   try {
     const response: RaiseSalaryResponse = yield call(
       SalaryAPI.raiseSalary,
