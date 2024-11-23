@@ -27,4 +27,3 @@ This is the employee-payroll-system.
 ### Admin dashboard
 
 ![Admin dashboard](client/public/images/admin1.png)
-
