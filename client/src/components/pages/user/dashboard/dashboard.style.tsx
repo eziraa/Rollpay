@@ -224,7 +224,7 @@ interface DataProps extends ThemeProps {
 
 export const GraphData = styled.div<DataProps>`
   ${place_center};
-  width: 2rem;
+  width: 1rem;
   height: ${({ height }) => height}rem;
   border-radius: 1rem 1rem 0 0;
 

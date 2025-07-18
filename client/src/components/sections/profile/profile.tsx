@@ -35,7 +35,6 @@ const Profile = ({ close }: { close: () => void }) => {
       }}
     >
       <Modal
-        className="bg-red-500 "
         style={{
           zIndex: 5000,
         }}

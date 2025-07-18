@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../../utils/custom-hook";
 import { reset } from "../../../store/user/user-slice";
 import { useNavigate } from "react-router-dom";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ConfirmRegistration = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -120,6 +121,12 @@ const ConfirmRegistration = () => {
               {response.message}
               <FaQuoteRight className={`ml-2 mr-2 mb-1 text-${color}-500`} />
             </h1>
+            <Link
+              to="/login"
+              className="text-blue-500 px-4 py-2 text-xl rounded hover:text-blue-700 hover:underline transition duration-300"
+            >
+              Login
+            </Link>
             {response.resend && (
               <button
                 onClick={(e) => {

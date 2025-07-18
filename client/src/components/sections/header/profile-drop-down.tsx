@@ -10,6 +10,8 @@ export const DropDownContainer = styled.div`
   gap: 1rem;
   align-items: center;
   cursor: pointer;
+  z-index: 1000;
+  background-color: aliceblue;
   color: ${({ theme }) => addOpacityToColor(0.6, theme.colors.primary)};
   &:hover {
     color: ${({ theme }) => theme.buttons.primary};
