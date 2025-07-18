@@ -67,7 +67,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     FRONT_END_URL,
-    "https://payroll-green.vercel.app/"
+     'http://127.0.0.1:8000/',  # Local development URL
 ]
 APPEND_SLASH = False
 ROOT_URLCONF = 'payroll.urls'
@@ -150,16 +150,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CORS_ALLOW_CREDENTIALS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', '')
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', "")
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', "")
-
+EMAIL_HOST_USER = 'ezratgab@gmail.com'
+EMAIL_HOST_PASSWORD = 'fubnqfbtksvccqjj'  # <-- App password
 
 # TO USE django-q TASK SCHEDULING
 Q_CLUSTER = {

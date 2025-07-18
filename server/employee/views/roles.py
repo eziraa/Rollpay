@@ -58,8 +58,7 @@ class RoleView(APIView):
     def put(self, request: Request, *args, **kwargs):
         role_id = request.data.get('id')
         role_name = request.data.get('name')
-        role_groups = request.data.get(
-            'groups')
+        role_groups = request.data.get('groups')
         if not role_id:
             return Response({'error': 'Role name not specified'}, status=400)
         try:

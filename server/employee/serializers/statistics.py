@@ -6,7 +6,7 @@ from month import Month
 from employee.utils.salary_calculator import SalaryCalculator
 from employee.serializers.allowance import AllowanceItemSerializer
 from .utils import StatisticsCalculator
-
+import datetime
 now = datetime.datetime.now()
 current_month = Month(year=now.year, month=now.month - 1)
 class StatisticsSerializer(serializers.Serializer):

@@ -1,5 +1,7 @@
 
 from re import match
+import random
+import datetime
 from django.http import JsonResponse
 from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
@@ -224,8 +226,7 @@ class AccountView(APIView):
                 signer = TimestampSigner()
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 uid = signer.sign(uid)
-                confirm_link = f'{FRONT_END_URL}/confirm-registration/{
-                    uid}/{token}'
+                confirm_link = f'{FRONT_END_URL}/confirm-registration/{uid}/{token}'
                 # HTML content with a styled button
                 html_message = f'''
                 <html>
@@ -314,21 +315,29 @@ class AccountView(APIView):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
-        data = super().post(request=request)
-        user = CustomUser.objects.get(username=request.data['username'])
-        employee = get_object_or_404(Employee, user=user)
-        profile_picture = user.profile_pictures.all().last()
-        if employee:
-            data.data['employee'] = EmployeeSerializer(employee).data
-            data.data['username'] = user.username
-            data.data["role"] = user.role.name,
-            data.data["profile_picture"] = profile_picture.profile_picture.url if profile_picture else "http://127.0.0.1:8000/media/photos/profile.png",
-            data.data["employee_id"] = employee.id,
-            data.data["user_id"] = user.id,
-            data.data["error"] = "No profile picture uploaded"
-        else:
-            return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
-        return Response(data=data.data, status=status.HTTP_200_OK)
+        try:
+            data = super().post(request=request)
+            user = CustomUser.objects.get(username=request.data['username'])
+            employee = get_object_or_404(Employee, user=user)
+            profile_picture = user.profile_pictures.all().last()
+            if employee:
+                data.data['employee'] = EmployeeSerializer(employee).data
+                data.data['username'] = user.username
+                if not user.role:
+                    user.role = Role.objects.get(name="user")
+                    user.save()
+                data.data["role"] = user.role.name,
+                data.data["profile_picture"] = profile_picture.profile_picture.url if profile_picture else "http://127.0.0.1:8000/media/photos/profile.png",
+                data.data["employee_id"] = employee.id,
+                data.data["user_id"] = user.id,
+                data.data["error"] = "No profile picture uploaded"
+            else:
+                return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data=data.data, status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RoleManager:
@@ -336,7 +345,7 @@ class RoleManager:
     @staticmethod
     def add_role(user: CustomUser, position: str):
         groups = []
-        if position == "Clerk":
+        if position.strip() == "Clerk":
             role, created = Role.objects.get_or_create(name="Clerk")
             group, created = Group.objects.get_or_create(
                 name="employee_manager")
@@ -357,7 +366,7 @@ class RoleManager:
             group.save()
             groups.append(group)
 
-        elif position == "System Administrator":
+        elif position.strip() == "System Administrator":
             role, created = Role.objects.get_or_create(name="sys_admin")
             group, created = Group.objects.get_or_create(
                 name="system_admin")

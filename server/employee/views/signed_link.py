@@ -22,8 +22,8 @@ class PasswordResetEmailView(APIView):
 
                 if FRONT_END_URL is None:
                     return Response({'error': 'Front-end URL is not set'}, status=status.HTTP_400_BAD_REQUEST)
-                reset_link = f'{FRONT_END_URL}/password-reset-confirm/{
-                    uid}/{token}'
+                reset_link = f'''{FRONT_END_URL}/password-reset-confirm/{
+                    uid}/{token}'''
 
                 # HTML content with a styled button
                 html_message = f'''
