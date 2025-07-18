@@ -160,11 +160,17 @@ class EmployeeView (APIView):
             if not Position.objects.filter(position_name=position).exists():
                 return JsonResponse({'error': 'Position does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             position = Position.objects.get(position_name=position)
+            prev_emp_position = None
+            if EmployeePosition.objects.filter(employee=employee).exists():
+                prev_emp_position = EmployeePosition.objects.filter(employee=employee).last()
             EmployeePosition.objects.create(
                 employee=employee,
                 position=position,
                 start_date=datetime.datetime.now()
             )
+            if prev_emp_position:
+                prev_emp_position.end_date = datetime.datetime.now()
+                prev_emp_position.save()
             if user:
                 RoleManager.add_role(user, position.position_name)
         if salary and salary != employee.salaries.all().last().basic_salary:
