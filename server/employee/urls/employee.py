@@ -1,10 +1,9 @@
 from django.urls import path
-
 from employee.views import salary_view, filter_employee
-from employee.views.user_views import ProfilePicture
 from employee.views import salary_view, payment
 from employee.views.assets import EmployeeAssetView
 from employee.views import employee
+from employee.views.fill_data_view import FillDataView, PositionAssignmentView, SalaryFillView, RoleCreatorView
 
 # Defining  url patterns to use it as end point
 urlpatterns = [
@@ -64,6 +63,10 @@ urlpatterns = [
     path("contract/<str:employee_id>",
          EmployeeAssetView.as_view(), name='_employement_contract__'),
 
-
+    path('fill-data/', FillDataView.as_view(), name='fill-data'),
+    path('assign-positions/', PositionAssignmentView.as_view(), name='assign-positions'),
+    path('fill-salary/', SalaryFillView.as_view(), name='fill-salary'),
+    path('create-role/', RoleCreatorView.as_view(), name='create-roles'),
+    
 
 ] 
