@@ -27,8 +27,8 @@ class ResendConfirmView(APIView):
             token = token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             uid = signer.sign(uid)
-            confirm_link = f'{FRONT_END_URL}/confirm-registration/{
-                uid}/{token}'
+            confirm_link = f'''{FRONT_END_URL}/confirm-registration/{
+                uid}/{token}'''
             # HTML content with a styled button
             html_message = f'''
                 <html>
